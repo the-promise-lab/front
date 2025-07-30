@@ -37,7 +37,6 @@
 - **Prettier** - 코드 포맷팅
 - **Husky** - Git hooks
 - **lint-staged** - 스테이징된 파일만 린팅
-- **Vitest** - 단위 테스트
 
 ## 📁 프로젝트 구조
 
@@ -160,21 +159,6 @@ VITE_API_BASE_URL=http://localhost:3000/api
 VITE_API_TIMEOUT=10000
 NODE_ENV=development
 VITE_ENABLE_DEBUG=true
-```
-
-## 🧪 테스트 환경
-
-### **Vitest 설정**
-
-- **설정 파일**: `vitest.config.ts`
-- **테스트 환경**: jsdom
-- **설정 파일**: `src/test/setup.ts`
-
-### **테스트 실행**
-
-```bash
-npm run test              # 테스트 실행
-npm run test -- --coverage  # 커버리지 포함
 ```
 
 ## 🔍 문제 해결

@@ -33,11 +33,6 @@
 
 #### **테스트 환경 구축**
 
-- ✅ **Vitest 설정**:
-  - `vitest.config.ts` - 테스트 설정 파일
-  - `src/test/setup.ts` - 테스트 환경 설정
-  - `package.json`에 `test` 스크립트 추가
-
 #### **문서화 개선**
 
 - ✅ **README.md 완전 재작성**: 프로젝트별 맞춤형 문서
@@ -51,7 +46,6 @@
 ```json
 // 추가된 패키지
 "@tailwindcss/postcss": "^4.1.11"
-"vitest": "^1.0.0"
 
 // 수정된 패키지
 "vite": "^5.0.0"  // 7.0.4에서 다운그레이드
@@ -72,9 +66,7 @@ export default {
 ```json
 // package.json
 {
-  "scripts": {
-    "test": "vitest" // 새로 추가
-  }
+  "scripts": {}
 }
 ```
 
