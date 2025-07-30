@@ -1,69 +1,67 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite 프로젝트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+모던 웹 개발을 위한 React + TypeScript + Vite 기반 프로젝트입니다.
 
-Currently, two official plugins are available:
+## 🚀 기술 스택
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - 최신 React 버전
+- **TypeScript** - 타입 안전성
+- **Vite** - 빠른 개발 서버 및 빌드 도구
+- **Tailwind CSS v4** - 유틸리티 퍼스트 CSS 프레임워크
+- **Jotai** - 경량 상태 관리
+- **TanStack Query** - 서버 상태 관리
+- **React Hook Form + Zod** - 폼 관리 및 검증
+- **Vitest** - 단위 테스트
 
-## Expanding the ESLint configuration
+## 📦 설치 및 실행
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# 의존성 설치
+npm install
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# 개발 서버 실행
+npm run dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+# 빌드
+npm run build
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 린팅
+npm run lint
+
+# 테스트
+npm run test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🏗️ 프로젝트 구조
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```
+src/
+├── api/          # API 관련
+├── components/   # 재사용 컴포넌트
+├── hooks/        # 커스텀 훅
+├── services/     # 비즈니스 로직
+├── types/        # TypeScript 타입 정의
+├── utils/        # 유틸리티 함수
+└── test/         # 테스트 설정
+```
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🔧 개발 도구
+
+- **ESLint** - 코드 품질 관리
+- **Prettier** - 코드 포맷팅
+- **Husky** - Git hooks
+- **lint-staged** - 스테이징된 파일만 린팅
+
+## 📝 환경 변수
+
+`.env.example` 파일을 참고하여 필요한 환경 변수를 설정하세요.
+
+## 🧪 테스트
+
+```bash
+# 테스트 실행
+npm run test
+
+# 테스트 커버리지
+npm run test -- --coverage
 ```

@@ -7,10 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.0",
+    "@tailwindcss/postcss": "^4.1.11",
     "@tanstack/react-query": "^5.83.0",
     "axios": "^1.11.0",
     "jotai": "^2.12.5",
@@ -41,6 +44,7 @@
     "tailwindcss": "^4.1.11",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.4"
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
   }
 }
