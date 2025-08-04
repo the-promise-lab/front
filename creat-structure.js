@@ -1,18 +1,18 @@
 // create-structure.js 예시
-import { mkdirSync, writeFileSync } from "fs";
-import { join } from "path";
+import { mkdirSync, writeFileSync } from 'fs';
+import { join } from 'path';
 
-const base = "src";
+const base = 'src';
 
 const structure = {
-  components: ["ui", "layout"],
-  pages: ["Home", "About", "Dashboard"],
+  components: ['ui', 'layout'],
+  pages: ['Home', 'About', 'Dashboard'],
   hooks: [],
   store: [],
   services: [],
   lib: [],
   types: [],
-  assets: ["images", "icons"],
+  assets: ['images', 'icons'],
   styles: [],
 };
 
@@ -24,9 +24,9 @@ Object.entries(structure).forEach(([folder, subfolders]) => {
   subfolders.forEach((sub) => {
     mkdirSync(join(folderPath, sub), { recursive: true });
   });
-  
+
   // 빈 .gitkeep 파일 넣기 (빈 폴더 git 관리 위해)
-  writeFileSync(join(folderPath, ".gitkeep"), "");
+  writeFileSync(join(folderPath, '.gitkeep'), '');
 });
 
-console.log("src 구조 생성 완료!");
+console.log('src 구조 생성 완료!');
