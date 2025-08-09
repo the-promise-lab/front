@@ -53,3 +53,50 @@ src/
 ## 📝 환경 변수
 
 `.env.example` 파일을 참고하여 필요한 환경 변수를 설정하세요.
+
+## OpenAPI TypeGen
+
+```bash
+npx openapi \
+--input {backend-url}/api/docs-json \
+--output src/api \
+--client axios \
+--exportSchemas true
+```
+
+`src/api/`에서 `AppService`를 import하고, `AppService`의 메서드를 사용하여 API를 호출합니다.
+
+```ts
+import { AppService } from '@/api';
+
+const message = await AppService.appControllerGetHello();
+const health = await AppService.appControllerGetHealth(); // 타입: HealthCheckDto
+```
+
+TanStack Query 예시
+
+```ts
+import { useQuery } from '@tanstack/react-query';
+import { AppService } from '@/api';
+
+function useHealth() {
+  return useQuery({
+    queryKey: ['health'],
+    queryFn: () => AppService.appControllerGetHealth(),
+  });
+}
+```
+
+에러 처리 예시
+
+```tsx
+import { ApiError, AppService } from '@/api';
+
+try {
+  await AppService.appControllerGetHealth();
+} catch (e) {
+  if (e instanceof ApiError) {
+    // e.status, e.body 등 참조 가능
+  }
+}
+```
