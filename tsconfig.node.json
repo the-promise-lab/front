@@ -5,6 +5,11 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/api": ["./src/api/index.ts"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -17,9 +22,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "incremental": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "src/**/*", "src"]
 }
