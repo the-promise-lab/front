@@ -5,6 +5,8 @@ import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
+  const a: string = null;
+  console.log(a);
 
   return (
     <>
