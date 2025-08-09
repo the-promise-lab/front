@@ -2,9 +2,11 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import { useHealthCheck } from './hooks/api/useHealthCheck';
 
 function App() {
   const [count, setCount] = useState(0);
+  const { data, isLoading, error } = useHealthCheck();
 
   return (
     <>
@@ -25,9 +27,12 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="flex justify-center gap-2">
+        <h3>서버 상태: </h3>
+        {isLoading && <p className="text-amber-500">Loading...</p>}
+        {error && <p className="text-red-500">Error: {error.message}</p>}
+        {data && <p className="text-green-500">{data.status}</p>}
+      </div>
     </>
   );
 }
