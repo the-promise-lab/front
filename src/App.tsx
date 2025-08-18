@@ -47,9 +47,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="text-2xl font-bold text-center p-4">선반 선택 데모</h1>
       <ShelfSelector
-        backgroundImage="/shelf-example.png" // 임시 배경 이미지
+        backgroundImage="/shelf-example.png"
         items={sampleItems}
         onItemSelect={handleItemSelect}
       />
