@@ -1,39 +1,59 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import React from 'react';
+import { ShelfSelector } from './components/ShelfSelector';
+
+interface ShelfItem {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 import './App.css';
-import { useHealthCheck } from './hooks/api/useHealthCheck';
+
+// 테스트용 샘플 데이터
+const sampleItems = [
+  {
+    id: 'water-bottle',
+    name: '생수',
+    x: 0.3, // 이미지 내 30% 지점
+    y: 0.4, // 이미지 내 40% 지점
+    width: 0.1, // 전체 크기의 10%
+    height: 0.15, // 전체 크기의 15%
+  },
+  {
+    id: 'snack',
+    name: '과자',
+    x: 0.7, // 이미지 내 70% 지점
+    y: 0.3, // 이미지 내 30% 지점
+    width: 0.12,
+    height: 0.12,
+  },
+  {
+    id: 'drink',
+    name: '음료수',
+    x: 0.5, // 이미지 내 중앙
+    y: 0.6, // 이미지 내 60% 지점
+    width: 0.08,
+    height: 0.18,
+  },
+];
 
 function App() {
-  const [count, setCount] = useState(0);
-  const { data, isLoading, error } = useHealthCheck();
+  const handleItemSelect = (item: ShelfItem) => {
+    window.alert(`선택된 아이템: ${item.name} (ID: ${item.id})`);
+    console.log('선택된 아이템:', item);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <div className="flex justify-center gap-2">
-        <h3>서버 상태: </h3>
-        {isLoading && <p className="text-amber-500">Loading...</p>}
-        {error && <p className="text-red-500">Error: {error.message}</p>}
-        {data && <p className="text-green-500">{data.status}</p>}
-      </div>
-    </>
+    <div className="App">
+      <h1 className="text-2xl font-bold text-center p-4">선반 선택 데모</h1>
+      <ShelfSelector
+        backgroundImage="/shelf-example.png" // 임시 배경 이미지
+        items={sampleItems}
+        onItemSelect={handleItemSelect}
+      />
+    </div>
   );
 }
 
