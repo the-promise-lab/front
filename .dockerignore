@@ -1,0 +1,91 @@
+# 의존성 디렉토리
+node_modules
+npm-debug.log*
+
+# 빌드 결과물
+dist
+build
+
+# 개발 도구 설정
+.git
+.gitignore
+README.md
+CHANGELOG.md
+PROJECT_SETUP.md
+QUICK_START.md
+
+# 환경 설정 파일
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 로그 파일
+*.log
+
+# 런타임 데이터
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 커버리지 디렉토리
+coverage
+*.lcov
+
+# nyc 테스트 커버리지
+.nyc_output
+
+# ESLint 캐시
+.eslintcache
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# IDE 설정
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
