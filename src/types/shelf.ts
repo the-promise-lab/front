@@ -3,6 +3,7 @@ export interface ShelfItem {
   name: string;
   x: number;
   y: number;
+  quantity: number;
 }
 
 export interface Shelf {

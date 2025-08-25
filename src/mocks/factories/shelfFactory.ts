@@ -7,9 +7,10 @@ export function createShelfItem(
   id: string,
   name: string,
   x: number,
-  y: number
+  y: number,
+  quantity: number = 1
 ): ShelfItem {
-  return { id, name, x, y };
+  return { id, name, x, y, quantity };
 }
 
 /**

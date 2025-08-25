@@ -44,13 +44,29 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
       selectNewShelfItem: (item) => {
         const { selectedShelfItems } = get();
 
-        const isAlreadySelected = selectedShelfItems.some(
+        const hasStock = item.quantity > 0;
+        if (!hasStock) {
+          return;
+        }
+
+        const alreadySelectedItem = selectedShelfItems.find(
           (selectedItem) => selectedItem.id === item.id
         );
 
-        if (!isAlreadySelected) {
+        if (alreadySelectedItem) {
           set({
-            selectedShelfItems: [...selectedShelfItems, item],
+            selectedShelfItems: selectedShelfItems.map((selectedItem) =>
+              selectedItem.id === item.id
+                ? { ...selectedItem, quantity: selectedItem.quantity + 1 }
+                : selectedItem
+            ),
+          });
+        } else {
+          set({
+            selectedShelfItems: [
+              ...selectedShelfItems,
+              { ...item, quantity: 1 },
+            ],
           });
         }
       },

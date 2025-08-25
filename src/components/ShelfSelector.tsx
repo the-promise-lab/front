@@ -1,13 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
-
-interface ShelfItem {
-  id: string;
-  name: string;
-  // 이미지 내 상대 좌표 (0-1 범위)
-  x: number;
-  y: number;
-}
+import type { ShelfItem } from '@/types/shelf';
 
 const ITEM_SIZE_PIXEL = 20;
 
