@@ -47,7 +47,7 @@ export const clothingCornerShelf: Shelf = {
  * 전체 선반 목록
  */
 export const mockShelves: Shelf[] = [
-  foodCornerShelf,
   householdCornerShelf,
+  foodCornerShelf,
   clothingCornerShelf,
 ];

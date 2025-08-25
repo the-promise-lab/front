@@ -4,12 +4,15 @@ import type { ShelfItem } from '@/types/shelf';
 
 const ITEM_SIZE_PIXEL = 20;
 
-interface ShelfSelectorProps {
+interface ShelfSelectionCanvasProps {
   backgroundImage: string;
   items: ShelfItem[];
 }
 
-export function ShelfSelector({ backgroundImage, items }: ShelfSelectorProps) {
+export default function ShelfSelectionCanvas({
+  backgroundImage,
+  items,
+}: ShelfSelectionCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [backgroundImg, setBackgroundImg] = useState<HTMLImageElement | null>(
