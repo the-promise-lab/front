@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Shelf, ShelfItem } from '@/types/shelf';
 
+const STORAGE_KEY = 'shelf-selection-storage';
 interface ShelfSelectionStore {
   shelves: Shelf[];
   currentShelfId: string | null;
@@ -115,7 +116,7 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
       },
     }),
     {
-      name: 'shelf-selection-storage', // sessionStorage 키 이름
+      name: STORAGE_KEY,
       storage: {
         getItem: (name) => {
           const value = sessionStorage.getItem(name);
