@@ -1,0 +1,112 @@
+name: Deploy to Kakao Cloud
+description: React 앱을 카카오 클라우드에 자동 배포
+
+# 언제 실행할지 설정
+on:
+  push:
+    branches: [main, develop] # main, develop 브랜치에 푸시할 때 실행
+  pull_request:
+    branches: [main, develop] # main, develop 브랜치로 PR이 올라올 때도 실행
+
+# 작업 정의
+jobs:
+  # 테스트 및 빌드 작업
+  test-and-build:
+    runs-on: ubuntu-latest # Ubuntu 최신 버전에서 실행
+
+    steps:
+      # 1단계: 코드 가져오기
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2단계: Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      # 3단계: 의존성 설치
+      - name: Install dependencies
+        run: npm ci
+
+      # 4단계: 코드 품질 검사
+      - name: Run linting
+        run: npm run lint
+
+      # 5단계: 타입 검사
+      - name: Type check
+        run: npm run type-check
+
+      # 6단계: 빌드
+      - name: Build application
+        run: npm run build
+
+      # 7단계: 빌드 결과물 저장 (다음 단계에서 사용)
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+  # Docker 이미지 빌드 및 배포 (main 브랜치에서만 실행)
+  deploy:
+    needs: test-and-build # test-and-build 작업이 성공한 후에만 실행
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # main 브랜치에서만 배포
+
+    steps:
+      # 1단계: 코드 가져오기
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2단계: 빌드 결과물 다운로드
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      # 3단계: Docker 빌드
+      - name: Build Docker image
+        run: |
+          docker build -t my-react-app .
+
+      # 4단계: Docker 이미지 태그
+      - name: Tag Docker image
+        run: |
+          docker tag my-react-app ${{ secrets.REGISTRY_URL }}/my-react-app:latest
+          docker tag my-react-app ${{ secrets.REGISTRY_URL }}/my-react-app:${{ github.sha }}
+
+      # 5단계: 카카오 클라우드 레지스트리 로그인
+      - name: Login to Kakao Cloud Registry
+        run: |
+          echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+
+      # 6단계: Docker 이미지 푸시
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.REGISTRY_URL }}/my-react-app:latest
+          docker push ${{ secrets.REGISTRY_URL }}/my-react-app:${{ github.sha }}
+
+      # 7단계: 서버에 배포
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+            # 이전 컨테이너 중지 및 제거
+            docker stop my-react-app || true
+            docker rm my-react-app || true
+
+            # 최신 이미지 풀
+            docker pull ${{ secrets.REGISTRY_URL }}/my-react-app:latest
+
+            # 새 컨테이너 실행
+            docker run -d \
+              --name my-react-app \
+              -p 80:80 \
+              --restart unless-stopped \
+              ${{ secrets.REGISTRY_URL }}/my-react-app:latest
+
+            # 배포 완료 메시지
+            echo '배포가 완료되었습니다! 🎉'
+          "
