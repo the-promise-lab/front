@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 interface ShelfItem {
   id: string;
@@ -32,12 +26,11 @@ export function ShelfSelector({
   const [backgroundImg, setBackgroundImg] = useState<HTMLImageElement | null>(
     null
   );
-  const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
-  const [imageScale, setImageScale] = useState({ width: 0, height: 0 });
-  const [zoomLevel, setZoomLevel] = useState(2);
-  const itemPixelSize = useMemo(() => {
-    return ITEM_SIZE_PIXEL * zoomLevel;
-  }, [zoomLevel]);
+  const [imageScale, setImageScale] = useState({
+    width: 0,
+    height: 0,
+    offsetX: 0, // 가로 중앙 정렬을 위한 오프셋
+  });
 
   // 뷰포트 크기 계산 (svw, svh 기준)
   const calculateCanvasSize = useCallback(() => {
@@ -47,19 +40,27 @@ export function ShelfSelector({
     return { width: svw, height: svh };
   }, []);
 
-  // 이미지 배율 계산 (이미지 width가 디바이스 화면의 2배)
+  // 이미지 스케일 계산 (높이 100svh 기준, 원본 비율 유지)
   const calculateImageScale = useCallback(
     (imgWidth: number, imgHeight: number) => {
-      const svw = Math.min(window.innerWidth, window.screen.width);
-      const targetWidth = svw * zoomLevel; // 디바이스 화면의 2배
-      const scaleRatio = targetWidth / imgWidth;
+      const { width: containerWidth, height: containerHeight } =
+        calculateCanvasSize();
+
+      // 높이를 100dvh에 맞추고 원본 비율 유지
+      const scaleRatio = containerHeight / imgHeight;
+      const scaledWidth = imgWidth * scaleRatio;
+      const scaledHeight = containerHeight;
+
+      // 중앙 정렬을 위한 오프셋 계산 (이미지가 작든 크든 항상 중앙 정렬)
+      const offsetX = (containerWidth - scaledWidth) / 2;
 
       return {
-        width: imgWidth * scaleRatio,
-        height: imgHeight * scaleRatio,
+        width: scaledWidth,
+        height: scaledHeight,
+        offsetX,
       };
     },
-    [zoomLevel]
+    [calculateCanvasSize]
   );
 
   // 아이템 영역 그리기 (디버그용)
@@ -71,27 +72,20 @@ export function ShelfSelector({
       ctx.lineWidth = 2;
 
       items.forEach((item) => {
-        // 스케일된 이미지 좌표에서 현재 뷰포트 기준으로 변환
-        const scaledX = item.x * imageScale.width - canvasOffset.x;
-        const scaledY = item.y * imageScale.height - canvasOffset.y;
+        // 이미지 내 상대 좌표를 스케일된 캔버스 좌표로 변환
+        const scaledX = item.x * imageScale.width + imageScale.offsetX;
+        const scaledY = item.y * imageScale.height;
 
-        // 뷰포트 내에 있는 아이템만 그리기
-        if (
-          scaledX >= -itemPixelSize &&
-          scaledX <= canvasSize.width + itemPixelSize &&
-          scaledY >= -itemPixelSize &&
-          scaledY <= canvasSize.height + itemPixelSize
-        ) {
-          ctx.strokeRect(
-            scaledX - itemPixelSize / 2,
-            scaledY - itemPixelSize / 2,
-            itemPixelSize,
-            itemPixelSize
-          );
-        }
+        // 아이템 영역 그리기
+        ctx.strokeRect(
+          scaledX - ITEM_SIZE_PIXEL / 2,
+          scaledY - ITEM_SIZE_PIXEL / 2,
+          ITEM_SIZE_PIXEL,
+          ITEM_SIZE_PIXEL
+        );
       });
     },
-    [canvasSize, items, imageScale, canvasOffset, itemPixelSize]
+    [items, imageScale]
   );
 
   // 배경 이미지 로드
@@ -106,7 +100,7 @@ export function ShelfSelector({
     img.src = backgroundImage;
   }, [backgroundImage, calculateImageScale]);
 
-  // Canvas 크기 설정
+  // Canvas 크기 설정 및 리사이즈 처리
   useEffect(() => {
     const size = calculateCanvasSize();
     setCanvasSize(size);
@@ -114,11 +108,20 @@ export function ShelfSelector({
     const handleResize = () => {
       const newSize = calculateCanvasSize();
       setCanvasSize(newSize);
+
+      // 리사이즈 시 이미지 스케일도 재계산
+      if (backgroundImg) {
+        const newScale = calculateImageScale(
+          backgroundImg.naturalWidth,
+          backgroundImg.naturalHeight
+        );
+        setImageScale(newScale);
+      }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [calculateCanvasSize]);
+  }, [calculateCanvasSize, calculateImageScale, backgroundImg]);
 
   // Canvas 렌더링
   useEffect(() => {
@@ -134,34 +137,43 @@ export function ShelfSelector({
     canvas.height = canvasSize.height * dpr;
     ctx.scale(dpr, dpr);
 
-    // 배경 이미지 그리기 (뷰포트에 맞게 일부분만 렌더링)
+    // 배경 클리어
     ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
 
-    // drawImage(소스이미지, 소스x, 소스y, 소스width, 소스height, 대상x, 대상y, 대상width, 대상height)
-    ctx.drawImage(
-      backgroundImg,
-      // 소스 이미지에서 잘라낼 영역 (offset 적용)
-      canvasOffset.x * (backgroundImg.naturalWidth / imageScale.width), // 원본 이미지 기준으로 변환
-      canvasOffset.y * (backgroundImg.naturalHeight / imageScale.height),
-      canvasSize.width * (backgroundImg.naturalWidth / imageScale.width), // 뷰포트 크기만큼
-      canvasSize.height * (backgroundImg.naturalHeight / imageScale.height),
-      // 캔버스에 그릴 위치 (전체 캔버스에 채움)
-      0,
-      0,
-      canvasSize.width,
-      canvasSize.height
-    );
+    // 이미지 그리기 (항상 중앙 정렬)
+    if (imageScale.width <= canvasSize.width) {
+      // 이미지가 화면보다 작거나 같은 경우 - 중앙에 배치하고 양쪽 여백
+      ctx.drawImage(
+        backgroundImg,
+        imageScale.offsetX, // 중앙 정렬 오프셋
+        0,
+        imageScale.width,
+        imageScale.height
+      );
+    } else {
+      // 이미지가 화면보다 큰 경우 - 중앙 부분만 잘라서 표시
+      const cropStartX = (imageScale.width - canvasSize.width) / 2;
+      const sourceStartX =
+        cropStartX * (backgroundImg.naturalWidth / imageScale.width);
+      const sourceWidth =
+        canvasSize.width * (backgroundImg.naturalWidth / imageScale.width);
+
+      ctx.drawImage(
+        backgroundImg,
+        sourceStartX, // 소스 이미지에서 중앙 부분 시작점
+        0, // 소스 Y (전체 높이 사용)
+        sourceWidth, // 소스 너비 (화면 너비만큼)
+        backgroundImg.naturalHeight, // 소스 높이 (전체 높이)
+        0, // 캔버스 X
+        0, // 캔버스 Y
+        canvasSize.width, // 캔버스 너비
+        canvasSize.height // 캔버스 높이
+      );
+    }
 
     // 디버그용: 아이템 위치 표시
     drawItemAreas(ctx);
-  }, [
-    canvasSize,
-    backgroundImg,
-    items,
-    drawItemAreas,
-    canvasOffset,
-    imageScale,
-  ]);
+  }, [canvasSize, backgroundImg, drawItemAreas, imageScale]);
 
   // 좌표 정규화: 캔버스 좌표 -> 이미지 내 절대 좌표
   const getImageCoordinates = useCallback(
@@ -175,13 +187,21 @@ export function ShelfSelector({
       const canvasX = clientX - rect.left;
       const canvasY = clientY - rect.top;
 
-      // 스케일된 이미지 좌표로 변환 (오프셋 적용)
-      const imageX = canvasX + canvasOffset.x;
-      const imageY = canvasY + canvasOffset.y;
-
-      return { x: imageX, y: imageY };
+      // 이미지 좌표로 변환
+      if (imageScale.width <= canvasSize.width) {
+        // 이미지가 작거나 같은 경우 - 오프셋 고려
+        const imageX = canvasX - imageScale.offsetX;
+        const imageY = canvasY;
+        return { x: imageX, y: imageY };
+      } else {
+        // 이미지가 큰 경우 - 크롭된 중앙 부분 고려
+        const cropStartX = (imageScale.width - canvasSize.width) / 2;
+        const imageX = canvasX + cropStartX;
+        const imageY = canvasY;
+        return { x: imageX, y: imageY };
+      }
     },
-    [canvasSize, canvasOffset, imageScale]
+    [canvasSize, imageScale]
   );
 
   // 아이템 선택 감지
@@ -194,7 +214,7 @@ export function ShelfSelector({
         const itemX = item.x * imageScale.width;
         const itemY = item.y * imageScale.height;
 
-        const halfSize = itemPixelSize / 2;
+        const halfSize = ITEM_SIZE_PIXEL / 2;
 
         const isInXRange =
           imageX >= itemX - halfSize && imageX <= itemX + halfSize;
@@ -207,7 +227,7 @@ export function ShelfSelector({
       }
       return null;
     },
-    [items, imageScale, itemPixelSize]
+    [items, imageScale]
   );
 
   // 터치/클릭 이벤트 핸들러
@@ -241,64 +261,17 @@ export function ShelfSelector({
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative">
+    <div className="fixed inset-0 w-full h-full overflow-hidden">
       <canvas
         ref={canvasRef}
         style={{
           width: `${canvasSize.width}px`,
           height: `${canvasSize.height}px`,
-          border: '1px solid #ccc',
           touchAction: 'none', // 스크롤 방지
         }}
-        className="cursor-pointer"
+        className="cursor-pointer block"
         onClick={handleCanvasInteraction}
         onTouchStart={handleCanvasInteraction}
-      />
-      <div
-        id="button-down"
-        className="absolute bottom-12 right-12 w-4 h-4 bg-black/50 border-2 border-amber-50"
-        onClick={() => {
-          const svh = Math.min(window.innerHeight, window.screen.height);
-          const moveStep = svh * 0.1; // 10% 이동
-          setCanvasOffset({ x: canvasOffset.x, y: canvasOffset.y + moveStep });
-        }}
-      />
-      <div
-        id="button-up"
-        className="absolute bottom-16 right-12 w-4 h-4 bg-black/50 border-2 border-amber-50"
-        onClick={() => {
-          const svh = Math.min(window.innerHeight, window.screen.height);
-          const moveStep = svh * 0.1; // 10% 이동
-          setCanvasOffset({ x: canvasOffset.x, y: canvasOffset.y - moveStep });
-        }}
-      />
-      <div
-        id="button-left"
-        className="absolute bottom-12 right-16 w-4 h-4 bg-black/50 border-2 border-amber-50"
-        onClick={() => {
-          const svw = Math.min(window.innerWidth, window.screen.width);
-          const moveStep = svw * 0.1; // 10% 이동
-          setCanvasOffset({ x: canvasOffset.x - moveStep, y: canvasOffset.y });
-        }}
-      />
-      <div
-        id="button-right"
-        className="absolute bottom-12 right-8 w-4 h-4 bg-black/50 border-2 border-amber-50"
-        onClick={() => {
-          const svw = Math.min(window.innerWidth, window.screen.width);
-          const moveStep = svw * 0.1; // 10% 이동
-          setCanvasOffset({ x: canvasOffset.x + moveStep, y: canvasOffset.y });
-        }}
-      />
-      <div
-        id="button-zoom-in"
-        className="absolute bottom-12 left-12 w-4 h-4 bg-black/50 border-2 border-amber-50"
-        onClick={() => setZoomLevel(zoomLevel + 0.25)}
-      />
-      <div
-        id="button-zoom-out"
-        className="absolute bottom-12 left-16 w-4 h-4 bg-black/50 border-2 border-amber-50"
-        onClick={() => setZoomLevel(zoomLevel - 0.25)}
       />
     </div>
   );
