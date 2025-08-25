@@ -1,47 +1,67 @@
-import { ShelfSelector } from './components/ShelfSelector';
-
-interface ShelfItem {
-  id: string;
-  name: string;
-  x: number;
-  y: number;
-}
+import { useEffect } from 'react';
+import { ShelfSelector } from '@/components/ShelfSelector';
+import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
+import { mockShelves } from '@/mocks';
 import './App.css';
 
-// 테스트용 샘플 데이터
-const sampleItems = [
-  {
-    id: 'claw-hammer',
-    name: '장도리',
-    x: 0.295,
-    y: 0.37,
-  },
-  {
-    id: 'tissue',
-    name: '휴지',
-    x: 0.73,
-    y: 0.32,
-  },
-  {
-    id: 'blanket',
-    name: '담요',
-    x: 0.548,
-    y: 0.568,
-  },
-];
-
 function App() {
-  const handleItemSelect = (item: ShelfItem) => {
-    window.alert(`선택된 아이템: ${item.name} (ID: ${item.id})`);
-    console.log('선택된 아이템:', item);
-  };
+  const {
+    getCurrentShelf,
+    selectedShelfItems,
+    initShelves,
+    setCurrentShelfId,
+    shelves,
+    currentShelfId,
+  } = useShelfSelectionStore();
+
+  useEffect(() => {
+    initShelves(mockShelves);
+  }, [initShelves]);
+
+  const currentShelf = getCurrentShelf();
+
+  if (!currentShelf) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div>데이터를 로딩 중...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
+      <div className="fixed top-4 left-4 z-10 flex gap-2">
+        {shelves.map((shelf) => (
+          <button
+            key={shelf.id}
+            onClick={() => setCurrentShelfId(shelf.id)}
+            className={`px-3 py-1 text-sm rounded ${
+              currentShelfId === shelf.id
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-black'
+            }`}
+          >
+            {shelf.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="fixed top-4 right-4 z-10 bg-white p-3 rounded shadow max-w-xs">
+        <h3 className="font-bold mb-2">
+          선택된 아이템들 ({selectedShelfItems.length})
+        </h3>
+        <div className="text-sm space-y-1 max-h-40 overflow-y-auto">
+          {selectedShelfItems.map((item) => (
+            <div key={item.id} className="border-b pb-1">
+              {item.name} (ID: {item.id})
+            </div>
+          ))}
+        </div>
+      </div>
+
       <ShelfSelector
-        backgroundImage="/shelf-example.png"
-        items={sampleItems}
-        onItemSelect={handleItemSelect}
+        backgroundImage={currentShelf.backgroundImage}
+        items={currentShelf.shelfItems}
       />
     </div>
   );

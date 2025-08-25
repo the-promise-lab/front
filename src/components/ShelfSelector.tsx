@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
 
 interface ShelfItem {
   id: string;
@@ -13,14 +14,9 @@ const ITEM_SIZE_PIXEL = 20;
 interface ShelfSelectorProps {
   backgroundImage: string;
   items: ShelfItem[];
-  onItemSelect: (item: ShelfItem) => void;
 }
 
-export function ShelfSelector({
-  backgroundImage,
-  items,
-  onItemSelect,
-}: ShelfSelectorProps) {
+export function ShelfSelector({ backgroundImage, items }: ShelfSelectorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [backgroundImg, setBackgroundImg] = useState<HTMLImageElement | null>(
@@ -31,6 +27,16 @@ export function ShelfSelector({
     height: 0,
     offsetX: 0, // 가로 중앙 정렬을 위한 오프셋
   });
+
+  const { selectNewShelfItem, selectedShelfItems } = useShelfSelectionStore();
+  const handleItemSelect = useCallback(
+    (item: ShelfItem) => {
+      selectNewShelfItem(item);
+      console.log('선택된 아이템:', item);
+      console.log('전체 선택된 아이템들:', [...selectedShelfItems, item]);
+    },
+    [selectNewShelfItem, selectedShelfItems]
+  );
 
   // 뷰포트 크기 계산 (svw, svh 기준)
   const calculateCanvasSize = useCallback(() => {
@@ -254,10 +260,10 @@ export function ShelfSelector({
 
       const selectedItem = detectItemSelection(imageCoords.x, imageCoords.y);
       if (selectedItem) {
-        onItemSelect(selectedItem);
+        handleItemSelect(selectedItem);
       }
     },
-    [getImageCoordinates, detectItemSelection, onItemSelect]
+    [getImageCoordinates, detectItemSelection, handleItemSelect]
   );
 
   return (
