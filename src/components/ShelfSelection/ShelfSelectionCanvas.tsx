@@ -36,9 +36,8 @@ export default function ShelfSelectionCanvas({
 
   // 뷰포트 크기 계산 (svw, svh 기준)
   const calculateCanvasSize = useCallback(() => {
-    const svw = Math.min(window.innerWidth, window.screen.width);
-    const svh = Math.min(window.innerHeight, window.screen.height);
-
+    const svw = window.innerWidth;
+    const svh = window.innerHeight;
     return { width: svw, height: svh };
   }, []);
 
