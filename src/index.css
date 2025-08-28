@@ -33,6 +33,19 @@ body {
   min-height: 100vh;
 }
 
+/* 모바일 가로모드 개발 환경 */
+@media (min-width: 1024px) {
+  .App {
+    width: 1024px;
+    height: 576px;
+    margin: 0 auto;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;

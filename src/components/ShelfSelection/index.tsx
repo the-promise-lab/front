@@ -3,7 +3,11 @@ import ShelfSelectionCanvas from '@/components/ShelfSelection/ShelfSelectionCanv
 import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
 import { mockShelves } from '@/mocks';
 
-export default function ShelfSelection() {
+interface ShelfSelectionProps {
+  onBackToMenu: () => void;
+}
+
+export default function ShelfSelection({ onBackToMenu }: ShelfSelectionProps) {
   const {
     getCurrentShelf,
     selectedShelfItems,
@@ -29,8 +33,8 @@ export default function ShelfSelection() {
     );
   }
   return (
-    <div>
-      <div className="fixed top-4 left-4 z-10 flex gap-2">
+    <div className="h-screen w-screen overflow-hidden bg-gray-100 relative">
+      <div className="fixed top-4 left-4 z-10 flex gap-2 items-center">
         {shelves.map((shelf) => (
           <button
             key={shelf.id}
@@ -44,6 +48,14 @@ export default function ShelfSelection() {
             {shelf.name}
           </button>
         ))}
+
+        {/* 메인 메뉴로 돌아가기 버튼 */}
+        <button
+          onClick={onBackToMenu}
+          className="px-3 py-1 text-sm bg-gray-500 text-white hover:bg-gray-600 active:bg-gray-700 transition-colors rounded shadow-sm hover:shadow-md ml-2"
+        >
+          메인 메뉴
+        </button>
       </div>
 
       <div className="fixed top-1/2 left-2 -translate-y-1/2 z-10">
