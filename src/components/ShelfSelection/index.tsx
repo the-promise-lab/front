@@ -30,19 +30,19 @@ export default function ShelfSelection() {
     <div>
       <div className="fixed top-1/2 left-2 -translate-y-1/2 z-10">
         <button
-          className="px-3 py-1 text-sm rounded bg-gray-200"
+          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
           onClick={() => moveToPreviousShelf()}
         >
-          Previous
+          <PreviousIcon />
         </button>
       </div>
 
       <div className="fixed top-1/2 right-2 -translate-y-1/2 z-10">
         <button
-          className="px-3 py-1 text-sm rounded bg-gray-200"
+          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
           onClick={() => moveToNextShelf()}
         >
-          Next
+          <NextIcon />
         </button>
       </div>
 
@@ -55,3 +55,33 @@ export default function ShelfSelection() {
     </div>
   );
 }
+
+const PreviousIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
+
+const NextIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="9 6 15 12 9 18" />
+  </svg>
+);
