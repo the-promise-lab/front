@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import ShelfSelectionCanvas from '@/components/ShelfSelection/ShelfSelectionCanvas';
+import SelectedItemsPanel from '@/components/ShelfSelection/SelectedItemsPanel';
 import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
 import { mockShelves } from '@/mocks';
 
@@ -45,18 +46,7 @@ export default function ShelfSelection() {
         </button>
       </div>
 
-      <div className="fixed top-4 right-4 z-10 bg-white p-3 rounded shadow max-w-xs text-black">
-        <h3 className="font-bold mb-2">
-          선택된 아이템들 ({selectedShelfItems.length})
-        </h3>
-        <div className="text-sm space-y-1 max-h-40 overflow-y-auto">
-          {selectedShelfItems.map((item) => (
-            <div key={item.id} className="border-b pb-1">
-              {item.name} (x {item.quantity}) (ID: {item.id})
-            </div>
-          ))}
-        </div>
-      </div>
+      <SelectedItemsPanel selectedItems={selectedShelfItems} />
 
       <ShelfSelectionCanvas
         backgroundImage={currentShelf.backgroundImage}
