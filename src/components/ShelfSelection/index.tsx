@@ -8,9 +8,6 @@ export default function ShelfSelection() {
     getCurrentShelf,
     selectedShelfItems,
     initShelves,
-    setCurrentShelfId,
-    shelves,
-    currentShelfId,
     moveToNextShelf,
     moveToPreviousShelf,
   } = useShelfSelectionStore();
@@ -30,25 +27,9 @@ export default function ShelfSelection() {
   }
   return (
     <div>
-      <div className="fixed top-4 left-4 z-10 flex gap-2">
-        {shelves.map((shelf) => (
-          <button
-            key={shelf.id}
-            onClick={() => setCurrentShelfId(shelf.id)}
-            className={`px-3 py-1 text-sm rounded text-white ${
-              currentShelfId === shelf.id
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-black'
-            }`}
-          >
-            {shelf.name}
-          </button>
-        ))}
-      </div>
-
       <div className="fixed top-1/2 left-2 -translate-y-1/2 z-10">
         <button
-          className="px-3 py-1 text-sm rounded bg-gray-200 text-white"
+          className="px-3 py-1 text-sm rounded bg-gray-200"
           onClick={() => moveToPreviousShelf()}
         >
           Previous
@@ -57,7 +38,7 @@ export default function ShelfSelection() {
 
       <div className="fixed top-1/2 right-2 -translate-y-1/2 z-10">
         <button
-          className="px-3 py-1 text-sm rounded bg-gray-200 text-white"
+          className="px-3 py-1 text-sm rounded bg-gray-200"
           onClick={() => moveToNextShelf()}
         >
           Next
