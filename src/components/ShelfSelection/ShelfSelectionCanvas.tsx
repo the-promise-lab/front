@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
 import type { ShelfItem } from '@/types/shelf';
+import ItemPreviewDialog from './ItemPreviewDialog';
 
 const ITEM_SIZE_PIXEL = 20;
 
@@ -24,21 +25,23 @@ export default function ShelfSelectionCanvas({
     offsetX: 0, // 가로 중앙 정렬을 위한 오프셋
   });
 
-  const { selectNewShelfItem, selectedShelfItems } = useShelfSelectionStore();
-  const handleItemSelect = useCallback(
-    (item: ShelfItem) => {
-      selectNewShelfItem(item);
-      console.log('선택된 아이템:', item);
-      console.log('전체 선택된 아이템들:', [...selectedShelfItems, item]);
-    },
-    [selectNewShelfItem, selectedShelfItems]
-  );
+  const [previewItem, setPreviewItem] = useState<ShelfItem | null>(null);
+  const [clickPosition, setClickPosition] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
+
+  const { selectNewShelfItem } = useShelfSelectionStore();
+  const handleConfirmAdd = useCallback(() => {
+    if (!previewItem) return;
+    selectNewShelfItem(previewItem);
+    setPreviewItem(null);
+    setClickPosition(undefined);
+  }, [previewItem, selectNewShelfItem]);
 
   // 뷰포트 크기 계산 (svw, svh 기준)
   const calculateCanvasSize = useCallback(() => {
-    const svw = Math.min(window.innerWidth, window.screen.width);
-    const svh = Math.min(window.innerHeight, window.screen.height);
-
+    const svw = window.innerWidth;
+    const svh = window.innerHeight;
     return { width: svw, height: svh };
   }, []);
 
@@ -256,10 +259,11 @@ export default function ShelfSelectionCanvas({
 
       const selectedItem = detectItemSelection(imageCoords.x, imageCoords.y);
       if (selectedItem) {
-        handleItemSelect(selectedItem);
+        setPreviewItem(selectedItem);
+        setClickPosition({ x: clientX, y: clientY });
       }
     },
-    [getImageCoordinates, detectItemSelection, handleItemSelect]
+    [getImageCoordinates, detectItemSelection]
   );
 
   return (
@@ -269,11 +273,22 @@ export default function ShelfSelectionCanvas({
         style={{
           width: `${canvasSize.width}px`,
           height: `${canvasSize.height}px`,
-          touchAction: 'none', // 스크롤 방지
+          touchAction: 'none',
         }}
         className="cursor-pointer block"
         onClick={handleCanvasInteraction}
         onTouchStart={handleCanvasInteraction}
+      />
+
+      <ItemPreviewDialog
+        item={previewItem}
+        open={!!previewItem}
+        onClose={() => {
+          setPreviewItem(null);
+          setClickPosition(undefined);
+        }}
+        onConfirm={handleConfirmAdd}
+        position={clickPosition}
       />
     </div>
   );

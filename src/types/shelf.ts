@@ -4,6 +4,7 @@ export interface ShelfItem {
   x: number;
   y: number;
   quantity: number;
+  description: string;
 }
 
 export interface Shelf {
