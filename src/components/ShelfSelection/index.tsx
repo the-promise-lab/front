@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import ShelfSelectionCanvas from '@/components/ShelfSelection/ShelfSelectionCanvas';
+import SelectedItemsPanel from '@/components/ShelfSelection/SelectedItemsPanel';
 import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
 import { mockShelves } from '@/mocks';
 
@@ -8,13 +9,12 @@ interface ShelfSelectionProps {
 }
 
 export default function ShelfSelection({ onBackToMenu }: ShelfSelectionProps) {
+  // TODO: onBackToMenu 기능 구현 예정
+  void onBackToMenu;
   const {
     getCurrentShelf,
     selectedShelfItems,
     initShelves,
-    setCurrentShelfId,
-    shelves,
-    currentShelfId,
     moveToNextShelf,
     moveToPreviousShelf,
   } = useShelfSelectionStore();
@@ -33,61 +33,26 @@ export default function ShelfSelection({ onBackToMenu }: ShelfSelectionProps) {
     );
   }
   return (
-    <div className="h-screen w-screen overflow-hidden bg-gray-100 relative">
-      <div className="fixed top-4 left-4 z-10 flex gap-2 items-center">
-        {shelves.map((shelf) => (
-          <button
-            key={shelf.id}
-            onClick={() => setCurrentShelfId(shelf.id)}
-            className={`px-3 py-1 text-sm rounded text-white ${
-              currentShelfId === shelf.id
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-black'
-            }`}
-          >
-            {shelf.name}
-          </button>
-        ))}
-
-        {/* 메인 메뉴로 돌아가기 버튼 */}
-        <button
-          onClick={onBackToMenu}
-          className="px-3 py-1 text-sm bg-gray-500 text-white hover:bg-gray-600 active:bg-gray-700 transition-colors rounded shadow-sm hover:shadow-md ml-2"
-        >
-          메인 메뉴
-        </button>
-      </div>
-
+    <div>
       <div className="fixed top-1/2 left-2 -translate-y-1/2 z-10">
         <button
-          className="px-3 py-1 text-sm rounded bg-gray-200 text-white"
+          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
           onClick={() => moveToPreviousShelf()}
         >
-          Previous
+          <PreviousIcon />
         </button>
       </div>
 
       <div className="fixed top-1/2 right-2 -translate-y-1/2 z-10">
         <button
-          className="px-3 py-1 text-sm rounded bg-gray-200 text-white"
+          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
           onClick={() => moveToNextShelf()}
         >
-          Next
+          <NextIcon />
         </button>
       </div>
 
-      <div className="fixed top-4 right-4 z-10 bg-white p-3 rounded shadow max-w-xs text-black">
-        <h3 className="font-bold mb-2">
-          선택된 아이템들 ({selectedShelfItems.length})
-        </h3>
-        <div className="text-sm space-y-1 max-h-40 overflow-y-auto">
-          {selectedShelfItems.map((item) => (
-            <div key={item.id} className="border-b pb-1">
-              {item.name} (x {item.quantity}) (ID: {item.id})
-            </div>
-          ))}
-        </div>
-      </div>
+      <SelectedItemsPanel selectedItems={selectedShelfItems} />
 
       <ShelfSelectionCanvas
         backgroundImage={currentShelf.backgroundImage}
@@ -96,3 +61,33 @@ export default function ShelfSelection({ onBackToMenu }: ShelfSelectionProps) {
     </div>
   );
 }
+
+const PreviousIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
+
+const NextIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="9 6 15 12 9 18" />
+  </svg>
+);

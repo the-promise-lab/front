@@ -1,58 +1,14 @@
-import { useEffect } from 'react';
-import {
-  convertKakaoUserToAppUser,
-  type User,
-} from '@/hooks/store/useAuthStore';
-import type { KakaoUserInfo, KakaoError } from '@/types/kakao';
+import { type User } from '@/hooks/store/useAuthStore';
+import { config } from '@/config/env';
 
 interface KakaoLoginProps {
   onLoginSuccess: (user: User) => void;
 }
 
 export default function LandingPage({ onLoginSuccess }: KakaoLoginProps) {
-  useEffect(() => {
-    // 카카오 SDK 스크립트 로드
-    const script = document.createElement('script');
-    script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
-    script.integrity =
-      'sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4oQIBdMil5PyNvc+uNFWdLaJ7Q1TZwDMdWAK2IJ';
-    script.crossOrigin = 'anonymous';
-    script.onload = () => {
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        // 실제 앱 키로 변경해야 합니다
-        window.Kakao.init('YOUR_JAVASCRIPT_KEY_HERE');
-      }
-    };
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
   const handleKakaoLogin = () => {
-    if (!window.Kakao) {
-      alert('카카오 SDK가 로드되지 않았습니다.');
-      return;
-    }
-
-    window.Kakao.Auth.login({
-      success: () => {
-        window.Kakao.API.request({
-          url: '/v2/user/me',
-          success: (res: KakaoUserInfo) => {
-            const user = convertKakaoUserToAppUser(res);
-            onLoginSuccess(user);
-          },
-          fail: (error: KakaoError) => {
-            console.error('사용자 정보 가져오기 실패:', error);
-          },
-        });
-      },
-      fail: (error: KakaoError) => {
-        console.error('로그인 실패:', error);
-      },
-    });
+    // 서버의 카카오 로그인 엔드포인트로 리다이렉트
+    window.location.href = `${config.API_BASE_URL}/api/auth/kakao`;
   };
 
   return (
