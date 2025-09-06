@@ -4,7 +4,13 @@ import SelectedItemsPanel from '@/components/ShelfSelection/SelectedItemsPanel';
 import { useShelfSelectionStore } from '@/hooks/store/useShelfSelectionStore';
 import { mockShelves } from '@/mocks';
 
-export default function ShelfSelection() {
+interface ShelfSelectionProps {
+  onBackToMenu: () => void;
+}
+
+export default function ShelfSelection({ onBackToMenu }: ShelfSelectionProps) {
+  // TODO: onBackToMenu 기능 구현 예정
+  void onBackToMenu;
   const {
     getCurrentShelf,
     selectedShelfItems,

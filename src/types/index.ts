@@ -5,14 +5,6 @@ export interface ApiResponse<T = unknown> {
   success: boolean;
 }
 
-// 사용자 타입
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-}
-
 // 페이지네이션 타입
 export interface Pagination {
   page: number;
@@ -27,3 +19,7 @@ export interface ApiError {
   code: string;
   status: number;
 }
+
+// Re-export other types
+export * from './shelf';
+export * from './kakao';

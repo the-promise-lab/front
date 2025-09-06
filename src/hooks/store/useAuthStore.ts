@@ -1,0 +1,102 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import type { KakaoUserInfo } from '@/types/kakao';
+import { config } from '@/config/env';
+
+export interface User {
+  id: string | number;
+  nickname: string;
+  profileImage?: string;
+  email?: string;
+  provider: 'kakao' | 'guest';
+}
+
+interface AuthState {
+  user: User | null;
+  isLoggedIn: boolean;
+  accessToken: string | null;
+}
+
+interface AuthActions {
+  login: (user: User, accessToken?: string) => void;
+  logout: () => void;
+  updateUser: (user: Partial<User>) => void;
+}
+
+export const useAuthStore = create<AuthState & AuthActions>()(
+  persist(
+    (set, get) => ({
+      // State
+      user: null,
+      isLoggedIn: false,
+      accessToken: null,
+
+      // Actions
+      login: (user: User, accessToken?: string) => {
+        set({
+          user,
+          isLoggedIn: true,
+          accessToken: accessToken || null,
+        });
+      },
+
+      logout: async () => {
+        const { accessToken } = get();
+
+        try {
+          // 서버에 로그아웃 요청
+          if (accessToken) {
+            await fetch(`${config.API_BASE_URL}/api/auth/logout`, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+              },
+            });
+          }
+        } catch (error) {
+          console.error('서버 로그아웃 실패:', error);
+          // 서버 로그아웃 실패해도 클라이언트 상태는 초기화
+        }
+
+        // 클라이언트 상태 초기화
+        set({
+          user: null,
+          isLoggedIn: false,
+          accessToken: null,
+        });
+      },
+
+      updateUser: (userData: Partial<User>) => {
+        const { user } = get();
+        if (user) {
+          set({
+            user: { ...user, ...userData },
+          });
+        }
+      },
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({
+        user: state.user,
+        isLoggedIn: state.isLoggedIn,
+        accessToken: state.accessToken,
+      }),
+    }
+  )
+);
+
+// Kakao 사용자 정보를 앱 사용자 형식으로 변환하는 헬퍼 함수
+export const convertKakaoUserToAppUser = (kakaoUser: KakaoUserInfo): User => {
+  return {
+    id: kakaoUser.id,
+    nickname:
+      kakaoUser.properties.nickname || kakaoUser.kakao_account.profile.nickname,
+    profileImage:
+      kakaoUser.properties.profile_image ||
+      kakaoUser.kakao_account.profile.profile_image_url,
+    email: kakaoUser.kakao_account.email,
+    provider: 'kakao',
+  };
+};
