@@ -4,10 +4,12 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import tanstackQuery from '@tanstack/eslint-plugin-query';
+import boundaries from 'eslint-plugin-boundaries';
+import eslintPluginImport from 'eslint-plugin-import';
 
 export default tseslint.config([
   {
-    ignores: ['dist/**'],
+    ignores: ['dist/**', 'build/**', 'node_modules/**'],
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -19,13 +21,146 @@ export default tseslint.config([
     ],
     plugins: {
       '@tanstack/query': tanstackQuery,
+      boundaries,
+      import: eslintPluginImport,
     },
     rules: {
       ...tanstackQuery.configs.recommended.rules,
     },
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: { ...globals.browser, ...globals.es2020 },
+      sourceType: 'module',
+      parserOptions: { project: ['./tsconfig.json'] },
+    },
+    settings: {
+      'boundaries/elements': [
+        { type: 'app', pattern: 'src/app/**' },
+        { type: 'processes', pattern: 'src/processes/**' },
+        { type: 'features', pattern: 'src/features/**' },
+        { type: 'shared', pattern: 'src/shared/**' },
+        { type: 'config', pattern: 'src/config/**' },
+      ],
+
+      'import/resolver': {
+        typescript: { project: ['./tsconfig.json'] },
+        node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+      },
+    },
+    rules: {
+      // 기본 권장
+      ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
+
+      'import/no-unresolved': 'error',
+      'import/no-cycle': ['error', { maxDepth: 2 }],
+      'import/order': [
+        'warn',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'object',
+            'type',
+          ],
+          'newlines-between': 'always',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          pathGroups: [
+            { pattern: '@app/**', group: 'internal', position: 'before' },
+            { pattern: '@processes/**', group: 'internal', position: 'before' },
+            { pattern: '@features/**', group: 'internal', position: 'before' },
+            { pattern: '@api/**', group: 'internal', position: 'before' },
+            { pattern: '@shared/**', group: 'internal', position: 'before' },
+            { pattern: '@config/**', group: 'internal', position: 'before' },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+        },
+      ],
+
+      /**
+       * ★ 단방향/접근 제어
+       * - app → processes → features → (entities/widgets) → shared
+       * - config는 읽기 전용으로 어디서든 import 허용 (현실적 편의)
+       * - api 접근: services(생성물, src/api/services) & models만 허용, core 직접 import 금지
+       */
+      'boundaries/element-types': [
+        'error',
+        {
+          default: 'disallow',
+          rules: [
+            // 상층 → 하층 허용
+            {
+              from: 'app',
+              allow: [
+                'processes',
+                'features',
+                'shared',
+                'config',
+                'api-root',
+                'api-services',
+                'api-models',
+              ],
+            },
+            {
+              from: 'processes',
+              allow: [
+                'features',
+                'shared',
+                'config',
+                'api-root',
+                'api-services',
+                'api-models',
+              ],
+            },
+            {
+              from: 'features',
+              allow: [
+                'shared',
+                'config',
+                'api-root',
+                'api-services',
+                'api-models',
+              ],
+            },
+
+            // shared: 도메인 무취 — 상층 의존 금지
+            { from: 'shared', allow: [] },
+
+            // api: 생성물 — 역참조 금지 (다른 층 import 불가)
+            { from: 'api-root', allow: [] },
+            { from: 'api-core', allow: [] }, // 금지된 내부
+            { from: 'api-other', allow: [] }, // 정의되지 않은 기타 경로도 금지
+            { from: 'api-services', allow: ['api-core', 'api-models'] }, // 생성물 내부 참조만
+            { from: 'api-models', allow: [] },
+          ],
+          // 테스트/목/스토리 예외
+          ignore: [
+            '**/*.test.*',
+            '**/*.spec.*',
+            '**/*.stories.*',
+            '**/__tests__/**',
+            '**/__mocks__/**',
+            '**/mocks/**',
+            'src/test/**',
+          ],
+        },
+      ],
+
+      /**
+       * 추가 안전망:
+       * - api/core 직접 import 금지
+       * - api/* 는 가능하면 barrel 또는 services/models만 사용 유도
+       */
+      'import/no-restricted-paths': [
+        'error',
+        {
+          zones: [
+            { target: './src', from: './src/api/core' }, // 어디서든 api/core 금지
+          ],
+        },
+      ],
     },
   },
 ]);
