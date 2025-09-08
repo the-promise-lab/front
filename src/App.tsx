@@ -1,9 +1,9 @@
-import './App.css';
+import '@/shared/styles/App.css';
 import { useState, useEffect } from 'react';
 import { useAuthStore, type User } from '@/hooks/store/useAuthStore';
 import LandingPage from '@/components/LandingPage';
 import MainMenu from '@/components/MainMenu';
-import ShelfSelection from '@/components/ShelfSelection';
+import { ShelfSelection } from '@/features/shelf-selection';
 import OrientationGuard from '@/components/OrientationGuard';
 
 function App() {

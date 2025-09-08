@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
+import '@/shared/styles/index.css';
 import App from './App.tsx';
-import './styles/input.css';
-import { OpenAPI } from './api/core/OpenAPI';
+import '@/shared/styles/input.css';
+import { OpenAPI } from '@/api/core/OpenAPI';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* OpenAPI 전역설정 */

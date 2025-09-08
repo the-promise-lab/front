@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import type { ShelfItem } from '@/types/shelf';
+import { cn } from '@/shared/lib/utils';
+import type { ShelfItem } from '@/features/shelf-selection/types/shelf';
 
 const MAX_VISIBLE_ITEMS = 10;
 

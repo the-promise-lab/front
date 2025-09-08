@@ -21,5 +21,5 @@ export interface ApiError {
 }
 
 // Re-export other types
-export * from './shelf';
+export * from '../features/shelf-selection/types/shelf';
 export * from './kakao';
