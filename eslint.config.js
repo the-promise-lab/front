@@ -54,30 +54,6 @@ export default tseslint.config([
 
       'import/no-unresolved': 'error',
       'import/no-cycle': ['error', { maxDepth: 2 }],
-      // 'import/order': [
-      //   'warn',
-      //   {
-      //     groups: [
-      //       'builtin',
-      //       'external',
-      //       'internal',
-      //       ['parent', 'sibling', 'index'],
-      //       'object',
-      //       'type',
-      //     ],
-      //     'newlines-between': 'always',
-      //     alphabetize: { order: 'asc', caseInsensitive: true },
-      //     pathGroups: [
-      //       { pattern: '@app/**', group: 'internal', position: 'before' },
-      //       { pattern: '@processes/**', group: 'internal', position: 'before' },
-      //       { pattern: '@features/**', group: 'internal', position: 'before' },
-      //       { pattern: '@api/**', group: 'internal', position: 'before' },
-      //       { pattern: '@shared/**', group: 'internal', position: 'before' },
-      //       { pattern: '@config/**', group: 'internal', position: 'before' },
-      //     ],
-      //     pathGroupsExcludedImportTypes: ['builtin'],
-      //   },
-      // ],
 
       /**
        * ★ 단방향/접근 제어
@@ -88,7 +64,7 @@ export default tseslint.config([
       'boundaries/element-types': [
         'error',
         {
-          default: 'allow',
+          default: 'disallow',
           rules: [
             // 상층 → 하층 허용
             {
