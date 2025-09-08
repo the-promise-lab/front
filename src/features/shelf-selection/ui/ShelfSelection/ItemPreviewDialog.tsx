@@ -1,4 +1,4 @@
-import type { ShelfItem } from '@/features/shelf-selection/types/shelf';
+import type { ShelfItem } from '@/features/shelf-selection/model/types';
 import OverlayDialog from '@/shared/ui/OverlayDialog';
 
 interface ItemPreviewDialogProps {

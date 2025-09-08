@@ -1,4 +1,4 @@
-import type { Shelf, ShelfItem } from '@/features/shelf-selection/types/shelf';
+import type { Shelf, ShelfItem } from '@/features/shelf-selection/model/types';
 
 /**
  * 선반 아이템 생성 팩토리

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuthStore, type User } from '@/hooks/store/useAuthStore';
+import { useAuthStore, type User } from '@/processes/auth/model/useAuthStore';
 import LandingPage from '@/app/pages/LandingPage';
 import MainMenu from '@/app/pages/MainMenu';
 import { ShelfSelection } from '@/features/shelf-selection';

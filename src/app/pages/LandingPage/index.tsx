@@ -1,4 +1,4 @@
-import { type User } from '@/hooks/store/useAuthStore';
+import { type User } from '@/processes/auth/model/useAuthStore';
 import { config } from '@/config/env';
 
 interface KakaoLoginProps {
