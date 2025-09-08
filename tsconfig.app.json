@@ -17,14 +17,15 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@app/*": ["src/app/*"],
-      "@processes/*": ["src/processes/*"],
-      "@features/*": ["src/features/*"],
-      "@api/*": ["src/api/*"],
-      "@shared/*": ["src/shared/*"],
-      "@config/*": ["src/config/*"]
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@processes/*": ["./src/processes/*"],
+      "@features/*": ["./src/features/*"],
+      "@api/*": ["./src/api/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@config/*": ["./src/config/*"]
     },
+    "types": ["vite/client"],
 
     /* Linting */
     "strict": true,

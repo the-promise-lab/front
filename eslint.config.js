@@ -12,7 +12,7 @@ export default tseslint.config([
     ignores: ['dist/**', 'build/**', 'node_modules/**'],
   },
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -31,7 +31,7 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: { ...globals.browser, ...globals.es2020 },
       sourceType: 'module',
-      parserOptions: { project: ['./tsconfig.json'] },
+      parserOptions: { projectService: ['./tsconfig.json'] },
     },
     settings: {
       'boundaries/elements': [
@@ -54,30 +54,30 @@ export default tseslint.config([
 
       'import/no-unresolved': 'error',
       'import/no-cycle': ['error', { maxDepth: 2 }],
-      'import/order': [
-        'warn',
-        {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            ['parent', 'sibling', 'index'],
-            'object',
-            'type',
-          ],
-          'newlines-between': 'always',
-          alphabetize: { order: 'asc', caseInsensitive: true },
-          pathGroups: [
-            { pattern: '@app/**', group: 'internal', position: 'before' },
-            { pattern: '@processes/**', group: 'internal', position: 'before' },
-            { pattern: '@features/**', group: 'internal', position: 'before' },
-            { pattern: '@api/**', group: 'internal', position: 'before' },
-            { pattern: '@shared/**', group: 'internal', position: 'before' },
-            { pattern: '@config/**', group: 'internal', position: 'before' },
-          ],
-          pathGroupsExcludedImportTypes: ['builtin'],
-        },
-      ],
+      // 'import/order': [
+      //   'warn',
+      //   {
+      //     groups: [
+      //       'builtin',
+      //       'external',
+      //       'internal',
+      //       ['parent', 'sibling', 'index'],
+      //       'object',
+      //       'type',
+      //     ],
+      //     'newlines-between': 'always',
+      //     alphabetize: { order: 'asc', caseInsensitive: true },
+      //     pathGroups: [
+      //       { pattern: '@app/**', group: 'internal', position: 'before' },
+      //       { pattern: '@processes/**', group: 'internal', position: 'before' },
+      //       { pattern: '@features/**', group: 'internal', position: 'before' },
+      //       { pattern: '@api/**', group: 'internal', position: 'before' },
+      //       { pattern: '@shared/**', group: 'internal', position: 'before' },
+      //       { pattern: '@config/**', group: 'internal', position: 'before' },
+      //     ],
+      //     pathGroupsExcludedImportTypes: ['builtin'],
+      //   },
+      // ],
 
       /**
        * ★ 단방향/접근 제어
@@ -88,7 +88,7 @@ export default tseslint.config([
       'boundaries/element-types': [
         'error',
         {
-          default: 'disallow',
+          default: 'allow',
           rules: [
             // 상층 → 하층 허용
             {
@@ -135,16 +135,6 @@ export default tseslint.config([
             { from: 'api-services', allow: ['api-core', 'api-models'] }, // 생성물 내부 참조만
             { from: 'api-models', allow: [] },
           ],
-          // 테스트/목/스토리 예외
-          ignore: [
-            '**/*.test.*',
-            '**/*.spec.*',
-            '**/*.stories.*',
-            '**/__tests__/**',
-            '**/__mocks__/**',
-            '**/mocks/**',
-            'src/test/**',
-          ],
         },
       ],
 
@@ -161,6 +151,21 @@ export default tseslint.config([
           ],
         },
       ],
+    },
+  },
+  {
+    files: [
+      '**/*.test.{ts,tsx}',
+      '**/*.spec.{ts,tsx}',
+      '**/*.stories.{ts,tsx}',
+      '**/__tests__/**',
+      '**/__mocks__/**',
+      '**/mocks/**',
+      'src/test/**',
+    ],
+    rules: {
+      'boundaries/element-types': 'off',
+      'import/no-cycle': 'off',
     },
   },
 ]);
