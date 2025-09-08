@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { KakaoUserInfo } from '@/processes/auth/model/types';
-import { config } from '@/config/env';
+import type { KakaoUserInfo } from './types';
+import { config } from '@config/env';
 
 export interface User {
   id: string | number;

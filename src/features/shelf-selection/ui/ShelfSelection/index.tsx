@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import SelectedItemsPanel from './SelectedItemsPanel';
 import { useShelfSelectionStore } from '@/features/shelf-selection/model/useShelfSelectionStore';
-import { mockShelves } from '@/features/shelf-selection/__mocks__';
+import { mockShelves } from '../../__mocks__';
 
 interface ShelfSelectionProps {
   onBackToMenu: () => void;

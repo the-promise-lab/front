@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { useShelfSelectionStore } from '@/features/shelf-selection/model/useShelfSelectionStore';
-import type { ShelfItem } from '@/features/shelf-selection/model/types';
+import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
+import type { ShelfItem } from '../../model/types';
 import ItemPreviewDialog from './ItemPreviewDialog';
 
 const ITEM_SIZE_PIXEL = 20;

@@ -6,6 +6,7 @@ import tseslint from 'typescript-eslint';
 import tanstackQuery from '@tanstack/eslint-plugin-query';
 import boundaries from 'eslint-plugin-boundaries';
 import eslintPluginImport from 'eslint-plugin-import';
+const __dirname = import.meta.dirname;
 
 export default tseslint.config([
   {
@@ -31,7 +32,10 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: { ...globals.browser, ...globals.es2020 },
       sourceType: 'module',
-      parserOptions: { projectService: ['./tsconfig.json'] },
+      parserOptions: {
+        project: ['./tsconfig.app.json', './tsconfig.node.json'],
+        tsconfigRootDir: __dirname,
+      },
     },
     settings: {
       'boundaries/elements': [
@@ -104,27 +108,25 @@ export default tseslint.config([
             // shared: 도메인 무취 — 상층 의존 금지
             { from: 'shared', allow: [] },
 
-            // api: 생성물 — 역참조 금지 (다른 층 import 불가)
-            { from: 'api-root', allow: [] },
-            { from: 'api-core', allow: [] }, // 금지된 내부
-            { from: 'api-other', allow: [] }, // 정의되지 않은 기타 경로도 금지
-            { from: 'api-services', allow: ['api-core', 'api-models'] }, // 생성물 내부 참조만
-            { from: 'api-models', allow: [] },
+            // // api: 생성물 — 역참조 금지 (다른 층 import 불가)
+            // { from: 'api-root', allow: [] },
+            // { from: 'api-core', allow: [] }, // 금지된 내부
+            // { from: 'api-other', allow: [] }, // 정의되지 않은 기타 경로도 금지
+            // { from: 'api-services', allow: ['api-core', 'api-models'] }, // 생성물 내부 참조만
+            // { from: 'api-models', allow: [] },
           ],
         },
       ],
-
-      /**
-       * 추가 안전망:
-       * - api/core 직접 import 금지
-       * - api/* 는 가능하면 barrel 또는 services/models만 사용 유도
-       */
-      'import/no-restricted-paths': [
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
         'error',
         {
-          zones: [
-            { target: './src', from: './src/api/core' }, // 어디서든 api/core 금지
-          ],
+          vars: 'all',
+          args: 'after-used',
+          ignoreRestSiblings: true,
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
     },

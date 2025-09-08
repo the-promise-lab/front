@@ -1,5 +1,5 @@
-import { type User } from '@/processes/auth/model/useAuthStore';
-import { config } from '@/config/env';
+import { type User } from '@processes/auth/model/useAuthStore';
+import { config } from '@config/env';
 
 interface KakaoLoginProps {
   onLoginSuccess: (user: User) => void;

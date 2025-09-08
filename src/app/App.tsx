@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useAuthStore, type User } from '@/processes/auth/model/useAuthStore';
-import LandingPage from '@/app/pages/LandingPage';
-import MainMenu from '@/app/pages/MainMenu';
-import { ShelfSelection } from '@/features/shelf-selection';
-import RootLayout from '@/app/layout/RootLayout';
+import { useAuthStore, type User } from '@processes/auth/model/useAuthStore';
+import LandingPage from '@app/pages/LandingPage';
+import MainMenu from '@app/pages/MainMenu';
+import { ShelfSelection } from '@features/shelf-selection';
+import RootLayout from '@app/layout/RootLayout';
 
 function App() {
   const { isLoggedIn, login } = useAuthStore();

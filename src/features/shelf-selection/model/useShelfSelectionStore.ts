@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Shelf, ShelfItem } from '@/features/shelf-selection/model/types';
+import type { Shelf, ShelfItem } from './types';
 
 const STORAGE_KEY = 'shelf-selection-storage';
 interface ShelfSelectionStore {
