@@ -1,8 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import '@/shared/styles/index.css';
-import App from './App.tsx';
-import '@/shared/styles/input.css';
+import '@/shared/styles/globals.css';
+import App from './app/App.tsx';
 import { OpenAPI } from '@/api/core/OpenAPI';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 

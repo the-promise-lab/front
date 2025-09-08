@@ -1,10 +1,9 @@
-import '@/shared/styles/App.css';
 import { useState, useEffect } from 'react';
 import { useAuthStore, type User } from '@/hooks/store/useAuthStore';
-import LandingPage from '@/components/LandingPage';
-import MainMenu from '@/components/MainMenu';
+import LandingPage from '@/app/pages/LandingPage';
+import MainMenu from '@/app/pages/MainMenu';
 import { ShelfSelection } from '@/features/shelf-selection';
-import OrientationGuard from '@/components/OrientationGuard';
+import RootLayout from '@/app/layout/RootLayout';
 
 function App() {
   const { isLoggedIn, login } = useAuthStore();
@@ -54,8 +53,8 @@ function App() {
   };
 
   return (
-    <OrientationGuard>
-      <div className="App">
+    <RootLayout>
+      <div>
         {!isLoggedIn ? (
           <LandingPage onLoginSuccess={handleLoginSuccess} />
         ) : !gameStarted ? (
@@ -64,7 +63,7 @@ function App() {
           <ShelfSelection onBackToMenu={handleBackToMenu} />
         )}
       </div>
-    </OrientationGuard>
+    </RootLayout>
   );
 }
 
