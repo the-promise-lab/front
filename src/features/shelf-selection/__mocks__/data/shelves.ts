@@ -1,4 +1,4 @@
-import type { Shelf } from '@/features/shelf-selection/model/types';
+import type { Shelf } from '../../model/types';
 
 /**
  * 음식코너 더미 데이터

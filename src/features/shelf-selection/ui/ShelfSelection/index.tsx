@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import SelectedItemsPanel from './SelectedItemsPanel';
-import { useShelfSelectionStore } from '@features/shelf-selection/model/useShelfSelectionStore';
+import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { mockShelves } from '../../__mocks__';
 
 interface ShelfSelectionProps {
