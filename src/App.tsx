@@ -1,6 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import { useAuthStore, type User } from '@/hooks/store/useAuthStore';
+import { config } from '@/config/env';
 import LandingPage from '@/components/LandingPage';
 import MainMenu from '@/components/MainMenu';
 import ShelfSelection from '@/components/ShelfSelection';
@@ -11,34 +12,33 @@ function App() {
   const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
-    // URL에서 인증 결과 확인 (서버에서 카카오 로그인 완료 후 돌아온 경우)
-    const urlParams = new URLSearchParams(window.location.search);
-    const authResult = urlParams.get('auth');
-    const error = urlParams.get('error');
-    const token = urlParams.get('token');
-    const userData = urlParams.get('user');
-
-    if (authResult === 'success' && token && userData) {
+    // 서버에서 쿠키로 로그인 처리 후 돌아온 경우
+    const checkLoginStatus = async () => {
       try {
-        // 서버에서 받은 사용자 정보 파싱
-        const user: User = JSON.parse(decodeURIComponent(userData));
-
-        // 로그인 처리
-        login(user, token);
-
-        // URL 정리 (토큰과 사용자 정보를 URL에서 제거)
-        window.history.replaceState(
-          {},
-          document.title,
-          window.location.pathname
+        // 서버에 프로필 요청 (쿠키에 JWT 토큰이 포함됨)
+        const response = await fetch(
+          `${config.API_BASE_URL}/api/auth/profile`,
+          {
+            method: 'GET',
+            credentials: 'include', // 쿠키 포함
+          }
         );
+
+        if (response.ok) {
+          const userData = await response.json();
+          console.log('🔍 서버에서 받은 사용자 정보:', userData);
+
+          // 로그인 처리 (토큰은 쿠키에 있으므로 별도로 전달하지 않음)
+          login(userData, 'cookie-based-token');
+        } else {
+          console.log('로그인되지 않은 상태');
+        }
       } catch (error) {
-        console.error('사용자 정보 파싱 오류:', error);
+        console.error('로그인 상태 확인 실패:', error);
       }
-    } else if (error) {
-      console.error('인증 오류:', error);
-      // 오류 처리 (필요시 사용자에게 알림)
-    }
+    };
+
+    checkLoginStatus();
   }, [login]);
 
   const handleLoginSuccess = (user: User) => {

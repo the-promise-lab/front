@@ -41,19 +41,12 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       },
 
       logout: async () => {
-        const { accessToken } = get();
-
         try {
-          // 서버에 로그아웃 요청
-          if (accessToken) {
-            await fetch(`${config.API_BASE_URL}/api/auth/logout`, {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-              },
-            });
-          }
+          // 서버에 로그아웃 요청 (쿠키 기반)
+          await fetch(`${config.API_BASE_URL}/api/auth/logout`, {
+            method: 'POST',
+            credentials: 'include', // 쿠키 포함
+          });
         } catch (error) {
           console.error('서버 로그아웃 실패:', error);
           // 서버 로그아웃 실패해도 클라이언트 상태는 초기화
