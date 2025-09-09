@@ -17,8 +17,16 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@processes/*": ["./src/processes/*"],
+      "@features/*": ["./src/features/*"],
+      "@api/*": ["./src/api/*"],
+      "@api": ["./src/api"],
+      "@shared/*": ["./src/shared/*"],
+      "@config/*": ["./src/config/*"]
     },
+    "types": ["vite/client"],
 
     /* Linting */
     "strict": true,

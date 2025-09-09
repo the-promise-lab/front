@@ -12,3 +12,4 @@ export { HealthCheckDto } from './models/HealthCheckDto';
 export { $HealthCheckDto } from './schemas/$HealthCheckDto';
 
 export { AppService } from './services/AppService';
+export { AuthService } from './services/AuthService';
