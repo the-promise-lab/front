@@ -1,4 +1,4 @@
-import { useAuthStore } from '@processes/auth/model/useAuthStore';
+import { useAuthStore } from '@shared/auth/model/useAuthStore';
 
 interface MainMenuProps {
   onStartGame: () => void;

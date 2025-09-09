@@ -1,11 +1,13 @@
-import { type User } from '@processes/auth/model/useAuthStore';
+import { useAuthStore, type User } from '@shared/auth/model/useAuthStore';
 import { config } from '@config/env';
 
-interface KakaoLoginProps {
-  onLoginSuccess: (user: User) => void;
-}
+export default function LandingPage() {
+  const { login } = useAuthStore();
 
-export default function LandingPage({ onLoginSuccess }: KakaoLoginProps) {
+  const handleLoginSuccess = (user: User) => {
+    login(user);
+  };
+
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트
     window.location.href = `${config.API_BASE_URL}/api/auth/kakao`;
@@ -76,7 +78,7 @@ export default function LandingPage({ onLoginSuccess }: KakaoLoginProps) {
               {/* 게스트 로그인 */}
               <button
                 onClick={() =>
-                  onLoginSuccess({
+                  handleLoginSuccess({
                     id: 'guest',
                     nickname: '게스트',
                     provider: 'guest',

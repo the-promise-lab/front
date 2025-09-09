@@ -12,6 +12,7 @@
       "@processes/*": ["./src/processes/*"],
       "@features/*": ["./src/features/*"],
       "@api/*": ["./src/api/*"],
+      "@api": ["./src/api"],
       "@shared/*": ["./src/shared/*"],
       "@config/*": ["./src/config/*"]
     },
