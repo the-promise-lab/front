@@ -5,17 +5,18 @@ import React, { useEffect } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
 
 export default function LoginProgress() {
-  const { next, setAuthenticated } = useGameFlowStore();
+  const { setAuthenticated } = useGameFlowStore();
 
   useEffect(() => {
     // 3초 후 인증 상태 설정 및 메인메뉴로 이동
     const timer = setTimeout(() => {
       setAuthenticated(true);
-      next();
+      // next() 대신 goto로 MAIN_MENU로 직접 이동
+      useGameFlowStore.getState().goto('MAIN_MENU');
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [next, setAuthenticated]);
+  }, [setAuthenticated]);
 
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-yellow-50 to-yellow-100 flex items-center justify-center">
@@ -23,13 +24,15 @@ export default function LoginProgress() {
         {/* 로딩 애니메이션 */}
         <div className="mb-8">
           <div className="w-20 h-20 mx-auto mb-4">
-            <div className="animate-spin rounded-full h-20 w-20 border-4 border-yellow-200 border-t-yellow-500"></div>
+            {/* <div className="animate-spin rounded-full h-20 w-20 border-4 border-yellow-200 border-t-yellow-500"></div> */}
           </div>
         </div>
 
         {/* 제목 */}
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">로그인 중...</h1>
-        <p className="text-gray-600 mb-8">잠시만 기다려주세요</p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-10">
+          게임을 준비하고 있습니다.
+        </h2>
+        {/* <p className="text-gray-600 ">잠시만 기다려주세요</p> */}
 
         {/* Progress Bar */}
         <div className="w-64 mx-auto">
@@ -46,7 +49,7 @@ export default function LoginProgress() {
 
         {/* 진행률 텍스트 */}
         <p className="text-sm text-gray-500 mt-4">
-          게임을 준비하고 있습니다...
+          {'TIP: 소리를 키고 진행해주세요.'}
         </p>
       </div>
 
