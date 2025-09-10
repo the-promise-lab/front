@@ -73,10 +73,11 @@ export default function CharacterSelect({
       {/* 메인 컨텐츠 */}
       <div className="flex flex-col items-center justify-center h-screen px-4 py-6">
         {/* 캐릭터 선택 영역 */}
-        <div className="relative w-full max-w-sm">
+        <div className="relative w-full max-w-sm flex gap-2">
           {/* 좌측 화살표 */}
+
           <button
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+            // className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
             onClick={moveToPrevious}
           >
             <svg
@@ -153,7 +154,7 @@ export default function CharacterSelect({
 
           {/* 우측 화살표 */}
           <button
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+            // className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
             onClick={moveToNext}
           >
             <svg
