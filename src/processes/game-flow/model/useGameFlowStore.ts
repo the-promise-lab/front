@@ -67,7 +67,29 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 export const gameFlowActions = {
   // 인증 관련
   login: () => useGameFlowStore.getState().setAuthenticated(true),
-  logout: () => useGameFlowStore.getState().setAuthenticated(false),
+  logout: async () => {
+    try {
+      // 서버에 로그아웃 요청을 보내서 쿠키 삭제
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`,
+        {
+          method: 'POST',
+          credentials: 'include', // 쿠키 포함
+        }
+      );
+
+      if (response.ok) {
+        console.log('로그아웃 성공');
+      } else {
+        console.warn('로그아웃 요청 실패, 로컬 상태만 초기화');
+      }
+    } catch (error) {
+      console.error('로그아웃 요청 중 오류:', error);
+    } finally {
+      // 서버 요청 성공/실패와 관계없이 로컬 상태 초기화
+      useGameFlowStore.getState().setAuthenticated(false);
+    }
+  },
 
   // 네비게이션
   goToLogin: () => useGameFlowStore.getState().goto('LOGIN'),

@@ -73,7 +73,7 @@ export default function MainMenu() {
           </div>
           <span className="text-gray-700 font-medium">사용자님</span>
           <button
-            onClick={gameFlowActions.logout}
+            onClick={async () => await gameFlowActions.logout()}
             className="text-xs text-red-600 hover:text-red-800 transition-colors px-2 py-1 rounded hover:bg-red-50"
           >
             로그아웃
