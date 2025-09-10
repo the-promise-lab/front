@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
 import { config } from '../../../config/env';
 
 export default function LandingPage() {
-  // setAuthenticated는 현재 사용하지 않음 (게스트 로그인은 goto 사용)
-  // const { setAuthenticated } = useGameFlowStore();
+  const { setAuthenticated } = useGameFlowStore();
+
+  // 카카오 로그인 후 돌아왔을 때 인증 상태 확인
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch(
+          `${config.API_BASE_URL}/api/auth/profile`,
+          {
+            method: 'GET',
+            credentials: 'include',
+          }
+        );
+
+        if (response.ok) {
+          const userData = await response.json();
+          console.log('🔍 카카오 로그인 후 사용자 정보:', userData);
+          setAuthenticated(true);
+        }
+      } catch (error) {
+        console.error('인증 상태 확인 실패:', error);
+      }
+    };
+
+    checkAuthStatus();
+  }, [setAuthenticated]);
 
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트
