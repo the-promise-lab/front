@@ -20,7 +20,8 @@ export default function LandingPage() {
         if (response.ok) {
           const userData = await response.json();
           console.log('🔍 카카오 로그인 후 사용자 정보:', userData);
-          setAuthenticated(true);
+          // 카카오 로그인 후에는 LOGIN_PROGRESS 단계로 이동
+          useGameFlowStore.getState().goto('LOGIN_PROGRESS');
         }
       } catch (error) {
         console.error('인증 상태 확인 실패:', error);
