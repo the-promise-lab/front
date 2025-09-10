@@ -1,11 +1,11 @@
-import { useAuthStore } from '@shared/auth/model/useAuthStore';
+import React from 'react';
+import {
+  useGameFlowStore,
+  gameFlowActions,
+} from '../../../processes/game-flow';
 
-interface MainMenuProps {
-  onStartGame: () => void;
-}
-
-export default function MainMenu({ onStartGame }: MainMenuProps) {
-  const { user, logout } = useAuthStore();
+export default function MainMenu() {
+  const { next } = useGameFlowStore();
 
   const handleSettings = () => {
     // TODO: 설정 화면으로 이동
@@ -69,13 +69,11 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
       <div className="absolute top-4 left-4 z-10">
         <div className="bg-white bg-opacity-80 px-4 py-2 rounded-full shadow-lg flex items-center gap-3">
           <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">
-              {user?.nickname?.charAt(0) || 'U'}
-            </span>
+            <span className="text-white text-sm font-bold">U</span>
           </div>
-          <span className="text-gray-700 font-medium">{user?.nickname}님</span>
+          <span className="text-gray-700 font-medium">사용자님</span>
           <button
-            onClick={logout}
+            onClick={gameFlowActions.logout}
             className="text-xs text-red-600 hover:text-red-800 transition-colors px-2 py-1 rounded hover:bg-red-50"
           >
             로그아웃
@@ -92,7 +90,7 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
 
         {/* 게임 시작 버튼 */}
         <button
-          onClick={onStartGame}
+          onClick={next}
           className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 active:from-blue-700 active:to-indigo-800 text-white font-bold text-xl px-12 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95"
         >
           🎮 게임 시작하기

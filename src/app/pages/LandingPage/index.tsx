@@ -1,16 +1,19 @@
-import { useAuthStore, type User } from '@shared/auth/model/useAuthStore';
-import { config } from '@config/env';
+import React from 'react';
+import { useGameFlowStore } from '../../../processes/game-flow';
+import { config } from '../../../config/env';
 
 export default function LandingPage() {
-  const { login } = useAuthStore();
-
-  const handleLoginSuccess = (user: User) => {
-    login(user);
-  };
+  // setAuthenticated는 현재 사용하지 않음 (게스트 로그인은 goto 사용)
+  // const { setAuthenticated } = useGameFlowStore();
 
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트
     window.location.href = `${config.API_BASE_URL}/api/auth/kakao`;
+  };
+
+  const handleGuestLogin = () => {
+    // 게스트 로그인 처리 - LOGIN_PROGRESS 단계로 이동
+    useGameFlowStore.getState().goto('LOGIN_PROGRESS');
   };
 
   return (
@@ -77,13 +80,7 @@ export default function LandingPage() {
 
               {/* 게스트 로그인 */}
               <button
-                onClick={() =>
-                  handleLoginSuccess({
-                    id: 'guest',
-                    nickname: '게스트',
-                    provider: 'guest',
-                  })
-                }
+                onClick={handleGuestLogin}
                 className="w-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg transition-all touch-manipulation"
               >
                 게스트로 시작하기
