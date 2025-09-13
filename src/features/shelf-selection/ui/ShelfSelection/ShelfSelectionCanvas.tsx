@@ -116,7 +116,7 @@ export default function ShelfSelectionCanvas({
       setViewOffsetX(maxScroll > 0 ? Math.floor(maxScroll / 2) : 0);
     };
     img.src = backgroundImage;
-  }, [backgroundImage, calculateImageScale]);
+  }, [backgroundImage, calculateImageScale, calculateCanvasSize]);
 
   // Canvas 크기 설정 및 리사이즈 처리
   useEffect(() => {
