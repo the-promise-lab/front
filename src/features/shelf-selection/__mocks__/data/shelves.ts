@@ -1,5 +1,37 @@
 import type { Shelf } from '../../model/types';
 
+export const longShelf: Shelf = {
+  id: 'long-shelf',
+  name: '긴 선반',
+  backgroundImage: '/long-shelf-example.png',
+  shelfItems: [
+    {
+      id: '섬유유연제',
+      name: '섬유유연제',
+      x: 0.3,
+      y: 0.35,
+      quantity: 1,
+      description: '머스크 향이 나는 섬유유연제다.',
+    },
+    {
+      id: '락스',
+      name: '락스',
+      x: 0.633,
+      y: 0.38,
+      quantity: 1,
+      description: '바텐더, 여기 락스 온더락으로 한 잔.',
+    },
+    {
+      id: '청소솔',
+      name: '청소솔',
+      x: 0.86,
+      y: 0.17,
+      quantity: 1,
+      description: '두껍고 뻣뻣해서 칫솔로 쓰면 안될 것 같다.',
+    },
+  ],
+};
+
 /**
  * 음식코너 더미 데이터
  */
@@ -120,4 +152,5 @@ export const mockShelves: Shelf[] = [
   householdCornerShelf,
   foodCornerShelf,
   clothingCornerShelf,
+  longShelf,
 ];
