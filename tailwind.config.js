@@ -1,3 +1,5 @@
+import scrollbar from 'tailwind-scrollbar';
+
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
@@ -45,5 +47,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [scrollbar],
 };
