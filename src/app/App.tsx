@@ -17,16 +17,21 @@ function App() {
     setGameStarted(false);
   };
 
+  const renderScreen = () => {
+    // TODO: GameFlow 구현되면 내부 로직을 수정/개선
+    if (!isLoggedIn) {
+      return <LandingPage />;
+    }
+    if (!gameStarted) {
+      return <MainMenu onStartGame={handleStartGame} />;
+    }
+    return <ShelfSelection onBackToMenu={handleBackToMenu} />;
+  };
+
   return (
     <RootLayout>
-      <div>
-        {!isLoggedIn ? (
-          <LandingPage />
-        ) : !gameStarted ? (
-          <MainMenu onStartGame={handleStartGame} />
-        ) : (
-          <ShelfSelection onBackToMenu={handleBackToMenu} />
-        )}
+      <div className="fixed inset-0 z-10 touch-pan-y overflow-hidden">
+        {renderScreen()}
       </div>
     </RootLayout>
   );

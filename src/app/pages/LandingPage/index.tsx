@@ -14,7 +14,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-yellow-50 to-yellow-100 overflow-hidden">
+    <div className="h-dvh w-screen bg-gradient-to-br from-yellow-50 to-yellow-100 overflow-hidden">
       {/* 가로모드 메인 컨텐츠 */}
       <div className="h-full flex">
         {/* 왼쪽 영역: 브랜딩 */}

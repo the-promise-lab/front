@@ -18,7 +18,7 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
   };
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden relative">
+    <div className="h-dvh w-screen bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden relative">
       {/* 상단 우측 설정 버튼 */}
       <div className="absolute top-4 right-4 z-10">
         <button
