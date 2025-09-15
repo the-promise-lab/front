@@ -5,18 +5,14 @@ import React, { useEffect } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
 
 export default function LoginProgress() {
-  const { setAuthenticated } = useGameFlowStore();
-
   useEffect(() => {
-    // 3초 후 인증 상태 설정 및 메인메뉴로 이동
+    // 3초 후 캐릭터 선택으로 이동
     const timer = setTimeout(() => {
-      setAuthenticated(true);
-      // next() 대신 goto로 MAIN_MENU로 직접 이동
-      useGameFlowStore.getState().goto('MAIN_MENU');
+      useGameFlowStore.getState().goto('CHARACTER_SELECT');
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [setAuthenticated]);
+  }, []);
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100">

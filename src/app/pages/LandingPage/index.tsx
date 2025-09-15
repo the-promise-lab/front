@@ -5,9 +5,29 @@ import { config } from '../../../config/env';
 export default function LandingPage() {
   const { setAuthenticated } = useGameFlowStore();
 
-  // 카카오 로그인 후 돌아왔을 때 인증 상태 확인
+  // 카카오 로그인 후 돌아왔을 때만 인증 상태 확인
   useEffect(() => {
     const checkAuthStatus = async () => {
+      // URL에 카카오 로그인 관련 파라미터가 있는지 확인
+      const urlParams = new URLSearchParams(window.location.search);
+      const isKakaoCallback =
+        urlParams.has('code') ||
+        urlParams.has('state') ||
+        window.location.pathname.includes('callback') ||
+        document.referrer.includes('kakao');
+
+      // 로그아웃 후인지 확인 (sessionStorage에 로그아웃 플래그가 있는지)
+      const isLogout = sessionStorage.getItem('logout') === 'true';
+
+      // 카카오 로그인 콜백이 아니거나 로그아웃 후인 경우 인증 상태 확인하지 않음
+      if (!isKakaoCallback || isLogout) {
+        // 로그아웃 플래그 제거
+        if (isLogout) {
+          sessionStorage.removeItem('logout');
+        }
+        return;
+      }
+
       try {
         const response = await fetch(
           `${config.API_BASE_URL}/api/auth/profile`,
@@ -20,8 +40,9 @@ export default function LandingPage() {
         if (response.ok) {
           const userData = await response.json();
           console.log('🔍 카카오 로그인 후 사용자 정보:', userData);
-          // 카카오 로그인 후에는 LOGIN_PROGRESS 단계로 이동
-          useGameFlowStore.getState().goto('LOGIN_PROGRESS');
+          // 카카오 로그인 후에는 바로 메인메뉴로 이동
+          useGameFlowStore.getState().setAuthenticated(true);
+          useGameFlowStore.getState().goto('MAIN_MENU');
         }
       } catch (error) {
         console.error('인증 상태 확인 실패:', error);
@@ -37,8 +58,9 @@ export default function LandingPage() {
   };
 
   const handleGuestLogin = () => {
-    // 게스트 로그인 처리 - LOGIN_PROGRESS 단계로 이동
-    useGameFlowStore.getState().goto('LOGIN_PROGRESS');
+    // 게스트 로그인 처리 - 바로 메인메뉴로 이동
+    useGameFlowStore.getState().setAuthenticated(true);
+    useGameFlowStore.getState().goto('MAIN_MENU');
   };
 
   return (

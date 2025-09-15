@@ -88,6 +88,10 @@ export const gameFlowActions = {
     } finally {
       // 서버 요청 성공/실패와 관계없이 로컬 상태 초기화
       useGameFlowStore.getState().setAuthenticated(false);
+      // 로그아웃 플래그 설정 (LandingPage에서 인증 상태 확인하지 않도록)
+      sessionStorage.setItem('logout', 'true');
+      // 로그인 화면으로 이동
+      useGameFlowStore.getState().goto('LOGIN');
     }
   },
 

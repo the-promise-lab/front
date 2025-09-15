@@ -5,8 +5,6 @@ import {
 } from '../../../processes/game-flow';
 
 export default function MainMenu() {
-  const { next } = useGameFlowStore();
-
   const handleSettings = () => {
     // TODO: 설정 화면으로 이동
     console.log('설정 버튼 클릭');
@@ -90,7 +88,7 @@ export default function MainMenu() {
 
         {/* 게임 시작 버튼 */}
         <button
-          onClick={next}
+          onClick={() => useGameFlowStore.getState().goto('PROGRESS')}
           className="transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800"
         >
           🎮 게임 시작하기

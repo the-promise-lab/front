@@ -23,11 +23,11 @@ export default function App() {
     if (step === 'LOGIN') {
       return <LandingPage />;
     }
-    if (step === 'LOGIN_PROGRESS') {
-      return <LoginProgress />;
-    }
     if (step === 'MAIN_MENU') {
       return <MainMenu />;
+    }
+    if (step === 'PROGRESS') {
+      return <LoginProgress />;
     }
     if (step === 'CHARACTER_SELECT') {
       return (
@@ -40,7 +40,7 @@ export default function App() {
             }
             next();
           }}
-          onBack={back}
+          onBack={() => useGameFlowStore.getState().goto('MAIN_MENU')}
         />
       );
     }

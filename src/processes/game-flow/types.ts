@@ -6,6 +6,7 @@ export type GameStep =
   | 'LOGIN' // 로그인 페이지
   | 'LOGIN_PROGRESS' // 로그인 진행 중
   | 'MAIN_MENU' // 메인 메뉴
+  | 'PROGRESS' // 게임 준비 진행 중
   | 'CHARACTER_SELECT' // 캐릭터 선택
   | 'PLAYING'; // 게임 플레이
 
@@ -31,6 +32,7 @@ export const GAME_STEP_ORDER: GameStep[] = [
   'LOGIN',
   'LOGIN_PROGRESS',
   'MAIN_MENU',
+  'PROGRESS',
   'CHARACTER_SELECT',
   'PLAYING',
 ] as const;
