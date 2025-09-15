@@ -39,9 +39,9 @@ export default function CharacterSelect({
 
   if (!currentCharacter) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-blue-500"></div>
           <p className="text-gray-600">캐릭터를 로딩 중...</p>
         </div>
       </div>
@@ -49,11 +49,11 @@ export default function CharacterSelect({
   }
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-purple-50 to-pink-100 overflow-hidden relative">
+    <div className="relative h-screen w-screen overflow-hidden bg-gradient-to-br from-purple-50 to-pink-100">
       {/* 뒤로가기 버튼 */}
       <div className="absolute top-3 left-3 z-10">
         <button
-          className="w-10 h-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+          className="bg-opacity-80 hover:bg-opacity-100 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95"
           onClick={onBack}
         >
           <svg
@@ -71,9 +71,9 @@ export default function CharacterSelect({
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="flex flex-col items-center justify-center h-screen px-4 py-6">
+      <div className="flex h-screen flex-col items-center justify-center px-4 py-6">
         {/* 캐릭터 선택 영역 */}
-        <div className="relative w-full max-w-sm flex gap-2">
+        <div className="relative flex w-full max-w-sm gap-2">
           {/* 좌측 화살표 */}
 
           <button
@@ -94,11 +94,11 @@ export default function CharacterSelect({
           </button>
 
           {/* 캐릭터 이미지 */}
-          <div className="bg-white rounded-lg shadow-xl p-2 mx-12">
-            <div className="bg-gray-200 rounded-lg flex items-center justify-center">
-              <div className="text-center py-2">
-                <div className="w-32 h-32 bg-blue-500 rounded-lg mx-auto mb-2 flex items-center justify-center">
-                  <span className="text-white text-xl font-bold">
+          <div className="mx-12 rounded-lg bg-white p-2 shadow-xl">
+            <div className="flex items-center justify-center rounded-lg bg-gray-200">
+              <div className="py-2 text-center">
+                <div className="mx-auto mb-2 flex h-32 w-32 items-center justify-center rounded-lg bg-blue-500">
+                  <span className="text-xl font-bold text-white">
                     {currentCharacter.name.charAt(0)}
                   </span>
                 </div>
@@ -108,15 +108,15 @@ export default function CharacterSelect({
 
             {/* 캐릭터 정보 */}
             <div className="text-center">
-              <h2 className="text-lg font-bold text-gray-800 mb-1">
+              <h2 className="mb-1 text-lg font-bold text-gray-800">
                 {currentCharacter.name}
               </h2>
-              <p className="text-gray-600 text-xs mb-3 leading-relaxed">
+              <p className="mb-3 text-xs leading-relaxed text-gray-600">
                 {currentCharacter.description}
               </p>
 
               {/* 특성 표시 */}
-              <div className="grid grid-cols-2 gap-1 text-xs mb-3">
+              <div className="mb-3 grid grid-cols-2 gap-1 text-xs">
                 <div className="flex justify-between">
                   <span className="text-gray-500">힘:</span>
                   <span className="font-medium">
@@ -144,8 +144,8 @@ export default function CharacterSelect({
               </div>
 
               {/* 특수 능력 */}
-              <div className="p-2 bg-blue-50 rounded-lg">
-                <p className="text-xs text-blue-800 font-medium leading-relaxed">
+              <div className="rounded-lg bg-blue-50 p-2">
+                <p className="text-xs leading-relaxed font-medium text-blue-800">
                   특수 능력: {currentCharacter.specialAbility}
                 </p>
               </div>
@@ -174,19 +174,19 @@ export default function CharacterSelect({
         {/* 선택 완료 버튼 */}
         <button
           onClick={handleSelectComplete}
-          className="mt-6 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 active:from-red-700 active:to-pink-800 text-white font-bold text-base px-6 py-2.5 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95"
+          className="mt-6 transform rounded-lg bg-gradient-to-r from-red-500 to-pink-600 px-6 py-2.5 text-base font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-red-600 hover:to-pink-700 hover:shadow-2xl active:scale-95 active:from-red-700 active:to-pink-800"
         >
           선택 완료
         </button>
 
         {/* 캐릭터 인디케이터 */}
-        <div className="flex gap-1.5 mt-4">
+        <div className="mt-4 flex gap-1.5">
           {characters.map((_, index) => (
             <div
               key={index}
-              className={`w-2 h-2 rounded-full transition-all ${
+              className={`h-2 w-2 rounded-full transition-all ${
                 index === currentIndex
-                  ? 'bg-red-500 scale-125'
+                  ? 'scale-125 bg-red-500'
                   : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />

@@ -25,7 +25,7 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
 
   if (!currentShelf) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div>데이터를 로딩 중...</div>
       </div>
     );
@@ -35,7 +35,7 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
       {/* 뒤로가기 버튼 */}
       <div className="fixed top-4 left-4 z-10">
         <button
-          className="w-12 h-12 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+          className="bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95"
           onClick={onBack}
         >
           <svg
@@ -52,18 +52,18 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
         </button>
       </div>
 
-      <div className="fixed top-1/2 left-2 -translate-y-1/2 z-10">
+      <div className="fixed top-1/2 left-2 z-10 -translate-y-1/2">
         <button
-          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
+          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
           onClick={() => moveToPreviousShelf()}
         >
           <PreviousIcon />
         </button>
       </div>
 
-      <div className="fixed top-1/2 right-2 -translate-y-1/2 z-10">
+      <div className="fixed top-1/2 right-2 z-10 -translate-y-1/2">
         <button
-          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
+          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
           onClick={() => moveToNextShelf()}
         >
           <NextIcon />

@@ -68,7 +68,7 @@ export default function OverlayDialog({
         <div
           className={cn(
             'relative z-10 bg-white shadow-xl',
-            position && 'absolute left-[var(--dialog-x)] top-[var(--dialog-y)]',
+            position && 'absolute top-[var(--dialog-y)] left-[var(--dialog-x)]',
             className
           )}
           onClick={(e) => e.stopPropagation()}

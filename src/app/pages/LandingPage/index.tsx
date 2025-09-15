@@ -42,14 +42,14 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="h-dvh w-screen bg-gradient-to-br from-yellow-50 to-yellow-100 overflow-hidden">
+    <div className="h-dvh w-screen overflow-hidden bg-gradient-to-br from-yellow-50 to-yellow-100">
       {/* 가로모드 메인 컨텐츠 */}
-      <div className="h-full flex">
+      <div className="flex h-full">
         {/* 왼쪽 영역: 브랜딩 */}
-        <div className="flex-1 flex flex-col justify-center items-center p-8 bg-gradient-to-br from-yellow-400 to-yellow-500">
+        <div className="flex flex-1 flex-col items-center justify-center bg-gradient-to-br from-yellow-400 to-yellow-500 p-8">
           <div className="text-center text-white">
-            <h1 className="text-2xl font-bold mb-2">The Promise</h1>
-            <p className="text-yellow-100 text-sm mb-6">재난 대비 훈련 게임</p>
+            <h1 className="mb-2 text-2xl font-bold">The Promise</h1>
+            <p className="mb-6 text-sm text-yellow-100">재난 대비 훈련 게임</p>
 
             {/* 특징 포인트 */}
             {/* <div className="space-y-2 text-left">
@@ -70,17 +70,17 @@ export default function LandingPage() {
         </div>
 
         {/* 오른쪽 영역: 로그인 */}
-        <div className="flex-1 flex flex-col justify-center items-center p-8 bg-white">
+        <div className="flex flex-1 flex-col items-center justify-center bg-white p-8">
           <div className="w-full max-w-sm">
-            <div className="text-center mb-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-2">시작하기</h2>
+            <div className="mb-6 text-center">
+              <h2 className="mb-2 text-xl font-bold text-gray-800">시작하기</h2>
             </div>
 
             <div className="space-y-3">
               {/* 카카오 로그인 */}
               <button
                 onClick={handleKakaoLogin}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 text-gray-800 font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-3 transition-all touch-manipulation"
+                className="flex w-full touch-manipulation items-center justify-center gap-3 rounded-lg bg-yellow-400 px-4 py-3 font-medium text-gray-800 transition-all hover:bg-yellow-500 active:bg-yellow-600"
               >
                 <svg
                   width="18"
@@ -99,14 +99,14 @@ export default function LandingPage() {
                   <div className="w-full border-t border-gray-200" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-3 bg-white text-gray-500">또는</span>
+                  <span className="bg-white px-3 text-gray-500">또는</span>
                 </div>
               </div>
 
               {/* 게스트 로그인 */}
               <button
                 onClick={handleGuestLogin}
-                className="w-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg transition-all touch-manipulation"
+                className="w-full touch-manipulation rounded-lg bg-gray-100 px-4 py-3 font-medium text-gray-700 transition-all hover:bg-gray-200 active:bg-gray-300"
               >
                 게스트로 시작하기
               </button>
@@ -114,7 +114,7 @@ export default function LandingPage() {
 
             {/* 약관 동의 */}
             <div className="mt-6 text-center">
-              <p className="text-xs text-gray-400 leading-relaxed">
+              <p className="text-xs leading-relaxed text-gray-400">
                 로그인하면 서비스 이용약관 및<br />
                 개인정보처리방침에 동의한 것으로 간주됩니다.
               </p>
