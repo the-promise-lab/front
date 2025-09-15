@@ -15,27 +15,49 @@ import { useCharacterSelectionStore } from '../features/character-selection/mode
 export default function App() {
   const { step, next, back, setSelectedCharacter } = useGameFlowStore();
 
+  const renderScreen = () => {
+    // GameFlow 구현 - 단계별 컴포넌트 분기 처리
+    if (step === 'AUTH_CHECK') {
+      return <AuthCheck />;
+    }
+    if (step === 'LOGIN') {
+      return <LandingPage />;
+    }
+    if (step === 'LOGIN_PROGRESS') {
+      return <LoginProgress />;
+    }
+    if (step === 'MAIN_MENU') {
+      return <MainMenu />;
+    }
+    if (step === 'CHARACTER_SELECT') {
+      return (
+        <CharacterSelect
+          onNext={() => {
+            // 선택된 캐릭터를 게임 플로우에 저장하고 다음 단계로
+            const characterStore = useCharacterSelectionStore.getState();
+            if (characterStore.selectedCharacter) {
+              setSelectedCharacter(characterStore.selectedCharacter.id);
+            }
+            next();
+          }}
+          onBack={back}
+        />
+      );
+    }
+    if (step === 'PLAYING') {
+      return <ShelfSelection onBack={back} />;
+    }
+
+    // 기본값 (fallback)
+    return <LandingPage />;
+  };
+
   return (
     <AppProviders>
       <RootLayout>
-        {step === 'AUTH_CHECK' && <AuthCheck />}
-        {step === 'LOGIN' && <LandingPage />}
-        {step === 'LOGIN_PROGRESS' && <LoginProgress />}
-        {step === 'MAIN_MENU' && <MainMenu />}
-        {step === 'CHARACTER_SELECT' && (
-          <CharacterSelect
-            onNext={() => {
-              // 선택된 캐릭터를 게임 플로우에 저장하고 다음 단계로
-              const characterStore = useCharacterSelectionStore.getState();
-              if (characterStore.selectedCharacter) {
-                setSelectedCharacter(characterStore.selectedCharacter.id);
-              }
-              next();
-            }}
-            onBack={back}
-          />
-        )}
-        {step === 'PLAYING' && <ShelfSelection onBack={back} />}
+        <div className="fixed inset-0 z-10 touch-pan-y overflow-hidden">
+          {renderScreen()}
+        </div>
       </RootLayout>
     </AppProviders>
   );
