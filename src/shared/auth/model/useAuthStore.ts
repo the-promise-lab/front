@@ -52,6 +52,9 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           // 서버 로그아웃 실패해도 클라이언트 상태는 초기화
         }
 
+        // 로그아웃 플래그 설정 (LandingPage에서 인증 상태 확인하지 않도록)
+        sessionStorage.setItem('logout', 'true');
+
         // 클라이언트 상태 초기화
         set({
           user: null,

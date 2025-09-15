@@ -1,7 +1,8 @@
-import React from 'react';
+import { useEffect } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
 import { useGameFlowStore } from '../processes/game-flow';
+import { useAuthStore } from '../shared/auth/model/useAuthStore';
 
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
@@ -13,9 +14,26 @@ import { CharacterSelect } from '../features/character-selection';
 import { useCharacterSelectionStore } from '../features/character-selection/model/useCharacterSelectionStore';
 
 export default function App() {
-  const { step, next, back, setSelectedCharacter } = useGameFlowStore();
+  const { step, next, back, setSelectedCharacter, setAuthenticated } =
+    useGameFlowStore();
+  const { isLoggedIn } = useAuthStore();
+
+  // 인증 상태와 게임 플로우 동기화
+  useEffect(() => {
+    setAuthenticated(isLoggedIn);
+
+    // 로그아웃 후 플래그 제거 (한 번만 실행)
+    if (!isLoggedIn && sessionStorage.getItem('logout') === 'true') {
+      sessionStorage.removeItem('logout');
+    }
+  }, [isLoggedIn, setAuthenticated]);
 
   const renderScreen = () => {
+    // 인증 상태에 따른 기본 분기
+    if (!isLoggedIn) {
+      return <LandingPage />;
+    }
+
     // GameFlow 구현 - 단계별 컴포넌트 분기 처리
     if (step === 'AUTH_CHECK') {
       return <AuthCheck />;

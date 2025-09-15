@@ -1,32 +1,40 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
+import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
 import { config } from '../../../config/env';
 
 export default function LandingPage() {
   const { setAuthenticated } = useGameFlowStore();
+  const { isLoggedIn, login } = useAuthStore();
+  const hasCheckedAuth = useRef(false);
 
-  // 카카오 로그인 후 돌아왔을 때만 인증 상태 확인
+  // 이미 로그인된 경우 메인메뉴로 리다이렉트
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      // URL에 카카오 로그인 관련 파라미터가 있는지 확인
-      const urlParams = new URLSearchParams(window.location.search);
-      const isKakaoCallback =
-        urlParams.has('code') ||
-        urlParams.has('state') ||
-        window.location.pathname.includes('callback') ||
-        document.referrer.includes('kakao');
+    if (isLoggedIn) {
+      setAuthenticated(true);
+    }
+  }, [isLoggedIn, setAuthenticated]);
 
-      // 로그아웃 후인지 확인 (sessionStorage에 로그아웃 플래그가 있는지)
-      const isLogout = sessionStorage.getItem('logout') === 'true';
+  // 인증 상태 확인 (feat/social-login 방식)
+  useEffect(() => {
+    if (isLoggedIn) return;
 
-      // 카카오 로그인 콜백이 아니거나 로그아웃 후인 경우 인증 상태 확인하지 않음
-      if (!isKakaoCallback || isLogout) {
-        // 로그아웃 플래그 제거
-        if (isLogout) {
-          sessionStorage.removeItem('logout');
-        }
-        return;
-      }
+    // 이미 인증 확인을 했다면 다시 하지 않음
+    if (hasCheckedAuth.current) {
+      return;
+    }
+
+    // 로그아웃 후인지 확인 (sessionStorage에 로그아웃 플래그가 있는지)
+    const isLogout = sessionStorage.getItem('logout') === 'true';
+
+    // 로그아웃 후인 경우 인증 상태 확인하지 않음
+    if (isLogout) {
+      hasCheckedAuth.current = true;
+      return;
+    }
+
+    const checkLoginStatus = async () => {
+      hasCheckedAuth.current = true; // 인증 확인 시작
 
       try {
         const response = await fetch(
@@ -39,18 +47,19 @@ export default function LandingPage() {
 
         if (response.ok) {
           const userData = await response.json();
-          console.log('🔍 카카오 로그인 후 사용자 정보:', userData);
-          // 카카오 로그인 후에는 바로 메인메뉴로 이동
-          useGameFlowStore.getState().setAuthenticated(true);
-          useGameFlowStore.getState().goto('MAIN_MENU');
+
+          // 인증 스토어에 로그인 처리
+          login(userData, 'cookie-based-token');
+          // 게임 플로우 상태도 업데이트
+          setAuthenticated(true);
         }
       } catch (error) {
-        console.error('인증 상태 확인 실패:', error);
+        console.error('로그인 상태 확인 실패:', error);
       }
     };
 
-    checkAuthStatus();
-  }, [setAuthenticated]);
+    checkLoginStatus();
+  }, [login, isLoggedIn, setAuthenticated]);
 
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트
@@ -59,8 +68,14 @@ export default function LandingPage() {
 
   const handleGuestLogin = () => {
     // 게스트 로그인 처리 - 바로 메인메뉴로 이동
-    useGameFlowStore.getState().setAuthenticated(true);
-    useGameFlowStore.getState().goto('MAIN_MENU');
+    const guestUser = {
+      id: 'guest',
+      nickname: '게스트',
+      provider: 'guest' as const,
+    };
+
+    login(guestUser);
+    setAuthenticated(true);
   };
 
   return (
@@ -72,22 +87,6 @@ export default function LandingPage() {
           <div className="text-center text-white">
             <h1 className="mb-2 text-2xl font-bold">The Promise</h1>
             <p className="mb-6 text-sm text-yellow-100">재난 대비 훈련 게임</p>
-
-            {/* 특징 포인트 */}
-            {/* <div className="space-y-2 text-left">
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-yellow-200">✓</span>
-                <span></span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-yellow-200">✓</span>
-                <span></span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-yellow-200">✓</span>
-                <span></span>
-              </div>
-            </div> */}
           </div>
         </div>
 
@@ -137,7 +136,8 @@ export default function LandingPage() {
             {/* 약관 동의 */}
             <div className="mt-6 text-center">
               <p className="text-xs leading-relaxed text-gray-400">
-                로그인하면 서비스 이용약관 및<br />
+                로그인하면 서비스 이용약관 및
+                <br />
                 개인정보처리방침에 동의한 것으로 간주됩니다.
               </p>
             </div>
