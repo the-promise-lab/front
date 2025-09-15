@@ -1,7 +1,7 @@
 // src/app/pages/LoginProgress/index.tsx
 // 로그인 진행 화면
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
 
 export default function LoginProgress() {
@@ -49,7 +49,7 @@ export default function LoginProgress() {
         </p>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes progress {
           from {
             width: 0%;

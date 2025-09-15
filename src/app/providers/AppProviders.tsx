@@ -1,7 +1,7 @@
 // src/app/providers/AppProviders.tsx
 // 전역 프로바이더 컴포넌트
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface AppProvidersProps {
   children: ReactNode;

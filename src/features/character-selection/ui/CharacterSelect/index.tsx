@@ -1,7 +1,7 @@
 // src/features/character-selection/ui/CharacterSelect/index.tsx
 // 캐릭터 선택 컴포넌트
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useCharacterSelectionStore } from '../../model/useCharacterSelectionStore';
 import { mockCharacters } from '../../__mocks__';
 
