@@ -1,12 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
 import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
+import { useCheckAuthState } from '../../../shared/auth/model/useLoginStatus';
 import { config } from '../../../config/env';
 
 export default function LandingPage() {
   const { setAuthenticated } = useGameFlowStore();
   const { isLoggedIn, login } = useAuthStore();
-  const hasCheckedAuth = useRef(false);
+
+  // useCheckAuthState 훅 사용 (로그아웃 플래그 자동 처리)
+  useCheckAuthState();
 
   // 이미 로그인된 경우 메인메뉴로 리다이렉트
   useEffect(() => {
@@ -14,52 +17,6 @@ export default function LandingPage() {
       setAuthenticated(true);
     }
   }, [isLoggedIn, setAuthenticated]);
-
-  // 인증 상태 확인 (feat/social-login 방식)
-  useEffect(() => {
-    if (isLoggedIn) return;
-
-    // 이미 인증 확인을 했다면 다시 하지 않음
-    if (hasCheckedAuth.current) {
-      return;
-    }
-
-    // 로그아웃 후인지 확인 (sessionStorage에 로그아웃 플래그가 있는지)
-    const isLogout = sessionStorage.getItem('logout') === 'true';
-
-    // 로그아웃 후인 경우 인증 상태 확인하지 않음
-    if (isLogout) {
-      hasCheckedAuth.current = true;
-      return;
-    }
-
-    const checkLoginStatus = async () => {
-      hasCheckedAuth.current = true; // 인증 확인 시작
-
-      try {
-        const response = await fetch(
-          `${config.API_BASE_URL}/api/auth/profile`,
-          {
-            method: 'GET',
-            credentials: 'include',
-          }
-        );
-
-        if (response.ok) {
-          const userData = await response.json();
-
-          // 인증 스토어에 로그인 처리
-          login(userData, 'cookie-based-token');
-          // 게임 플로우 상태도 업데이트
-          setAuthenticated(true);
-        }
-      } catch (error) {
-        console.error('로그인 상태 확인 실패:', error);
-      }
-    };
-
-    checkLoginStatus();
-  }, [login, isLoggedIn, setAuthenticated]);
 
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트

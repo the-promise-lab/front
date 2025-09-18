@@ -21,11 +21,6 @@ export default function App() {
   // 인증 상태와 게임 플로우 동기화
   useEffect(() => {
     setAuthenticated(isLoggedIn);
-
-    // 로그아웃 후 플래그 제거 (한 번만 실행)
-    if (!isLoggedIn && sessionStorage.getItem('logout') === 'true') {
-      sessionStorage.removeItem('logout');
-    }
   }, [isLoggedIn, setAuthenticated]);
 
   const renderScreen = () => {

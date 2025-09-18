@@ -4,6 +4,11 @@ import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
 export default function MainMenu() {
   const { logout } = useAuthStore();
 
+  const handleLogout = async () => {
+    await logout();
+    useGameFlowStore.getState().goto('LOGIN');
+  };
+
   const handleSettings = () => {
     // TODO: 설정 화면으로 이동
     console.log('설정 버튼 클릭');
@@ -70,7 +75,7 @@ export default function MainMenu() {
           </div>
           <span className="font-medium text-gray-700">사용자님</span>
           <button
-            onClick={async () => await logout()}
+            onClick={handleLogout}
             className="rounded px-2 py-1 text-xs text-red-600 transition-colors hover:bg-red-50 hover:text-red-800"
           >
             로그아웃

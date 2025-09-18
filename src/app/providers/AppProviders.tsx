@@ -2,6 +2,16 @@
 // 전역 프로바이더 컴포넌트
 
 import type { ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -9,10 +19,6 @@ interface AppProvidersProps {
 
 export default function AppProviders({ children }: AppProvidersProps) {
   return (
-    <>
-      {/* 향후 다른 프로바이더들 추가 가능 */}
-      {/* 예: ThemeProvider, QueryClient, ErrorBoundary 등 */}
-      {children}
-    </>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

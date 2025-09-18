@@ -14,6 +14,8 @@ export interface User {
 interface AuthState {
   user: User | null;
   isLoggedIn: boolean;
+  isLoggingOut: boolean;
+  lastLogoutTime: number | null;
   accessToken: string | null;
 }
 
@@ -29,6 +31,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       // State
       user: null,
       isLoggedIn: false,
+      isLoggingOut: false,
+      lastLogoutTime: null,
       accessToken: null,
 
       // Actions
@@ -36,11 +40,15 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         set({
           user,
           isLoggedIn: true,
+          isLoggingOut: false,
           accessToken: accessToken || null,
         });
       },
 
       logout: async () => {
+        // 로그아웃 시작
+        set({ isLoggingOut: true });
+
         try {
           // 서버에 로그아웃 요청 (쿠키 기반)
           await fetch(`${config.API_BASE_URL}/api/auth/logout`, {
@@ -52,13 +60,12 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           // 서버 로그아웃 실패해도 클라이언트 상태는 초기화
         }
 
-        // 로그아웃 플래그 설정 (LandingPage에서 인증 상태 확인하지 않도록)
-        sessionStorage.setItem('logout', 'true');
-
         // 클라이언트 상태 초기화
         set({
           user: null,
           isLoggedIn: false,
+          isLoggingOut: false,
+          lastLogoutTime: Date.now(),
           accessToken: null,
         });
       },
@@ -77,6 +84,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       partialize: (state) => ({
         user: state.user,
         isLoggedIn: state.isLoggedIn,
+        isLoggingOut: state.isLoggingOut,
+        lastLogoutTime: state.lastLogoutTime,
         accessToken: state.accessToken,
       }),
     }
