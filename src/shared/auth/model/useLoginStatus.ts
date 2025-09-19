@@ -3,20 +3,33 @@ import { useAuthStore } from './useAuthStore';
 import { useEffect } from 'react';
 
 export const useCheckAuthState = () => {
-  const { isLoggedIn, login } = useAuthStore();
+  const { isLoggedIn, isLoggingOut, lastLogoutTime, login } = useAuthStore();
 
+  // 수동으로 인증 상태 확인
   useEffect(() => {
-    if (isLoggedIn) return;
+    if (isLoggedIn || isLoggingOut) {
+      return; // 이미 로그인되어 있거나 로그아웃 중이면 확인하지 않음
+    }
 
-    // 서버에서 쿠키로 로그인 처리 후 돌아온 경우
-    const checkLoginStatus = async () => {
+    // 로그아웃 후 0.5초 이내라면 인증 확인하지 않음
+    if (lastLogoutTime && Date.now() - lastLogoutTime < 500) {
+      return;
+    }
+
+    // 카카오 로그인 후 인증 확인을 위해 1초 지연
+    const isKakaoCallback =
+      window.location.search.includes('code=') &&
+      window.location.search.includes('state=');
+    if (isKakaoCallback) {
+      setTimeout(() => {
+        checkAuthStatus();
+      }, 1000);
+      return;
+    }
+
+    const checkAuthStatus = async () => {
       try {
-        // 서버에 프로필 요청 (쿠키에 JWT 토큰이 포함됨)
         const response = await AuthService.authControllerGetProfile();
-
-        console.log('🔍 서버에서 받은 사용자 정보:', response);
-
-        // 로그인 처리 (토큰은 쿠키에 있으므로 별도로 전달하지 않음)
         login(response, 'cookie-based-token');
       } catch (error) {
         if (error instanceof ApiError) {
@@ -27,8 +40,8 @@ export const useCheckAuthState = () => {
       }
     };
 
-    checkLoginStatus();
-  }, [login, isLoggedIn]);
+    checkAuthStatus();
+  }, [isLoggedIn, isLoggingOut, lastLogoutTime, login]);
 
   return { isLoggedIn, login };
 };

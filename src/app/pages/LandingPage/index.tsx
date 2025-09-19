@@ -1,58 +1,64 @@
-import { useAuthStore, type User } from '@shared/auth/model/useAuthStore';
-import { config } from '@config/env';
+import { useEffect } from 'react';
+import { useGameFlowStore } from '../../../processes/game-flow';
+import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
+import { useCheckAuthState } from '../../../shared/auth/model/useLoginStatus';
+import { config } from '../../../config/env';
 
 export default function LandingPage() {
-  const { login } = useAuthStore();
+  const { setAuthenticated } = useGameFlowStore();
+  const { isLoggedIn, login } = useAuthStore();
 
-  const handleLoginSuccess = (user: User) => {
-    login(user);
-  };
+  // useCheckAuthState 훅 사용 (로그아웃 플래그 자동 처리)
+  useCheckAuthState();
+
+  // 이미 로그인된 경우 메인메뉴로 리다이렉트
+  useEffect(() => {
+    if (isLoggedIn) {
+      setAuthenticated(true);
+    }
+  }, [isLoggedIn, setAuthenticated]);
 
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트
     window.location.href = `${config.API_BASE_URL}/api/auth/kakao`;
   };
 
-  return (
-    <div className="h-dvh w-screen bg-gradient-to-br from-yellow-50 to-yellow-100 overflow-hidden">
-      {/* 가로모드 메인 컨텐츠 */}
-      <div className="h-full flex">
-        {/* 왼쪽 영역: 브랜딩 */}
-        <div className="flex-1 flex flex-col justify-center items-center p-8 bg-gradient-to-br from-yellow-400 to-yellow-500">
-          <div className="text-center text-white">
-            <h1 className="text-2xl font-bold mb-2">The Promise</h1>
-            <p className="text-yellow-100 text-sm mb-6">재난 대비 훈련 게임</p>
+  const handleGuestLogin = () => {
+    // 게스트 로그인 처리 - 바로 메인메뉴로 이동
+    const guestUser = {
+      id: 'guest',
+      nickname: '게스트',
+      provider: 'guest' as const,
+    };
 
-            {/* 특징 포인트 */}
-            {/* <div className="space-y-2 text-left">
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-yellow-200">✓</span>
-                <span></span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-yellow-200">✓</span>
-                <span></span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-yellow-200">✓</span>
-                <span></span>
-              </div>
-            </div> */}
+    login(guestUser);
+    setAuthenticated(true);
+  };
+
+  return (
+    <div className="h-dvh w-screen overflow-hidden bg-gradient-to-br from-yellow-50 to-yellow-100">
+      {/* 가로모드 메인 컨텐츠 */}
+      <div className="flex h-full">
+        {/* 왼쪽 영역: 브랜딩 */}
+        <div className="flex flex-1 flex-col items-center justify-center bg-gradient-to-br from-yellow-400 to-yellow-500 p-8">
+          <div className="text-center text-white">
+            <h1 className="mb-2 text-2xl font-bold">The Promise</h1>
+            <p className="mb-6 text-sm text-yellow-100">재난 대비 훈련 게임</p>
           </div>
         </div>
 
         {/* 오른쪽 영역: 로그인 */}
-        <div className="flex-1 flex flex-col justify-center items-center p-8 bg-white">
+        <div className="flex flex-1 flex-col items-center justify-center bg-white p-8">
           <div className="w-full max-w-sm">
-            <div className="text-center mb-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-2">시작하기</h2>
+            <div className="mb-6 text-center">
+              <h2 className="mb-2 text-xl font-bold text-gray-800">시작하기</h2>
             </div>
 
             <div className="space-y-3">
               {/* 카카오 로그인 */}
               <button
                 onClick={handleKakaoLogin}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 text-gray-800 font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-3 transition-all touch-manipulation"
+                className="flex w-full touch-manipulation items-center justify-center gap-3 rounded-lg bg-yellow-400 px-4 py-3 font-medium text-gray-800 transition-all hover:bg-yellow-500 active:bg-yellow-600"
               >
                 <svg
                   width="18"
@@ -71,20 +77,14 @@ export default function LandingPage() {
                   <div className="w-full border-t border-gray-200" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-3 bg-white text-gray-500">또는</span>
+                  <span className="bg-white px-3 text-gray-500">또는</span>
                 </div>
               </div>
 
               {/* 게스트 로그인 */}
               <button
-                onClick={() =>
-                  handleLoginSuccess({
-                    id: 'guest',
-                    nickname: '게스트',
-                    provider: 'guest',
-                  })
-                }
-                className="w-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg transition-all touch-manipulation"
+                onClick={handleGuestLogin}
+                className="w-full touch-manipulation rounded-lg bg-gray-100 px-4 py-3 font-medium text-gray-700 transition-all hover:bg-gray-200 active:bg-gray-300"
               >
                 게스트로 시작하기
               </button>
@@ -92,8 +92,9 @@ export default function LandingPage() {
 
             {/* 약관 동의 */}
             <div className="mt-6 text-center">
-              <p className="text-xs text-gray-400 leading-relaxed">
-                로그인하면 서비스 이용약관 및<br />
+              <p className="text-xs leading-relaxed text-gray-400">
+                로그인하면 서비스 이용약관 및
+                <br />
                 개인정보처리방침에 동의한 것으로 간주됩니다.
               </p>
             </div>

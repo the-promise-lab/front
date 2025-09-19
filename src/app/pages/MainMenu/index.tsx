@@ -1,11 +1,13 @@
-import { useAuthStore } from '@shared/auth/model/useAuthStore';
+import { useGameFlowStore } from '../../../processes/game-flow';
+import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
 
-interface MainMenuProps {
-  onStartGame: () => void;
-}
+export default function MainMenu() {
+  const { logout } = useAuthStore();
 
-export default function MainMenu({ onStartGame }: MainMenuProps) {
-  const { user, logout } = useAuthStore();
+  const handleLogout = async () => {
+    await logout();
+    useGameFlowStore.getState().goto('LOGIN');
+  };
 
   const handleSettings = () => {
     // TODO: 설정 화면으로 이동
@@ -18,12 +20,12 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
   };
 
   return (
-    <div className="h-dvh w-screen bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden relative">
+    <div className="relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* 상단 우측 설정 버튼 */}
       <div className="absolute top-4 right-4 z-10">
         <button
           onClick={handleSettings}
-          className="w-12 h-12 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+          className="bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95"
         >
           <svg
             width="24"
@@ -47,7 +49,7 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
       <div className="absolute bottom-4 left-4 z-10">
         <button
           onClick={handleInventory}
-          className="w-12 h-12 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+          className="bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95"
         >
           <svg
             width="24"
@@ -67,16 +69,14 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
 
       {/* 상단 사용자 정보 */}
       <div className="absolute top-4 left-4 z-10">
-        <div className="bg-white bg-opacity-80 px-4 py-2 rounded-full shadow-lg flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">
-              {user?.nickname?.charAt(0) || 'U'}
-            </span>
+        <div className="bg-opacity-80 flex items-center gap-3 rounded-full bg-white px-4 py-2 shadow-lg">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-purple-500">
+            <span className="text-sm font-bold text-white">U</span>
           </div>
-          <span className="text-gray-700 font-medium">{user?.nickname}님</span>
+          <span className="font-medium text-gray-700">사용자님</span>
           <button
-            onClick={logout}
-            className="text-xs text-red-600 hover:text-red-800 transition-colors px-2 py-1 rounded hover:bg-red-50"
+            onClick={handleLogout}
+            className="rounded px-2 py-1 text-xs text-red-600 transition-colors hover:bg-red-50 hover:text-red-800"
           >
             로그아웃
           </button>
@@ -84,23 +84,23 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
       </div>
 
       {/* 중앙 메인 컨텐츠 */}
-      <div className="flex flex-col items-center justify-center h-full p-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">The Promise</h1>
+      <div className="flex h-full flex-col items-center justify-center p-8">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-gray-800">The Promise</h1>
           <p className="text-lg text-gray-600">재난 대비 훈련 게임</p>
         </div>
 
         {/* 게임 시작 버튼 */}
         <button
-          onClick={onStartGame}
-          className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 active:from-blue-700 active:to-indigo-800 text-white font-bold text-xl px-12 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95"
+          onClick={() => useGameFlowStore.getState().goto('PROGRESS')}
+          className="transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800"
         >
           🎮 게임 시작하기
         </button>
 
         {/* 부가 정보 */}
         <div className="mt-12 text-center">
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="mb-2 text-sm text-gray-500">
             재난 상황에서 필요한 물품을 선택하고 준비하세요
           </p>
           <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
@@ -112,10 +112,10 @@ export default function MainMenu({ onStartGame }: MainMenuProps) {
       </div>
 
       {/* 배경 장식 요소들 */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-blue-200 bg-opacity-30 rounded-full blur-xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-indigo-200 bg-opacity-30 rounded-full blur-xl"></div>
-        <div className="absolute top-3/4 left-1/3 w-24 h-24 bg-purple-200 bg-opacity-30 rounded-full blur-xl"></div>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="bg-opacity-30 absolute top-1/4 left-1/4 h-32 w-32 rounded-full bg-blue-200 blur-xl"></div>
+        <div className="bg-opacity-30 absolute right-1/4 bottom-1/4 h-40 w-40 rounded-full bg-indigo-200 blur-xl"></div>
+        <div className="bg-opacity-30 absolute top-3/4 left-1/3 h-24 w-24 rounded-full bg-purple-200 blur-xl"></div>
       </div>
     </div>
   );

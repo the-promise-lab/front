@@ -283,7 +283,7 @@ export default function ShelfSelectionCanvas({
   );
 
   return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden">
+    <div className="fixed inset-0 h-full w-full overflow-hidden">
       <canvas
         ref={canvasRef}
         style={{
@@ -291,7 +291,7 @@ export default function ShelfSelectionCanvas({
           height: `${canvasSize.height}px`,
           touchAction: 'none',
         }}
-        className="cursor-pointer block"
+        className="block cursor-pointer"
         onClick={handleCanvasInteraction}
         onTouchStart={(e) => {
           if (e.touches.length > 0) {

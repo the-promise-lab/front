@@ -5,12 +5,10 @@ import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { mockShelves } from '../../__mocks__';
 
 interface ShelfSelectionProps {
-  onBackToMenu: () => void;
+  onBack: () => void;
 }
 
-export default function ShelfSelection({ onBackToMenu }: ShelfSelectionProps) {
-  // TODO: onBackToMenu 기능 구현 예정
-  void onBackToMenu;
+export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
   const {
     getCurrentShelf,
     selectedShelfItems,
@@ -27,25 +25,45 @@ export default function ShelfSelection({ onBackToMenu }: ShelfSelectionProps) {
 
   if (!currentShelf) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div>데이터를 로딩 중...</div>
       </div>
     );
   }
   return (
     <div>
-      <div className="fixed top-1/2 left-2 -translate-y-1/2 z-10">
+      {/* 뒤로가기 버튼 */}
+      <div className="fixed top-4 left-4 z-10">
         <button
-          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
+          className="bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95"
+          onClick={onBack}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="text-gray-700"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="fixed top-1/2 left-2 z-10 -translate-y-1/2">
+        <button
+          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
           onClick={() => moveToPreviousShelf()}
         >
           <PreviousIcon />
         </button>
       </div>
 
-      <div className="fixed top-1/2 right-2 -translate-y-1/2 z-10">
+      <div className="fixed top-1/2 right-2 z-10 -translate-y-1/2">
         <button
-          className="w-12 h-12 text-sm rounded-full bg-transparent flex items-center justify-center border-gray-300 border"
+          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
           onClick={() => moveToNextShelf()}
         >
           <NextIcon />

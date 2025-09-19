@@ -18,7 +18,7 @@ export default function SelectedItemsPanel({
       {/* 좌측 하단 토글 버튼 */}
       <button
         className={cn(
-          'fixed bottom-4 left-4 z-20 w-12 h-12 bg-white text-gray-700 rounded-lg shadow-lg border border-gray-200',
+          'fixed bottom-4 left-4 z-20 h-12 w-12 rounded-lg border border-gray-200 bg-white text-gray-700 shadow-lg',
           'flex items-center justify-center text-sm font-medium transition-colors',
           'hover:bg-gray-50 active:bg-gray-100'
         )}
@@ -31,20 +31,20 @@ export default function SelectedItemsPanel({
       {/* 슬라이딩 패널 */}
       <div
         className={cn(
-          'fixed bottom-4 left-1 z-10 bg-white rounded-lg shadow-xl border',
-          'h-12 flex items-center transition-all duration-300 ease-out origin-left',
+          'fixed bottom-4 left-1 z-10 rounded-lg border bg-white shadow-xl',
+          'flex h-12 origin-left items-center transition-all duration-300 ease-out',
           isOpen
             ? 'w-96 translate-x-16 opacity-100'
-            : 'w-12 translate-x-0 opacity-0 scale-x-0'
+            : 'w-12 translate-x-0 scale-x-0 opacity-0'
         )}
       >
         {isOpen && (
-          <div className="flex gap-1 p-2 overflow-x-auto">
+          <div className="flex gap-1 overflow-x-auto p-2">
             {/* 최대 아이템 표시 */}
             {selectedItems.slice(0, MAX_VISIBLE_ITEMS).map((item, index) => (
               <div
                 key={`${item.id}-${index}`}
-                className="flex-shrink-0 w-8 h-8 bg-gray-100 border border-gray-200 rounded flex items-center justify-center text-xs font-medium text-gray-700"
+                className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-gray-200 bg-gray-100 text-xs font-medium text-gray-700"
                 title={`${item.name} (x${item.quantity})`}
               >
                 <span className="truncate px-1">{item.name.slice(0, 2)}</span>
@@ -53,7 +53,7 @@ export default function SelectedItemsPanel({
 
             {/* 최대 표시 개수 초과 시 더보기 표시 */}
             {selectedItems.length > MAX_VISIBLE_ITEMS && (
-              <div className="flex-shrink-0 w-8 h-8 bg-gray-200 border border-gray-300 rounded flex items-center justify-center text-xs font-bold text-gray-600">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-gray-300 bg-gray-200 text-xs font-bold text-gray-600">
                 +{selectedItems.length - MAX_VISIBLE_ITEMS}
               </div>
             )}
