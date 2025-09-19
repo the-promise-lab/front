@@ -164,3 +164,8 @@ src/
 - 단위 테스트: Jest + React Testing Library
 - 통합 테스트: MSW 사용
 - E2E 테스트: Playwright 고려
+
+### Tailwind CSS
+- 항상 **정규화된 Tailwind 스케일**을 사용한다. (ex: h-17, w-131, px-10.75, py-0)
+  - 모바일 가로모드 환경(1024px 미만)에서는 spacing을 0.125rem으로 사용함에 유의한다. (ex: `h-10` -> `20px`)
+  - ex. Figma 디자인이 72px인 경우 `h-18`로 반영 -> 모바일 가로모드에서는 `36px`로 계산되어 반영된다.
