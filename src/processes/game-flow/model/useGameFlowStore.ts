@@ -54,7 +54,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     }),
     {
       name: 'game-flow-storage', // localStorage 키
-      partialize: (state) => ({
+      partialize: state => ({
         step: state.step,
         isAuthenticated: state.isAuthenticated,
         selectedCharacter: state.selectedCharacter,
@@ -100,7 +100,8 @@ export const gameFlowActions = {
   goToMainMenu: () => useGameFlowStore.getState().goto('MAIN_MENU'),
   goToCharacterSelect: () =>
     useGameFlowStore.getState().goto('CHARACTER_SELECT'),
-  goToPlaying: () => useGameFlowStore.getState().goto('PLAYING'),
+  goToPackingPhase: () => useGameFlowStore.getState().goto('PACKING_PHASE'),
+  goToEventPhase: () => useGameFlowStore.getState().goto('EVENT_PHASE'),
 
   // 게임 시작
   startGame: () => {

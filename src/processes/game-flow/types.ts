@@ -8,7 +8,8 @@ export type GameStep =
   | 'MAIN_MENU' // 메인 메뉴
   | 'PROGRESS' // 게임 준비 진행 중
   | 'CHARACTER_SELECT' // 캐릭터 선택
-  | 'PLAYING'; // 게임 플레이
+  | 'PACKING_PHASE' // 가방 싸기
+  | 'EVENT_PHASE'; // 이벤트 페이즈
 
 export interface GameFlowState {
   step: GameStep;
@@ -34,7 +35,8 @@ export const GAME_STEP_ORDER: GameStep[] = [
   'MAIN_MENU',
   'PROGRESS',
   'CHARACTER_SELECT',
-  'PLAYING',
+  'PACKING_PHASE',
+  'EVENT_PHASE',
 ] as const;
 
 // 초기 상태
