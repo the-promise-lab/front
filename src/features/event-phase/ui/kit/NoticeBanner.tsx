@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@shared/lib/utils';
 import CautionNotice from './CautionNotice';
 
-interface NoticeBannerProps {
+interface NoticeBannerProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   withCaution?: boolean;
   className?: string;
@@ -12,6 +12,7 @@ export default function NoticeBanner({
   children,
   withCaution = false,
   className,
+  ...props
 }: NoticeBannerProps) {
   return (
     <div
@@ -21,6 +22,7 @@ export default function NoticeBanner({
         'bg-black/60 backdrop-blur-sm',
         className
       )}
+      {...props}
     >
       {withCaution && (
         <div className='w-1/3'>
