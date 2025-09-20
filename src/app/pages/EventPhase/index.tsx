@@ -1,23 +1,26 @@
-import CautionNotice from '@features/event-phase/ui/kit/CautionNotice';
-import CharacterProfile from '@features/event-phase/ui/kit/CharacterProfile/index';
-import ChoiceOption from '@features/event-phase/ui/kit/ChoiceOption';
-import PlaceTitle from '@features/event-phase/ui/kit/PlaceTitle';
+import PlaceScreen from '@features/event-phase/ui/PlaceScreen';
+import WarningBeforeStartScreen from '@features/event-phase/ui/WarningBeforeStartScreen';
+import { useState } from 'react';
 
 export default function EventPhase() {
+  const [step, setStep] = useState<number>(0);
+  const renderScreen = () => {
+    switch (step) {
+      case 0:
+        return <PlaceScreen />;
+      case 1:
+        return <WarningBeforeStartScreen />;
+    }
+  };
+  const handleNext = () => {
+    setStep(prev => (prev < 2 ? prev + 1 : 0));
+  };
   return (
-    <div className='flex h-screen w-screen flex-col gap-4 bg-[#000021]'>
-      <div className='h-10' />
-      <PlaceTitle title='대피소' />
-      <div className='mx-auto flex w-1/2 flex-col gap-4'>
-        <ChoiceOption text='대피소' />
-        <ChoiceOption text='대피소' />
-      </div>
-      <div className='mx-auto w-1/2'>
-        <CautionNotice />
-      </div>
-      <div className='fixed top-0 right-0'>
-        <CharacterProfile mentality={100} hp={100} />
-      </div>
+    <div
+      className='flex h-screen w-screen flex-col gap-4 bg-[url(shelter-bg.png)] bg-cover bg-center'
+      onClick={handleNext}
+    >
+      {renderScreen()}
     </div>
   );
 }

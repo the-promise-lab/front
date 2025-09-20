@@ -14,7 +14,7 @@ export default function CautionNotice({ className }: CautionNoticeProps) {
         // 레이아웃과 패딩
         'flex items-center justify-center gap-2.5 px-0 py-2.25',
         // 전체 크기 조정
-        'h-fit w-full',
+        'h-17 w-full',
         className
       )}
     >
