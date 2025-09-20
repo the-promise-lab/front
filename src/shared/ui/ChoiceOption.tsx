@@ -6,7 +6,7 @@ interface ChoiceOptionProps {
   onPress?: (isPressed: boolean) => void;
 }
 
-export function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
+export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePress = () => {

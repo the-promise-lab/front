@@ -2,7 +2,7 @@ interface PlaceTitleProps {
   title: string;
 }
 
-export function PlaceTitle({ title }: PlaceTitleProps) {
+export default function PlaceTitle({ title }: PlaceTitleProps) {
   return (
     <div className='relative flex h-18 w-131 items-center gap-[10px] bg-gradient-to-r from-[#343337] to-[rgba(52,51,55,0)] px-10.75 py-0'>
       {/* 흰색 세로 바 */}
