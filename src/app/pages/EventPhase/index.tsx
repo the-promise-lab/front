@@ -1,7 +1,7 @@
-import CautionNotice from '@features/event-phase/ui/CautionNotice';
-import CharacterProfile from '@features/event-phase/ui/CharacterProfile/index';
-import ChoiceOption from '@shared/ui/ChoiceOption';
-import PlaceTitle from '@shared/ui/PlaceTitle';
+import CautionNotice from '@features/event-phase/ui/kit/CautionNotice';
+import CharacterProfile from '@features/event-phase/ui/kit/CharacterProfile/index';
+import ChoiceOption from '@features/event-phase/ui/kit/ChoiceOption';
+import PlaceTitle from '@features/event-phase/ui/kit/PlaceTitle';
 
 export default function EventPhase() {
   return (
