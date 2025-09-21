@@ -4,6 +4,7 @@ import {
   Header,
   PlaceScreen,
   RandomEventScreen,
+  EventResultScreen,
   WarningBeforeStartScreen,
 } from '@features/event-phase/index';
 import { useState } from 'react';
@@ -25,10 +26,12 @@ export default function EventPhase() {
         return <RandomEventScreen />;
       case 4:
         return <RandomEventScreen type='ITEM' />;
+      case 5:
+        return <EventResultScreen />;
     }
   };
   const handleNext = () => {
-    setStep(prev => (prev < 4 ? prev + 1 : 0));
+    setStep(prev => (prev < 5 ? prev + 1 : 0));
   };
   return (
     <div
