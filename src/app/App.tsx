@@ -7,14 +7,15 @@ import { useAuthStore } from '../shared/auth/model/useAuthStore';
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
 import LandingPage from './pages/LandingPage';
-import LoginProgress from './pages/LoginProgress';
+import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
-import { ShelfSelection } from '../features/shelf-selection';
 import { CharacterSelect } from '../features/character-selection';
 import { useCharacterSelectionStore } from '../features/character-selection/model/useCharacterSelectionStore';
+import PackingPhase from './pages/PackingPhase';
+import EventPhase from './pages/EventPhase';
 
 export default function App() {
-  const { step, next, back, setSelectedCharacter, setAuthenticated } =
+  const { step, next, setSelectedCharacter, setAuthenticated } =
     useGameFlowStore();
   const { isLoggedIn } = useAuthStore();
 
@@ -40,7 +41,7 @@ export default function App() {
       return <MainMenu />;
     }
     if (step === 'PROGRESS') {
-      return <LoginProgress />;
+      return <LoadingPage />;
     }
     if (step === 'CHARACTER_SELECT') {
       return (
@@ -57,8 +58,14 @@ export default function App() {
         />
       );
     }
-    if (step === 'PLAYING') {
-      return <ShelfSelection onBack={back} />;
+    if (step === 'DAY_FLOW') {
+      return <EventPhase />;
+    }
+    if (step === 'PACKING_PHASE') {
+      return <PackingPhase />;
+    }
+    if (step === 'EVENT_PHASE') {
+      return <EventPhase />;
     }
 
     // 기본값 (fallback)
@@ -68,7 +75,7 @@ export default function App() {
   return (
     <AppProviders>
       <RootLayout>
-        <div className="fixed inset-0 z-10 touch-pan-y overflow-hidden">
+        <div className='fixed inset-0 z-10 touch-pan-y overflow-hidden'>
           {renderScreen()}
         </div>
       </RootLayout>

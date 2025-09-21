@@ -9,6 +9,8 @@ export type GameStep =
   | 'PROGRESS' // 게임 준비 진행 중
   | 'CHARACTER_SELECT' // 캐릭터 선택
   | 'DAY_FLOW' // 시나리오 DAY 플로우
+  | 'PACKING_PHASE' // 가방 싸기
+  | 'EVENT_PHASE' // 이벤트 페이즈
   | 'PLAYING'; // 게임 플레이
 
 // DAY 플로우 내부 단계
@@ -52,6 +54,8 @@ export const GAME_STEP_ORDER: GameStep[] = [
   'PROGRESS',
   'CHARACTER_SELECT',
   'DAY_FLOW',
+  'PACKING_PHASE',
+  'EVENT_PHASE',
   'PLAYING',
 ] as const;
 

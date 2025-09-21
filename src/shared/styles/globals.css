@@ -7,8 +7,57 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'NexonLv1Gothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF Light.woff')
+    format('woff');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NexonLv1Gothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff')
+    format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NexonLv1Gothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF Bold.woff')
+    format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NexonLv2Gothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic Light.woff')
+    format('woff');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NexonLv2Gothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic.woff')
+    format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NexonLv2Gothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic Bold.woff')
+    format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    'NexonLv1Gothic', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -52,6 +101,16 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --bt_glass_stroke: radial-gradient(
+    40.56% 109.08% at 54% 50%,
+    #fff 0%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  --bt-glass: linear-gradient(
+    78deg,
+    rgba(255, 255, 255, 0.24) -1.42%,
+    rgba(255, 255, 255, 0.12) 91.38%
+  );
   @apply scrollbar-none;
 }
 
@@ -184,6 +243,108 @@ h1 {
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-white;
   }
+
+  @media (max-width: 1024px) {
+    html {
+      /* font-size: 8px; */
+      --spacing: 0.125rem;
+    }
+  }
+}
+
+.gradient-border {
+  color: #fff;
+  background-color: transparent;
+  position: relative;
+  border-left: 2px solid white;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 2px solid transparent;
+  border-right: none;
+  border-left: none;
+  background-image: linear-gradient(
+    to right,
+    rgb(255, 255, 255) 0%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  box-sizing: border-box;
+  top: -2px;
+  left: -2px;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  z-index: -1;
+}
+
+.gradient-border.active {
+  position: relative;
+  background-color: transparent;
+  border-left: 2px solid #ffc107;
+}
+
+.gradient-border.active::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 2px solid transparent;
+  border-right: none;
+  border-left: none;
+  background-image: linear-gradient(
+    to right,
+    #ffc107 0%,
+    rgba(255, 193, 7, 0.8),
+    rgba(255, 193, 7, 0)
+  );
+  -webkit-mask:
+    linear-gradient(#ffc107 0 0) content-box,
+    linear-gradient(#ffc107 0 0);
+  -webkit-mask-composite: destination-out;
+  z-index: -1;
+  box-sizing: border-box;
+  top: -2px;
+  left: -2px;
+}
+
+.background-glass {
+  background: linear-gradient(
+    78deg,
+    rgba(255, 255, 255, 0.24) -1.42%,
+    rgba(255, 255, 255, 0.12) 91.38%
+  );
+}
+
+.background-glass-disabled {
+  background: linear-gradient(
+    175deg,
+    rgba(24, 24, 24, 0.6) 1.84%,
+    rgba(24, 24, 24, 0.3) 143.2%
+  );
+}
+
+.background-glass-pressed {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.8) -6.76%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
 }
