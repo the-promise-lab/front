@@ -30,7 +30,18 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       },
 
       goto: (step: GameStep) => {
-        set({ step });
+        const currentStep = get().step;
+
+        // DAY_FLOW에서 다른 단계로 이동할 때 DAY_STEP 초기화
+        if (currentStep === 'DAY_FLOW' && step !== 'DAY_FLOW') {
+          set({
+            step,
+            dayStep: 'PLACE_SCREEN',
+            currentDayStepIndex: 0,
+          });
+        } else {
+          set({ step });
+        }
       },
 
       next: () => {
@@ -39,7 +50,17 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
         if (currentIndex >= 0 && currentIndex < GAME_STEP_ORDER.length - 1) {
           const nextStep = GAME_STEP_ORDER[currentIndex + 1];
-          set({ step: nextStep });
+
+          // DAY_FLOW에서 다른 단계로 이동할 때 DAY_STEP 초기화
+          if (step === 'DAY_FLOW' && nextStep !== 'DAY_FLOW') {
+            set({
+              step: nextStep,
+              dayStep: 'PLACE_SCREEN',
+              currentDayStepIndex: 0,
+            });
+          } else {
+            set({ step: nextStep });
+          }
         }
       },
 
@@ -49,7 +70,17 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
         if (currentIndex > 0) {
           const prevStep = GAME_STEP_ORDER[currentIndex - 1];
-          set({ step: prevStep });
+
+          // DAY_FLOW에서 다른 단계로 이동할 때 DAY_STEP 초기화
+          if (step === 'DAY_FLOW' && prevStep !== 'DAY_FLOW') {
+            set({
+              step: prevStep,
+              dayStep: 'PLACE_SCREEN',
+              currentDayStepIndex: 0,
+            });
+          } else {
+            set({ step: prevStep });
+          }
         }
       },
 
