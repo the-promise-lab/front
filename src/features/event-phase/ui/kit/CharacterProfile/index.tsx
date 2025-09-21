@@ -4,12 +4,14 @@ import MentalityStat from './MentalityStat';
 import HPStat from './HPStat';
 
 interface CharacterProfileProps {
+  name: string;
   mentality: number;
   hp: number;
   className?: string;
 }
 
 export default function CharacterProfile({
+  name,
   mentality,
   hp,
   className,
@@ -23,7 +25,7 @@ export default function CharacterProfile({
       )}
     >
       {/* 아바타 */}
-      <Avatar />
+      <Avatar name={name} />
 
       {/* 스탯 */}
       <div className='flex items-center justify-start gap-2'>

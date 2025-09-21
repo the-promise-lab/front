@@ -24,7 +24,7 @@ export default function EventPhase() {
       className='relative flex h-screen w-screen flex-col gap-4 bg-[url(shelter-bg.png)] bg-cover bg-center'
       onClick={handleNext}
     >
-      <Header />
+      <Header hasCharacterProfiles={step > 2} />
       {renderScreen()}
     </div>
   );
