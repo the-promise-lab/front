@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
 import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
-import EventPhase from '../EventPhase';
+import LoadingPage from '../LoadingPage';
 
 export default function MainMenu() {
   const { logout } = useAuthStore();
@@ -23,7 +23,11 @@ export default function MainMenu() {
   };
 
   if (randomEventOn) {
-    return <EventPhase />;
+    return (
+      <LoadingPage
+        onComplete={() => useGameFlowStore.getState().goto('EVENT_PHASE')}
+      />
+    );
   }
   return (
     <div className='relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100'>

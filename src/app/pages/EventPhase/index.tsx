@@ -1,11 +1,17 @@
-import DayScreen from '@features/event-phase/ui/DayScreen';
-import Header from '@features/event-phase/ui/Header';
-import PlaceScreen from '@features/event-phase/ui/PlaceScreen';
-import RandomEventScreen from '@features/event-phase/ui/RandomEventScreen';
-import WarningBeforeStartScreen from '@features/event-phase/ui/WarningBeforeStartScreen';
+import { useAssetStore } from '@shared/model/assetStore';
+import {
+  DayScreen,
+  Header,
+  PlaceScreen,
+  RandomEventScreen,
+  WarningBeforeStartScreen,
+} from '@features/event-phase/index';
 import { useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
 export default function EventPhase() {
+  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
+  const shelterBgUrl = getObjectUrl('shelter-bg.png');
   const [step, setStep] = useState<number>(0);
   const renderScreen = () => {
     switch (step) {
@@ -26,7 +32,10 @@ export default function EventPhase() {
   };
   return (
     <div
-      className='relative flex h-screen w-screen flex-col gap-4 bg-[url(shelter-bg.png)] bg-cover bg-center'
+      className='relative flex h-screen w-screen flex-col gap-4 bg-cover bg-center'
+      style={{
+        backgroundImage: `url(${shelterBgUrl})`,
+      }}
       onClick={handleNext}
     >
       <Header hasCharacterProfiles={step > 2} />
