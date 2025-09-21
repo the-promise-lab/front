@@ -1,4 +1,5 @@
 import DayScreen from '@features/event-phase/ui/DayScreen';
+import Header from '@features/event-phase/ui/Header';
 import PlaceScreen from '@features/event-phase/ui/PlaceScreen';
 import WarningBeforeStartScreen from '@features/event-phase/ui/WarningBeforeStartScreen';
 import { useState } from 'react';
@@ -20,9 +21,10 @@ export default function EventPhase() {
   };
   return (
     <div
-      className='flex h-screen w-screen flex-col gap-4 bg-[url(shelter-bg.png)] bg-cover bg-center'
+      className='relative flex h-screen w-screen flex-col gap-4 bg-[url(shelter-bg.png)] bg-cover bg-center'
       onClick={handleNext}
     >
+      <Header />
       {renderScreen()}
     </div>
   );
