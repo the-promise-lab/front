@@ -2,6 +2,7 @@ import NoticeBanner from './kit/NoticeBanner';
 import { IconHeart, IconLightning } from '@shared/ui/icons';
 import { cn } from '@shared/lib/utils';
 import type { ReactNode } from 'react';
+import Counter from '@shared/ui/Counter';
 
 interface CharacterResult {
   name: string;
@@ -70,7 +71,6 @@ function StatBlock({
   positiveClass: string;
   negativeClass: string;
 }) {
-  const formatted = value > 0 ? `+${value}` : `${value}`;
   const colorClass = value >= 0 ? positiveClass : negativeClass;
 
   return (
@@ -79,7 +79,13 @@ function StatBlock({
         <div className='text-white'>{icon}</div>
         <span className='text-sm font-medium text-white'>{label}</span>
       </div>
-      <span className={cn('text-3xl font-bold', colorClass)}>{formatted}</span>
+      <span className={cn('text-3xl font-bold', colorClass)}>
+        {value >= 0 ? '+' : '-'}
+        <Counter
+          value={Math.abs(value)}
+          springOptions={{ damping: 100, stiffness: 200 }}
+        />
+      </span>
     </div>
   );
 }
