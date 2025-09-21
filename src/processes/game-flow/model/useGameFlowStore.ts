@@ -3,8 +3,17 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { GameFlowState, GameFlowActions, GameStep } from '../types';
-import { GAME_STEP_ORDER, INITIAL_GAME_FLOW_STATE } from '../types';
+import type {
+  GameFlowState,
+  GameFlowActions,
+  GameStep,
+  DayStep,
+} from '../types';
+import {
+  GAME_STEP_ORDER,
+  DAY_STEP_ORDER,
+  INITIAL_GAME_FLOW_STATE,
+} from '../types';
 
 export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
   persist(
@@ -51,6 +60,56 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       setSelectedCharacter: (character: string) => {
         set({ selectedCharacter: character });
       },
+
+      // DAY_FLOW 관련 액션들
+      gotoDayStep: (dayStep: DayStep) => {
+        const dayStepIndex = DAY_STEP_ORDER.indexOf(dayStep);
+        set({
+          dayStep,
+          currentDayStepIndex: dayStepIndex >= 0 ? dayStepIndex : 0,
+        });
+      },
+
+      nextDayStep: () => {
+        const { currentDayStepIndex } = get();
+        const nextIndex =
+          currentDayStepIndex !== undefined ? currentDayStepIndex + 1 : 0;
+
+        if (nextIndex < DAY_STEP_ORDER.length) {
+          const nextDayStep = DAY_STEP_ORDER[nextIndex];
+          set({
+            dayStep: nextDayStep,
+            currentDayStepIndex: nextIndex,
+          });
+        } else {
+          // 마지막 단계에서 다시 처음으로 (순환)
+          set({
+            dayStep: DAY_STEP_ORDER[0],
+            currentDayStepIndex: 0,
+          });
+        }
+      },
+
+      backDayStep: () => {
+        const { currentDayStepIndex } = get();
+        const prevIndex =
+          currentDayStepIndex !== undefined ? currentDayStepIndex - 1 : 0;
+
+        if (prevIndex >= 0) {
+          const prevDayStep = DAY_STEP_ORDER[prevIndex];
+          set({
+            dayStep: prevDayStep,
+            currentDayStepIndex: prevIndex,
+          });
+        }
+      },
+
+      resetDayFlow: () => {
+        set({
+          dayStep: 'PLACE_SCREEN',
+          currentDayStepIndex: 0,
+        });
+      },
     }),
     {
       name: 'game-flow-storage', // localStorage 키
@@ -58,6 +117,8 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         step: state.step,
         isAuthenticated: state.isAuthenticated,
         selectedCharacter: state.selectedCharacter,
+        dayStep: state.dayStep,
+        currentDayStepIndex: state.currentDayStepIndex,
       }),
     }
   )
@@ -100,7 +161,15 @@ export const gameFlowActions = {
   goToMainMenu: () => useGameFlowStore.getState().goto('MAIN_MENU'),
   goToCharacterSelect: () =>
     useGameFlowStore.getState().goto('CHARACTER_SELECT'),
+  goToDayFlow: () => useGameFlowStore.getState().goto('DAY_FLOW'),
   goToPlaying: () => useGameFlowStore.getState().goto('PLAYING'),
+
+  // DAY_FLOW 관련 편의 함수들
+  startDayFlow: () => {
+    const store = useGameFlowStore.getState();
+    store.goto('DAY_FLOW');
+    store.resetDayFlow();
+  },
 
   // 게임 시작
   startGame: () => {
