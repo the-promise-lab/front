@@ -1,3 +1,4 @@
+import DayScreen from '@features/event-phase/ui/DayScreen';
 import PlaceScreen from '@features/event-phase/ui/PlaceScreen';
 import WarningBeforeStartScreen from '@features/event-phase/ui/WarningBeforeStartScreen';
 import { useState } from 'react';
@@ -10,6 +11,8 @@ export default function EventPhase() {
         return <PlaceScreen />;
       case 1:
         return <WarningBeforeStartScreen />;
+      case 2:
+        return <DayScreen />;
     }
   };
   const handleNext = () => {
