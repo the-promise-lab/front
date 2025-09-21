@@ -17,10 +17,12 @@ export default function EventPhase() {
         return <DayScreen />;
       case 3:
         return <RandomEventScreen />;
+      case 4:
+        return <RandomEventScreen type='ITEM' />;
     }
   };
   const handleNext = () => {
-    setStep(prev => (prev < 3 ? prev + 1 : 0));
+    setStep(prev => (prev < 4 ? prev + 1 : 0));
   };
   return (
     <div

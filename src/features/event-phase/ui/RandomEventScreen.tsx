@@ -1,8 +1,9 @@
 import { IconCaution } from '@shared/ui/icons';
 import ChoiceOption from './kit/ChoiceOption';
+import ItemButton from './kit/ItemButton';
 
 interface RandomEventScreenProps {
-  type?: 'STORY' | 'RANDOM';
+  type?: 'STORY' | 'ITEM';
 }
 export default function RandomEventScreen({
   type = 'STORY',
@@ -19,6 +20,23 @@ export default function RandomEventScreen({
     },
   ];
 
+  const itemOptions = [
+    {
+      name: '닭가슴살',
+      image: 'chicken-breast.png',
+    },
+    {
+      name: '닭가슴살',
+      image: 'chicken-breast.png',
+      disabled: true,
+    },
+    {
+      name: '닭가슴살',
+      image: 'chicken-breast.png',
+      pressed: true,
+    },
+  ];
+
   return (
     <div className='flex h-[90%] w-full gap-11 pt-9 pl-14'>
       <div className='h-full w-[45dvw] rounded-[4px] border-2 border-white bg-white/15'>
@@ -32,14 +50,25 @@ export default function RandomEventScreen({
           </h4>
           <p className='text-sm leading-[130%] whitespace-pre'>{description}</p>
         </div>
-        {type === 'STORY' ? (
+        {type === 'STORY' && (
           <div className='flex flex-col gap-9'>
             {storyOptions.map(option => (
               <ChoiceOption key={option.label} text={option.label} />
             ))}
           </div>
-        ) : (
-          <></>
+        )}
+        {type === 'ITEM' && (
+          <div className='flex gap-2'>
+            {itemOptions.map(option => (
+              <ItemButton
+                key={option.name}
+                name={option.name}
+                imageUrl={option.image}
+                pressed={option.pressed}
+                disabled={option.disabled}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>
