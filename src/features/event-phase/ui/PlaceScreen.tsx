@@ -59,7 +59,7 @@ export default function PlaceScreen() {
 
       <div
         className={cn(
-          'pointer-events-none absolute top-15 left-0 z-30',
+          'pointer-events-none fixed top-15 left-0 z-30',
           // 'transition-opacity duration-700 ease-in-out',
           isDone ? 'opacity-100' : 'opacity-0'
         )}

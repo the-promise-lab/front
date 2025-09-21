@@ -233,7 +233,7 @@ h1 {
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-white;
   }
 
   @media (max-width: 1024px) {
@@ -248,7 +248,6 @@ h1 {
   color: #fff;
   background-color: transparent;
   position: relative;
-  border-radius: 80px;
   border-left: 2px solid white;
 }
 
@@ -260,6 +259,8 @@ h1 {
   height: calc(100% + 4px);
   border-top-left-radius: 80px;
   border-bottom-left-radius: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   border: 2px solid transparent;
   border-right: none;
   border-left: none;
@@ -282,7 +283,6 @@ h1 {
 .gradient-border.active {
   position: relative;
   background-color: transparent;
-  border-radius: 80px;
   border-left: 2px solid #ffc107;
 }
 
@@ -294,6 +294,8 @@ h1 {
   height: calc(100% + 4px);
   border-top-left-radius: 80px;
   border-bottom-left-radius: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   border: 2px solid transparent;
   border-right: none;
   border-left: none;

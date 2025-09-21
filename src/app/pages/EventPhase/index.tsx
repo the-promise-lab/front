@@ -1,6 +1,7 @@
 import DayScreen from '@features/event-phase/ui/DayScreen';
 import Header from '@features/event-phase/ui/Header';
 import PlaceScreen from '@features/event-phase/ui/PlaceScreen';
+import RandomEventScreen from '@features/event-phase/ui/RandomEventScreen';
 import WarningBeforeStartScreen from '@features/event-phase/ui/WarningBeforeStartScreen';
 import { useState } from 'react';
 
@@ -14,10 +15,12 @@ export default function EventPhase() {
         return <WarningBeforeStartScreen />;
       case 2:
         return <DayScreen />;
+      case 3:
+        return <RandomEventScreen />;
     }
   };
   const handleNext = () => {
-    setStep(prev => (prev < 2 ? prev + 1 : 0));
+    setStep(prev => (prev < 3 ? prev + 1 : 0));
   };
   return (
     <div
@@ -25,7 +28,7 @@ export default function EventPhase() {
       onClick={handleNext}
     >
       <Header hasCharacterProfiles={step > 2} />
-      {renderScreen()}
+      <div className='flex-1'>{renderScreen()}</div>
     </div>
   );
 }

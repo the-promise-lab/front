@@ -589,7 +589,7 @@ export function IconArrowLeft({ size = 42 }: IconProps) {
   );
 }
 
-export function IconCaution({ size = 42 }: IconProps) {
+export function IconCaution({ size = 42, className }: IconProps) {
   const width = size;
   const height = (size / 40) * 37;
   return (
@@ -599,6 +599,7 @@ export function IconCaution({ size = 42 }: IconProps) {
       height={height}
       viewBox='0 0 40 37'
       fill='none'
+      className={className}
     >
       <path
         opacity='0.4'
@@ -647,7 +648,7 @@ export function IconHeart({ size = 20, className }: IconProps) {
         d='M4.9953 15.9564L12.3885 23.748C13.8081 25.2441 16.1919 25.2441 17.6115 23.748L25.0047 15.9564C27.6651 13.1526 27.6651 8.60678 25.0047 5.80302C22.3443 2.99925 18.0309 2.99925 15.3705 5.80302C15.1691 6.0153 14.8309 6.0153 14.6295 5.80302C11.9691 2.99925 7.6557 2.99925 4.9953 5.80302C2.3349 8.60679 2.3349 13.1526 4.9953 15.9564Z'
         fill='#FF4E59'
         stroke='#FF4E59'
-        stroke-width='1.8'
+        strokeWidth='1.8'
       />
     </svg>
   );

@@ -22,7 +22,7 @@ export default function Header({
   return (
     <div
       className={cn(
-        'absolute inset-0 z-70 h-fit pt-11 pr-11',
+        'z-70 h-fit pt-11 pr-11',
         'flex items-center justify-between',
         className
       )}
