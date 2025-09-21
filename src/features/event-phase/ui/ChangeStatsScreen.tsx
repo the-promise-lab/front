@@ -10,7 +10,7 @@ interface CharacterResult {
   deltaMentality: number; // 정신력 변화
 }
 
-export default function EventResultScreen() {
+export default function ChangeStatsScreen() {
   // 실제 데이터 연결 전 임시 값
   const results: CharacterResult[] = [
     { name: '캐릭터1', deltaHp: +9, deltaMentality: -9 },

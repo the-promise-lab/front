@@ -3,7 +3,7 @@ import ChoiceOption from './kit/ChoiceOption';
 import ItemButton from './kit/ItemButton';
 
 interface RandomEventScreenProps {
-  type?: 'STORY' | 'ITEM';
+  type?: 'STORY' | 'ITEM' | 'RESULT';
 }
 export default function RandomEventScreen({
   type = 'STORY',
@@ -44,10 +44,14 @@ export default function RandomEventScreen({
       </div>
       <div className='flex flex-1 flex-col justify-between'>
         <div className='flex flex-col gap-9'>
-          <h4 className='flex items-center gap-2.5 font-[NexonLv2Gothic] text-xl font-bold'>
-            <IconCaution className='size-11.5' />
-            {title}
-          </h4>
+          {type !== 'RESULT' ? (
+            <h4 className='flex items-center gap-2.5 font-[NexonLv2Gothic] text-xl font-bold'>
+              <IconCaution className='size-11.5' />
+              {title}
+            </h4>
+          ) : (
+            <div className='h-0' />
+          )}
           <p className='text-sm leading-[130%] whitespace-pre'>{description}</p>
         </div>
         {type === 'STORY' && (
