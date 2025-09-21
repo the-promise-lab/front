@@ -101,6 +101,16 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --bt_glass_stroke: radial-gradient(
+    40.56% 109.08% at 54% 50%,
+    #fff 0%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  --bt-glass: linear-gradient(
+    78deg,
+    rgba(255, 255, 255, 0.24) -1.42%,
+    rgba(255, 255, 255, 0.12) 91.38%
+  );
   @apply scrollbar-none;
 }
 
@@ -233,7 +243,7 @@ h1 {
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-white;
   }
 
   @media (max-width: 1024px) {
@@ -248,7 +258,6 @@ h1 {
   color: #fff;
   background-color: transparent;
   position: relative;
-  border-radius: 80px;
   border-left: 2px solid white;
 }
 
@@ -260,6 +269,8 @@ h1 {
   height: calc(100% + 4px);
   border-top-left-radius: 80px;
   border-bottom-left-radius: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   border: 2px solid transparent;
   border-right: none;
   border-left: none;
@@ -282,7 +293,6 @@ h1 {
 .gradient-border.active {
   position: relative;
   background-color: transparent;
-  border-radius: 80px;
   border-left: 2px solid #ffc107;
 }
 
@@ -294,6 +304,8 @@ h1 {
   height: calc(100% + 4px);
   border-top-left-radius: 80px;
   border-bottom-left-radius: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   border: 2px solid transparent;
   border-right: none;
   border-left: none;
@@ -311,4 +323,28 @@ h1 {
   box-sizing: border-box;
   top: -2px;
   left: -2px;
+}
+
+.background-glass {
+  background: linear-gradient(
+    78deg,
+    rgba(255, 255, 255, 0.24) -1.42%,
+    rgba(255, 255, 255, 0.12) 91.38%
+  );
+}
+
+.background-glass-disabled {
+  background: linear-gradient(
+    175deg,
+    rgba(24, 24, 24, 0.6) 1.84%,
+    rgba(24, 24, 24, 0.3) 143.2%
+  );
+}
+
+.background-glass-pressed {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.8) -6.76%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
 }

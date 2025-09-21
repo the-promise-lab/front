@@ -7,7 +7,7 @@ import { useAuthStore } from '../shared/auth/model/useAuthStore';
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
 import LandingPage from './pages/LandingPage';
-import LoginProgress from './pages/LoginProgress';
+import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
 import { CharacterSelect } from '../features/character-selection';
 import { useCharacterSelectionStore } from '../features/character-selection/model/useCharacterSelectionStore';
@@ -41,7 +41,7 @@ export default function App() {
       return <MainMenu />;
     }
     if (step === 'PROGRESS') {
-      return <LoginProgress />;
+      return <LoadingPage />;
     }
     if (step === 'CHARACTER_SELECT') {
       return (

@@ -54,7 +54,7 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
     <div
       onClick={handlePress}
       className={cn(
-        'relative z-0 flex h-24 w-full cursor-pointer items-center gap-4.5 px-7',
+        'relative z-0 flex h-20 w-full cursor-pointer items-center gap-4.5 px-7',
         'bg-gradient-to-r from-white/10 to-transparent',
         'backdrop-blur-[43.5px]',
         'rounded-tl-[80px] rounded-bl-[80px]',
@@ -64,19 +64,19 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
       {/* 체크박스 아이콘 */}
       <div className='relative size-10 shrink-0'>
         <div className='absolute inset-0 flex items-center justify-center'>
-          <div className='size-7 rotate-45'>
+          <div className='size-4.5 rotate-45'>
             <div className='relative size-full ring-2 ring-white' />
           </div>
         </div>
         <div className='absolute inset-0 flex items-center justify-center'>
-          <div className='size-4.5 rotate-[45deg]'>
+          <div className='size-3 rotate-[45deg]'>
             <div className='size-full bg-white' />
           </div>
         </div>
       </div>
 
       {/* 텍스트 */}
-      <div className='text-2xl leading-none font-bold text-white'>
+      <div className='text-sm leading-none font-bold text-white'>
         <p className='leading-none whitespace-pre'>{text}</p>
       </div>
     </div>

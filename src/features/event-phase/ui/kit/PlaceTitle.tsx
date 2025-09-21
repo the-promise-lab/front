@@ -10,7 +10,7 @@ export default function PlaceTitle({ title }: PlaceTitleProps) {
 
       {/* 제목 텍스트 */}
       <div className='absolute top-3.5 left-15.25'>
-        <p className='text-xl leading-[normal] font-bold tracking-[-0.4px] whitespace-nowrap text-white'>
+        <p className='text-xl leading-[normal] font-semibold tracking-[-0.4px] whitespace-nowrap text-white'>
           {title}
         </p>
       </div>

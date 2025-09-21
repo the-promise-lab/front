@@ -1,8 +1,10 @@
 interface IconProps {
   size?: number;
+  className?: string;
 }
+
 // Burger Menu Icon
-export function IconBurger({ size = 42 }: IconProps) {
+export function IconBurger({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -10,6 +12,7 @@ export function IconBurger({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_99)' strokeWidth='7' strokeMiterlimit='10'>
         <path
@@ -47,7 +50,7 @@ export function IconBurger({ size = 42 }: IconProps) {
   );
 }
 
-export function IconTimer({ size = 42 }: IconProps) {
+export function IconTimer({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -55,6 +58,7 @@ export function IconTimer({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_115)'>
         <path
@@ -89,7 +93,7 @@ export function IconTimer({ size = 42 }: IconProps) {
   );
 }
 
-export function IconChevronRight({ size = 42 }: IconProps) {
+export function IconChevronRight({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -97,6 +101,7 @@ export function IconChevronRight({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_137)'>
         <path
@@ -126,7 +131,7 @@ export function IconChevronRight({ size = 42 }: IconProps) {
   );
 }
 
-export function IconStar({ size = 42 }: IconProps) {
+export function IconStar({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -134,6 +139,7 @@ export function IconStar({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_143)'>
         <path
@@ -163,7 +169,7 @@ export function IconStar({ size = 42 }: IconProps) {
   );
 }
 
-export function IconChevronLeft({ size = 42 }: IconProps) {
+export function IconChevronLeft({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -171,6 +177,7 @@ export function IconChevronLeft({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_149)'>
         <path
@@ -200,7 +207,7 @@ export function IconChevronLeft({ size = 42 }: IconProps) {
   );
 }
 
-export function IconMusic({ size = 42 }: IconProps) {
+export function IconMusic({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -208,6 +215,7 @@ export function IconMusic({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_155)'>
         <path
@@ -245,7 +253,7 @@ export function IconMusic({ size = 42 }: IconProps) {
   );
 }
 
-export function IconRotate({ size = 42 }: IconProps) {
+export function IconRotate({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -253,6 +261,7 @@ export function IconRotate({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_167)'>
         <path
@@ -294,7 +303,7 @@ export function IconRotate({ size = 42 }: IconProps) {
   );
 }
 
-export function IconSoundOn({ size = 42 }: IconProps) {
+export function IconSoundOn({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -302,6 +311,7 @@ export function IconSoundOn({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_182)'>
         <path
@@ -343,7 +353,7 @@ export function IconSoundOn({ size = 42 }: IconProps) {
   );
 }
 
-export function IconSoundOff({ size = 42 }: IconProps) {
+export function IconSoundOff({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -351,6 +361,7 @@ export function IconSoundOff({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_192)'>
         <path
@@ -578,7 +589,7 @@ export function IconArrowLeft({ size = 42 }: IconProps) {
   );
 }
 
-export function IconCaution({ size = 42 }: IconProps) {
+export function IconCaution({ size = 42, className }: IconProps) {
   const width = size;
   const height = (size / 40) * 37;
   return (
@@ -588,6 +599,7 @@ export function IconCaution({ size = 42 }: IconProps) {
       height={height}
       viewBox='0 0 40 37'
       fill='none'
+      className={className}
     >
       <path
         opacity='0.4'
@@ -602,37 +614,154 @@ export function IconCaution({ size = 42 }: IconProps) {
   );
 }
 
-export function IconLightning({ size = 20 }: IconProps) {
+export function IconLightning({ size = 21, className }: IconProps) {
   return (
     <svg
-      width={(size * 21) / 27}
-      height={size}
+      width={size}
+      height={(size * 27) / 21}
       viewBox='0 0 21 27'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
+      className={className}
     >
       <path
         d='M1 13.9032L9.26446 1H19.1818L12.9835 9.87097H19.1818L1 26L6.78512 13.9032H1Z'
         fill='#FFF603'
         stroke='#FFF603'
-        stroke-linejoin='round'
+        strokeLinejoin='round'
       />
     </svg>
   );
 }
 
-export function IconHeart({ size = 20 }: IconProps) {
+export function IconHeart({ size = 20, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       width={size}
-      height={(size / 20) * 17}
-      viewBox='0 0 34 30'
+      height={size}
+      viewBox='0 0 30 29'
       fill='none'
+      className={className}
     >
       <path
-        d='M17 29.5L14.525 27.275C5.8 19.4 0 14.2 0 7.75C0 3.4 3.4 0 7.75 0C10.165 0 12.495 1.19 14.025 3.055H19.975C21.505 1.19 23.835 0 26.25 0C30.6 0 34 3.4 34 7.75C34 14.2 28.2 19.4 19.475 27.275L17 29.5Z'
+        d='M4.9953 15.9564L12.3885 23.748C13.8081 25.2441 16.1919 25.2441 17.6115 23.748L25.0047 15.9564C27.6651 13.1526 27.6651 8.60678 25.0047 5.80302C22.3443 2.99925 18.0309 2.99925 15.3705 5.80302C15.1691 6.0153 14.8309 6.0153 14.6295 5.80302C11.9691 2.99925 7.6557 2.99925 4.9953 5.80302C2.3349 8.60679 2.3349 13.1526 4.9953 15.9564Z'
         fill='#FF4E59'
+        stroke='#FF4E59'
+        strokeWidth='1.8'
+      />
+    </svg>
+  );
+}
+
+export function IconBackpack({ className, size = 102 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      className={className}
+      viewBox='0 0 102 102'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        opacity='0.22'
+        d='M64.3571 93.5H37.6429C21.6143 93.5 8.5 80.3857 8.5 64.3571V37.6429C8.5 21.6143 21.6143 8.5 37.6429 8.5H64.3571C80.3857 8.5 93.5 21.6143 93.5 37.6429V64.3571C93.5 80.3857 80.3857 93.5 64.3571 93.5Z'
+        fill='white'
+      />
+      <path
+        opacity='0.22'
+        d='M64.3571 93.5H37.6429C21.6143 93.5 8.5 80.3857 8.5 64.3571V37.6429C8.5 21.6143 21.6143 8.5 37.6429 8.5H64.3571C80.3857 8.5 93.5 21.6143 93.5 37.6429V64.3571C93.5 80.3857 80.3857 93.5 64.3571 93.5Z'
+        fill='#D3D2E0'
+        stroke='white'
+        strokeWidth='14.3333'
+        strokeMiterlimit='10'
+      />
+      <g clipPath='url(#clip0_26_16417)'>
+        <path
+          d='M59 75H43C41.6828 74.9947 40.4041 74.556 39.3609 73.7518C38.3178 72.9476 37.5683 71.8225 37.228 70.55C37.8007 67.3136 39.4949 64.3824 42.0133 62.2705C44.5317 60.1587 47.7134 59.0013 51 59.0013C54.2866 59.0013 57.4683 60.1587 59.9867 62.2705C62.5051 64.3824 64.1993 67.3136 64.772 70.55C64.4317 71.8225 63.6822 72.9476 62.6391 73.7518C61.5959 74.556 60.3172 74.9947 59 75ZM33 69V53.848C31.2187 54.6254 29.7026 55.905 28.637 57.5304C27.5714 59.1558 27.0026 61.0565 27 63L27 65C27.0031 67.2759 27.7825 69.4827 29.2094 71.2558C30.6363 73.0289 32.6254 74.2622 34.848 74.752C33.6481 73.0739 33.002 71.063 33 69ZM69 53.848V69C68.998 71.063 68.3519 73.0739 67.152 74.752C69.3746 74.2622 71.3637 73.0289 72.7906 71.2558C74.2175 69.4827 74.9969 67.2759 75 65V63C74.9974 61.0565 74.4286 59.1558 73.363 57.5304C72.2974 55.905 70.7813 54.6254 69 53.848ZM65 49V61.712C63.3174 59.6169 61.186 57.9261 58.763 56.7644C56.34 55.6027 53.6871 54.9996 51 54.9996C48.3129 54.9996 45.66 55.6027 43.237 56.7644C40.814 57.9261 38.6826 59.6169 37 61.712V49C37.0014 46.7458 37.5478 44.5253 38.5925 42.5278C39.6372 40.5303 41.1493 38.815 43 37.528V35C43 32.8783 43.8429 30.8434 45.3431 29.3431C46.8434 27.8429 48.8783 27 51 27C53.1217 27 55.1566 27.8429 56.6569 29.3431C58.1571 30.8434 59 32.8783 59 35V37.528C60.8507 38.815 62.3628 40.5303 63.4075 42.5278C64.4522 44.5253 64.9986 46.7458 65 49ZM47 35.6C49.6086 34.8133 52.3914 34.8133 55 35.6V35C55 33.9391 54.5786 32.9217 53.8284 32.1716C53.0783 31.4214 52.0609 31 51 31C49.9391 31 48.9217 31.4214 48.1716 32.1716C47.4214 32.9217 47 33.9391 47 35V35.6ZM57 47C57 46.4696 56.7893 45.9609 56.4142 45.5858C56.0391 45.2107 55.5304 45 55 45H47C46.4696 45 45.9609 45.2107 45.5858 45.5858C45.2107 45.9609 45 46.4696 45 47C45 47.5304 45.2107 48.0391 45.5858 48.4142C45.9609 48.7893 46.4696 49 47 49H55C55.5304 49 56.0391 48.7893 56.4142 48.4142C56.7893 48.0391 57 47.5304 57 47Z'
+          fill='white'
+        />
+      </g>
+      <defs>
+        <clipPath id='clip0_26_16417'>
+          <rect
+            width='48'
+            height='48'
+            fill='white'
+            transform='translate(27 27)'
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+export function IconPause({ className, size = 102 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      className={className}
+      viewBox='0 0 102 102'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        opacity='0.22'
+        d='M64.3571 93.5H37.6429C21.6143 93.5 8.5 80.3857 8.5 64.3571V37.6429C8.5 21.6143 21.6143 8.5 37.6429 8.5H64.3571C80.3857 8.5 93.5 21.6143 93.5 37.6429V64.3571C93.5 80.3857 80.3857 93.5 64.3571 93.5Z'
+        fill='white'
+      />
+      <path
+        opacity='0.22'
+        d='M64.3571 93.5H37.6429C21.6143 93.5 8.5 80.3857 8.5 64.3571V37.6429C8.5 21.6143 21.6143 8.5 37.6429 8.5H64.3571C80.3857 8.5 93.5 21.6143 93.5 37.6429V64.3571C93.5 80.3857 80.3857 93.5 64.3571 93.5Z'
+        fill='#D3D2E0'
+        stroke='white'
+        strokeWidth='14.3333'
+        strokeMiterlimit='10'
+      />
+      <path
+        d='M56 67.1368V34.8632C56 32.2105 58.1739 30 60.7826 30H61.2174C63.8261 30 66 32.2105 66 34.8632V67.1368C66 69.7895 63.8261 72 61.2174 72H60.7826C58.1739 72 56 69.7895 56 67.1368Z'
+        fill='white'
+      />
+      <path
+        d='M36 67.1368V34.8632C36 32.2105 38.1739 30 40.7826 30H41.2174C43.8261 30 46 32.2105 46 34.8632V67.1368C46 69.7895 43.8261 72 41.2174 72H40.7826C37.7391 72 36 69.7895 36 67.1368Z'
+        fill='white'
+      />
+    </svg>
+  );
+}
+
+export function IconClose({ className, size = 102 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox='0 0 102 102'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        opacity='0.22'
+        d='M64.3571 93.5H37.6429C21.6143 93.5 8.5 80.3857 8.5 64.3571V37.6429C8.5 21.6143 21.6143 8.5 37.6429 8.5H64.3571C80.3857 8.5 93.5 21.6143 93.5 37.6429V64.3571C93.5 80.3857 80.3857 93.5 64.3571 93.5Z'
+        fill='white'
+      />
+      <path
+        opacity='0.22'
+        d='M64.3571 93.5H37.6429C21.6143 93.5 8.5 80.3857 8.5 64.3571V37.6429C8.5 21.6143 21.6143 8.5 37.6429 8.5H64.3571C80.3857 8.5 93.5 21.6143 93.5 37.6429V64.3571C93.5 80.3857 80.3857 93.5 64.3571 93.5Z'
+        fill='#D3D2E0'
+        stroke='white'
+        strokeWidth='14.3333'
+        strokeMiterlimit='10'
+      />
+      <path
+        d='M71.1413 37.214L37.2282 71.0221C35.663 72.5825 33.0543 72.5825 31.4891 71.0221C29.9239 69.4617 29.9239 66.8611 31.4891 65.3007L65.4021 31.4927C66.9674 29.9323 69.5761 29.9323 71.1413 31.4927C72.7065 33.053 72.7065 35.6537 71.1413 37.214Z'
+        fill='white'
+      />
+      <path
+        d='M65.4021 71.5421L31.4891 37.734C29.9239 36.1737 29.9239 33.5731 31.4891 32.0127C33.0543 30.4523 35.663 30.4523 37.2282 32.0127L71.1413 65.8207C72.7065 67.3811 72.7065 69.9817 71.1413 71.5421C69.5761 72.5823 66.9674 72.5823 65.4021 71.5421Z'
+        fill='white'
       />
     </svg>
   );
