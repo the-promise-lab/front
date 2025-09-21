@@ -4,7 +4,7 @@ interface IconProps {
 }
 
 // Burger Menu Icon
-export function IconBurger({ size = 42 }: IconProps) {
+export function IconBurger({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -12,6 +12,7 @@ export function IconBurger({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_99)' strokeWidth='7' strokeMiterlimit='10'>
         <path
@@ -49,7 +50,7 @@ export function IconBurger({ size = 42 }: IconProps) {
   );
 }
 
-export function IconTimer({ size = 42 }: IconProps) {
+export function IconTimer({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -57,6 +58,7 @@ export function IconTimer({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_115)'>
         <path
@@ -91,7 +93,7 @@ export function IconTimer({ size = 42 }: IconProps) {
   );
 }
 
-export function IconChevronRight({ size = 42 }: IconProps) {
+export function IconChevronRight({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -99,6 +101,7 @@ export function IconChevronRight({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_137)'>
         <path
@@ -128,7 +131,7 @@ export function IconChevronRight({ size = 42 }: IconProps) {
   );
 }
 
-export function IconStar({ size = 42 }: IconProps) {
+export function IconStar({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -136,6 +139,7 @@ export function IconStar({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_143)'>
         <path
@@ -165,7 +169,7 @@ export function IconStar({ size = 42 }: IconProps) {
   );
 }
 
-export function IconChevronLeft({ size = 42 }: IconProps) {
+export function IconChevronLeft({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -173,6 +177,7 @@ export function IconChevronLeft({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_149)'>
         <path
@@ -202,7 +207,7 @@ export function IconChevronLeft({ size = 42 }: IconProps) {
   );
 }
 
-export function IconMusic({ size = 42 }: IconProps) {
+export function IconMusic({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -210,6 +215,7 @@ export function IconMusic({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_155)'>
         <path
@@ -247,7 +253,7 @@ export function IconMusic({ size = 42 }: IconProps) {
   );
 }
 
-export function IconRotate({ size = 42 }: IconProps) {
+export function IconRotate({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -255,6 +261,7 @@ export function IconRotate({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_167)'>
         <path
@@ -296,7 +303,7 @@ export function IconRotate({ size = 42 }: IconProps) {
   );
 }
 
-export function IconSoundOn({ size = 42 }: IconProps) {
+export function IconSoundOn({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -304,6 +311,7 @@ export function IconSoundOn({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_182)'>
         <path
@@ -345,7 +353,7 @@ export function IconSoundOn({ size = 42 }: IconProps) {
   );
 }
 
-export function IconSoundOff({ size = 42 }: IconProps) {
+export function IconSoundOff({ size = 42, className }: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -353,6 +361,7 @@ export function IconSoundOff({ size = 42 }: IconProps) {
       height={size}
       viewBox='0 0 42 42'
       fill='none'
+      className={className}
     >
       <g clipPath='url(#clip0_26_192)'>
         <path
@@ -640,11 +649,11 @@ export function IconHeart({ size = 20 }: IconProps) {
   );
 }
 
-export function IconBackpack({ className }: IconProps) {
+export function IconBackpack({ className, size = 102 }: IconProps) {
   return (
     <svg
-      width={102}
-      height={102}
+      width={size}
+      height={size}
       className={className}
       viewBox='0 0 102 102'
       fill='none'
@@ -683,11 +692,11 @@ export function IconBackpack({ className }: IconProps) {
   );
 }
 
-export function IconPause({ className }: IconProps) {
+export function IconPause({ className, size = 102 }: IconProps) {
   return (
     <svg
-      width='102'
-      height='102'
+      width={size}
+      height={size}
       className={className}
       viewBox='0 0 102 102'
       fill='none'
@@ -718,11 +727,11 @@ export function IconPause({ className }: IconProps) {
   );
 }
 
-export function IconClose({ className }: IconProps) {
+export function IconClose({ className, size = 102 }: IconProps) {
   return (
     <svg
-      width='102'
-      height='102'
+      width={size}
+      height={size}
       viewBox='0 0 102 102'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
