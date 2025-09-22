@@ -114,6 +114,33 @@ export const dayFlowEvents: DayFlowEvent[] = [
       },
     },
   },
+
+  // CHANGE_STATS_SCREEN - 스탯 변화 화면
+  {
+    id: 6,
+    dayStep: 'CHANGE_STATS_SCREEN',
+    eventData: {
+      id: 6,
+      title: '스탯 변화',
+      descriptions: [
+        '선택한 아이템의 효과가 적용되었습니다.',
+        '당신의 상태가 변경되었습니다.',
+      ],
+      image: '/stats-change-bg.png',
+    },
+  },
+
+  // EVENT_RESULT_SCREEN - 이벤트 결과 화면
+  {
+    id: 7,
+    dayStep: 'EVENT_RESULT_SCREEN',
+    eventData: {
+      id: 7,
+      title: '이벤트 결과',
+      descriptions: ['이벤트가 완료되었습니다.', '다음 이벤트로 진행하세요.'],
+      image: '/event-result-bg.png',
+    },
+  },
 ];
 
 // 특정 DAY_STEP에 해당하는 이벤트 찾기

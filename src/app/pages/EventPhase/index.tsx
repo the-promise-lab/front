@@ -5,6 +5,7 @@ import {
   PlaceScreen,
   RandomEventScreen,
   WarningBeforeStartScreen,
+  ChangeStatsScreen,
 } from '@features/event-phase/index';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
@@ -31,6 +32,10 @@ export default function EventPhase() {
         return <RandomEventScreen />;
       case 'RANDOM_EVENT_ITEM':
         return <RandomEventScreen type='ITEM' />;
+      case 'CHANGE_STATS_SCREEN':
+        return <ChangeStatsScreen />;
+      case 'EVENT_RESULT_SCREEN':
+        return <RandomEventScreen type='RESULT' />;
       default:
         return <PlaceScreen />;
     }
@@ -49,7 +54,10 @@ export default function EventPhase() {
     >
       <Header
         hasCharacterProfiles={
-          dayStep === 'RANDOM_EVENT_STORY' || dayStep === 'RANDOM_EVENT_ITEM'
+          dayStep === 'RANDOM_EVENT_STORY' ||
+          dayStep === 'RANDOM_EVENT_ITEM' ||
+          dayStep === 'CHANGE_STATS_SCREEN' ||
+          dayStep === 'EVENT_RESULT_SCREEN'
         }
       />
       <div className='flex-1'>{renderScreen()}</div>

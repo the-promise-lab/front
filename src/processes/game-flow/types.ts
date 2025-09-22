@@ -19,7 +19,9 @@ export type DayStep =
   | 'WARNING_BEFORE_START' // 시작 전 주의사항
   | 'DAY_SCREEN' // DAY 화면
   | 'RANDOM_EVENT_STORY' // 스토리형 랜덤 이벤트
-  | 'RANDOM_EVENT_ITEM'; // 아이템형 랜덤 이벤트
+  | 'RANDOM_EVENT_ITEM' // 아이템형 랜덤 이벤트
+  | 'CHANGE_STATS_SCREEN' // 스탯 변화 화면
+  | 'EVENT_RESULT_SCREEN'; // 이벤트 결과 화면
 
 // 이벤트 데이터 타입 정의
 export interface EventOption {
@@ -98,6 +100,8 @@ export const DAY_STEP_ORDER: DayStep[] = [
   'DAY_SCREEN',
   'RANDOM_EVENT_STORY',
   'RANDOM_EVENT_ITEM',
+  'CHANGE_STATS_SCREEN',
+  'EVENT_RESULT_SCREEN',
 ] as const;
 
 // 초기 상태
