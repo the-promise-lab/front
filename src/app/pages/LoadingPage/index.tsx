@@ -11,6 +11,8 @@ const ASSETS_TO_PRELOAD = [
   'shelf-example.png',
   'shelf-clothing.png',
   'shelf-food.png',
+  'person1.png',
+  'person2.png',
 ];
 
 interface Props {

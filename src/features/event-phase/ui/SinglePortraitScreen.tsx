@@ -1,27 +1,61 @@
-import { useState, type MouseEvent } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 import PortraitBanner from './kit/PortraitBanner';
+import { useAssetStore } from '@shared/model/assetStore';
+import { useShallow } from 'zustand/react/shallow';
+import PortraitCharacterImage from './kit/PortraitCharacterImage';
 
 const portraits = [
-  '우리는 통장에 돈이 빠지는게 더 낫지. 근손실보다는..',
-  '맞습니다 헴!!',
-  '닭가슴살 또 챙기러 갑시다!!',
+  {
+    speaker: 'person1',
+    text: '우리는 통장에 돈이 빠지는게 더 낫지. 근손실보다는..',
+  },
+  { speaker: 'person2', text: '맞습니다 헴!!' },
+  { speaker: 'person2', text: '닭가슴살 또 챙기러 갑시다!!' },
 ];
+
+const PORTRAIT_START_DELAY = 1000;
 
 export default function SinglePortraitScreen() {
   const [portraitIndex, setPortraitIndex] = useState(0);
+  const [portraitStarted, setPortraitStarted] = useState(false);
+  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
+  const person1Url = getObjectUrl('person1.png');
+  const person2Url = getObjectUrl('person2.png');
   const handleNextPortrait = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setPortraitIndex(prev => (prev + 1) % portraits.length);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPortraitStarted(true);
+    }, PORTRAIT_START_DELAY);
+    return () => clearTimeout(timer);
+  }, []);
+
   const currentPortrait = portraits[portraitIndex];
   return (
     <div className='relative h-full w-full'>
-      <PortraitBanner
-        onClick={handleNextPortrait}
-        key={`currentPortrait-${portraitIndex}`}
-        portrait={currentPortrait}
-        characterName='캐릭터 이름'
+      <PortraitCharacterImage
+        src={person1Url}
+        alt='person1'
+        dimmed={portraitStarted && currentPortrait.speaker !== 'person1'}
+        position='right'
       />
+      <PortraitCharacterImage
+        src={person2Url}
+        alt='person2'
+        dimmed={portraitStarted && currentPortrait.speaker !== 'person2'}
+        position='left'
+      />
+      {portraitStarted && (
+        <PortraitBanner
+          onClick={handleNextPortrait}
+          key={`currentPortrait-${portraitIndex}`}
+          portrait={currentPortrait.text}
+          characterName={currentPortrait.speaker}
+        />
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import TypingText from '@shared/ui/TypingText';
 import { cn } from '@shared/lib/utils';
 import type { HTMLAttributes } from 'react';
+import { IconDown } from '@shared/ui/icons';
 
 interface PortraitBannerProps extends HTMLAttributes<HTMLDivElement> {
   portrait: string;
@@ -23,6 +24,10 @@ export default function PortraitBanner({
         {characterName}
       </p>
       <TypingText texts={portrait.split('\n')} className='text-sm' />
+
+      <div className='flex flex-1 items-end'>
+        <IconDown className='h-2.5 w-6.5' />
+      </div>
     </div>
   );
 }
