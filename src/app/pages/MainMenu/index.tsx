@@ -1,11 +1,8 @@
-import { useState } from 'react';
 import { useGameFlowStore } from '../../../processes/game-flow';
 import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
-import LoadingPage from '../LoadingPage';
 
 export default function MainMenu() {
   const { logout } = useAuthStore();
-  const [randomEventOn, setRandomEventOn] = useState(false); // 임시
 
   const handleLogout = async () => {
     await logout();
@@ -21,14 +18,6 @@ export default function MainMenu() {
     // TODO: 가방/인벤토리 화면으로 이동
     console.log('가방 버튼 클릭');
   };
-
-  if (randomEventOn) {
-    return (
-      <LoadingPage
-        onComplete={() => useGameFlowStore.getState().goto('EVENT_PHASE')}
-      />
-    );
-  }
   return (
     <div className='relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100'>
       {/* 상단 우측 설정 버튼 */}
@@ -108,7 +97,7 @@ export default function MainMenu() {
           🎮 게임 시작하기
         </button>
         <button
-          onClick={() => setRandomEventOn(true)}
+          onClick={() => useGameFlowStore.getState().goto('DAY_FLOW')}
           className='mt-4 transform rounded-full bg-gradient-to-r from-blue-500/50 to-indigo-600/50 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800'
         >
           🎮 랜덤 이벤트로

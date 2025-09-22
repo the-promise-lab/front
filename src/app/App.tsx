@@ -24,6 +24,13 @@ export default function App() {
     setAuthenticated(isLoggedIn);
   }, [isLoggedIn, setAuthenticated]);
 
+  // DAY_FLOW 진입 시 DAY_STEP 초기화
+  useEffect(() => {
+    if (step === 'DAY_FLOW') {
+      resetDayFlow();
+    }
+  }, [step, resetDayFlow]);
+
   const renderScreen = () => {
     // 인증 상태에 따른 기본 분기
     if (!isLoggedIn) {
@@ -59,8 +66,6 @@ export default function App() {
       );
     }
     if (step === 'DAY_FLOW') {
-      // DAY_FLOW 진입 시 DAY_STEP 초기화 및 이벤트 데이터 로드
-      resetDayFlow();
       return <EventPhase />;
     }
     if (step === 'PACKING_PHASE') {
