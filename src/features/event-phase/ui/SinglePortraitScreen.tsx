@@ -15,8 +15,9 @@ export default function SinglePortraitScreen() {
   };
   const currentPortrait = portraits[portraitIndex];
   return (
-    <div className='relative h-full w-full' onClick={handleNextPortrait}>
+    <div className='relative h-full w-full'>
       <PortraitBanner
+        onClick={handleNextPortrait}
         key={`currentPortrait-${portraitIndex}`}
         portrait={currentPortrait}
         characterName='캐릭터 이름'

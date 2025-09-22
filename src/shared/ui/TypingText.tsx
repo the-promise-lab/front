@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 
 type TypingTextProps = {
-  text: string;
+  texts: string[];
   speed?: number;
   startDelay?: number;
   cursor?: boolean;
@@ -21,16 +21,21 @@ function splitGraphemes(text: string, locale = 'ko') {
 }
 
 export default function TypingText({
-  text,
+  texts,
   speed = 70,
   startDelay = 0,
-  cursor = true,
+  cursor = false,
   playWhenVisible = true,
   rootMargin = '0px',
   className,
   locale = 'ko',
 }: TypingTextProps) {
-  const units = useMemo(() => splitGraphemes(text, locale), [text, locale]);
+  // 모든 텍스트를 개행으로 연결하여 하나의 문자열로 만들기
+  const fullText = useMemo(() => texts.join('\n'), [texts]);
+  const units = useMemo(
+    () => splitGraphemes(fullText, locale),
+    [fullText, locale]
+  );
   const [count, setCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(!playWhenVisible);
   const containerRef = useRef<HTMLSpanElement | null>(null);
@@ -122,13 +127,11 @@ export default function TypingText({
   return (
     <span
       ref={containerRef}
-      className={['inline-flex items-center', className]
-        .filter(Boolean)
-        .join(' ')}
+      className={['inline-flex items-end', className].filter(Boolean).join(' ')}
       aria-live='polite'
       role='status'
     >
-      <span>{out}</span>
+      <span style={{ whiteSpace: 'pre-line' }}>{out}</span>
       {cursor && (
         <motion.span
           aria-hidden
