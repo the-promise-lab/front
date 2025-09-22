@@ -14,9 +14,12 @@ export default function EventPhase() {
   const shelterBgUrl = getObjectUrl('shelter-bg.png');
 
   // DAY_STEP 상태 관리
-  const { dayStep, nextDayStep } = useGameFlowStore();
+  const { dayStep, nextDayStep, currentEventData } = useGameFlowStore();
 
   const renderScreen = () => {
+    // TODO: 각 컴포넌트에 currentEventData 전달 예정
+    console.log('Current Event Data:', currentEventData);
+
     switch (dayStep) {
       case 'PLACE_SCREEN':
         return <PlaceScreen />;

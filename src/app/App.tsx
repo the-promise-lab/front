@@ -15,7 +15,7 @@ import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 
 export default function App() {
-  const { step, next, setSelectedCharacter, setAuthenticated } =
+  const { step, next, setSelectedCharacter, setAuthenticated, resetDayFlow } =
     useGameFlowStore();
   const { isLoggedIn } = useAuthStore();
 
@@ -59,6 +59,8 @@ export default function App() {
       );
     }
     if (step === 'DAY_FLOW') {
+      // DAY_FLOW 진입 시 DAY_STEP 초기화 및 이벤트 데이터 로드
+      resetDayFlow();
       return <EventPhase />;
     }
     if (step === 'PACKING_PHASE') {

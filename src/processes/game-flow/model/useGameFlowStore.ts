@@ -8,12 +8,14 @@ import type {
   GameFlowActions,
   GameStep,
   DayStep,
+  EventData,
 } from '../types';
 import {
   GAME_STEP_ORDER,
   DAY_STEP_ORDER,
   INITIAL_GAME_FLOW_STATE,
 } from '../types';
+import { getEventByDayStep } from '../data/dayFlowData';
 
 export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
   persist(
@@ -95,9 +97,13 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       // DAY_FLOW 관련 액션들
       gotoDayStep: (dayStep: DayStep) => {
         const dayStepIndex = DAY_STEP_ORDER.indexOf(dayStep);
+        const eventData: EventData | undefined =
+          getEventByDayStep(dayStep)?.eventData;
+
         set({
           dayStep,
           currentDayStepIndex: dayStepIndex >= 0 ? dayStepIndex : 0,
+          currentEventData: eventData,
         });
       },
 
@@ -108,15 +114,24 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
         if (nextIndex < DAY_STEP_ORDER.length) {
           const nextDayStep = DAY_STEP_ORDER[nextIndex];
+          const eventData: EventData | undefined =
+            getEventByDayStep(nextDayStep)?.eventData;
+
           set({
             dayStep: nextDayStep,
             currentDayStepIndex: nextIndex,
+            currentEventData: eventData,
           });
         } else {
           // 마지막 단계에서 다시 처음으로 (순환)
+          const firstDayStep = DAY_STEP_ORDER[0];
+          const eventData: EventData | undefined =
+            getEventByDayStep(firstDayStep)?.eventData;
+
           set({
-            dayStep: DAY_STEP_ORDER[0],
+            dayStep: firstDayStep,
             currentDayStepIndex: 0,
+            currentEventData: eventData,
           });
         }
       },
@@ -128,17 +143,25 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
         if (prevIndex >= 0) {
           const prevDayStep = DAY_STEP_ORDER[prevIndex];
+          const eventData: EventData | undefined =
+            getEventByDayStep(prevDayStep)?.eventData;
+
           set({
             dayStep: prevDayStep,
             currentDayStepIndex: prevIndex,
+            currentEventData: eventData,
           });
         }
       },
 
       resetDayFlow: () => {
+        const eventData: EventData | undefined =
+          getEventByDayStep('PLACE_SCREEN')?.eventData;
+
         set({
           dayStep: 'PLACE_SCREEN',
           currentDayStepIndex: 0,
+          currentEventData: eventData,
         });
       },
     }),
@@ -150,6 +173,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         selectedCharacter: state.selectedCharacter,
         dayStep: state.dayStep,
         currentDayStepIndex: state.currentDayStepIndex,
+        currentEventData: state.currentEventData,
       }),
     }
   )

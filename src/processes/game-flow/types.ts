@@ -21,6 +21,37 @@ export type DayStep =
   | 'RANDOM_EVENT_STORY' // 스토리형 랜덤 이벤트
   | 'RANDOM_EVENT_ITEM'; // 아이템형 랜덤 이벤트
 
+// 이벤트 데이터 타입 정의
+export interface EventOption {
+  text: string;
+  value?: string | number; // 스토리 분기를 위한 값
+  nextDayStep?: DayStep; // 다음으로 이동할 DAY_STEP
+  statChanges?: StatChanges; // 선택 시 스탯 변화
+}
+
+export interface StatChanges {
+  mentality?: number;
+  hp?: number;
+  success?: StatChanges;
+  fail?: StatChanges;
+}
+
+export interface EventData {
+  id: number;
+  title: string;
+  descriptions: string[]; // 개행 처리를 위한 배열
+  image?: string;
+  options?: EventOption[]; // 스토리형 이벤트용
+  candidateItems?: string[]; // 아이템형 이벤트용
+  changeStatsValue?: StatChanges; // 아이템형 이벤트용
+}
+
+export interface DayFlowEvent {
+  id: number;
+  dayStep: DayStep;
+  eventData: EventData;
+}
+
 export interface GameFlowState {
   step: GameStep;
   isAuthenticated: boolean;
@@ -29,6 +60,7 @@ export interface GameFlowState {
   // DAY_FLOW 관련 상태
   dayStep?: DayStep;
   currentDayStepIndex?: number;
+  currentEventData?: EventData; // 현재 이벤트 데이터
 }
 
 export interface GameFlowActions {
