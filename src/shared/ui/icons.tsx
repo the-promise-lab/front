@@ -766,3 +766,23 @@ export function IconClose({ className, size = 102 }: IconProps) {
     </svg>
   );
 }
+
+export function IconDown({ className }: IconProps) {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+      width='28'
+      height='13'
+      viewBox='0 0 28 13'
+      fill='none'
+    >
+      <path
+        d='M1.75 1.75L12.6333 11.0786C13.4198 11.7527 14.5802 11.7527 15.3667 11.0786L26.25 1.75'
+        stroke='white'
+        strokeWidth='2.625'
+        strokeLinecap='round'
+      />
+    </svg>
+  );
+}

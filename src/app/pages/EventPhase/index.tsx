@@ -6,6 +6,7 @@ import {
   RandomEventScreen,
   WarningBeforeStartScreen,
   ChangeStatsScreen,
+  SinglePortraitScreen,
 } from '@features/event-phase/index';
 import { useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
@@ -30,10 +31,12 @@ export default function EventPhase() {
         return <ChangeStatsScreen />;
       case 6:
         return <RandomEventScreen type='RESULT' />;
+      case 7:
+        return <SinglePortraitScreen />;
     }
   };
   const handleNext = () => {
-    setStep(prev => (prev < 6 ? prev + 1 : 0));
+    setStep(prev => (prev < 7 ? prev + 1 : 0));
   };
   return (
     <div
