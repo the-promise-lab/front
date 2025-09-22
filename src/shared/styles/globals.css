@@ -259,6 +259,10 @@ h1 {
   background-color: transparent;
   position: relative;
   border-left: 2px solid white;
+
+  @media (max-width: 1024px) {
+    border-left-width: 1px;
+  }
 }
 
 .gradient-border::before {
@@ -288,12 +292,31 @@ h1 {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   z-index: -1;
+
+  @media (max-width: 1024px) {
+    border-width: 1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    top: -1px;
+    left: -1px;
+  }
 }
 
 .gradient-border.active {
   position: relative;
-  background-color: transparent;
+  /* background-color: transparent; */
+  background:
+    radial-gradient(
+      116.67% 116.67% at 50% -16.67%,
+      rgba(250, 255, 0, 0) 0%,
+      rgba(255, 255, 255, 0) 56.82%
+    ),
+    rgba(0, 0, 0, 0.2);
   border-left: 2px solid #ffc107;
+
+  @media (max-width: 1024px) {
+    border-left-width: 1px;
+  }
 }
 
 .gradient-border.active::before {
@@ -323,6 +346,14 @@ h1 {
   box-sizing: border-box;
   top: -2px;
   left: -2px;
+
+  @media (max-width: 1024px) {
+    border-width: 1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    top: -1px;
+    left: -1px;
+  }
 }
 
 .background-glass {
