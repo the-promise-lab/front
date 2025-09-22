@@ -10,7 +10,6 @@ const portraits = [
     text: '우리는 통장에 돈이 빠지는게 더 낫지. 근손실보다는..',
   },
   { speaker: '병철', text: '맞습니다 헴!!' },
-  { speaker: '병철', text: '닭가슴살 또 챙기러 갑시다!!' },
 ];
 
 const PORTRAIT_START_DELAY = 1000;
