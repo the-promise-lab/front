@@ -2,6 +2,7 @@
 // DAY_FLOW 이벤트 데이터
 
 import type { DayFlowEvent, DayStep } from '../types';
+import dayFlowDataJson from './dayFlowData.json';
 
 export const dayFlowEvents: DayFlowEvent[] = [
   // PLACE_SCREEN - 장소 화면
@@ -129,40 +130,83 @@ export const dayFlowEvents: DayFlowEvent[] = [
       image: '/stats-change-bg.png',
     },
   },
-
-  // EVENT_RESULT_SCREEN - 이벤트 결과 화면
-  {
-    id: 7,
-    dayStep: 'EVENT_RESULT_SCREEN',
-    eventData: {
-      id: 7,
-      title: '이벤트 결과',
-      descriptions: ['이벤트가 완료되었습니다.', '다음 이벤트로 진행하세요.'],
-      image: '/event-result-bg.png',
-    },
-  },
-
   // SINGLE_PORTRAIT_SCREEN - 단일 초상화 화면
   {
-    id: 8,
+    id: 7,
     dayStep: 'SINGLE_PORTRAIT_SCREEN',
     eventData: {
-      id: 8,
+      id: 7,
       title: '단일 초상화',
       descriptions: ['캐릭터 초상화가 표시됩니다.', '다음으로 진행하세요.'],
       image: '/portrait-bg.png',
     },
   },
+  // EVENT_RESULT_SCREEN - 이벤트 결과 화면
+  {
+    id: 8,
+    dayStep: 'EVENT_RESULT_SCREEN',
+    eventData: {
+      id: 8,
+      title: '이벤트 결과',
+      descriptions: ['이벤트가 완료되었습니다.', '다음 이벤트로 진행하세요.'],
+      image: '/event-result-bg.png',
+    },
+  },
 ];
 
-// 특정 DAY_STEP에 해당하는 이벤트 찾기
+// JSON 데이터 타입 정의
+type PortraitData = {
+  speaker: string;
+  text: string;
+};
+
+type DayFlowDataItem = {
+  id: number;
+  title: string;
+  descriptions: string[];
+  image: string;
+  portraits?: PortraitData[];
+  options?: {
+    text: string;
+    value: string;
+    statChanges?: {
+      mentality?: number;
+      hp?: number;
+    };
+  }[];
+  candidateItems?: string[];
+  changeStatsValue?: {
+    success?: {
+      mentality?: number;
+      hp?: number;
+    };
+    fail?: {
+      mentality?: number;
+      hp?: number;
+    };
+  };
+};
+
+// JSON 데이터에서 특정 DAY_STEP에 해당하는 이벤트 찾기 (EVENT_RESULT_SCREEN 제외)
+export const getEventDataByDayStep = (
+  dayStep: Exclude<DayStep, 'EVENT_RESULT_SCREEN'>
+): DayFlowDataItem | undefined => {
+  return dayFlowDataJson.dayFlowData[dayStep] as DayFlowDataItem;
+};
+
+// JSON 데이터에서 모든 이벤트 가져오기
+export const getAllDayFlowData = () => {
+  return dayFlowDataJson.dayFlowData;
+};
+
+// 특정 DAY_STEP에 해당하는 이벤트 찾기 (기존 방식)
 export const getEventByDayStep = (
   dayStep: DayStep
 ): DayFlowEvent | undefined => {
   return dayFlowEvents.find(event => event.dayStep === dayStep);
 };
 
-// 모든 이벤트 가져오기
+// 모든 이벤트 가져오기 (기존 방식)
 export const getAllDayFlowEvents = (): DayFlowEvent[] => {
   return dayFlowEvents;
 };

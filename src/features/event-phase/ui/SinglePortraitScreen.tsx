@@ -3,14 +3,7 @@ import PortraitBanner from './kit/PortraitBanner';
 import { useAssetStore } from '@shared/model/assetStore';
 import { useShallow } from 'zustand/react/shallow';
 import PortraitCharacterImage from './kit/PortraitCharacterImage';
-
-const portraits = [
-  {
-    speaker: '헴',
-    text: '우리는 통장에 돈이 빠지는게 더 낫지. 근손실보다는..',
-  },
-  { speaker: '병철', text: '맞습니다 헴!!' },
-];
+import { getEventDataByDayStep } from '@shared/lib/gameFlowData';
 
 const PORTRAIT_START_DELAY = 1000;
 
@@ -21,9 +14,15 @@ export default function SinglePortraitScreen() {
   const byungcheolUrl = getObjectUrl('byungcheol.png');
   const hamUrl = getObjectUrl('ham.png');
 
+  // JSON 데이터에서 portraits 가져오기
+  const eventData = getEventDataByDayStep('SINGLE_PORTRAIT_SCREEN');
+  const portraits = eventData?.portraits || [];
+
   // 디버깅: 이미지 URL 확인
   console.log('Byungcheol URL:', byungcheolUrl);
   console.log('Ham URL:', hamUrl);
+  console.log('Portraits from JSON:', portraits);
+
   const handleNextPortrait = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setPortraitIndex(prev => (prev + 1) % portraits.length);

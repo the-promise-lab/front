@@ -2,6 +2,7 @@ import { IconCaution } from '@shared/ui/icons';
 import ChoiceOption from './kit/ChoiceOption';
 import ItemButton from './kit/ItemButton';
 import { motion } from 'framer-motion';
+import { getEventDataByDayStep } from '@shared/lib/gameFlowData';
 
 interface RandomEventScreenProps {
   type?: 'STORY' | 'ITEM' | 'RESULT';
@@ -9,10 +10,20 @@ interface RandomEventScreenProps {
 export default function RandomEventScreen({
   type = 'STORY',
 }: RandomEventScreenProps) {
-  const title = '랜덤 이벤트 제목';
+  // JSON 데이터에서 이벤트 정보 가져오기
+  const storyEventData = getEventDataByDayStep('RANDOM_EVENT_STORY');
+  const itemEventData = getEventDataByDayStep('RANDOM_EVENT_ITEM');
+
+  const title = storyEventData?.title || '랜덤 이벤트 제목';
   const description =
+    storyEventData?.descriptions?.join('\n') ||
     '랜덤 이벤트에 대한 텍스트가 들어갑니다.\n선택지[1]과 선택지[2]가 있는 화면의 경우,\n엔딩 분기를 위한 스토리형 사건입니다.';
-  const storyOptions = [
+
+  const storyOptions = storyEventData?.options?.map(option => ({
+    label: option.text,
+    value: option.value,
+    statChanges: option.statChanges,
+  })) || [
     {
       label: '[1] 선택지 내용이 출력됩니다.',
     },
@@ -21,7 +32,12 @@ export default function RandomEventScreen({
     },
   ];
 
-  const itemOptions = [
+  const itemOptions = itemEventData?.candidateItems?.map((item, index) => ({
+    name: item,
+    image: `${item.toLowerCase().replace(/\s+/g, '-')}.png`,
+    disabled: index === 1, // 두 번째 아이템을 비활성화로 설정
+    pressed: index === 2, // 세 번째 아이템을 선택된 상태로 설정
+  })) || [
     {
       name: '닭가슴살',
       image: 'chicken-breast.png',
