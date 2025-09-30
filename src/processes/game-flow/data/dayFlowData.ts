@@ -141,6 +141,18 @@ export const dayFlowEvents: DayFlowEvent[] = [
       image: '/event-result-bg.png',
     },
   },
+
+  // SINGLE_PORTRAIT_SCREEN - 단일 초상화 화면
+  {
+    id: 8,
+    dayStep: 'SINGLE_PORTRAIT_SCREEN',
+    eventData: {
+      id: 8,
+      title: '단일 초상화',
+      descriptions: ['캐릭터 초상화가 표시됩니다.', '다음으로 진행하세요.'],
+      image: '/portrait-bg.png',
+    },
+  },
 ];
 
 // 특정 DAY_STEP에 해당하는 이벤트 찾기

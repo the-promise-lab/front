@@ -1,6 +1,7 @@
 import { IconCaution } from '@shared/ui/icons';
 import ChoiceOption from './kit/ChoiceOption';
 import ItemButton from './kit/ItemButton';
+import { motion } from 'framer-motion';
 
 interface RandomEventScreenProps {
   type?: 'STORY' | 'ITEM' | 'RESULT';
@@ -39,9 +40,17 @@ export default function RandomEventScreen({
 
   return (
     <div className='flex h-[90%] w-full gap-11 pt-9 pl-14'>
-      <div className='h-full w-[45dvw] rounded-[4px] border-2 border-white bg-white/15'>
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{
+          stiffness: 300,
+          duration: 0.5,
+        }}
+        className='h-full w-[45dvw] rounded-[4px] border-2 border-white bg-white/15'
+      >
         {/* 이미지영역 */}
-      </div>
+      </motion.div>
       <div className='flex flex-1 flex-col justify-between'>
         <div className='flex flex-col gap-9'>
           {type !== 'RESULT' ? (
@@ -55,11 +64,19 @@ export default function RandomEventScreen({
           <p className='text-sm leading-[130%] whitespace-pre'>{description}</p>
         </div>
         {type === 'STORY' && (
-          <div className='flex flex-col gap-9'>
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            transition={{
+              type: 'spring',
+              duration: 0.5,
+            }}
+            className='flex flex-col gap-9'
+          >
             {storyOptions.map(option => (
               <ChoiceOption key={option.label} text={option.label} />
             ))}
-          </div>
+          </motion.div>
         )}
         {type === 'ITEM' && (
           <div className='flex gap-2'>

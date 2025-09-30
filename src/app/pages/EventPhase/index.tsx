@@ -6,6 +6,7 @@ import {
   RandomEventScreen,
   WarningBeforeStartScreen,
   ChangeStatsScreen,
+  SinglePortraitScreen,
 } from '@features/event-phase/index';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
@@ -39,6 +40,8 @@ export default function EventPhase() {
         return <ChangeStatsScreen />;
       case 'EVENT_RESULT_SCREEN':
         return <RandomEventScreen type='RESULT' />;
+      case 'SINGLE_PORTRAIT_SCREEN':
+        return <SinglePortraitScreen />;
       default:
         return <PlaceScreen />;
     }
@@ -63,7 +66,8 @@ export default function EventPhase() {
           dayStep === 'RANDOM_EVENT_STORY' ||
           dayStep === 'RANDOM_EVENT_ITEM' ||
           dayStep === 'CHANGE_STATS_SCREEN' ||
-          dayStep === 'EVENT_RESULT_SCREEN'
+          dayStep === 'EVENT_RESULT_SCREEN' ||
+          dayStep === 'SINGLE_PORTRAIT_SCREEN'
         }
       />
       <div className='flex-1'>{renderScreen()}</div>
