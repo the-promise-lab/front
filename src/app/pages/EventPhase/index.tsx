@@ -14,6 +14,9 @@ export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const shelterBgUrl = getObjectUrl('shelter-bg.png');
 
+  // 디버깅: 배경 URL 확인
+  console.log('Shelter BG URL:', shelterBgUrl);
+
   // DAY_STEP 상태 관리
   const { dayStep, nextDayStep, currentEventData } = useGameFlowStore();
 
@@ -48,7 +51,10 @@ export default function EventPhase() {
     <div
       className='relative flex h-screen w-screen flex-col gap-4 bg-cover bg-center'
       style={{
-        backgroundImage: `url(${shelterBgUrl})`,
+        backgroundImage: shelterBgUrl
+          ? `url(${shelterBgUrl})`
+          : 'url(/shelter-bg.png)',
+        backgroundColor: '#1e293b', // fallback 배경색
       }}
       onClick={handleNext}
     >
