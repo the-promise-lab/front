@@ -6,9 +6,11 @@ import { getEventDataByDayStep } from '@shared/lib/gameFlowData';
 
 interface RandomEventScreenProps {
   type?: 'STORY' | 'ITEM' | 'RESULT';
+  onGoToMainMenu?: () => void;
 }
 export default function RandomEventScreen({
   type = 'STORY',
+  onGoToMainMenu,
 }: RandomEventScreenProps) {
   // JSON 데이터에서 이벤트 정보 가져오기
   const storyEventData = getEventDataByDayStep('RANDOM_EVENT_STORY');
@@ -106,6 +108,30 @@ export default function RandomEventScreen({
               />
             ))}
           </div>
+        )}
+        {type === 'RESULT' && (
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            transition={{
+              type: 'spring',
+              duration: 0.5,
+            }}
+            className='flex flex-col gap-4'
+          >
+            <button
+              onClick={e => {
+                e.stopPropagation(); // 이벤트 전파 방지
+                console.log('메인메뉴 버튼 클릭됨');
+                // 메인메뉴로 이동
+                onGoToMainMenu?.();
+                console.log('onGoToMainMenu 호출 완료');
+              }}
+              className='transform rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-3 text-lg font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800'
+            >
+              메인메뉴로 이동
+            </button>
+          </motion.div>
         )}
       </div>
     </div>

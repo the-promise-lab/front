@@ -54,22 +54,24 @@ export default function App() {
       return (
         <CharacterSelect
           onNext={() => {
+            console.log('CharacterSelect onNext called');
             // 선택된 캐릭터를 게임 플로우에 저장하고 다음 단계로
             const characterStore = useCharacterSelectionStore.getState();
             if (characterStore.selectedCharacter) {
               setSelectedCharacter(characterStore.selectedCharacter.id);
             }
+            console.log('Calling next() from CHARACTER_SELECT');
             next();
           }}
           onBack={() => useGameFlowStore.getState().goto('MAIN_MENU')}
         />
       );
     }
-    if (step === 'DAY_FLOW') {
-      return <EventPhase />;
-    }
     if (step === 'PACKING_PHASE') {
       return <PackingPhase />;
+    }
+    if (step === 'DAY_FLOW') {
+      return <EventPhase />;
     }
     if (step === 'EVENT_PHASE') {
       return <EventPhase />;

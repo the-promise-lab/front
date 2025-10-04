@@ -91,7 +91,11 @@ export default function MainMenu() {
 
         {/* 게임 시작 버튼 */}
         <button
-          onClick={() => useGameFlowStore.getState().goto('PROGRESS')}
+          onClick={() => {
+            // 게임 시작 시 상태 초기화
+            useGameFlowStore.getState().reset();
+            useGameFlowStore.getState().goto('PROGRESS');
+          }}
           className='transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800'
         >
           🎮 게임 시작하기

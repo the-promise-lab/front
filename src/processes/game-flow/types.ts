@@ -88,8 +88,8 @@ export const GAME_STEP_ORDER: GameStep[] = [
   'MAIN_MENU',
   'PROGRESS',
   'CHARACTER_SELECT',
-  'DAY_FLOW',
   'PACKING_PHASE',
+  'DAY_FLOW',
   'EVENT_PHASE',
   'PLAYING',
 ] as const;
@@ -99,6 +99,8 @@ export const DAY_STEP_ORDER: DayStep[] = [
   'PLACE_SCREEN',
   'WARNING_BEFORE_START',
   'DAY_SCREEN',
+  // TODO: RANDOM_EVENT 으로 통합 필요 (서버에서 전달되는 JSON 내부 값을 통한 STORY, ITEM 분기처리)
+  // 'RANDOM_EVENT',
   'RANDOM_EVENT_STORY',
   'RANDOM_EVENT_ITEM',
   'CHANGE_STATS_SCREEN',

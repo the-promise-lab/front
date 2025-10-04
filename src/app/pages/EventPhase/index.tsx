@@ -39,7 +39,12 @@ export default function EventPhase() {
       case 'CHANGE_STATS_SCREEN':
         return <ChangeStatsScreen />;
       case 'EVENT_RESULT_SCREEN':
-        return <RandomEventScreen type='RESULT' />;
+        return (
+          <RandomEventScreen
+            type='RESULT'
+            onGoToMainMenu={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+          />
+        );
       case 'SINGLE_PORTRAIT_SCREEN':
         return <SinglePortraitScreen />;
       default:
@@ -48,7 +53,10 @@ export default function EventPhase() {
   };
 
   const handleNext = () => {
-    nextDayStep();
+    // EVENT_RESULT_SCREEN에서는 클릭 이벤트 비활성화
+    if (dayStep !== 'EVENT_RESULT_SCREEN') {
+      nextDayStep();
+    }
   };
   return (
     <div

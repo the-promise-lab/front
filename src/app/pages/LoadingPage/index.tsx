@@ -38,20 +38,43 @@ export default function LoadingPage({ onComplete }: Props) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      console.log('LoadingPage: 3초 타이머 완료');
       setTimerEnded(true);
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
+    console.log('LoadingPage useEffect:', {
+      allLoaded,
+      timerEnded,
+      loaded,
+      total,
+    });
     if (allLoaded && timerEnded) {
+      if (onComplete) {
+        console.log('LoadingPage: calling onComplete');
+        onComplete();
+      } else {
+        console.log('LoadingPage: going to CHARACTER_SELECT');
+        useGameFlowStore.getState().goto('CHARACTER_SELECT');
+      }
+    }
+  }, [allLoaded, timerEnded, onComplete, loaded, total]);
+
+  // 3초 후에는 에셋 로딩 상태와 관계없이 다음 단계로 이동
+  useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      console.log('LoadingPage: 3초 후 강제 이동');
       if (onComplete) {
         onComplete();
       } else {
-        useGameFlowStore.getState().goto('MAIN_MENU');
+        useGameFlowStore.getState().goto('CHARACTER_SELECT');
       }
-    }
-  }, [allLoaded, timerEnded, onComplete]);
+    }, 3000);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [onComplete]);
 
   return (
     <div className='flex h-screen w-screen items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100'>
