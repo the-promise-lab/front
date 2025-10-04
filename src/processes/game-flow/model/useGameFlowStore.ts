@@ -15,7 +15,7 @@ import {
   DAY_STEP_ORDER,
   INITIAL_GAME_FLOW_STATE,
 } from '../types';
-import { getEventByDayStep } from '../data/dayFlowData';
+import { getEventDataByDayStep } from '../data/dayFlowData';
 
 export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
   persist(
@@ -98,7 +98,9 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       gotoDayStep: (dayStep: DayStep) => {
         const dayStepIndex = DAY_STEP_ORDER.indexOf(dayStep);
         const eventData: EventData | undefined =
-          getEventByDayStep(dayStep)?.eventData;
+          dayStep === 'EVENT_RESULT_SCREEN'
+            ? undefined
+            : getEventDataByDayStep(dayStep);
 
         set({
           dayStep,
@@ -115,7 +117,9 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         if (nextIndex < DAY_STEP_ORDER.length) {
           const nextDayStep = DAY_STEP_ORDER[nextIndex];
           const eventData: EventData | undefined =
-            getEventByDayStep(nextDayStep)?.eventData;
+            nextDayStep === 'EVENT_RESULT_SCREEN'
+              ? undefined
+              : getEventDataByDayStep(nextDayStep);
 
           set({
             dayStep: nextDayStep,
@@ -126,7 +130,9 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           // 마지막 단계에서 다시 처음으로 (순환)
           const firstDayStep = DAY_STEP_ORDER[0];
           const eventData: EventData | undefined =
-            getEventByDayStep(firstDayStep)?.eventData;
+            firstDayStep === 'EVENT_RESULT_SCREEN'
+              ? undefined
+              : getEventDataByDayStep(firstDayStep);
 
           set({
             dayStep: firstDayStep,
@@ -144,7 +150,9 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         if (prevIndex >= 0) {
           const prevDayStep = DAY_STEP_ORDER[prevIndex];
           const eventData: EventData | undefined =
-            getEventByDayStep(prevDayStep)?.eventData;
+            prevDayStep === 'EVENT_RESULT_SCREEN'
+              ? undefined
+              : getEventDataByDayStep(prevDayStep);
 
           set({
             dayStep: prevDayStep,
@@ -156,7 +164,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
       resetDayFlow: () => {
         const eventData: EventData | undefined =
-          getEventByDayStep('PLACE_SCREEN')?.eventData;
+          getEventDataByDayStep('PLACE_SCREEN');
 
         set({
           dayStep: 'PLACE_SCREEN',
