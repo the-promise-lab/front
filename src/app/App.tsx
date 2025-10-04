@@ -32,6 +32,9 @@ export default function App() {
   }, [step, resetDayFlow]);
 
   const renderScreen = () => {
+    // 디버깅: 현재 step 상태 확인
+    console.log('App.tsx - Current step:', step);
+
     // 인증 상태에 따른 기본 분기
     if (!isLoggedIn) {
       return <LandingPage />;
