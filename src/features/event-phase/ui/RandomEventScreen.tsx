@@ -2,19 +2,52 @@ import { IconCaution } from '@shared/ui/icons';
 import ChoiceOption from './kit/ChoiceOption';
 import ItemButton from './kit/ItemButton';
 import { motion } from 'framer-motion';
-import { getEventDataByDayStep } from '@shared/lib/gameFlowData';
 
 interface RandomEventScreenProps {
   type?: 'STORY' | 'ITEM' | 'RESULT';
   onGoToMainMenu?: () => void;
+  eventData?: {
+    storyEventData?: {
+      id: number;
+      title: string;
+      descriptions: string[];
+      image: string;
+      options?: Array<{
+        text: string;
+        value: string;
+        statChanges?: {
+          mentality?: number;
+          hp?: number;
+        };
+      }>;
+    };
+    itemEventData?: {
+      id: number;
+      title: string;
+      descriptions: string[];
+      image: string;
+      candidateItems?: string[];
+      changeStatsValue?: {
+        success?: {
+          mentality?: number;
+          hp?: number;
+        };
+        fail?: {
+          mentality?: number;
+          hp?: number;
+        };
+      };
+    };
+  };
 }
 export default function RandomEventScreen({
   type = 'STORY',
   onGoToMainMenu,
+  eventData,
 }: RandomEventScreenProps) {
-  // JSON 데이터에서 이벤트 정보 가져오기
-  const storyEventData = getEventDataByDayStep('RANDOM_EVENT_STORY');
-  const itemEventData = getEventDataByDayStep('RANDOM_EVENT_ITEM');
+  // props로 받은 이벤트 데이터 사용
+  const storyEventData = eventData?.storyEventData;
+  const itemEventData = eventData?.itemEventData;
 
   const title = storyEventData?.title || '랜덤 이벤트 제목';
   const description =

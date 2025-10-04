@@ -3,20 +3,24 @@ import PortraitBanner from './kit/PortraitBanner';
 import { useAssetStore } from '@shared/model/assetStore';
 import { useShallow } from 'zustand/react/shallow';
 import PortraitCharacterImage from './kit/PortraitCharacterImage';
-import { getEventDataByDayStep } from '@shared/lib/gameFlowData';
 
 const PORTRAIT_START_DELAY = 1000;
 
-export default function SinglePortraitScreen() {
+interface SinglePortraitScreenProps {
+  portraits?: Array<{
+    speaker: string;
+    text: string;
+  }>;
+}
+
+export default function SinglePortraitScreen({
+  portraits = [],
+}: SinglePortraitScreenProps) {
   const [portraitIndex, setPortraitIndex] = useState(0);
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const byungcheolUrl = getObjectUrl('byungcheol.png');
   const hamUrl = getObjectUrl('ham.png');
-
-  // JSON 데이터에서 portraits 가져오기
-  const eventData = getEventDataByDayStep('SINGLE_PORTRAIT_SCREEN');
-  const portraits = eventData?.portraits || [];
 
   // 디버깅: 이미지 URL 확인
   console.log('Byungcheol URL:', byungcheolUrl);

@@ -60,7 +60,7 @@ export default function PackingPhase() {
 
       {/* 어두운 오버레이 (카운트다운 중에만) */}
       <motion.div
-        className='absolute inset-0 bg-black'
+        className='pointer-events-none absolute inset-0 bg-black'
         initial={{ opacity: 0.8 }}
         animate={{ opacity: showBackground ? 0 : 0.8 }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
@@ -68,7 +68,7 @@ export default function PackingPhase() {
 
       {/* 카운트다운 타이머 */}
       <motion.div
-        className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-mono text-6xl font-bold text-white'
+        className='pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-mono text-6xl font-bold text-white'
         animate={
           countdownMoved
             ? {
@@ -96,18 +96,23 @@ export default function PackingPhase() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'
+            onClick={e => e.stopPropagation()} // 배경 클릭 방지
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               className='rounded-lg bg-white p-8 shadow-xl'
+              onClick={e => e.stopPropagation()} // 모달 내부 클릭 이벤트 전파 방지
             >
               <h2 className='mb-6 text-center text-2xl font-bold text-gray-800'>
                 가방싸기 종료!
               </h2>
               <button
-                onClick={handleConfirm}
+                onClick={e => {
+                  e.stopPropagation();
+                  handleConfirm();
+                }}
                 className='w-full rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-600'
                 style={{ fontSize: '13px' }}
               >

@@ -10,6 +10,7 @@ import {
 } from '@features/event-phase/index';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
+import { getEventDataByDayStep } from '@processes/game-flow/data/dayFlowData';
 
 export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
@@ -21,8 +22,12 @@ export default function EventPhase() {
   // DAY_STEP 상태 관리
   const { dayStep, nextDayStep, currentEventData } = useGameFlowStore();
 
+  // 이벤트 데이터 준비
+  const storyEventData = getEventDataByDayStep('RANDOM_EVENT_STORY');
+  const itemEventData = getEventDataByDayStep('RANDOM_EVENT_ITEM');
+  const portraitEventData = getEventDataByDayStep('SINGLE_PORTRAIT_SCREEN');
+
   const renderScreen = () => {
-    // TODO: 각 컴포넌트에 currentEventData 전달 예정
     console.log('Current Event Data:', currentEventData);
 
     switch (dayStep) {
@@ -33,9 +38,16 @@ export default function EventPhase() {
       case 'DAY_SCREEN':
         return <DayScreen />;
       case 'RANDOM_EVENT_STORY':
-        return <RandomEventScreen />;
+        return (
+          <RandomEventScreen eventData={{ storyEventData, itemEventData }} />
+        );
       case 'RANDOM_EVENT_ITEM':
-        return <RandomEventScreen type='ITEM' />;
+        return (
+          <RandomEventScreen
+            type='ITEM'
+            eventData={{ storyEventData, itemEventData }}
+          />
+        );
       case 'CHANGE_STATS_SCREEN':
         return <ChangeStatsScreen />;
       case 'EVENT_RESULT_SCREEN':
@@ -43,10 +55,13 @@ export default function EventPhase() {
           <RandomEventScreen
             type='RESULT'
             onGoToMainMenu={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+            eventData={{ storyEventData, itemEventData }}
           />
         );
       case 'SINGLE_PORTRAIT_SCREEN':
-        return <SinglePortraitScreen />;
+        return (
+          <SinglePortraitScreen portraits={portraitEventData?.portraits} />
+        );
       default:
         return <PlaceScreen />;
     }
