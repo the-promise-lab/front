@@ -15,7 +15,7 @@ import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 
 export default function App() {
-  const { step, next, setSelectedCharacter, setAuthenticated } =
+  const { step, next, setSelectedCharacter, setAuthenticated, resetDayFlow } =
     useGameFlowStore();
   const { isLoggedIn } = useAuthStore();
 
@@ -24,7 +24,17 @@ export default function App() {
     setAuthenticated(isLoggedIn);
   }, [isLoggedIn, setAuthenticated]);
 
+  // DAY_FLOW 진입 시 DAY_STEP 초기화
+  useEffect(() => {
+    if (step === 'DAY_FLOW') {
+      resetDayFlow();
+    }
+  }, [step, resetDayFlow]);
+
   const renderScreen = () => {
+    // 디버깅: 현재 step 상태 확인
+    console.log('App.tsx - Current step:', step);
+
     // 인증 상태에 따른 기본 분기
     if (!isLoggedIn) {
       return <LandingPage />;
@@ -47,11 +57,13 @@ export default function App() {
       return (
         <CharacterSelect
           onNext={() => {
+            console.log('CharacterSelect onNext called');
             // 선택된 캐릭터를 게임 플로우에 저장하고 다음 단계로
             const characterStore = useCharacterSelectionStore.getState();
             if (characterStore.selectedCharacter) {
               setSelectedCharacter(characterStore.selectedCharacter.id);
             }
+            console.log('Calling next() from CHARACTER_SELECT');
             next();
           }}
           onBack={() => useGameFlowStore.getState().goto('MAIN_MENU')}
@@ -60,6 +72,9 @@ export default function App() {
     }
     if (step === 'PACKING_PHASE') {
       return <PackingPhase />;
+    }
+    if (step === 'DAY_FLOW') {
+      return <EventPhase />;
     }
     if (step === 'EVENT_PHASE') {
       return <EventPhase />;

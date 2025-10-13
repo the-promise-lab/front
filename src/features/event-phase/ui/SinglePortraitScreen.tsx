@@ -4,22 +4,29 @@ import { useAssetStore } from '@shared/model/assetStore';
 import { useShallow } from 'zustand/react/shallow';
 import PortraitCharacterImage from './kit/PortraitCharacterImage';
 
-const portraits = [
-  {
-    speaker: '헴',
-    text: '우리는 통장에 돈이 빠지는게 더 낫지. 근손실보다는..',
-  },
-  { speaker: '병철', text: '맞습니다 헴!!' },
-];
-
 const PORTRAIT_START_DELAY = 1000;
 
-export default function SinglePortraitScreen() {
+interface SinglePortraitScreenProps {
+  portraits?: Array<{
+    speaker: string;
+    text: string;
+  }>;
+}
+
+export default function SinglePortraitScreen({
+  portraits = [],
+}: SinglePortraitScreenProps) {
   const [portraitIndex, setPortraitIndex] = useState(0);
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const byungcheolUrl = getObjectUrl('byungcheol.png');
   const hamUrl = getObjectUrl('ham.png');
+
+  // 디버깅: 이미지 URL 확인
+  console.log('Byungcheol URL:', byungcheolUrl);
+  console.log('Ham URL:', hamUrl);
+  console.log('Portraits from JSON:', portraits);
+
   const handleNextPortrait = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setPortraitIndex(prev => (prev + 1) % portraits.length);
@@ -36,13 +43,13 @@ export default function SinglePortraitScreen() {
   return (
     <div className='relative h-full w-full'>
       <PortraitCharacterImage
-        src={hamUrl}
+        src={hamUrl || '/ham.png'}
         alt='person1'
         dimmed={portraitStarted && currentPortrait.speaker !== '병철'}
         position='right'
       />
       <PortraitCharacterImage
-        src={byungcheolUrl}
+        src={byungcheolUrl || '/byungcheol.png'}
         alt='person2'
         dimmed={portraitStarted && currentPortrait.speaker !== '헴'}
         position='left'

@@ -8,45 +8,91 @@ import {
   ChangeStatsScreen,
   SinglePortraitScreen,
 } from '@features/event-phase/index';
-import { useState } from 'react';
+import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
+import { getEventDataByDayStep } from '@processes/game-flow/data/dayFlowData';
 
 export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const shelterBgUrl = getObjectUrl('shelter-bg.png');
-  const [step, setStep] = useState<number>(0);
+
+  // 디버깅: 배경 URL 확인
+  console.log('Shelter BG URL:', shelterBgUrl);
+
+  // DAY_STEP 상태 관리
+  const { dayStep, nextDayStep, currentEventData } = useGameFlowStore();
+
+  // 이벤트 데이터 준비
+  const storyEventData = getEventDataByDayStep('RANDOM_EVENT_STORY');
+  const itemEventData = getEventDataByDayStep('RANDOM_EVENT_ITEM');
+  const portraitEventData = getEventDataByDayStep('SINGLE_PORTRAIT_SCREEN');
+
   const renderScreen = () => {
-    switch (step) {
-      case 0:
+    console.log('Current Event Data:', currentEventData);
+
+    switch (dayStep) {
+      case 'PLACE_SCREEN':
         return <PlaceScreen />;
-      case 1:
+      case 'WARNING_BEFORE_START':
         return <WarningBeforeStartScreen />;
-      case 2:
+      case 'DAY_SCREEN':
         return <DayScreen />;
-      case 3:
-        return <RandomEventScreen />;
-      case 4:
-        return <RandomEventScreen type='ITEM' />;
-      case 5:
+      case 'RANDOM_EVENT_STORY':
+        return (
+          <RandomEventScreen eventData={{ storyEventData, itemEventData }} />
+        );
+      case 'RANDOM_EVENT_ITEM':
+        return (
+          <RandomEventScreen
+            type='ITEM'
+            eventData={{ storyEventData, itemEventData }}
+          />
+        );
+      case 'CHANGE_STATS_SCREEN':
         return <ChangeStatsScreen />;
-      case 6:
-        return <RandomEventScreen type='RESULT' />;
-      case 7:
-        return <SinglePortraitScreen />;
+      case 'EVENT_RESULT_SCREEN':
+        return (
+          <RandomEventScreen
+            type='RESULT'
+            onGoToMainMenu={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+            eventData={{ storyEventData, itemEventData }}
+          />
+        );
+      case 'SINGLE_PORTRAIT_SCREEN':
+        return (
+          <SinglePortraitScreen portraits={portraitEventData?.portraits} />
+        );
+      default:
+        return <PlaceScreen />;
     }
   };
+
   const handleNext = () => {
-    setStep(prev => (prev < 7 ? prev + 1 : 0));
+    // EVENT_RESULT_SCREEN에서는 클릭 이벤트 비활성화
+    if (dayStep !== 'EVENT_RESULT_SCREEN') {
+      nextDayStep();
+    }
   };
   return (
     <div
       className='relative flex h-screen w-screen flex-col gap-4 bg-cover bg-center'
       style={{
-        backgroundImage: `url(${shelterBgUrl})`,
+        backgroundImage: shelterBgUrl
+          ? `url(${shelterBgUrl})`
+          : 'url(/shelter-bg.png)',
+        backgroundColor: '#1e293b', // fallback 배경색
       }}
       onClick={handleNext}
     >
-      <Header hasCharacterProfiles={step > 2} />
+      <Header
+        hasCharacterProfiles={
+          dayStep === 'RANDOM_EVENT_STORY' ||
+          dayStep === 'RANDOM_EVENT_ITEM' ||
+          dayStep === 'CHANGE_STATS_SCREEN' ||
+          dayStep === 'EVENT_RESULT_SCREEN' ||
+          dayStep === 'SINGLE_PORTRAIT_SCREEN'
+        }
+      />
       <div className='flex-1'>{renderScreen()}</div>
     </div>
   );
