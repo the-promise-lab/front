@@ -293,6 +293,11 @@ h1 {
   -webkit-mask-composite: destination-out;
   z-index: -1;
 
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
   @media (max-width: 1024px) {
     border-width: 1px;
     width: calc(100% + 2px);
@@ -343,6 +348,12 @@ h1 {
     linear-gradient(#ffc107 0 0);
   -webkit-mask-composite: destination-out;
   z-index: -1;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
   box-sizing: border-box;
   top: -2px;
   left: -2px;
