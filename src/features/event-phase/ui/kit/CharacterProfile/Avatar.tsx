@@ -11,7 +11,7 @@ export default function Avatar({ className, name }: AvatarProps) {
       className={cn(
         'aspect-square rounded-[80px] bg-white/80 shadow-[0px_0px_14px_0px_rgba(0,0,0,0.3)]',
         // 나중에 배경 이미지 추가될 예정
-        `relative h-28 w-28`,
+        `relative h-25 w-25`,
         'bg-cover bg-center bg-no-repeat',
         className
       )}
