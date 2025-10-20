@@ -23,7 +23,7 @@ export default function PortraitBanner({
       <p className='text-md font-[NexonLv2Gothic] leading-none font-bold whitespace-nowrap text-[#FFE674]'>
         {characterName}
       </p>
-      <TypingText texts={portrait.split('\n')} className='text-sm' />
+      <TypingText texts={portrait.split('\n')} className='text-sm' smooth />
 
       <div className='flex flex-1 items-end'>
         <IconDown className='h-2.5 w-6.5' />
