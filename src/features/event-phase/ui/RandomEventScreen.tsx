@@ -90,7 +90,7 @@ export default function RandomEventScreen({
   ];
 
   return (
-    <div className='flex h-[90%] w-full gap-11 pt-9 pl-14'>
+    <div className='flex h-[90%] w-full gap-11 pt-4.5 pl-14'>
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -103,7 +103,7 @@ export default function RandomEventScreen({
         {/* 이미지영역 */}
       </motion.div>
       <div className='flex flex-1 flex-col justify-between'>
-        <div className='flex flex-col gap-9'>
+        <div className='flex flex-col gap-4.5'>
           {type !== 'RESULT' ? (
             <h4 className='flex items-center gap-2.5 font-[NexonLv2Gothic] text-xl font-bold'>
               <IconCaution className='size-11.5' />

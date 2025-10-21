@@ -10,6 +10,7 @@ type TypingTextProps = {
   rootMargin?: string;
   className?: string;
   locale?: string;
+  smooth?: boolean;
 };
 
 function splitGraphemes(text: string, locale = 'ko') {
@@ -29,6 +30,7 @@ export default function TypingText({
   rootMargin = '0px',
   className,
   locale = 'ko',
+  smooth = false,
 }: TypingTextProps) {
   // 모든 텍스트를 개행으로 연결하여 하나의 문자열로 만들기
   const fullText = useMemo(() => texts.join('\n'), [texts]);
@@ -131,7 +133,28 @@ export default function TypingText({
       aria-live='polite'
       role='status'
     >
-      <span style={{ whiteSpace: 'pre-line' }}>{out}</span>
+      {smooth ? (
+        // smooth 모드: 모든 글자를 미리 렌더링하고 opacity 0, 제자리에서 fade-in 효과
+        <span style={{ display: 'inline', whiteSpace: 'pre-line' }}>
+          {units.map((char, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: i < count ? 1 : 0 }}
+              transition={{
+                duration: Math.min((speed / 1000) * 2, 0.8),
+                ease: 'easeOut',
+              }}
+              style={{ display: 'inline' }}
+            >
+              {char}
+            </motion.span>
+          ))}
+        </span>
+      ) : (
+        // 기본 모드: 기존처럼 문자 하나하나 추가하며 타이핑 효과 렌더링
+        <span style={{ whiteSpace: 'pre-line' }}>{out}</span>
+      )}
       {cursor && (
         <motion.span
           aria-hidden
