@@ -3,6 +3,7 @@ import { IconHeart, IconLightning } from '@shared/ui/icons';
 import { cn } from '@shared/lib/utils';
 import type { ReactNode } from 'react';
 import Counter from '@shared/ui/Counter';
+import Typography from '@shared/ui/Typography';
 
 interface CharacterResult {
   name: string;
@@ -77,15 +78,17 @@ function StatBlock({
     <div className='flex flex-col items-center gap-3 font-[NexonLv2Gothic]'>
       <div className='flex items-center gap-2'>
         <div className='text-white'>{icon}</div>
-        <span className='text-sm font-medium text-white'>{label}</span>
+        <Typography variant='subtitle-1-m' className='text-white'>
+          {label}
+        </Typography>
       </div>
-      <span className={cn('text-3xl font-bold', colorClass)}>
+      <Typography variant='h2-b' className={cn(colorClass)}>
         {value >= 0 ? '+' : '-'}
         <Counter
           value={Math.abs(value)}
           springOptions={{ damping: 100, stiffness: 200 }}
         />
-      </span>
+      </Typography>
     </div>
   );
 }

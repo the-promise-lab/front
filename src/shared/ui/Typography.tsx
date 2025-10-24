@@ -115,7 +115,10 @@ export default function Typography({
   const Component = as ?? defaultSemanticTags[variant];
 
   return (
-    <Component className={cn(variantClassNames[variant], className)}>
+    <Component
+      className={cn(variantClassNames[variant], className)}
+      data-typography-variant={variant}
+    >
       {children}
     </Component>
   );
