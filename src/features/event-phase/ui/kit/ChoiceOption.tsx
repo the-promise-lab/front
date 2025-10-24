@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
+import Typography from '@shared/ui/Typography';
 
 interface ChoiceOptionProps {
   text: string;
@@ -80,7 +81,7 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
         </div>
 
         <div className='text-sm leading-none font-bold text-white'>
-          <p className='leading-none whitespace-pre'>{text}</p>
+          <Typography variant='subtitle-2-b'>{text}</Typography>
         </div>
       </div>
       <AnimatePresence>

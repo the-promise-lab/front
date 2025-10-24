@@ -1,4 +1,5 @@
 import { cn } from '@shared/lib/utils';
+import Typography from '@shared/ui/Typography';
 
 interface ItemButtonProps {
   name: string;
@@ -63,7 +64,7 @@ export default function ItemButton({
           disabled ? 'text-[#aeaeae]' : 'text-white'
         )}
       >
-        {name}
+        <Typography variant='caption'>{name}</Typography>
       </div>
     </button>
   );
