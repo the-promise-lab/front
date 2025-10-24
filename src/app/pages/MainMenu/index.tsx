@@ -1,5 +1,6 @@
 import { useGameFlowStore } from '../../../processes/game-flow';
 import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
+import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 
 export default function MainMenu() {
   const { logout } = useAuthStore();
@@ -126,6 +127,8 @@ export default function MainMenu() {
         <div className='bg-opacity-30 absolute right-1/4 bottom-1/4 h-40 w-40 rounded-full bg-indigo-200 blur-xl'></div>
         <div className='bg-opacity-30 absolute top-3/4 left-1/3 h-24 w-24 rounded-full bg-purple-200 blur-xl'></div>
       </div>
+
+      <TmpDesignSystemPreview />
     </div>
   );
 }
