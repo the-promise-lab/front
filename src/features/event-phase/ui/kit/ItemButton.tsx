@@ -1,4 +1,5 @@
 import { cn } from '@shared/lib/utils';
+import Typography from '@shared/ui/Typography';
 
 interface ItemButtonProps {
   name: string;
@@ -57,13 +58,13 @@ export default function ItemButton({
       {/* 아이템 이름 */}
       <div
         className={cn(
-          'absolute top-8.5 left-6',
+          'absolute top-5 left-6',
           "font-['NEXON_Lv2_Gothic:Medium',_sans-serif]",
           'text-xs leading-[0] whitespace-nowrap not-italic',
           disabled ? 'text-[#aeaeae]' : 'text-white'
         )}
       >
-        {name}
+        <Typography variant='caption'>{name}</Typography>
       </div>
     </button>
   );

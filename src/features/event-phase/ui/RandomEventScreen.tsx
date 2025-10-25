@@ -2,6 +2,7 @@ import { IconCaution } from '@shared/ui/icons';
 import ChoiceOption from './kit/ChoiceOption';
 import ItemButton from './kit/ItemButton';
 import { motion } from 'framer-motion';
+import Typography from '@shared/ui/Typography';
 
 interface RandomEventScreenProps {
   type?: 'STORY' | 'ITEM' | 'RESULT';
@@ -105,14 +106,14 @@ export default function RandomEventScreen({
       <div className='flex flex-1 flex-col justify-between'>
         <div className='flex flex-col gap-4.5'>
           {type !== 'RESULT' ? (
-            <h4 className='flex items-center gap-2.5 font-[NexonLv2Gothic] text-xl font-bold'>
+            <div className='flex items-center gap-2.5'>
               <IconCaution className='size-11.5' />
-              {title}
-            </h4>
+              <Typography variant='h3-b'>{title}</Typography>
+            </div>
           ) : (
             <div className='h-0' />
           )}
-          <p className='text-sm leading-[130%] whitespace-pre'>{description}</p>
+          <Typography variant='body'>{description}</Typography>
         </div>
         {type === 'STORY' && (
           <motion.div

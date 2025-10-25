@@ -1,3 +1,4 @@
+import Typography from '@shared/ui/Typography';
 import { cn } from '@shared/lib/utils';
 import { IconCaution } from '@shared/ui/icons';
 
@@ -25,9 +26,9 @@ export default function CautionNotice({ className }: CautionNoticeProps) {
 
       {/* CAUTION 텍스트 */}
       <div className='flex flex-col justify-center'>
-        <p className='font-[NexonLv2Gothic] text-xl leading-none font-bold whitespace-nowrap text-[#fed046] uppercase'>
+        <Typography variant='h3-b' className='text-[#fed046]'>
           caution
-        </p>
+        </Typography>
       </div>
     </div>
   );

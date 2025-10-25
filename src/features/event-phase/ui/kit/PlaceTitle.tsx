@@ -1,3 +1,5 @@
+import Typography from '@shared/ui/Typography';
+
 interface PlaceTitleProps {
   title: string;
 }
@@ -9,10 +11,10 @@ export default function PlaceTitle({ title }: PlaceTitleProps) {
       <div className='h-10 w-1.5 shrink-0 bg-white' />
 
       {/* 제목 텍스트 */}
-      <div className='absolute top-3.5 left-15.25'>
-        <p className='text-xl leading-[normal] font-semibold tracking-[-0.4px] whitespace-nowrap text-white'>
+      <div className='absolute top-1.5 left-15.25'>
+        <Typography variant='h3-b' className='text-white'>
           {title}
-        </p>
+        </Typography>
       </div>
     </div>
   );

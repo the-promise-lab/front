@@ -2,6 +2,7 @@ import TypingText from '@shared/ui/TypingText';
 import { cn } from '@shared/lib/utils';
 import type { HTMLAttributes } from 'react';
 import { IconDown } from '@shared/ui/icons';
+import Typography from '@shared/ui/Typography';
 
 interface PortraitBannerProps extends HTMLAttributes<HTMLDivElement> {
   portrait: string;
@@ -20,10 +21,12 @@ export default function PortraitBanner({
       )}
       {...props}
     >
-      <p className='text-md font-[NexonLv2Gothic] leading-none font-bold whitespace-nowrap text-[#FFE674]'>
+      <Typography variant='dialogue-b' className='text-[#FFE674]'>
         {characterName}
-      </p>
-      <TypingText texts={portrait.split('\n')} className='text-sm' smooth />
+      </Typography>
+      <Typography variant='dialogue-m'>
+        <TypingText texts={portrait.split('\n')} smooth />
+      </Typography>
 
       <div className='flex flex-1 items-end'>
         <IconDown className='h-2.5 w-6.5' />
