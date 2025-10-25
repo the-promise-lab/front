@@ -18,9 +18,10 @@ export default function TmpSoundPreview() {
   const [isBgmMuted, setIsBgmMuted] = useState(false);
   const [isSfxMuted, setIsSfxMuted] = useState(false);
 
-  const [currentBgmHandle, setCurrentBgmHandle] = useState<PlayHandle | null>(
-    null
-  );
+  const [currentBgm, setCurrentBgm] = useState<{
+    url: string;
+    handle: PlayHandle;
+  } | null>(null);
 
   const handlePreload = async () => {
     try {
@@ -33,26 +34,12 @@ export default function TmpSoundPreview() {
   };
 
   const handlePlayBgm = async (bgmKey: 'bgm1' | 'bgm2') => {
-    try {
-      // 이전 BGM이 있으면 중지
-      if (currentBgmHandle) {
-        currentBgmHandle.stop(300);
-      }
-
-      const handle = await audio.play({
-        url: MOCK_AUDIO_URLS[bgmKey],
-        channel: 'bgm',
-        loop: true,
-        volume: bgmVolume,
-        fadeInMs: 300,
-        useMediaElement: true,
-      });
-
-      setCurrentBgmHandle(handle);
-      console.log(`🎵 Playing ${bgmKey}`);
-    } catch (error) {
-      console.error(`❌ Failed to play ${bgmKey}:`, error);
-    }
+    const handle = await audio.crossfadeBgm(
+      currentBgm?.url ?? null,
+      MOCK_AUDIO_URLS[bgmKey],
+      300
+    );
+    setCurrentBgm({ url: MOCK_AUDIO_URLS[bgmKey], handle });
   };
 
   const handlePlaySfx = async (sfxKey: 'sfx1' | 'sfx2') => {
@@ -69,9 +56,9 @@ export default function TmpSoundPreview() {
   };
 
   const handleStopBgm = () => {
-    if (currentBgmHandle) {
-      currentBgmHandle.stop(300);
-      setCurrentBgmHandle(null);
+    if (currentBgm) {
+      currentBgm.handle.stop(300);
+      setCurrentBgm(null);
       console.log('⏹️ BGM stopped');
     }
   };
@@ -154,7 +141,7 @@ export default function TmpSoundPreview() {
                 <button
                   onClick={handleStopBgm}
                   className='rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600'
-                  disabled={!currentBgmHandle}
+                  disabled={!currentBgm}
                 >
                   ⏹️ BGM 정지
                 </button>
