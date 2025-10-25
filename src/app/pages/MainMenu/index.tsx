@@ -1,6 +1,7 @@
 import { useGameFlowStore } from '../../../processes/game-flow';
 import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
+import TmpSoundPreview from './TmpSoundPreview';
 
 export default function MainMenu() {
   const { logout } = useAuthStore();
@@ -129,6 +130,7 @@ export default function MainMenu() {
       </div>
 
       <TmpDesignSystemPreview />
+      <TmpSoundPreview />
     </div>
   );
 }

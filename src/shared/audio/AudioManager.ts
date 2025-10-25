@@ -1,4 +1,4 @@
-import { ChannelName, PlayHandle, PlayOptions } from './types';
+import type { ChannelName, PlayHandle, PlayOptions } from './types';
 
 type ChannelState = {
   gain: GainNode;
