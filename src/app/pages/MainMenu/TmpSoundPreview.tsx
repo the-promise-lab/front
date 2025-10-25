@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAudio, type PlayHandle } from '@shared/audio';
+import { useGameSound, type PlayHandle } from '@shared/audio';
 
 const MOCK_AUDIO_URLS = {
   bgm1: '/sounds/bgm-example-01.mp3',
@@ -10,7 +10,7 @@ const MOCK_AUDIO_URLS = {
 
 export default function TmpSoundPreview() {
   const [showSoundPreview, setShowSoundPreview] = useState(false);
-  const audio = useAudio();
+  const audio = useGameSound();
 
   const [isPreloaded, setIsPreloaded] = useState(false);
   const [bgmVolume, setBgmVolume] = useState(1);

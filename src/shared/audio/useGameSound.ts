@@ -6,7 +6,7 @@ type PlayParams = { url: string } & PlayOptions;
 
 type PreloadResult = Promise<AudioBuffer[]>;
 
-export function useAudio() {
+export function useGameSound() {
   const manager = useMemo(() => AudioManager.i, []);
 
   const preload = (urls: string | string[]): PreloadResult => {
