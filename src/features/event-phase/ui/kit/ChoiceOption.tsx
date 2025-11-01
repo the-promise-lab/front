@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
+import { IconOptionPressedShadow } from '@shared/ui/icons';
 
 interface ChoiceOptionProps {
   text: string;
@@ -47,12 +48,15 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
           'bg-gradient-to-r from-white/10 to-transparent',
           'backdrop-blur-[43.5px]',
           'rounded-tl-[80px] rounded-bl-[80px]',
-          'gradient-border',
-          isPressed && 'active'
+          'gradient-border transition-all duration-200 ease-in-out',
+          isPressed && 'active scale-[1.05]'
         )}
       >
+        {isPressed && (
+          <IconOptionPressedShadow className='absolute -left-6 h-32 w-[110%]' />
+        )}
         {/* 체크박스 아이콘 */}
-        <div className='relative size-10 shrink-0'>
+        <div className='relative z-[1] size-10 shrink-0'>
           {/* 외곽 다이아 */}
           <div className='absolute inset-0 flex items-center justify-center'>
             <div className={cn('rotate-45', isPressed ? 'size-7' : 'size-4.5')}>
@@ -60,7 +64,7 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
                 className={cn(
                   'relative size-full backdrop-blur-sm',
                   isPressed
-                    ? 'border-2 border-amber-400 bg-black/20 bg-radial from-amber-300/60 to-transparent to-70%'
+                    ? 'border-2 border-[#FFDB5AB2] bg-black/20 bg-radial from-amber-300/60 to-transparent to-70%'
                     : 'ring-2 ring-white'
                 )}
               />
@@ -72,7 +76,7 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
                 className={cn(
                   'size-full',
                   isPressed
-                    ? 'border border-amber-500/80 bg-amber-400 bg-radial from-yellow-200/60 to-transparent to-80%'
+                    ? 'border border-[#E8BA15]/80 bg-[#E8BA15] bg-radial from-yellow-200/60 to-transparent to-80%'
                     : 'bg-white'
                 )}
               />
@@ -80,7 +84,7 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
           </div>
         </div>
 
-        <div className='text-sm leading-none font-bold text-white'>
+        <div className='z-[1] text-sm leading-none font-bold text-white'>
           <Typography variant='subtitle-2-b'>{text}</Typography>
         </div>
       </div>
