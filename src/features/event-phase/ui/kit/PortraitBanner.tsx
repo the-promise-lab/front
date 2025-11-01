@@ -16,14 +16,15 @@ export default function PortraitBanner({
   return (
     <div
       className={cn(
-        'absolute right-0 bottom-20 left-0 flex h-54 w-screen flex-col items-center justify-start gap-4.5 py-9 lg:bottom-30',
-        '[background-image:linear-gradient(90deg,_rgba(25,25,32,0.00)_5%,_rgba(25,25,32,0.60)_25%,_rgba(0,0,0,0.80)_50%,_#191920_75.48%,_rgba(25,25,32,0.00)_95%)]'
+        'absolute right-0 bottom-0 left-0 flex h-105 w-screen flex-col items-center justify-start gap-4.5 pt-10.5 pb-17',
+        '[background-image:linear-gradient(180deg,_rgba(1,0,9,0.00)_0%,_rgba(1,0,9,0.60)_58.65%,_rgba(1,0,9,0.80)_100%)]'
       )}
       {...props}
     >
       <Typography variant='dialogue-b' className='text-[#FFE674]'>
         {characterName}
       </Typography>
+      <Divider />
       <Typography variant='dialogue-m'>
         <TypingText texts={portrait.split('\n')} smooth />
       </Typography>
@@ -34,3 +35,21 @@ export default function PortraitBanner({
     </div>
   );
 }
+
+const Divider = () => (
+  <div className='py-10'>
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='400'
+      height='2'
+      viewBox='0 0 1000 2'
+      fill='none'
+    >
+      <path
+        d='M0 1C16.6667 1.06667 33.3333 1.13 50 1.19C200 1.73 350 2 500 2C650 2 800 1.73 950 1.19C966.667 1.13 983.333 1.06667 1000 1C983.333 0.933333 966.667 0.87 950 0.81C800 0.27 650 0 500 0C350 0 200 0.27 50 0.81C33.3333 0.87 16.6667 0.933333 0 1Z'
+        fill='white'
+        fill-opacity='0.4'
+      />
+    </svg>
+  </div>
+);
