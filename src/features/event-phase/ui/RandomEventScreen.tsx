@@ -66,6 +66,9 @@ export default function RandomEventScreen({
     {
       label: '[2] 선택지 내용이 출력됩니다.',
     },
+    {
+      label: '[3] 선택지 내용이 출력됩니다.',
+    },
   ];
 
   const itemOptions = itemEventData?.candidateItems?.map((item, index) => ({
@@ -91,7 +94,7 @@ export default function RandomEventScreen({
   ];
 
   return (
-    <div className='flex h-[90%] w-full gap-11 pt-4.5 pl-14'>
+    <div className='flex h-[92%] w-full gap-11 pt-4.5 pl-14'>
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -104,9 +107,9 @@ export default function RandomEventScreen({
         {/* 이미지영역 */}
       </motion.div>
       <div className='flex flex-1 flex-col justify-between'>
-        <div className='flex flex-col gap-4.5'>
+        <div className='flex flex-col gap-3 pr-12 break-keep whitespace-pre-line'>
           {type !== 'RESULT' ? (
-            <div className='flex items-center gap-2.5'>
+            <div className='flex h-13.5 items-center gap-2.5'>
               <IconCaution className='size-11.5' />
               <Typography variant='h3-b'>{title}</Typography>
             </div>
@@ -123,7 +126,7 @@ export default function RandomEventScreen({
               type: 'spring',
               duration: 0.5,
             }}
-            className='flex flex-col gap-9'
+            className='flex flex-col gap-8'
           >
             {storyOptions.map(option => (
               <ChoiceOption key={option.label} text={option.label} />

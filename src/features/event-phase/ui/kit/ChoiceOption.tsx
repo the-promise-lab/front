@@ -53,7 +53,7 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
         )}
       >
         {isPressed && (
-          <IconOptionPressedShadow className='absolute -left-6 h-32 w-[110%]' />
+          <IconOptionPressedShadow className='absolute top-1/2 -left-4 h-32 w-[105%] -translate-y-1/2' />
         )}
         {/* 체크박스 아이콘 */}
         <div className='relative z-[1] size-10 shrink-0'>

@@ -55,19 +55,19 @@ const variantClassNames: Record<TypographyVariant, string> = {
 
   // H2 B: 54px / Auto / Bold
   'h2-b':
-    'text-[27px] lg:text-[54px] leading-normal font-bold font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
+    'text-[27px] lg:text-[54px] leading-[normal] font-bold font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
 
   // H3 B: 40px / Auto / Bold / Upper
   'h3-b':
-    'text-[20px] lg:text-[40px] leading-normal font-bold uppercase font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
+    'text-[20px] lg:text-[40px] leading-[normal] font-bold uppercase font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
 
   // Dialogue M: 36px / Auto / Medium / Upper
   'dialogue-m':
-    'text-[18px] lg:text-[36px] leading-normal font-medium uppercase font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
+    'text-[18px] lg:text-[36px] leading-[normal] font-medium uppercase font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
 
   // Dialogue B: 36px / Auto / Bold
   'dialogue-b':
-    'text-[18px] lg:text-[36px] leading-normal font-bold font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
+    'text-[18px] lg:text-[36px] leading-[normal] font-bold font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
 
   // Dialogue_2: 30px / 136% / Regular / Upper
   'dialogue-2':
@@ -75,15 +75,15 @@ const variantClassNames: Record<TypographyVariant, string> = {
 
   // Subtitle_1 M: 28px / Auto / Medium
   'subtitle-1-m':
-    'text-[14px] lg:text-[28px] leading-normal font-medium font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
+    'text-[14px] lg:text-[28px] leading-[normal] font-medium font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
 
   // Subtitle_2 M: 26px / Auto / Medium
   'subtitle-2-m':
-    'text-[13px] lg:text-[26px] leading-normal font-medium font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
+    'text-[13px] lg:text-[26px] leading-[normal] font-medium font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
 
   // Subtitle_2 B: 26px / Auto / Bold
   'subtitle-2-b':
-    'text-[13px] lg:text-[26px] leading-normal font-bold font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
+    'text-[13px] lg:text-[26px] leading-[normal] font-bold font-["NEXON_Lv2_Gothic:Bold",_sans-serif]',
 
   // Body: 26px / 135% / -1% / Regular / NanumSquare Neo OTF
   body: 'text-[13px] lg:text-[26px] leading-[135%] font-normal tracking-[-0.01em] font-["NanumSquareNeoOTF-Rg",_sans-serif]',
@@ -94,7 +94,7 @@ const variantClassNames: Record<TypographyVariant, string> = {
 
   // Caption: 22px / Auto / Medium
   caption:
-    'text-[11px] lg:text-[22px] leading-normal font-medium font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
+    'text-[11px] lg:text-[22px] leading-[normal] font-medium font-["NEXON_Lv2_Gothic:Medium",_sans-serif]',
 };
 
 /**

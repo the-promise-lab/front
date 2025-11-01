@@ -796,16 +796,6 @@ export function IconOptionPressedShadow({ className }: IconProps) {
       xmlns='http://www.w3.org/2000/svg'
       className={className}
     >
-      <foreignObject x='-8' y='0' width='961' height='152'>
-        <div
-          style={{
-            backdropFilter: 'blur(2px)',
-            clipPath: 'url(#bgblur_0_31_504_clip_path)',
-            height: '100%',
-            width: '100%',
-          }}
-        />
-      </foreignObject>
       <g filter='url(#filter0_d_31_504)' data-figma-bg-blur-radius='4'>
         <path
           d='M20 76C20 49.4903 41.4903 28 68 28H925V124H68C41.4903 124 20 102.51 20 76Z'

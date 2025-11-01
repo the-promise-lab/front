@@ -55,6 +55,14 @@
             "mentality": -1,
             "hp": 2
           }
+        },
+        {
+          "text": "헴, 어떡합니까??",
+          "value": "ask",
+          "statChanges": {
+            "mentality": -1,
+            "hp": 2
+          }
         }
       ]
     },
