@@ -11,6 +11,7 @@ import {
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { getEventDataByDayStep } from '@processes/game-flow/data/dayFlowData';
+import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 
 export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
@@ -26,7 +27,6 @@ export default function EventPhase() {
   const storyEventData = getEventDataByDayStep('RANDOM_EVENT_STORY');
   const itemEventData = getEventDataByDayStep('RANDOM_EVENT_ITEM');
   const portraitEventData = getEventDataByDayStep('SINGLE_PORTRAIT_SCREEN');
-
   const renderScreen = () => {
     console.log('Current Event Data:', currentEventData);
 
@@ -61,6 +61,13 @@ export default function EventPhase() {
       case 'SINGLE_PORTRAIT_SCREEN':
         return (
           <SinglePortraitScreen portraits={portraitEventData?.portraits} />
+        );
+      case 'CUT_SCENE_SCREEN':
+        return (
+          <CutSceneScreen
+            imageUrl={currentEventData?.image || ''}
+            text={currentEventData?.descriptions.join('\n') || ''}
+          />
         );
       default:
         return <PlaceScreen />;

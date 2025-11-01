@@ -1,7 +1,8 @@
 import { cn } from '@shared/lib/utils';
 import type React from 'react';
+import { forwardRef } from 'react';
 
-type TypographyVariant =
+export type TypographyVariant =
   | 'h1-b'
   | 'h2-b'
   | 'h3-b'
@@ -26,9 +27,22 @@ type SemanticTag =
   | 'span'
   | 'div';
 
-interface TypographyProps {
+type ElementTypeMap = {
+  h1: HTMLHeadingElement;
+  h2: HTMLHeadingElement;
+  h3: HTMLHeadingElement;
+  h4: HTMLHeadingElement;
+  h5: HTMLHeadingElement;
+  h6: HTMLHeadingElement;
+  p: HTMLParagraphElement;
+  span: HTMLSpanElement;
+  div: HTMLDivElement;
+};
+
+interface TypographyProps<T extends SemanticTag = SemanticTag>
+  extends Omit<React.HTMLAttributes<ElementTypeMap[T]>, 'ref'> {
   variant: TypographyVariant;
-  as?: SemanticTag;
+  as?: T;
   className?: string;
   children: React.ReactNode;
 }
@@ -105,21 +119,28 @@ const variantClassNames: Record<TypographyVariant, string> = {
  * @param children - 자식 요소
  * @returns
  */
-export default function Typography({
-  variant,
-  as,
-  className,
-  children,
-}: TypographyProps) {
+function TypographyInner<T extends SemanticTag = SemanticTag>(
+  { variant, as, className, children, ...props }: TypographyProps<T>,
+  ref: React.ForwardedRef<ElementTypeMap[T]>
+) {
   // as prop이 없으면 기본 태그 사용
   const Component = as ?? defaultSemanticTags[variant];
 
   return (
     <Component
+      ref={ref as any} // eslint-disable-line @typescript-eslint/no-explicit-any
       className={cn(variantClassNames[variant], className)}
       data-typography-variant={variant}
+      {...props}
     >
       {children}
     </Component>
   );
 }
+const Typography = forwardRef(TypographyInner) as <
+  T extends SemanticTag = SemanticTag,
+>(
+  props: TypographyProps<T> & { ref?: React.ForwardedRef<ElementTypeMap[T]> }
+) => React.ReactElement;
+
+export default Typography;

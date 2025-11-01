@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
+import type { TypographyVariant } from './Typography';
+import Typography from './Typography';
 
 type TypingTextProps = {
   texts: string[];
@@ -11,6 +13,7 @@ type TypingTextProps = {
   className?: string;
   locale?: string;
   smooth?: boolean;
+  variant?: TypographyVariant;
 };
 
 function splitGraphemes(text: string, locale = 'ko') {
@@ -31,6 +34,7 @@ export default function TypingText({
   className,
   locale = 'ko',
   smooth = false,
+  variant = 'dialogue-m',
 }: TypingTextProps) {
   // 모든 텍스트를 개행으로 연결하여 하나의 문자열로 만들기
   const fullText = useMemo(() => texts.join('\n'), [texts]);
@@ -127,11 +131,11 @@ export default function TypingText({
   const out = units.slice(0, Math.min(count, units.length)).join('');
 
   return (
-    <span
+    <Typography
       ref={containerRef}
-      className={['inline-flex items-end', className].filter(Boolean).join(' ')}
-      aria-live='polite'
-      role='status'
+      variant={variant}
+      as='span'
+      className={className}
     >
       {smooth ? (
         // smooth 모드: 모든 글자를 미리 렌더링하고 opacity 0, 제자리에서 fade-in 효과
@@ -162,6 +166,6 @@ export default function TypingText({
           className='ml-[1px] h-[1em] w-[0.6ch] border-r-2 border-current motion-reduce:animate-none'
         />
       )}
-    </span>
+    </Typography>
   );
 }

@@ -22,7 +22,8 @@ export type DayStep =
   | 'RANDOM_EVENT_ITEM' // 아이템형 랜덤 이벤트
   | 'CHANGE_STATS_SCREEN' // 스탯 변화 화면
   | 'EVENT_RESULT_SCREEN' // 이벤트 결과 화면
-  | 'SINGLE_PORTRAIT_SCREEN'; // 단일 초상화 화면
+  | 'SINGLE_PORTRAIT_SCREEN' // 단일 초상화 화면
+  | 'CUT_SCENE_SCREEN'; // 자른 장면 화면
 
 // 이벤트 데이터 타입 정의
 export interface EventOption {
@@ -105,6 +106,7 @@ export const DAY_STEP_ORDER: DayStep[] = [
   'RANDOM_EVENT_ITEM',
   'CHANGE_STATS_SCREEN',
   'SINGLE_PORTRAIT_SCREEN',
+  'CUT_SCENE_SCREEN',
   'EVENT_RESULT_SCREEN',
 ] as const;
 

@@ -134,16 +134,19 @@ export default function RandomEventScreen({
           </motion.div>
         )}
         {type === 'ITEM' && (
-          <div className='flex gap-2'>
-            {itemOptions.map(option => (
-              <ItemButton
-                key={option.name}
-                name={option.name}
-                imageUrl={option.image}
-                pressed={option.pressed}
-                disabled={option.disabled}
-              />
-            ))}
+          <div className='flex flex-col gap-6'>
+            <div className='flex gap-2'>
+              {itemOptions.map(option => (
+                <ItemButton
+                  key={option.name}
+                  name={option.name}
+                  imageUrl={option.image}
+                  pressed={option.pressed}
+                  disabled={option.disabled}
+                />
+              ))}
+            </div>
+            <ChoiceOption text='그냥 버틴다' />
           </div>
         )}
         {type === 'RESULT' && (
