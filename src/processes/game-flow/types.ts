@@ -39,6 +39,14 @@ export interface StatChanges {
   fail?: StatChanges;
 }
 
+// 캐릭터 정보 타입
+export interface Character {
+  name: string;
+  image: string;
+  mentality: number;
+  hp: number;
+}
+
 export interface EventData {
   id: number;
   title: string;
@@ -60,6 +68,8 @@ export interface GameFlowState {
   isAuthenticated: boolean;
   // 추가 상태들 (필요시 확장)
   selectedCharacter?: string;
+  // 캐릭터 스탯 관리
+  characters: Character[];
   // DAY_FLOW 관련 상태
   dayStep?: DayStep;
   currentDayStepIndex?: number;
@@ -73,6 +83,12 @@ export interface GameFlowActions {
   back: () => void;
   reset: () => void;
   setSelectedCharacter: (character: string) => void;
+  // 캐릭터 관련 액션
+  setCharacters: (characters: Character[]) => void;
+  updateCharacterStat: (
+    characterName: string,
+    statChanges: StatChanges
+  ) => void;
   // DAY_FLOW 관련 액션
   gotoDayStep: (dayStep: DayStep) => void;
   nextDayStep: () => void;
@@ -81,7 +97,7 @@ export interface GameFlowActions {
 }
 
 // 게임 단계 순서 정의
-export const GAME_STEP_ORDER: GameStep[] = [
+export const GAME_STEP_ORDER: readonly GameStep[] = [
   'AUTH_CHECK',
   'LOGIN',
   'LOGIN_PROGRESS',
@@ -95,7 +111,7 @@ export const GAME_STEP_ORDER: GameStep[] = [
 ] as const;
 
 // DAY 플로우 단계 순서 정의
-export const DAY_STEP_ORDER: DayStep[] = [
+export const DAY_STEP_ORDER: readonly DayStep[] = [
   'PLACE_SCREEN',
   'WARNING_BEFORE_START',
   'DAY_SCREEN',
@@ -113,6 +129,7 @@ export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
   step: 'AUTH_CHECK',
   isAuthenticated: false,
   selectedCharacter: undefined,
+  characters: [],
   dayStep: 'PLACE_SCREEN',
   currentDayStepIndex: 0,
 };

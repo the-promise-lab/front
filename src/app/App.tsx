@@ -58,11 +58,25 @@ export default function App() {
         <CharacterSelect
           onNext={() => {
             console.log('CharacterSelect onNext called');
-            // 선택된 캐릭터를 게임 플로우에 저장하고 다음 단계로
+            const gameFlowStore = useGameFlowStore.getState();
             const characterStore = useCharacterSelectionStore.getState();
-            if (characterStore.selectedCharacter) {
-              setSelectedCharacter(characterStore.selectedCharacter.id);
+
+            // 선택된 캐릭터 세트를 전역 상태에 저장
+            const selectedSet = characterStore.selectedCharacterSet;
+            if (selectedSet && !selectedSet.isLocked) {
+              // 캐릭터 세트의 캐릭터들을 전역 상태로 변환 (초기값: mentality 50, hp 50)
+              gameFlowStore.setCharacters(
+                selectedSet.characters.map(character => ({
+                  name: character.name,
+                  image: character.image,
+                  mentality: 50,
+                  hp: 50,
+                }))
+              );
+
+              setSelectedCharacter(selectedSet.id);
             }
+
             console.log('Calling next() from CHARACTER_SELECT');
             next();
           }}

@@ -7,6 +7,7 @@ interface CharacterProfileProps {
   name: string;
   mentality: number;
   hp: number;
+  image: string;
   className?: string;
 }
 
@@ -14,6 +15,7 @@ export default function CharacterProfile({
   name,
   mentality,
   hp,
+  image,
   className,
 }: CharacterProfileProps) {
   return (
@@ -25,7 +27,8 @@ export default function CharacterProfile({
       )}
     >
       {/* 아바타 */}
-      <Avatar name={name} />
+      <Avatar name={name} image={image} />
+      {/* <Typography variant='body'>{name}</Typography> */}
 
       {/* 스탯 */}
       <div className='flex items-center justify-start gap-2'>

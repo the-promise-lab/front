@@ -1,6 +1,8 @@
 import { cn } from '@shared/lib/utils';
 import { IconBackpackButton, IconPauseButton } from './kit/icon-button';
 import CharacterProfile from './kit/CharacterProfile';
+// eslint-disable-next-line boundaries/element-types
+import { useGameFlowStore } from '@processes/game-flow';
 
 interface HeaderProps {
   className?: string;
@@ -15,10 +17,7 @@ export default function Header({
   hasPauseButton = true,
   hasCharacterProfiles = true,
 }: HeaderProps) {
-  const characterProfiles = [
-    { name: '캐릭터1', mentality: 99, hp: 99 },
-    { name: '캐릭터2', mentality: 99, hp: 99 },
-  ];
+  const { characters } = useGameFlowStore();
   return (
     <div
       className={cn(
@@ -35,10 +34,11 @@ export default function Header({
       >
         {hasCharacterProfiles && (
           <>
-            {characterProfiles.map(profile => (
+            {characters.map(profile => (
               <CharacterProfile
                 key={profile.name}
                 name={profile.name}
+                image={profile.image}
                 mentality={profile.mentality}
                 hp={profile.hp}
               />
