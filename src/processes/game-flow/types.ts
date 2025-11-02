@@ -48,6 +48,7 @@ export interface EventData {
   options?: EventOption[]; // 스토리형 이벤트용
   candidateItems?: string[]; // 아이템형 이벤트용
   changeStatsValue?: StatChanges; // 아이템형 이벤트용
+  backgroundImage?: string;
 }
 
 export interface DayFlowEvent {

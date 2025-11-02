@@ -37,7 +37,7 @@ export const useAssetStore = create<AssetState>((set, get) => ({
       next.set(url, { status: 'error', error });
       return { entries: next };
     }),
-  getObjectUrl: url => get().entries.get(url)?.objectUrl,
+  getObjectUrl: url => get().entries.get(url)?.objectUrl || url,
   revoke: url =>
     set(s => {
       const next = new Map(s.entries);

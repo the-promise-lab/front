@@ -12,13 +12,10 @@ import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { getEventDataByDayStep } from '@processes/game-flow/data/dayFlowData';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
+import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
 
 export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
-  const shelterBgUrl = getObjectUrl('shelter-bg.png');
-
-  // 디버깅: 배경 URL 확인
-  console.log('Shelter BG URL:', shelterBgUrl);
 
   // DAY_STEP 상태 관리
   const { dayStep, nextDayStep, currentEventData } = useGameFlowStore();
@@ -52,10 +49,9 @@ export default function EventPhase() {
         return <ChangeStatsScreen />;
       case 'EVENT_RESULT_SCREEN':
         return (
-          <RandomEventScreen
-            type='RESULT'
+          <BeforeResultScreen
+            backgroundImage={getObjectUrl('bg-2.png')}
             onGoToMainMenu={() => useGameFlowStore.getState().goto('MAIN_MENU')}
-            eventData={{ storyEventData, itemEventData }}
           />
         );
       case 'SINGLE_PORTRAIT_SCREEN':
@@ -74,6 +70,10 @@ export default function EventPhase() {
     }
   };
 
+  const backgroundImage = getObjectUrl(
+    currentEventData?.backgroundImage || 'shelter-bg.png'
+  );
+
   const handleNext = () => {
     // EVENT_RESULT_SCREEN에서는 클릭 이벤트 비활성화
     if (dayStep !== 'EVENT_RESULT_SCREEN') {
@@ -84,9 +84,7 @@ export default function EventPhase() {
     <div
       className='relative flex h-screen w-screen flex-col gap-4 bg-cover bg-center'
       style={{
-        backgroundImage: shelterBgUrl
-          ? `url(${shelterBgUrl})`
-          : 'url(/shelter-bg.png)',
+        backgroundImage: `url(${backgroundImage})`,
         backgroundColor: '#1e293b', // fallback 배경색
       }}
       onClick={handleNext}

@@ -109,6 +109,7 @@
       "title": "단일 초상화",
       "descriptions": ["캐릭터 초상화가 표시됩니다.", "다음으로 진행하세요."],
       "image": "/portrait-bg.png",
+      "backgroundImage": "/bg-2.png",
       "portraits": [
         {
           "speaker": "헴",

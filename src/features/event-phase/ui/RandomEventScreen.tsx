@@ -3,11 +3,9 @@ import ChoiceOption from './kit/ChoiceOption';
 import ItemButton from './kit/ItemButton';
 import { motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
-import GlowButton from '@shared/ui/GlowButton';
 
 interface RandomEventScreenProps {
-  type?: 'STORY' | 'ITEM' | 'RESULT';
-  onGoToMainMenu?: () => void;
+  type?: 'STORY' | 'ITEM';
   eventData?: {
     storyEventData?: {
       id: number;
@@ -44,7 +42,6 @@ interface RandomEventScreenProps {
 }
 export default function RandomEventScreen({
   type = 'STORY',
-  onGoToMainMenu,
   eventData,
 }: RandomEventScreenProps) {
   // props로 받은 이벤트 데이터 사용
@@ -109,14 +106,10 @@ export default function RandomEventScreen({
       </motion.div>
       <div className='flex flex-1 flex-col justify-between'>
         <div className='flex flex-col gap-3 pr-12 break-keep whitespace-pre-line'>
-          {type !== 'RESULT' ? (
-            <div className='flex h-13.5 items-center gap-2.5'>
-              <IconCaution className='size-11.5' />
-              <Typography variant='h3-b'>{title}</Typography>
-            </div>
-          ) : (
-            <div className='h-0' />
-          )}
+          <div className='flex h-13.5 items-center gap-2.5'>
+            <IconCaution className='size-11.5' />
+            <Typography variant='h3-b'>{title}</Typography>
+          </div>
           <Typography variant='body'>{description}</Typography>
         </div>
         {type === 'STORY' && (
@@ -149,31 +142,6 @@ export default function RandomEventScreen({
             </div>
             <ChoiceOption text='그냥 버틴다' />
           </div>
-        )}
-        {type === 'RESULT' && (
-          <motion.div
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            transition={{
-              type: 'spring',
-              duration: 0.5,
-            }}
-            className='flex flex-col gap-4'
-          >
-            <GlowButton
-              onClick={e => {
-                e.stopPropagation(); // 이벤트 전파 방지
-                console.log('메인메뉴 버튼 클릭됨');
-                // 메인메뉴로 이동
-                onGoToMainMenu?.();
-                console.log('onGoToMainMenu 호출 완료');
-              }}
-            >
-              <Typography variant='dialogue-m'>
-                결과 보고서 화면으로 이동합니다.
-              </Typography>
-            </GlowButton>
-          </motion.div>
         )}
       </div>
     </div>
