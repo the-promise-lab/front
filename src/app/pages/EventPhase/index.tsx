@@ -97,6 +97,12 @@ export default function EventPhase() {
           dayStep === 'EVENT_RESULT_SCREEN' ||
           dayStep === 'SINGLE_PORTRAIT_SCREEN'
         }
+        bubblePortraitText={
+          // FIXME: 임시 하드코딩
+          dayStep === 'RANDOM_EVENT_STORY'
+            ? '뱅철아 신중하게 선택해라..'
+            : undefined
+        }
       />
       <div className='flex-1'>{renderScreen()}</div>
     </div>
