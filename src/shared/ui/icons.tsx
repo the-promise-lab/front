@@ -786,3 +786,136 @@ export function IconDown({ className }: IconProps) {
     </svg>
   );
 }
+
+export function IconOptionPressedShadow({ className }: IconProps) {
+  return (
+    <svg
+      preserveAspectRatio='none'
+      viewBox='0 0 945 152'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <g filter='url(#filter0_d_31_504)' data-figma-bg-blur-radius='4'>
+        <path
+          d='M20 76C20 49.4903 41.4903 28 68 28H925V124H68C41.4903 124 20 102.51 20 76Z'
+          fill='black'
+          fillOpacity='0.2'
+          shapeRendering='crispEdges'
+        />
+      </g>
+      <defs>
+        <filter
+          id='filter0_d_31_504'
+          x='-8'
+          y='0'
+          width='961'
+          height='152'
+          filterUnits='userSpaceOnUse'
+          colorInterpolationFilters='sRGB'
+        >
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
+          <feColorMatrix
+            in='SourceAlpha'
+            type='matrix'
+            values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
+            result='hardAlpha'
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation='14' />
+          <feComposite in2='hardAlpha' operator='out' />
+          <feColorMatrix
+            type='matrix'
+            values='0 0 0 0 0.909804 0 0 0 0 0.729412 0 0 0 0 0.0823529 0 0 0 0.25 0'
+          />
+          <feBlend
+            mode='normal'
+            in2='BackgroundImageFix'
+            result='effect1_dropShadow_31_504'
+          />
+          <feBlend
+            mode='normal'
+            in='SourceGraphic'
+            in2='effect1_dropShadow_31_504'
+            result='shape'
+          />
+        </filter>
+        <clipPath id='bgblur_0_31_504_clip_path' transform='translate(8 0)'>
+          <path d='M20 76C20 49.4903 41.4903 28 68 28H925V124H68C41.4903 124 20 102.51 20 76Z' />
+        </clipPath>
+        <clipPath
+          id='bgblur_1_31_504_clip_path'
+          transform='translate(-43.7891 -51)'
+        >
+          <path d='M88.3747 75.9998L68.7891 95.5854L49.2034 75.9998L68.7891 56.4142L88.3747 75.9998Z' />
+        </clipPath>
+        <clipPath
+          id='bgblur_2_31_504_clip_path'
+          transform='translate(-51.9197 -59)'
+        >
+          <rect
+            y='0.355335'
+            width='17.7926'
+            height='17.7926'
+            transform='matrix(0.703526 0.710669 -0.703526 0.710669 69.039 63.1028)'
+          />
+        </clipPath>
+        <radialGradient
+          id='paint0_radial_31_504'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(451.932 8.11759) rotate(90) scale(42.3478 326.631)'
+        >
+          <stop stopColor='#FF8A00' />
+          <stop offset='1' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+        <linearGradient
+          id='paint1_linear_31_504'
+          x1='20'
+          y1='76'
+          x2='925'
+          y2='76'
+          gradientUnits='userSpaceOnUse'
+        >
+          <stop stopColor='#FFDB5A' />
+          <stop offset='0.831731' stopColor='#FFDB5A' stopOpacity='0' />
+        </linearGradient>
+        <radialGradient
+          id='paint2_radial_31_504'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(83.1611 60.6734) rotate(135) scale(13.1007 10.7187)'
+        >
+          <stop stopColor='#FF8A00' />
+          <stop offset='1' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+        <radialGradient
+          id='paint3_radial_31_504'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(9.14631 -3.04877) rotate(90) scale(21.3414)'
+        >
+          <stop stopColor='#FAFF00' />
+          <stop offset='0.568159' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+        <radialGradient
+          id='paint4_radial_31_504'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(8.73057 -3.78856) rotate(90) scale(8.06929 6.60215)'
+        >
+          <stop stopColor='#FF8A00' />
+          <stop offset='1' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+      </defs>
+    </svg>
+  );
+}

@@ -66,11 +66,18 @@ export default function App() {
             if (selectedSet && !selectedSet.isLocked) {
               // 캐릭터 세트의 캐릭터들을 전역 상태로 변환 (초기값: mentality 50, hp 50)
               gameFlowStore.setCharacters(
-                selectedSet.characters.map(character => ({
+                selectedSet.characters.map((character, index) => ({
                   name: character.name,
                   image: character.image,
                   mentality: 50,
                   hp: 50,
+                  colors:
+                    index === 0
+                      ? { backgroundColor: '#5C35A299', borderColor: '#CE96F1' }
+                      : {
+                          backgroundColor: '#5B707E99',
+                          borderColor: '#9FEFD2',
+                        },
                 }))
               );
 

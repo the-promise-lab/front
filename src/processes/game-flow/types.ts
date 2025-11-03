@@ -22,7 +22,8 @@ export type DayStep =
   | 'RANDOM_EVENT_ITEM' // 아이템형 랜덤 이벤트
   | 'CHANGE_STATS_SCREEN' // 스탯 변화 화면
   | 'EVENT_RESULT_SCREEN' // 이벤트 결과 화면
-  | 'SINGLE_PORTRAIT_SCREEN'; // 단일 초상화 화면
+  | 'SINGLE_PORTRAIT_SCREEN' // 단일 초상화 화면
+  | 'CUT_SCENE_SCREEN'; // 자른 장면 화면
 
 // 이벤트 데이터 타입 정의
 export interface EventOption {
@@ -45,6 +46,10 @@ export interface Character {
   image: string;
   mentality: number;
   hp: number;
+  colors?: {
+    backgroundColor: string;
+    borderColor: string;
+  };
 }
 
 export interface EventData {
@@ -55,6 +60,7 @@ export interface EventData {
   options?: EventOption[]; // 스토리형 이벤트용
   candidateItems?: string[]; // 아이템형 이벤트용
   changeStatsValue?: StatChanges; // 아이템형 이벤트용
+  backgroundImage?: string;
 }
 
 export interface DayFlowEvent {
@@ -121,6 +127,7 @@ export const DAY_STEP_ORDER: readonly DayStep[] = [
   'RANDOM_EVENT_ITEM',
   'CHANGE_STATS_SCREEN',
   'SINGLE_PORTRAIT_SCREEN',
+  'CUT_SCENE_SCREEN',
   'EVENT_RESULT_SCREEN',
 ] as const;
 

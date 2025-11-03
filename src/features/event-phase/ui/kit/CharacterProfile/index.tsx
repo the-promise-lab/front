@@ -9,6 +9,11 @@ interface CharacterProfileProps {
   hp: number;
   image: string;
   className?: string;
+  characterColors?: {
+    backgroundColor: string;
+    borderColor: string;
+  };
+  active?: boolean;
 }
 
 export default function CharacterProfile({
@@ -17,6 +22,8 @@ export default function CharacterProfile({
   hp,
   image,
   className,
+  characterColors,
+  active = false,
 }: CharacterProfileProps) {
   return (
     <div
@@ -27,8 +34,12 @@ export default function CharacterProfile({
       )}
     >
       {/* 아바타 */}
-      <Avatar name={name} image={image} />
-      {/* <Typography variant='body'>{name}</Typography> */}
+      <Avatar
+        name={name}
+        image={image}
+        characterColors={characterColors}
+        active={active}
+      />
 
       {/* 스탯 */}
       <div className='flex items-center justify-start gap-2'>

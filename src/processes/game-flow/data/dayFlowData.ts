@@ -35,6 +35,7 @@ type DayFlowDataItem = {
       hp?: number;
     };
   };
+  backgroundImage?: string;
 };
 
 // JSON 데이터에서 특정 DAY_STEP에 해당하는 이벤트 찾기 (EVENT_RESULT_SCREEN 제외)
