@@ -7,7 +7,9 @@ export type GameStep =
   | 'LOGIN_PROGRESS' // 로그인 진행 중
   | 'MAIN_MENU' // 메인 메뉴
   | 'PROGRESS' // 게임 준비 진행 중
+  | 'INTRO_STORY' // 인트로 스토리
   | 'CHARACTER_SELECT' // 캐릭터 선택
+  | 'BAG_SELECT' // 가방 선택
   | 'DAY_FLOW' // 시나리오 DAY 플로우
   | 'PACKING_PHASE' // 가방 싸기
   | 'EVENT_PHASE' // 이벤트 페이즈
@@ -23,7 +25,8 @@ export type DayStep =
   | 'CHANGE_STATS_SCREEN' // 스탯 변화 화면
   | 'EVENT_RESULT_SCREEN' // 이벤트 결과 화면
   | 'SINGLE_PORTRAIT_SCREEN' // 단일 초상화 화면
-  | 'CUT_SCENE_SCREEN'; // 자른 장면 화면
+  | 'CUT_SCENE_SCREEN' // 자른 장면 화면
+  | 'BAG_SELECTION_SCREEN'; // 가방 선택
 
 // 이벤트 데이터 타입 정의
 export interface EventOption {
@@ -109,7 +112,9 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'LOGIN_PROGRESS',
   'MAIN_MENU',
   'PROGRESS',
+  'INTRO_STORY',
   'CHARACTER_SELECT',
+  'BAG_SELECT',
   'PACKING_PHASE',
   'DAY_FLOW',
   'EVENT_PHASE',

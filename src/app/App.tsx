@@ -13,6 +13,8 @@ import { CharacterSelect } from '../features/character-selection';
 import { useCharacterSelectionStore } from '../features/character-selection/model/useCharacterSelectionStore';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
+import IntroStory from './pages/IntroStory';
+import { BagSelectionScreen } from '../features/event-phase';
 
 export default function App() {
   const { step, next, setSelectedCharacter, setAuthenticated, resetDayFlow } =
@@ -85,9 +87,31 @@ export default function App() {
             }
 
             console.log('Calling next() from CHARACTER_SELECT');
-            next();
+            // useGameFlowStore.getState().goto('BAG_SELECT');
+            useGameFlowStore.getState().goto('INTRO_STORY');
           }}
           onBack={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+        />
+      );
+    }
+    if (step === 'INTRO_STORY') {
+      return (
+        <IntroStory
+          onNext={() => {
+            useGameFlowStore.getState().goto('BAG_SELECT');
+          }}
+        />
+      );
+    }
+    if (step === 'BAG_SELECT') {
+      return (
+        <BagSelectionScreen
+          onComplete={selectedBagId => {
+            console.log('Selected bag:', selectedBagId);
+
+            // TODO: 선택된 가방을 전역 상태에 저장
+            next();
+          }}
         />
       );
     }
@@ -97,9 +121,9 @@ export default function App() {
     if (step === 'DAY_FLOW') {
       return <EventPhase />;
     }
-    if (step === 'EVENT_PHASE') {
-      return <EventPhase />;
-    }
+    // if (step === 'EVENT_PHASE') {
+    //   return <EventPhase />;
+    // }
 
     // 기본값 (fallback)
     return <LandingPage />;
