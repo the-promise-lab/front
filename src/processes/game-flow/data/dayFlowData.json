@@ -36,7 +36,7 @@
       "descriptions": [
         "대피소 근처에서 이상한 소리가 들려옵니다.",
         "누군가 도움을 요청하는 것 같은데, 정확히 들리지 않습니다.",
-        "소리가 나는 방향으로 가볼까요, 아니면 안전을 위해 피할까요?"
+        "소리가 나는 방향으로 가볼까요, 아니면 피할까요?"
       ],
       "image": "/story-event-bg.png",
       "options": [
@@ -51,6 +51,14 @@
         {
           "text": "안전을 위해 피한다",
           "value": "avoid",
+          "statChanges": {
+            "mentality": -1,
+            "hp": 2
+          }
+        },
+        {
+          "text": "헴, 어떡합니까??",
+          "value": "ask",
           "statChanges": {
             "mentality": -1,
             "hp": 2
@@ -88,11 +96,20 @@
       ],
       "image": "/stats-change-bg.png"
     },
+    "CUT_SCENE_SCREEN": {
+      "id": 7,
+      "image": "/cut-scene-bg.png",
+      "descriptions": [
+        "갈증이 풀렸으나, 갈증이 가시고 나니 허기가 찾아왔다...",
+        "헴과 병철은 극도로 예민해지기 시작했다.."
+      ]
+    },
     "SINGLE_PORTRAIT_SCREEN": {
       "id": 8,
       "title": "단일 초상화",
       "descriptions": ["캐릭터 초상화가 표시됩니다.", "다음으로 진행하세요."],
       "image": "/portrait-bg.png",
+      "backgroundImage": "/bg-2.png",
       "portraits": [
         {
           "speaker": "헴",

@@ -11,13 +11,11 @@ import {
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { getEventDataByDayStep } from '@processes/game-flow/data/dayFlowData';
+import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
+import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
 
 export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
-  const shelterBgUrl = getObjectUrl('shelter-bg.png');
-
-  // 디버깅: 배경 URL 확인
-  console.log('Shelter BG URL:', shelterBgUrl);
 
   // DAY_STEP 상태 관리
   const { dayStep, nextDayStep, currentEventData } = useGameFlowStore();
@@ -26,7 +24,6 @@ export default function EventPhase() {
   const storyEventData = getEventDataByDayStep('RANDOM_EVENT_STORY');
   const itemEventData = getEventDataByDayStep('RANDOM_EVENT_ITEM');
   const portraitEventData = getEventDataByDayStep('SINGLE_PORTRAIT_SCREEN');
-
   const renderScreen = () => {
     console.log('Current Event Data:', currentEventData);
 
@@ -52,20 +49,30 @@ export default function EventPhase() {
         return <ChangeStatsScreen />;
       case 'EVENT_RESULT_SCREEN':
         return (
-          <RandomEventScreen
-            type='RESULT'
+          <BeforeResultScreen
+            backgroundImage={getObjectUrl('bg-2.png')}
             onGoToMainMenu={() => useGameFlowStore.getState().goto('MAIN_MENU')}
-            eventData={{ storyEventData, itemEventData }}
           />
         );
       case 'SINGLE_PORTRAIT_SCREEN':
         return (
           <SinglePortraitScreen portraits={portraitEventData?.portraits} />
         );
+      case 'CUT_SCENE_SCREEN':
+        return (
+          <CutSceneScreen
+            imageUrl={currentEventData?.image || ''}
+            text={currentEventData?.descriptions.join('\n') || ''}
+          />
+        );
       default:
         return <PlaceScreen />;
     }
   };
+
+  const backgroundImage = getObjectUrl(
+    currentEventData?.backgroundImage || 'shelter-bg.png'
+  );
 
   const handleNext = () => {
     // EVENT_RESULT_SCREEN에서는 클릭 이벤트 비활성화
@@ -77,9 +84,7 @@ export default function EventPhase() {
     <div
       className='relative flex h-screen w-screen flex-col gap-4 bg-cover bg-center'
       style={{
-        backgroundImage: shelterBgUrl
-          ? `url(${shelterBgUrl})`
-          : 'url(/shelter-bg.png)',
+        backgroundImage: `url(${backgroundImage})`,
         backgroundColor: '#1e293b', // fallback 배경색
       }}
       onClick={handleNext}
@@ -91,6 +96,12 @@ export default function EventPhase() {
           dayStep === 'CHANGE_STATS_SCREEN' ||
           dayStep === 'EVENT_RESULT_SCREEN' ||
           dayStep === 'SINGLE_PORTRAIT_SCREEN'
+        }
+        bubblePortraitText={
+          // FIXME: 임시 하드코딩
+          dayStep === 'RANDOM_EVENT_STORY'
+            ? '뱅철아 신중하게 선택해라..'
+            : undefined
         }
       />
       <div className='flex-1'>{renderScreen()}</div>
