@@ -8,7 +8,6 @@ import {
   WarningBeforeStartScreen,
   ChangeStatsScreen,
   SinglePortraitScreen,
-  BagSelectionScreen,
 } from '@features/event-phase/index';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
@@ -154,18 +153,6 @@ export default function EventPhase() {
             text='이것은 컷씬 화면입니다.\n여러 줄로 텍스트를 표시할 수 있습니다.'
           />
         );
-      case 'BAG_SELECTION_SCREEN':
-        return (
-          <BagSelectionScreen
-            onComplete={selectedBagId => {
-              console.log('Selected bag:', selectedBagId);
-              // 다음 화면으로 진행
-              if (screenIndex < SCREEN_ORDER.length - 1) {
-                setScreenIndex(screenIndex + 1);
-              }
-            }}
-          />
-        );
       default:
         return <PlaceScreen />;
     }
@@ -174,11 +161,8 @@ export default function EventPhase() {
   const backgroundImage = getObjectUrl('shelter-bg.png');
 
   const handleNext = () => {
-    // BEFORE_RESULT_SCREEN, BAG_SELECTION_SCREEN에서는 클릭 이벤트 비활성화 (버튼 클릭만 허용)
-    if (
-      currentScreen !== 'BEFORE_RESULT_SCREEN' &&
-      currentScreen !== 'BAG_SELECTION_SCREEN'
-    ) {
+    // BEFORE_RESULT_SCREEN에서는 클릭 이벤트 비활성화 (버튼 클릭만 허용)
+    if (currentScreen !== 'BEFORE_RESULT_SCREEN') {
       if (screenIndex < SCREEN_ORDER.length - 1) {
         setScreenIndex(screenIndex + 1);
       }
@@ -199,8 +183,7 @@ export default function EventPhase() {
           currentScreen === 'RANDOM_EVENT_ITEM' ||
           currentScreen === 'CHANGE_STATS_SCREEN' ||
           currentScreen === 'BEFORE_RESULT_SCREEN' ||
-          currentScreen === 'SINGLE_PORTRAIT_SCREEN' ||
-          currentScreen === 'BAG_SELECTION_SCREEN'
+          currentScreen === 'SINGLE_PORTRAIT_SCREEN'
         }
         bubblePortraitText={
           currentScreen === 'RANDOM_EVENT_STORY'

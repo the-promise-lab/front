@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
-import GlowButton from '@shared/ui/GlowButton';
+import { Header } from '..';
 
 interface BagOption {
   id: string;
@@ -57,15 +57,16 @@ export default function BagSelectionScreen({
   return (
     <div className='fixed inset-0 z-50 flex flex-col bg-black/80'>
       {/* 제목 */}
-      <div className='mt-20 flex justify-center'>
-        <Typography variant='h3-b' className='text-white'>
+      <Header />
+      <div className='flex justify-center'>
+        <Typography variant='dialogue-b' className='text-white'>
           물건을 넣을 가방을 골라보자
         </Typography>
       </div>
 
       {/* 가방 카드 컨테이너 - 가로 스크롤 */}
-      <div className='flex flex-1 items-center overflow-x-auto'>
-        <div className='flex min-w-full items-center justify-center gap-5 px-5 py-5'>
+      <div className='mt-10 flex items-center overflow-x-auto'>
+        <div className='flex min-w-full items-center justify-center gap-10'>
           {BAG_OPTIONS.map(bag => (
             <BagCard
               key={bag.id}
@@ -78,14 +79,23 @@ export default function BagSelectionScreen({
       </div>
 
       {/* 선택 완료 버튼 */}
-      <div className='mb-20 flex items-center justify-center'>
-        <GlowButton
+      <div className='mt-10 flex items-center justify-center'>
+        <button
           onClick={handleComplete}
           disabled={!selectedBagId}
-          className='px-11 py-7.5'
+          className={cn(
+            'rounded-6 px-10 py-1',
+            'text-center text-white',
+            'transition-all duration-200',
+            'h-20 w-120',
+            'rounded-3xl',
+            !selectedBagId
+              ? 'cursor-not-allowed border-2 border-white bg-gray-800'
+              : 'border-bt_glass_stroke border-1 bg-gradient-to-b from-white/80 to-white/40'
+          )}
         >
-          <Typography variant='dialogue-m'>선택 완료</Typography>
-        </GlowButton>
+          <Typography variant='dialogue-2'>선택 완료</Typography>
+        </button>
       </div>
     </div>
   );
@@ -105,21 +115,22 @@ function BagCard({
       onClick={onClick}
       className={cn(
         'flex flex-col justify-between',
-        'h-[484px] w-[367px]',
+        'h-[200px] w-[150px]',
         'rounded-6',
         'border-[2px]',
-        'pt-5 pr-8 pb-10 pl-8',
+        'rounded-md',
+        'pt-5 pr-5 pb-5 pl-5',
         'transition-all duration-200',
         'text-left',
         'flex-shrink-0',
         isSelected
-          ? 'border-purple-400 bg-gradient-to-b from-purple-500/30 via-purple-600/20 to-purple-700/20 shadow-lg shadow-purple-500/50'
+          ? 'border-white bg-gradient-to-b from-white/30 via-white/20 to-white/20 shadow-lg shadow-white/50'
           : 'border-white/30 bg-gradient-to-b from-white/10 via-white/5 to-transparent hover:border-white/50'
       )}
     >
       {/* 가방 이미지 영역 */}
       <div className='flex h-60 w-full items-center justify-center'>
-        <div className='h-48 w-48 rounded-lg bg-gray-800/50'>
+        <div className='h-54 w-50 rounded-lg bg-gray-800/50'>
           {/* TODO: 가방 이미지 추가 */}
           <div className='flex h-full w-full items-center justify-center text-white/30'>
             <svg
@@ -143,7 +154,7 @@ function BagCard({
       {/* 텍스트 영역 */}
       <div className='flex flex-col gap-2'>
         <Typography
-          variant='h3-b'
+          variant={bag.title.length > 9 ? 'subtitle-2-b' : 'dialogue-b'}
           className={cn(isSelected ? 'text-white' : 'text-white/80')}
         >
           {bag.title}

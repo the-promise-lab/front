@@ -20,7 +20,7 @@ export default function Header({
   hasCharacterProfiles = true,
   bubblePortraitText,
 }: HeaderProps) {
-  const { characters } = useGameFlowStore();
+  const { characters, openPauseMenu } = useGameFlowStore();
 
   return (
     <div
@@ -65,7 +65,7 @@ export default function Header({
       </div>
       <div className='flex h-full items-start gap-6'>
         {hasBackpackButton && <IconBackpackButton />}
-        {hasPauseButton && <IconPauseButton />}
+        {hasPauseButton && <IconPauseButton onClick={() => openPauseMenu()} />}
       </div>
     </div>
   );

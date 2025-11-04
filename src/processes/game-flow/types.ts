@@ -83,6 +83,8 @@ export interface GameFlowState {
   dayStep?: DayStep;
   currentDayStepIndex?: number;
   currentEventData?: EventData; // 현재 이벤트 데이터
+  // 일시정지 메뉴 상태
+  isPauseMenuOpen: boolean;
 }
 
 export interface GameFlowActions {
@@ -103,6 +105,9 @@ export interface GameFlowActions {
   nextDayStep: () => void;
   backDayStep: () => void;
   resetDayFlow: () => void;
+  // 일시정지 메뉴 관련 액션
+  openPauseMenu: () => void;
+  closePauseMenu: () => void;
 }
 
 // 게임 단계 순서 정의
@@ -144,4 +149,5 @@ export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
   characters: [],
   dayStep: 'PLACE_SCREEN',
   currentDayStepIndex: 0,
+  isPauseMenuOpen: false,
 };
