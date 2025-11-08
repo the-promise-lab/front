@@ -38,7 +38,8 @@ export default function InventorySlot({
           {
             'border-[0.5px] border-[#939393] bg-[rgba(18,15,25,0.7)] lg:border-[1px]':
               !isSelected && !isDelete,
-            'border-[0.75px] border-white lg:border-[1.5px]': isSelected,
+            'border-[0.75px] border-white bg-[linear-gradient(78deg,rgba(255,255,255,0.48)_-1.42%,rgba(255,255,255,0.20)_91.38%)] lg:border-[1.5px]':
+              isSelected,
             'border-[0.5px] border-[#939393] lg:border-[1px]': isDelete,
           }
         )}
