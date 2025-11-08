@@ -44,8 +44,8 @@ export default function Header({
                   key={profile.name}
                   name={profile.name}
                   image={profile.image}
-                  mentality={10}
-                  hp={100}
+                  mentality={profile.mentality}
+                  hp={profile.hp}
                   characterColors={profile.colors}
                   active={index === 0}
                 />

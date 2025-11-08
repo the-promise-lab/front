@@ -24,6 +24,8 @@ export const mockCharacterSets: CharacterSet[] = [
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
         },
+        hp: 100,
+        mentality: 10,
       },
       {
         id: 'byeongcheol',
@@ -41,6 +43,8 @@ export const mockCharacterSets: CharacterSet[] = [
           backgroundColor: '#5B707E',
           borderColor: '#5B707E',
         },
+        hp: 100,
+        mentality: 10,
       },
     ],
     description:

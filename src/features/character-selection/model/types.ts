@@ -17,6 +17,8 @@ export interface Character {
     backgroundColor: string;
     borderColor: string;
   };
+  hp: number;
+  mentality: number;
 }
 
 // 캐릭터 세트 (예: 헴과 병철 세트)
