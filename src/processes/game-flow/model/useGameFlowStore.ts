@@ -11,6 +11,7 @@ import type {
   EventData,
   Character,
   StatChanges,
+  GameSession,
 } from '../types';
 import {
   GAME_STEP_ORDER,
@@ -206,6 +207,19 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           currentEventData: eventData,
         });
       },
+
+      // 게임 세션 관련 액션들
+      loadGameSession: (session: GameSession) => {
+        set({ gameSession: session });
+      },
+
+      clearGameSession: () => {
+        set({ gameSession: undefined });
+      },
+
+      setIsNewGame: (isNew: boolean) => {
+        set({ isNewGame: isNew });
+      },
     }),
     {
       name: 'game-flow-storage', // localStorage 키
@@ -217,6 +231,8 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         dayStep: state.dayStep,
         currentDayStepIndex: state.currentDayStepIndex,
         currentEventData: state.currentEventData,
+        gameSession: state.gameSession,
+        isNewGame: state.isNewGame,
       }),
     }
   )
@@ -271,10 +287,25 @@ export const gameFlowActions = {
     store.resetDayFlow();
   },
 
-  // 게임 시작
+  // 게임 시작 (FIME: 레거시 - 캐릭터 선택으로 바로 이동)
   startGame: () => {
     const store = useGameFlowStore.getState();
     store.goto('CHARACTER_SELECT');
+  },
+
+  // 새 게임 시작
+  startNewGame: () => {
+    const store = useGameFlowStore.getState();
+    store.clearGameSession(); // 이전 세션 데이터 초기화
+    store.setIsNewGame(true); // 새 게임 플래그 설정
+    store.goto('PROGRESS'); // LoadingPage로 이동
+  },
+
+  // 이어하기 (세션은 MainMenu에서 이미 로드됨)
+  continueGame: () => {
+    const store = useGameFlowStore.getState();
+    store.setIsNewGame(false); // 이어하기 플래그 설정
+    store.goto('PROGRESS'); // LoadingPage를 거쳐서 DAY_FLOW로
   },
 
   // 게임 리셋
