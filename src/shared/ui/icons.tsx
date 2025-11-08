@@ -919,3 +919,45 @@ export function IconOptionPressedShadow({ className }: IconProps) {
     </svg>
   );
 }
+
+export function IconTrash2({ className, size }: IconProps) {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
+      viewBox='0 0 81 81'
+      fill='none'
+      className={className}
+    >
+      <path
+        d='M10.125 20.25H16.875H70.875'
+        stroke='white'
+        strokeWidth='5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M64.125 20.25V67.5C64.125 69.2902 63.4138 71.0071 62.148 72.273C60.8821 73.5388 59.1652 74.25 57.375 74.25H23.625C21.8348 74.25 20.1179 73.5388 18.852 72.273C17.5862 71.0071 16.875 69.2902 16.875 67.5V20.25M27 20.25V13.5C27 11.7098 27.7112 9.9929 28.977 8.72703C30.2429 7.46116 31.9598 6.75 33.75 6.75H47.25C49.0402 6.75 50.7571 7.46116 52.023 8.72703C53.2888 9.9929 54 11.7098 54 13.5V20.25'
+        stroke='white'
+        strokeWidth='5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M33.75 37.125V57.375'
+        stroke='white'
+        strokeWidth='5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M47.25 37.125V57.375'
+        stroke='white'
+        strokeWidth='5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  );
+}

@@ -1,9 +1,10 @@
 import { cn } from '@shared/lib/utils';
-import { IconBackpackButton, IconPauseButton } from './kit/icon-button';
+import { IconPauseButton } from './kit/icon-button';
 import CharacterProfile from './kit/CharacterProfile';
 // eslint-disable-next-line boundaries/element-types
 import { useGameFlowStore } from '@processes/game-flow';
 import BubblePortrait from './kit/CharacterProfile/BubblePortrait';
+import SideInventory from '@shared/ui/SideInventory';
 
 interface HeaderProps {
   className?: string;
@@ -64,7 +65,7 @@ export default function Header({
           )}
       </div>
       <div className='flex h-full items-start gap-6'>
-        {hasBackpackButton && <IconBackpackButton />}
+        {hasBackpackButton && <SideInventory hasWeightBar weight={100} />}
         {hasPauseButton && <IconPauseButton onClick={() => openPauseMenu()} />}
       </div>
     </div>
