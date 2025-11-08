@@ -2,6 +2,7 @@ import { useStartNewGame, useContinueGame } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
 import { PauseMenu } from '@widgets/menu';
+import { useAuthStore } from '@shared/auth/model/useAuthStore';
 
 export default function MainMenu() {
   // 새 게임 시작
@@ -10,7 +11,7 @@ export default function MainMenu() {
     isCreating,
     isError: isCreateError,
   } = useStartNewGame();
-
+  const { user } = useAuthStore();
   // 게임 이어하기
   const {
     continueGame,
@@ -59,7 +60,7 @@ export default function MainMenu() {
           <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-purple-500'>
             <span className='text-sm font-bold text-white'>U</span>
           </div>
-          <span className='font-medium text-gray-700'>사용자님</span>
+          <span className='font-medium text-gray-700'>{user?.name}님</span>
         </div>
       </div>
 
