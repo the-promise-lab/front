@@ -11,8 +11,8 @@ import type {
   EventData,
   Character,
   StatChanges,
-  GameSession,
 } from '../types';
+import type { GameSession } from '@features/game-session';
 import {
   GAME_STEP_ORDER,
   DAY_STEP_ORDER,

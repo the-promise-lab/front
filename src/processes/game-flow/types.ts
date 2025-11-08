@@ -1,6 +1,8 @@
 // src/processes/game-flow/types.ts
 // 게임 플로우 관련 타입 정의
 
+import type { GameSession } from '@features/game-session';
+
 export type GameStep =
   | 'AUTH_CHECK' // 인증 상태 확인
   | 'LOGIN' // 로그인 페이지
@@ -70,31 +72,6 @@ export interface DayFlowEvent {
   id: number;
   dayStep: DayStep;
   eventData: EventData;
-}
-
-export interface GameSession {
-  id: number;
-  userId: number;
-  currentActId: number | null;
-  playingCharacterSet: {
-    id: number;
-    characterGroupId: number;
-    playingCharacters: Array<{
-      id: number;
-      characterId: number;
-      currentHp: number;
-      currentSp: number;
-    }>;
-  } | null;
-  inventories: Array<{
-    id: number;
-    bagId: number;
-    slots: Array<{
-      id: number;
-      itemId: number;
-      quantity: number;
-    }>;
-  }>;
 }
 
 export interface GameFlowState {
