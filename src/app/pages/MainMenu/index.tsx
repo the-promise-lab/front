@@ -1,11 +1,9 @@
 import { useGameFlowStore } from '../../../processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
-import { IconPauseButton } from '../../../features/event-phase/ui/kit/icon-button';
+import { PauseMenu } from '@widgets/menu';
 
 export default function MainMenu() {
-  const { openPauseMenu } = useGameFlowStore();
-
   const handleInventory = () => {
     // TODO: 가방/인벤토리 화면으로 이동
     console.log('가방 버튼 클릭');
@@ -14,7 +12,7 @@ export default function MainMenu() {
     <div className='relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100'>
       {/* 상단 우측 일시정지 버튼 */}
       <div className='absolute top-4 right-4 z-10'>
-        <IconPauseButton onClick={() => openPauseMenu()} />
+        <PauseMenu />
       </div>
 
       {/* 좌측 하단 가방 버튼 */}
