@@ -13,10 +13,20 @@ import { CharacterSelect } from '../features/character-selection';
 import { useCharacterSelectionStore } from '../features/character-selection/model/useCharacterSelectionStore';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
+import IntroStory from './pages/IntroStory';
+import { BagSelectionScreen } from '../features/event-phase';
+import PauseMenu from './ui/PauseMenu';
 
 export default function App() {
-  const { step, next, setSelectedCharacter, setAuthenticated, resetDayFlow } =
-    useGameFlowStore();
+  const {
+    step,
+    next,
+    setSelectedCharacter,
+    setAuthenticated,
+    resetDayFlow,
+    isPauseMenuOpen,
+    closePauseMenu,
+  } = useGameFlowStore();
   const { isLoggedIn } = useAuthStore();
 
   // 인증 상태와 게임 플로우 동기화
@@ -58,15 +68,58 @@ export default function App() {
         <CharacterSelect
           onNext={() => {
             console.log('CharacterSelect onNext called');
-            // 선택된 캐릭터를 게임 플로우에 저장하고 다음 단계로
+            const gameFlowStore = useGameFlowStore.getState();
             const characterStore = useCharacterSelectionStore.getState();
-            if (characterStore.selectedCharacter) {
-              setSelectedCharacter(characterStore.selectedCharacter.id);
+
+            // 선택된 캐릭터 세트를 전역 상태에 저장
+            const selectedSet = characterStore.selectedCharacterSet;
+            if (selectedSet && !selectedSet.isLocked) {
+              // 캐릭터 세트의 캐릭터들을 전역 상태로 변환 (초기값: mentality 50, hp 50)
+              gameFlowStore.setCharacters(
+                selectedSet.characters.map((character, index) => ({
+                  name: character.name,
+                  image: character.image,
+                  mentality: 50,
+                  hp: 50,
+                  colors:
+                    index === 0
+                      ? { backgroundColor: '#5C35A299', borderColor: '#CE96F1' }
+                      : {
+                          backgroundColor: '#5B707E99',
+                          borderColor: '#9FEFD2',
+                        },
+                }))
+              );
+
+              setSelectedCharacter(selectedSet.id);
             }
+
             console.log('Calling next() from CHARACTER_SELECT');
-            next();
+            // useGameFlowStore.getState().goto('BAG_SELECT');
+            useGameFlowStore.getState().goto('INTRO_STORY');
           }}
           onBack={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+        />
+      );
+    }
+    if (step === 'INTRO_STORY') {
+      return (
+        <IntroStory
+          onNext={() => {
+            useGameFlowStore.getState().goto('BAG_SELECT');
+          }}
+        />
+      );
+    }
+    if (step === 'BAG_SELECT') {
+      return (
+        <BagSelectionScreen
+          onComplete={selectedBagId => {
+            console.log('Selected bag:', selectedBagId);
+
+            // TODO: 선택된 가방을 전역 상태에 저장
+            next();
+          }}
         />
       );
     }
@@ -76,9 +129,9 @@ export default function App() {
     if (step === 'DAY_FLOW') {
       return <EventPhase />;
     }
-    if (step === 'EVENT_PHASE') {
-      return <EventPhase />;
-    }
+    // if (step === 'EVENT_PHASE') {
+    //   return <EventPhase />;
+    // }
 
     // 기본값 (fallback)
     return <LandingPage />;
@@ -90,6 +143,8 @@ export default function App() {
         <div className='fixed inset-0 z-10 touch-pan-y overflow-hidden'>
           {renderScreen()}
         </div>
+        {/* 일시정지 메뉴 - 전역 팝업 */}
+        <PauseMenu isOpen={isPauseMenuOpen} onClose={closePauseMenu} />
       </RootLayout>
     </AppProviders>
   );

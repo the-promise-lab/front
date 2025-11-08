@@ -1,6 +1,8 @@
 import { cn } from '@shared/lib/utils';
 import { IconBackpackButton, IconPauseButton } from './kit/icon-button';
 import CharacterProfile from './kit/CharacterProfile';
+// eslint-disable-next-line boundaries/element-types
+import { useGameFlowStore } from '@processes/game-flow';
 import BubblePortrait from './kit/CharacterProfile/BubblePortrait';
 
 interface HeaderProps {
@@ -18,20 +20,7 @@ export default function Header({
   hasCharacterProfiles = true,
   bubblePortraitText,
 }: HeaderProps) {
-  const characterProfiles = [
-    {
-      name: '캐릭터1',
-      mentality: 99,
-      hp: 99,
-      colors: { backgroundColor: '#5C35A299', borderColor: '#CE96F1' },
-    },
-    {
-      name: '캐릭터2',
-      mentality: 99,
-      hp: 99,
-      colors: { backgroundColor: '#5B707E99', borderColor: '#9FEFD2' },
-    },
-  ];
+  const { characters, openPauseMenu } = useGameFlowStore();
 
   return (
     <div
@@ -50,30 +39,33 @@ export default function Header({
         >
           {hasCharacterProfiles && (
             <>
-              {characterProfiles.map(profile => (
+              {characters.map((profile, index) => (
                 <CharacterProfile
                   key={profile.name}
                   name={profile.name}
+                  image={profile.image}
                   mentality={profile.mentality}
                   hp={profile.hp}
                   characterColors={profile.colors}
-                  active={profile.name === '캐릭터1'}
+                  active={index === 0}
                 />
               ))}
             </>
           )}
         </div>
-        {bubblePortraitText && (
-          <BubblePortrait
-            className='mx-9 my-2'
-            text={bubblePortraitText}
-            characterColors={characterProfiles[0].colors}
-          />
-        )}
+        {bubblePortraitText &&
+          characters.length > 0 &&
+          characters[0].colors && (
+            <BubblePortrait
+              className='mx-9 my-2'
+              text={bubblePortraitText}
+              characterColors={characters[0].colors}
+            />
+          )}
       </div>
       <div className='flex h-full items-start gap-6'>
         {hasBackpackButton && <IconBackpackButton />}
-        {hasPauseButton && <IconPauseButton />}
+        {hasPauseButton && <IconPauseButton onClick={() => openPauseMenu()} />}
       </div>
     </div>
   );

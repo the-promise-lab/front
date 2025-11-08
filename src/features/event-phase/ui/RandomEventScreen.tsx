@@ -48,6 +48,15 @@ export default function RandomEventScreen({
   const storyEventData = eventData?.storyEventData;
   const itemEventData = eventData?.itemEventData;
 
+  // TODO: 아이템 선택 시 서버에 POST 요청 (API 준비되면 구현)
+  // const handleItemSelect = async (itemId: string) => {
+  //   await fetch('/api/events/choice', {
+  //     method: 'POST',
+  //     body: JSON.stringify({ itemId }),
+  //   });
+  //   // 서버에서 변경된 스탯값 받아서 전역 상태 업데이트
+  // };
+
   const title = storyEventData?.title || '랜덤 이벤트 제목';
   const description =
     storyEventData?.descriptions?.join('\n') ||

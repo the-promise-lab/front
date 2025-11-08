@@ -7,8 +7,9 @@ interface CharacterProfileProps {
   name: string;
   mentality: number;
   hp: number;
+  image: string;
   className?: string;
-  characterColors: {
+  characterColors?: {
     backgroundColor: string;
     borderColor: string;
   };
@@ -19,6 +20,7 @@ export default function CharacterProfile({
   name,
   mentality,
   hp,
+  image,
   className,
   characterColors,
   active = false,
@@ -32,7 +34,12 @@ export default function CharacterProfile({
       )}
     >
       {/* 아바타 */}
-      <Avatar name={name} characterColors={characterColors} active={active} />
+      <Avatar
+        name={name}
+        image={image}
+        characterColors={characterColors}
+        active={active}
+      />
 
       {/* 스탯 */}
       <div className='flex items-center justify-start gap-2'>

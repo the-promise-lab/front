@@ -15,16 +15,26 @@ export interface Character {
   specialAbility: string;
 }
 
-export interface CharacterSelectionState {
+// 캐릭터 세트 (예: 헴과 병철 세트)
+export interface CharacterSet {
+  id: string;
+  name: string;
   characters: Character[];
+  description: string;
+  specialAbility: string;
+  isLocked?: boolean; // 미공개 여부
+}
+
+export interface CharacterSelectionState {
+  characterSets: CharacterSet[];
   currentIndex: number;
-  selectedCharacter: Character | null;
+  selectedCharacterSet: CharacterSet | null;
 }
 
 export interface CharacterSelectionActions {
-  setCharacters: (characters: Character[]) => void;
+  setCharacterSets: (characterSets: CharacterSet[]) => void;
   moveToNext: () => void;
   moveToPrevious: () => void;
-  selectCharacter: (character: Character) => void;
+  selectCharacterSet: (characterSet: CharacterSet) => void;
   reset: () => void;
 }

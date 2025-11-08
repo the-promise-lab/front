@@ -7,7 +7,9 @@ export type GameStep =
   | 'LOGIN_PROGRESS' // 로그인 진행 중
   | 'MAIN_MENU' // 메인 메뉴
   | 'PROGRESS' // 게임 준비 진행 중
+  | 'INTRO_STORY' // 인트로 스토리
   | 'CHARACTER_SELECT' // 캐릭터 선택
+  | 'BAG_SELECT' // 가방 선택
   | 'DAY_FLOW' // 시나리오 DAY 플로우
   | 'PACKING_PHASE' // 가방 싸기
   | 'EVENT_PHASE' // 이벤트 페이즈
@@ -23,7 +25,8 @@ export type DayStep =
   | 'CHANGE_STATS_SCREEN' // 스탯 변화 화면
   | 'EVENT_RESULT_SCREEN' // 이벤트 결과 화면
   | 'SINGLE_PORTRAIT_SCREEN' // 단일 초상화 화면
-  | 'CUT_SCENE_SCREEN'; // 자른 장면 화면
+  | 'CUT_SCENE_SCREEN' // 자른 장면 화면
+  | 'BAG_SELECTION_SCREEN'; // 가방 선택
 
 // 이벤트 데이터 타입 정의
 export interface EventOption {
@@ -38,6 +41,18 @@ export interface StatChanges {
   hp?: number;
   success?: StatChanges;
   fail?: StatChanges;
+}
+
+// 캐릭터 정보 타입
+export interface Character {
+  name: string;
+  image: string;
+  mentality: number;
+  hp: number;
+  colors?: {
+    backgroundColor: string;
+    borderColor: string;
+  };
 }
 
 export interface EventData {
@@ -62,10 +77,14 @@ export interface GameFlowState {
   isAuthenticated: boolean;
   // 추가 상태들 (필요시 확장)
   selectedCharacter?: string;
+  // 캐릭터 스탯 관리
+  characters: Character[];
   // DAY_FLOW 관련 상태
   dayStep?: DayStep;
   currentDayStepIndex?: number;
   currentEventData?: EventData; // 현재 이벤트 데이터
+  // 일시정지 메뉴 상태
+  isPauseMenuOpen: boolean;
 }
 
 export interface GameFlowActions {
@@ -75,21 +94,32 @@ export interface GameFlowActions {
   back: () => void;
   reset: () => void;
   setSelectedCharacter: (character: string) => void;
+  // 캐릭터 관련 액션
+  setCharacters: (characters: Character[]) => void;
+  updateCharacterStat: (
+    characterName: string,
+    statChanges: StatChanges
+  ) => void;
   // DAY_FLOW 관련 액션
   gotoDayStep: (dayStep: DayStep) => void;
   nextDayStep: () => void;
   backDayStep: () => void;
   resetDayFlow: () => void;
+  // 일시정지 메뉴 관련 액션
+  openPauseMenu: () => void;
+  closePauseMenu: () => void;
 }
 
 // 게임 단계 순서 정의
-export const GAME_STEP_ORDER: GameStep[] = [
+export const GAME_STEP_ORDER: readonly GameStep[] = [
   'AUTH_CHECK',
   'LOGIN',
   'LOGIN_PROGRESS',
   'MAIN_MENU',
   'PROGRESS',
+  'INTRO_STORY',
   'CHARACTER_SELECT',
+  'BAG_SELECT',
   'PACKING_PHASE',
   'DAY_FLOW',
   'EVENT_PHASE',
@@ -97,7 +127,7 @@ export const GAME_STEP_ORDER: GameStep[] = [
 ] as const;
 
 // DAY 플로우 단계 순서 정의
-export const DAY_STEP_ORDER: DayStep[] = [
+export const DAY_STEP_ORDER: readonly DayStep[] = [
   'PLACE_SCREEN',
   'WARNING_BEFORE_START',
   'DAY_SCREEN',
@@ -116,6 +146,8 @@ export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
   step: 'AUTH_CHECK',
   isAuthenticated: false,
   selectedCharacter: undefined,
+  characters: [],
   dayStep: 'PLACE_SCREEN',
   currentDayStepIndex: 0,
+  isPauseMenuOpen: false,
 };

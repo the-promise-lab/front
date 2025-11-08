@@ -90,9 +90,6 @@ export default function LoadingPage({ onComplete }: Props) {
         <h2 className='mb-10 text-2xl font-bold text-gray-800'>
           게임을 준비하고 있습니다.
         </h2>
-        <p className='text-xs text-gray-600'>
-          {`${loaded}/${total} 파일 로드 중...`}
-        </p>
 
         {/* Progress Bar */}
         <div className='mx-auto w-64'>

@@ -9,6 +9,8 @@ import type {
   GameStep,
   DayStep,
   EventData,
+  Character,
+  StatChanges,
 } from '../types';
 import {
   GAME_STEP_ORDER,
@@ -94,6 +96,38 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         set({ selectedCharacter: character });
       },
 
+      // 캐릭터 관련 액션들
+      setCharacters: (characters: Character[]) => {
+        set({ characters });
+      },
+
+      updateCharacterStat: (
+        characterName: string,
+        statChanges: StatChanges
+      ) => {
+        const { characters } = get();
+        set({
+          characters: characters.map(character =>
+            character.name === characterName
+              ? {
+                  ...character,
+                  mentality: Math.max(
+                    0,
+                    Math.min(
+                      100,
+                      character.mentality + (statChanges.mentality || 0)
+                    )
+                  ),
+                  hp: Math.max(
+                    0,
+                    Math.min(100, character.hp + (statChanges.hp || 0))
+                  ),
+                }
+              : character
+          ),
+        });
+      },
+
       // DAY_FLOW 관련 액션들
       gotoDayStep: (dayStep: DayStep) => {
         const dayStepIndex = DAY_STEP_ORDER.indexOf(dayStep);
@@ -172,6 +206,15 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           currentEventData: eventData,
         });
       },
+
+      // 일시정지 메뉴 관련 액션
+      openPauseMenu: () => {
+        set({ isPauseMenuOpen: true });
+      },
+
+      closePauseMenu: () => {
+        set({ isPauseMenuOpen: false });
+      },
     }),
     {
       name: 'game-flow-storage', // localStorage 키
@@ -179,6 +222,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         step: state.step,
         isAuthenticated: state.isAuthenticated,
         selectedCharacter: state.selectedCharacter,
+        characters: state.characters,
         dayStep: state.dayStep,
         currentDayStepIndex: state.currentDayStepIndex,
         currentEventData: state.currentEventData,

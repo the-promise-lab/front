@@ -5,7 +5,7 @@ import PlaceTitle from './kit/PlaceTitle';
 import Typography from '@shared/ui/Typography';
 
 export default function PlaceScreen() {
-  const placeTitle = '임시 장소 타이틀';
+  const placeTitle = '대피소';
 
   const [isMoving, setIsMoving] = useState(false);
   const [isAnimationEnd, setIsAnimationEnd] = useState(false);

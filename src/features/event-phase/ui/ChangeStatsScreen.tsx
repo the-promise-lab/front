@@ -4,6 +4,9 @@ import { cn } from '@shared/lib/utils';
 import type { ReactNode } from 'react';
 import Counter from '@shared/ui/Counter';
 import Typography from '@shared/ui/Typography';
+// eslint-disable-next-line boundaries/element-types
+import { useGameFlowStore } from '@processes/game-flow';
+import { useEffect, useState } from 'react';
 
 interface CharacterResult {
   name: string;
@@ -12,16 +15,96 @@ interface CharacterResult {
 }
 
 export default function ChangeStatsScreen() {
-  // 실제 데이터 연결 전 임시 값
-  const results: CharacterResult[] = [
-    { name: '캐릭터1', deltaHp: +9, deltaMentality: -9 },
-    { name: '캐릭터2', deltaHp: +9, deltaMentality: -9 },
-  ];
+  const { characters } = useGameFlowStore();
+  const [previousStats, setPreviousStats] = useState<
+    Record<string, { hp: number; mentality: number }>
+  >({});
+  const [results, setResults] = useState<CharacterResult[]>([]);
+
+  // 서버에서 내려온 전역 상태의 스탯 변화량 계산
+  useEffect(() => {
+    // characters가 없으면 빈 결과 반환
+    if (characters.length === 0) {
+      setResults([]);
+      return;
+    }
+
+    if (Object.keys(previousStats).length === 0) {
+      // 첫 렌더링 시 이전 스탯 저장 (서버에서 받은 스탯값 기준)
+      const initialStats: Record<string, { hp: number; mentality: number }> =
+        {};
+      characters.forEach(character => {
+        initialStats[character.name] = {
+          hp: character.hp,
+          mentality: character.mentality,
+        };
+      });
+      setPreviousStats(initialStats);
+
+      // 첫 렌더링 시 변화량 0으로 초기화
+      const initialResults: CharacterResult[] = characters.map(character => ({
+        name: character.name,
+        deltaHp: 0,
+        deltaMentality: 0,
+      }));
+      setResults(initialResults);
+      return;
+    }
+
+    // 서버에서 업데이트된 스탯과 이전 스탯 비교하여 변화량 계산
+    const currentResults: CharacterResult[] = characters.map(character => {
+      const previous = previousStats[character.name];
+      if (!previous) {
+        return {
+          name: character.name,
+          deltaHp: 0,
+          deltaMentality: 0,
+        };
+      }
+
+      // 서버에서 내려온 현재 스탯 - 이전 스탯 = 변화량
+      const deltaHp = character.hp - previous.hp;
+      const deltaMentality = character.mentality - previous.mentality;
+
+      return {
+        name: character.name,
+        deltaHp,
+        deltaMentality,
+      };
+    });
+
+    setResults(currentResults);
+
+    // 현재 스탯을 이전 스탯으로 저장 (다음 변화량 계산을 위해)
+    const newPreviousStats: Record<string, { hp: number; mentality: number }> =
+      {};
+    characters.forEach(character => {
+      newPreviousStats[character.name] = {
+        hp: character.hp,
+        mentality: character.mentality,
+      };
+    });
+    setPreviousStats(newPreviousStats);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [characters]);
+
+  // TODO: API 준비되면 서버에서 받은 스탯값으로 전역 상태 업데이트
+  // 현재는 전역 상태의 스탯 변화량을 표시 (서버에서 업데이트되면 자동 반영)
+
+  // 전역 상태에 데이터가 없거나 변화량이 모두 0일 때 더미 데이터 표시 (API 없을 때)
+  const displayResults =
+    results.length > 0 &&
+    results.some(r => r.deltaHp !== 0 || r.deltaMentality !== 0)
+      ? results
+      : [
+          { name: '헴', deltaHp: +9, deltaMentality: -9 },
+          { name: '병철', deltaHp: +9, deltaMentality: -9 },
+        ];
 
   return (
     <NoticeBanner>
       <div className='flex flex-col items-center gap-9'>
-        {results.map(r => (
+        {displayResults.map(r => (
           <ResultRow key={r.name} result={r} />
         ))}
       </div>

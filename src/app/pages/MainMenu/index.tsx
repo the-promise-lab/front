@@ -1,20 +1,10 @@
 import { useGameFlowStore } from '../../../processes/game-flow';
-import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
+import { IconPauseButton } from '../../../features/event-phase/ui/kit/icon-button';
 
 export default function MainMenu() {
-  const { logout } = useAuthStore();
-
-  const handleLogout = async () => {
-    await logout();
-    useGameFlowStore.getState().goto('LOGIN');
-  };
-
-  const handleSettings = () => {
-    // TODO: 설정 화면으로 이동
-    console.log('설정 버튼 클릭');
-  };
+  const { openPauseMenu } = useGameFlowStore();
 
   const handleInventory = () => {
     // TODO: 가방/인벤토리 화면으로 이동
@@ -22,28 +12,9 @@ export default function MainMenu() {
   };
   return (
     <div className='relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100'>
-      {/* 상단 우측 설정 버튼 */}
+      {/* 상단 우측 일시정지 버튼 */}
       <div className='absolute top-4 right-4 z-10'>
-        <button
-          onClick={handleSettings}
-          className='bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95'
-        >
-          <svg
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
-            className='text-gray-700'
-          >
-            <circle cx='12' cy='12' r='3' />
-            <path d='m12 1 1.09 2.45 2.46 1.09-1.09 2.45L12 8.09l-2.45-1.09L8.46 4.55 9.55 2.1 12 1z' />
-            <path d='M21 12l-2.45 1.09L17.46 15.54 15.01 14.45 13.91 12l1.09-2.45 2.45-1.09L19.9 9.55 21 12z' />
-            <path d='M3 12l2.45 1.09L6.54 15.54 9 14.45 10.09 12 9 9.55 6.54 8.46 3 9.55 3 12z' />
-            <path d='m12 23-1.09-2.45L8.46 19.46l1.09-2.45L12 15.91l2.45 1.09 1.09 2.45-1.09 2.45L12 23z' />
-          </svg>
-        </button>
+        <IconPauseButton onClick={() => openPauseMenu()} />
       </div>
 
       {/* 좌측 하단 가방 버튼 */}
@@ -75,12 +46,6 @@ export default function MainMenu() {
             <span className='text-sm font-bold text-white'>U</span>
           </div>
           <span className='font-medium text-gray-700'>사용자님</span>
-          <button
-            onClick={handleLogout}
-            className='rounded px-2 py-1 text-xs text-red-600 transition-colors hover:bg-red-50 hover:text-red-800'
-          >
-            로그아웃
-          </button>
         </div>
       </div>
 
@@ -101,12 +66,6 @@ export default function MainMenu() {
           className='transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800'
         >
           🎮 게임 시작하기
-        </button>
-        <button
-          onClick={() => useGameFlowStore.getState().goto('DAY_FLOW')}
-          className='mt-4 transform rounded-full bg-gradient-to-r from-blue-500/50 to-indigo-600/50 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800'
-        >
-          🎮 랜덤 이벤트로
         </button>
 
         {/* 부가 정보 */}
