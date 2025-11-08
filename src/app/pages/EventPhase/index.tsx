@@ -14,7 +14,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
 
-// 하드코딩된 화면 순서
+// FIXME: 하드코딩된 화면 순서
 type ScreenType =
   | 'PLACE_SCREEN'
   | 'WARNING_BEFORE_START'
@@ -43,7 +43,7 @@ export default function EventPhase() {
   const [screenIndex, setScreenIndex] = useState(0);
   const currentScreen = SCREEN_ORDER[screenIndex];
 
-  // 하드코딩된 데이터
+  // FIXME: 하드코딩된 데이터
   const storyEventData = {
     id: 1,
     title: '의문의 소리',

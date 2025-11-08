@@ -35,6 +35,7 @@ export default defineConfig({
       '@api': fileURLToPath(new URL('./src/api', import.meta.url)),
       '@shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
       '@config': fileURLToPath(new URL('./src/config', import.meta.url)),
+      '@widgets': fileURLToPath(new URL('./src/widgets', import.meta.url)),
     },
   },
 });

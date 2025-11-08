@@ -24,7 +24,8 @@
       "@api/*": ["./src/api/*"],
       "@api": ["./src/api"],
       "@shared/*": ["./src/shared/*"],
-      "@config/*": ["./src/config/*"]
+      "@config/*": ["./src/config/*"],
+      "@widgets/*": ["./src/widgets/*"]
     },
     "types": ["vite/client"],
 

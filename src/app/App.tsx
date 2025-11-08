@@ -15,18 +15,11 @@ import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
 import { BagSelectionScreen } from '../features/event-phase';
-import PauseMenu from './ui/PauseMenu';
+import PauseMenu from '../widgets/menu/PauseMenu';
 
 export default function App() {
-  const {
-    step,
-    next,
-    setSelectedCharacter,
-    setAuthenticated,
-    resetDayFlow,
-    isPauseMenuOpen,
-    closePauseMenu,
-  } = useGameFlowStore();
+  const { step, next, setSelectedCharacter, setAuthenticated, resetDayFlow } =
+    useGameFlowStore();
   const { isLoggedIn } = useAuthStore();
 
   // 인증 상태와 게임 플로우 동기화
@@ -144,7 +137,7 @@ export default function App() {
           {renderScreen()}
         </div>
         {/* 일시정지 메뉴 - 전역 팝업 */}
-        <PauseMenu isOpen={isPauseMenuOpen} onClose={closePauseMenu} />
+        <PauseMenu />
       </RootLayout>
     </AppProviders>
   );

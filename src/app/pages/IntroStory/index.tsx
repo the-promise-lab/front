@@ -4,28 +4,12 @@ import { PlaceScreen, SinglePortraitScreen } from '@features/event-phase/index';
 import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 
-// 하드코딩된 화면 순서
-type ScreenType =
-  //   | 'PLACE_SCREEN'
-  //   | 'WARNING_BEFORE_START'
-  //   | 'DAY_SCREEN'
-  //   | 'RANDOM_EVENT_STORY'
-  //   | 'CHANGE_STATS_SCREEN'
-  'SINGLE_PORTRAIT_SCREEN' | 'CUT_SCENE_SCREEN';
-//   | 'RANDOM_EVENT_ITEM'
-//   | 'BEFORE_RESULT_SCREEN'
+// FIXME: 하드코딩된 화면 순서
+type ScreenType = 'SINGLE_PORTRAIT_SCREEN' | 'CUT_SCENE_SCREEN';
 
 const SCREEN_ORDER: ScreenType[] = [
-  //   'PLACE_SCREEN',
-  //   'WARNING_BEFORE_START',
-  //   'DAY_SCREEN',
-  //   'RANDOM_EVENT_STORY',
-  //   'CHANGE_STATS_SCREEN',
   'SINGLE_PORTRAIT_SCREEN',
   'CUT_SCENE_SCREEN',
-  //   'RANDOM_EVENT_ITEM',
-  //   'BEFORE_RESULT_SCREEN',
-  //   'BAG_SELECTION_SCREEN',
 ];
 
 interface IntroStoryProps {
@@ -60,32 +44,6 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
 
   const renderScreen = () => {
     switch (currentScreen) {
-      //   case 'PLACE_SCREEN':
-      //     return <PlaceScreen />;
-      //   case 'WARNING_BEFORE_START':
-      //     return <WarningBeforeStartScreen />;
-      //   case 'DAY_SCREEN':
-      //     return <DayScreen />;
-      //   case 'RANDOM_EVENT_STORY':
-      //     return (
-      //       <RandomEventScreen eventData={{ storyEventData, itemEventData }} />
-      //     );
-      //   case 'RANDOM_EVENT_ITEM':
-      //     return (
-      //       <RandomEventScreen
-      //         type='ITEM'
-      //         eventData={{ storyEventData, itemEventData }}
-      //       />
-      //     );
-      //   case 'CHANGE_STATS_SCREEN':
-      //     return <ChangeStatsScreen />;
-      //   case 'BEFORE_RESULT_SCREEN':
-      //     return (
-      //       <BeforeResultScreen
-      //         backgroundImage={getObjectUrl('bg-2.png')}
-      //         onGoToMainMenu={() => useGameFlowStore.getState().goto('MAIN_MENU')}
-      //       />
-      //     );
       case 'SINGLE_PORTRAIT_SCREEN':
         return <SinglePortraitScreen portraits={portraitData.portraits} />;
       case 'CUT_SCENE_SCREEN':
@@ -95,18 +53,6 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
             text='이것은 컷씬 화면입니다.\n여러 줄로 텍스트를 표시할 수 있습니다.'
           />
         );
-      //   case 'BAG_SELECTION_SCREEN':
-      //     return (
-      //       <BagSelectionScreen
-      //         onComplete={(selectedBagId) => {
-      //           console.log('Selected bag:', selectedBagId);
-      //           // 다음 화면으로 진행
-      //           if (screenIndex < SCREEN_ORDER.length - 1) {
-      //             setScreenIndex(screenIndex + 1);
-      //           }
-      //         }}
-      //       />
-      //     );
       default:
         return <PlaceScreen />;
     }
@@ -129,24 +75,10 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
       className='relative flex h-screen w-screen flex-col gap-4 bg-cover bg-center'
       style={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundColor: '#1e293b', // fallback 배경색
+        backgroundColor: '#1e293b',
       }}
       onClick={handleNext}
     >
-      {/* <Header
-        hasCharacterProfiles={
-          currentScreen === 'RANDOM_EVENT_STORY' ||
-          currentScreen === 'RANDOM_EVENT_ITEM' ||
-          currentScreen === 'CHANGE_STATS_SCREEN' ||
-          currentScreen === 'BEFORE_RESULT_SCREEN' ||
-          currentScreen === 'SINGLE_PORTRAIT_SCREEN'
-        }
-        bubblePortraitText={
-          currentScreen === 'RANDOM_EVENT_STORY'
-            ? '뱅철아 신중하게 선택해라..'
-            : undefined
-        }
-      /> */}
       <div className='flex-1'>{renderScreen()}</div>
     </div>
   );
