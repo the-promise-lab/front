@@ -4,7 +4,7 @@ import {
   adaptGameSessionFromApi,
 } from '@features/game-session';
 import { useGameFlowStore } from './useGameFlowStore';
-import { gameFlowActions } from './useGameFlowStore';
+import { useShallow } from 'zustand/react/shallow';
 
 /**
  * 게임 이어하기 훅
@@ -23,14 +23,19 @@ import { gameFlowActions } from './useGameFlowStore';
  * ```
  */
 export function useContinueGame() {
-  const loadGameSession = useGameFlowStore(state => state.loadGameSession);
+  const { loadGameSession, continueGame } = useGameFlowStore(
+    useShallow(state => ({
+      loadGameSession: state.loadGameSession,
+      continueGame: state.continueGame,
+    }))
+  );
 
   // 기존 세션 조회
   const { data: sessionData, isLoading, isError, error } = useGameSession();
 
   const hasSession = sessionData !== null && sessionData !== undefined;
 
-  const continueGame = useCallback(() => {
+  const continueGameSession = useCallback(() => {
     if (!sessionData) {
       console.warn('[useContinueGame] 세션 데이터가 없습니다');
       return;
@@ -43,11 +48,11 @@ export function useContinueGame() {
     loadGameSession(adaptedSession);
 
     // 게임 플로우 이어하기 (isNewGame=false + goto PROGRESS)
-    gameFlowActions.continueGame();
-  }, [sessionData, loadGameSession]);
+    continueGame();
+  }, [sessionData, loadGameSession, continueGame]);
 
   return {
-    continueGame,
+    continueGameSession,
     hasSession,
     isLoading,
     isError,

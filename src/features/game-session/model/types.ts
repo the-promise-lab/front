@@ -14,6 +14,15 @@ export interface GameSession {
       characterId: number;
       currentHp: number;
       currentSp: number;
+      // 클라이언트 메타데이터 (FIXME: 백엔드에서 제공하면 제거)
+      // API에서 로드 시 없을 수 있음 (app 레이어에서 추가 필요)
+      name: string;
+      fullImage: string;
+      thumbnailImage: string;
+      colors: {
+        backgroundColor: string;
+        borderColor: string;
+      };
     }>;
   } | null;
   inventories: Array<{

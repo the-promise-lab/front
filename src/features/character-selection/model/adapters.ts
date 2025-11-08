@@ -41,7 +41,7 @@ export function adaptPlayingCharacterToCharacter(
   }
 
   return {
-    id: String(playingCharacter.characterId),
+    id: playingCharacter.characterId,
     name: metadata.name,
     fullImage: metadata.fullImage,
     thumbnailImage: metadata.thumbnailImage,

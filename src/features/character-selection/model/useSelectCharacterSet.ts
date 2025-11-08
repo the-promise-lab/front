@@ -1,16 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GameService } from '@api/services/GameService';
+import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
 import { adaptPlayingCharacterToCharacter } from './adapters';
-// TODO: Phase 3에서 추가
-// import { useGameFlowStore } from '@processes/game-flow';
+import type { Character } from './types';
 
 interface SelectCharacterParams {
   characterGroupId: number;
   groupName: string; // 선택 시점의 그룹 이름
 }
 
+interface SelectCharacterResult {
+  response: SelectCharacterSetResponseDto;
+  characters: Character[]; // 변환된 캐릭터 정보 (메타데이터 포함)
+}
+
 interface UseSelectCharacterSetOptions {
-  onSuccess?: () => void;
+  onSuccess?: (result: SelectCharacterResult) => void;
   onError?: (error: Error) => void;
 }
 
@@ -18,7 +23,8 @@ interface UseSelectCharacterSetOptions {
  * 캐릭터 선택 훅
  * POST /api/game/session/character-set 호출
  * - 서버에 선택 요청 전송
- * - gameSession에 자동 저장 (Phase 3에서 연결)
+ * - 변환된 캐릭터 정보를 콜백으로 반환
+ * - 저장 로직은 호출하는 쪽(UI 레이어)에서 처리
  *
  * @param options - 성공/실패 콜백
  * @returns Mutation 객체
@@ -26,7 +32,10 @@ interface UseSelectCharacterSetOptions {
  * @example
  * ```tsx
  * const { mutate: selectCharacter, isPending } = useSelectCharacterSet({
- *   onSuccess: () => console.log('선택 완료'),
+ *   onSuccess: ({ response, characters }) => {
+ *     // gameSession에 저장 (app/processes 레이어에서 처리)
+ *     savePlayingCharacters({ ... });
+ *   },
  *   onError: (error) => alert(error.message),
  * });
  *
@@ -40,11 +49,6 @@ interface UseSelectCharacterSetOptions {
  */
 export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
   const queryClient = useQueryClient();
-
-  // TODO: Phase 3에서 주석 해제
-  // const savePlayingCharacters = useGameFlowStore(
-  //   (state) => state.savePlayingCharacters
-  // );
 
   return useMutation({
     mutationFn: async (params: SelectCharacterParams) => {
@@ -72,19 +76,11 @@ export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
         characters,
       });
 
-      // TODO: Phase 3에서 주석 해제
-      // gameSession에 저장
-      // savePlayingCharacters({
-      //   characterSetId: response.id,
-      //   characterGroupId: response.characterGroupId,
-      //   characters,
-      // });
-
       // 관련 쿼리 무효화
       queryClient.invalidateQueries({ queryKey: ['gameSession'] });
 
-      // 사용자 정의 콜백 실행
-      options?.onSuccess?.();
+      // 사용자 정의 콜백 실행 (저장 로직은 호출하는 쪽에서 처리)
+      options?.onSuccess?.({ response, characters });
     },
     onError: (error: Error) => {
       console.error('[useSelectCharacterSet] 캐릭터 선택 실패:', error);

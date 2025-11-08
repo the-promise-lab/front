@@ -180,6 +180,56 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     setIsNewGame: (isNew: boolean) => {
       set({ isNewGame: isNew });
     },
+
+    savePlayingCharacters: params => {
+      set(state => {
+        if (!state.gameSession) {
+          console.warn(
+            '[useGameFlowStore] gameSession이 없습니다. 먼저 게임 세션을 생성하세요.'
+          );
+          return state;
+        }
+
+        return {
+          gameSession: {
+            ...state.gameSession,
+            playingCharacterSet: {
+              id: params.characterSetId,
+              characterGroupId: params.characterGroupId,
+              playingCharacters: params.playingCharacters,
+            },
+          },
+        };
+      });
+    },
+
+    // DAY_FLOW 관련 편의 함수들
+    startDayFlow: () => {
+      const store = useGameFlowStore.getState();
+      store.goto('DAY_FLOW');
+      store.resetDayFlow();
+    },
+
+    // 새 게임 시작
+    startNewGame: () => {
+      const store = useGameFlowStore.getState();
+      store.clearGameSession(); // 이전 세션 데이터 초기화
+      store.setIsNewGame(true); // 새 게임 플래그 설정
+      store.goto('PROGRESS'); // LoadingPage로 이동
+    },
+
+    // 이어하기 (세션은 MainMenu에서 이미 로드됨)
+    continueGame: () => {
+      const store = useGameFlowStore.getState();
+      store.setIsNewGame(true); //FIXME: 새로하기가 안되어서 임시로 // 이어하기 플래그 설정
+      store.goto('PROGRESS'); // LoadingPage를 거쳐서 DAY_FLOW로
+    },
+
+    // 게임 리셋
+    resetGame: () => {
+      const store = useGameFlowStore.getState();
+      store.reset();
+    },
   })
 );
 
@@ -224,32 +274,4 @@ export const gameFlowActions = {
   goToPackingPhase: () => useGameFlowStore.getState().goto('PACKING_PHASE'),
   goToEventPhase: () => useGameFlowStore.getState().goto('EVENT_PHASE'),
   goToPlaying: () => useGameFlowStore.getState().goto('PLAYING'),
-
-  // DAY_FLOW 관련 편의 함수들
-  startDayFlow: () => {
-    const store = useGameFlowStore.getState();
-    store.goto('DAY_FLOW');
-    store.resetDayFlow();
-  },
-
-  // 새 게임 시작
-  startNewGame: () => {
-    const store = useGameFlowStore.getState();
-    store.clearGameSession(); // 이전 세션 데이터 초기화
-    store.setIsNewGame(true); // 새 게임 플래그 설정
-    store.goto('PROGRESS'); // LoadingPage로 이동
-  },
-
-  // 이어하기 (세션은 MainMenu에서 이미 로드됨)
-  continueGame: () => {
-    const store = useGameFlowStore.getState();
-    store.setIsNewGame(false); // 이어하기 플래그 설정
-    store.goto('PROGRESS'); // LoadingPage를 거쳐서 DAY_FLOW로
-  },
-
-  // 게임 리셋
-  resetGame: () => {
-    const store = useGameFlowStore.getState();
-    store.reset();
-  },
 };

@@ -7,14 +7,14 @@ import { useAuthStore } from '@shared/auth/model/useAuthStore';
 export default function MainMenu() {
   // 새 게임 시작
   const {
-    startNewGame,
+    createNewGameSession,
     isCreating,
     isError: isCreateError,
   } = useStartNewGame();
   const { user } = useAuthStore();
   // 게임 이어하기
   const {
-    continueGame,
+    continueGameSession,
     hasSession,
     isLoading: isLoadingSession,
     isError: isSessionError,
@@ -75,7 +75,7 @@ export default function MainMenu() {
         <div className='flex flex-col gap-8'>
           {/* 새 게임 버튼 */}
           <button
-            onClick={startNewGame}
+            onClick={createNewGameSession}
             disabled={isCreating}
             className='transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800 disabled:cursor-not-allowed disabled:opacity-50'
           >
@@ -104,7 +104,7 @@ export default function MainMenu() {
             !isSessionError &&
             (hasSession ? (
               <button
-                onClick={continueGame}
+                onClick={continueGameSession}
                 className='transform rounded-full bg-gradient-to-r from-green-500 to-emerald-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-green-600 hover:to-emerald-700 hover:shadow-2xl active:scale-95 active:from-green-700 active:to-emerald-800'
               >
                 ▶️ 이어하기

@@ -3,9 +3,10 @@ import CharacterProfile from './kit/CharacterProfile';
 // eslint-disable-next-line boundaries/element-types
 import BubblePortrait from './kit/CharacterProfile/BubblePortrait';
 import { SideInventory, PauseMenu } from '@widgets/menu';
-import { mockCharacterSets } from '@features/character-selection/__mocks__';
+import type { Character } from '@features/character-selection';
 
 interface HeaderProps {
+  characters?: Character[];
   className?: string;
   hasBackpackButton?: boolean;
   hasPauseButton?: boolean;
@@ -14,14 +15,13 @@ interface HeaderProps {
 }
 
 export default function Header({
+  characters,
   className,
   hasBackpackButton = true,
   hasPauseButton = true,
   hasCharacterProfiles = true,
   bubblePortraitText,
 }: HeaderProps) {
-  const characters = mockCharacterSets[0].characters;
-
   return (
     <div
       className={cn(
@@ -37,16 +37,21 @@ export default function Header({
             hasCharacterProfiles ? 'pl-13' : ''
           )}
         >
-          {hasCharacterProfiles && (
+          {hasCharacterProfiles && characters && (
             <>
-              {characters.map((profile, index) => (
+              {characters.map((char, index) => (
                 <CharacterProfile
-                  key={profile.name}
-                  name={profile.name}
-                  image={profile.image}
-                  mentality={profile.mentality}
-                  hp={profile.hp}
-                  characterColors={profile.colors}
+                  key={char.name}
+                  name={char.name}
+                  image={char.thumbnailImage || ''}
+                  mentality={char.currentSp}
+                  hp={char.currentHp}
+                  characterColors={
+                    char.colors || {
+                      backgroundColor: '#666',
+                      borderColor: '#999',
+                    }
+                  }
                   active={index === 0}
                 />
               ))}
@@ -54,6 +59,7 @@ export default function Header({
           )}
         </div>
         {bubblePortraitText &&
+          characters &&
           characters.length > 0 &&
           characters[0].colors && (
             <BubblePortrait

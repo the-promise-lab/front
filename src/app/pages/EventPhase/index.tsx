@@ -43,6 +43,12 @@ export default function EventPhase() {
   const [screenIndex, setScreenIndex] = useState(0);
   const currentScreen = SCREEN_ORDER[screenIndex];
 
+  // 플레이 중인 캐릭터 정보 가져오기
+  const playingCharacters =
+    useGameFlowStore(
+      state => state.gameSession?.playingCharacterSet?.playingCharacters
+    ) || [];
+
   // FIXME: 하드코딩된 데이터
   const storyEventData = {
     id: 1,
@@ -136,7 +142,7 @@ export default function EventPhase() {
           />
         );
       case 'CHANGE_STATS_SCREEN':
-        return <ChangeStatsScreen />;
+        return <ChangeStatsScreen characters={playingCharacters} />;
       case 'BEFORE_RESULT_SCREEN':
         return (
           <BeforeResultScreen
@@ -178,6 +184,7 @@ export default function EventPhase() {
       onClick={handleNext}
     >
       <Header
+        characters={playingCharacters}
         hasCharacterProfiles={
           currentScreen === 'RANDOM_EVENT_STORY' ||
           currentScreen === 'RANDOM_EVENT_ITEM' ||

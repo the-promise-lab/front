@@ -4,10 +4,8 @@ import { cn } from '@shared/lib/utils';
 import type { ReactNode } from 'react';
 import Counter from '@shared/ui/Counter';
 import Typography from '@shared/ui/Typography';
-// eslint-disable-next-line boundaries/element-types
-// import { useGameFlowStore } from '@processes/game-flow';
 import { useEffect, useState } from 'react';
-import { mockCharacterSets } from '@features/character-selection/__mocks__';
+import type { Character } from '@features/character-selection';
 
 interface CharacterResult {
   name: string;
@@ -15,9 +13,13 @@ interface CharacterResult {
   deltaMentality: number; // 정신력 변화
 }
 
-export default function ChangeStatsScreen() {
-  // const { gameSession } = useGameFlowStore(); // FIXME: 서버 연동 후 수정
-  const characters = mockCharacterSets[0].characters;
+interface ChangeStatsScreenProps {
+  characters: Character[];
+}
+
+export default function ChangeStatsScreen({
+  characters,
+}: ChangeStatsScreenProps) {
   const [previousStats, setPreviousStats] = useState<
     Record<string, { hp: number; mentality: number }>
   >({});
@@ -36,9 +38,10 @@ export default function ChangeStatsScreen() {
       const initialStats: Record<string, { hp: number; mentality: number }> =
         {};
       characters.forEach(character => {
-        initialStats[character.name] = {
-          hp: character.hp,
-          mentality: character.mentality,
+        const name = character.name;
+        initialStats[name] = {
+          hp: character.currentHp,
+          mentality: character.currentSp,
         };
       });
       setPreviousStats(initialStats);
@@ -55,21 +58,22 @@ export default function ChangeStatsScreen() {
 
     // 서버에서 업데이트된 스탯과 이전 스탯 비교하여 변화량 계산
     const currentResults: CharacterResult[] = characters.map(character => {
-      const previous = previousStats[character.name];
+      const name = character.name;
+      const previous = previousStats[name];
       if (!previous) {
         return {
-          name: character.name,
+          name,
           deltaHp: 0,
           deltaMentality: 0,
         };
       }
 
       // 서버에서 내려온 현재 스탯 - 이전 스탯 = 변화량
-      const deltaHp = character.hp - previous.hp;
-      const deltaMentality = character.mentality - previous.mentality;
+      const deltaHp = character.currentHp - previous.hp;
+      const deltaMentality = character.currentSp - previous.mentality;
 
       return {
-        name: character.name,
+        name,
         deltaHp,
         deltaMentality,
       };
@@ -81,9 +85,10 @@ export default function ChangeStatsScreen() {
     const newPreviousStats: Record<string, { hp: number; mentality: number }> =
       {};
     characters.forEach(character => {
-      newPreviousStats[character.name] = {
-        hp: character.hp,
-        mentality: character.mentality,
+      const name = character.name;
+      newPreviousStats[name] = {
+        hp: character.currentHp,
+        mentality: character.currentSp,
       };
     });
     setPreviousStats(newPreviousStats);

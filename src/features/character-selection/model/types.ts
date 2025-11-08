@@ -3,7 +3,7 @@
  * FIXME: 백엔드에서 fullImage, thumbnailImage, colors를 API 응답에 포함하도록 수정 요청 중
  */
 export interface Character {
-  id: string; // characterId (string 변환)
+  id: number; // characterId
   name: string;
   fullImage: string; // FIXME: 백엔드 추가 예정
   thumbnailImage: string; // FIXME: 백엔드 추가 예정

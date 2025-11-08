@@ -26,10 +26,10 @@ export default function LoadingPage({ onComplete }: Props) {
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
 
   // 게임 플로우 상태
-  const { isNewGame, goto, next } = useGameFlowStore(
+  const { isNewGame, startDayFlow, next } = useGameFlowStore(
     useShallow(state => ({
       isNewGame: state.isNewGame,
-      goto: state.goto,
+      startDayFlow: state.startDayFlow,
       next: state.next,
     }))
   );
@@ -75,11 +75,20 @@ export default function LoadingPage({ onComplete }: Props) {
           next(); // CHARACTER_SELECT로
         } else {
           console.log('LoadingPage: 이어하기 - DAY_FLOW로 이동');
-          goto('DAY_FLOW');
+          startDayFlow();
         }
       }
     }
-  }, [allLoaded, timerEnded, onComplete, loaded, total, isNewGame, next, goto]);
+  }, [
+    allLoaded,
+    timerEnded,
+    onComplete,
+    loaded,
+    total,
+    isNewGame,
+    next,
+    startDayFlow,
+  ]);
 
   // 3초 후 fallback 타이머 (안전장치)
   useEffect(() => {
@@ -89,15 +98,15 @@ export default function LoadingPage({ onComplete }: Props) {
         onComplete();
       } else {
         if (isNewGame) {
-          useGameFlowStore.getState().next(); // CHARACTER_SELECT로
+          next(); // CHARACTER_SELECT로
         } else {
-          useGameFlowStore.getState().goto('DAY_FLOW');
+          startDayFlow();
         }
       }
     }, 3000);
 
     return () => clearTimeout(fallbackTimer);
-  }, [onComplete, isNewGame]);
+  }, [onComplete, isNewGame, next, startDayFlow]);
 
   return (
     <div className='flex h-screen w-screen items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100'>

@@ -86,6 +86,26 @@ export interface GameFlowState {
   isNewGame: boolean; // 새 게임인지 이어하기인지 구분
 }
 
+export interface PlayingCharacter {
+  id: number;
+  characterId: number;
+  currentHp: number;
+  currentSp: number;
+  name: string;
+  fullImage: string;
+  thumbnailImage: string;
+  colors: {
+    backgroundColor: string;
+    borderColor: string;
+  };
+}
+
+export interface PlayingCharacters {
+  characterSetId: number;
+  characterGroupId: number;
+  playingCharacters: PlayingCharacter[];
+}
+
 export interface GameFlowActions {
   setAuthenticated: (isAuthenticated: boolean) => void;
   goto: (step: GameStep) => void;
@@ -101,6 +121,11 @@ export interface GameFlowActions {
   loadGameSession: (session: GameSession) => void;
   clearGameSession: () => void;
   setIsNewGame: (isNew: boolean) => void;
+  savePlayingCharacters: (params: PlayingCharacters) => void;
+  startNewGame: () => void;
+  startDayFlow: () => void;
+  continueGame: () => void;
+  resetGame: () => void;
 }
 
 // 게임 단계 순서 정의
@@ -110,8 +135,8 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'LOGIN_PROGRESS',
   'MAIN_MENU',
   'PROGRESS',
-  'INTRO_STORY',
   'CHARACTER_SELECT',
+  'INTRO_STORY',
   'BAG_SELECT',
   'PACKING_PHASE',
   'DAY_FLOW',

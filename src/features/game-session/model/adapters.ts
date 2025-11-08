@@ -3,6 +3,7 @@ import type {
   CreateGameSessionResponseDto,
 } from '@api';
 import type { GameSession } from './types';
+import { getCharacterMetadata } from '@features/character-selection/model/characterMappings';
 
 /**
  * GameSessionResponseDto를 도메인 GameSession 타입으로 변환
@@ -22,12 +23,22 @@ export function adaptGameSessionFromApi(
           id: apiResponse.playingCharacterSet.id,
           characterGroupId: apiResponse.playingCharacterSet.characterGroupId,
           playingCharacters:
-            apiResponse.playingCharacterSet.playingCharacter.map(char => ({
-              id: char.id,
-              characterId: char.characterId,
-              currentHp: char.currentHp,
-              currentSp: char.currentSp,
-            })),
+            apiResponse.playingCharacterSet.playingCharacter.map(char => {
+              const metadata = getCharacterMetadata(char.characterId);
+              return {
+                id: char.id,
+                characterId: char.characterId,
+                currentHp: char.currentHp,
+                currentSp: char.currentSp,
+                name: metadata?.name || '',
+                fullImage: metadata?.fullImage || '',
+                thumbnailImage: metadata?.thumbnailImage || '',
+                colors: metadata?.colors || {
+                  backgroundColor: '#666',
+                  borderColor: '#999',
+                },
+              };
+            }),
         }
       : null,
     inventories: apiResponse.inventories.map(inv => ({
