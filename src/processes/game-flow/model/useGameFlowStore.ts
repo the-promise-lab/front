@@ -1,6 +1,3 @@
-// src/processes/game-flow/model/useGameFlowStore.ts
-// 게임 플로우 전역 상태 관리
-
 import { create } from 'zustand';
 import type {
   GameFlowState,
@@ -232,46 +229,3 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     },
   })
 );
-
-// 편의 함수들
-export const gameFlowActions = {
-  // 인증 관련
-  login: () => useGameFlowStore.getState().setAuthenticated(true),
-  logout: async () => {
-    try {
-      // 서버에 로그아웃 요청을 보내서 쿠키 삭제
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`,
-        {
-          method: 'POST',
-          credentials: 'include', // 쿠키 포함
-        }
-      );
-
-      if (response.ok) {
-        console.log('로그아웃 성공');
-      } else {
-        console.warn('로그아웃 요청 실패, 로컬 상태만 초기화');
-      }
-    } catch (error) {
-      console.error('로그아웃 요청 중 오류:', error);
-    } finally {
-      // 서버 요청 성공/실패와 관계없이 로컬 상태 초기화
-      useGameFlowStore.getState().setAuthenticated(false);
-      // 로그아웃 플래그 설정 (LandingPage에서 인증 상태 확인하지 않도록)
-      sessionStorage.setItem('logout', 'true');
-      // 로그인 화면으로 이동
-      useGameFlowStore.getState().goto('LOGIN');
-    }
-  },
-
-  // 네비게이션
-  goToLogin: () => useGameFlowStore.getState().goto('LOGIN'),
-  goToMainMenu: () => useGameFlowStore.getState().goto('MAIN_MENU'),
-  goToCharacterSelect: () =>
-    useGameFlowStore.getState().goto('CHARACTER_SELECT'),
-  goToDayFlow: () => useGameFlowStore.getState().goto('DAY_FLOW'),
-  goToPackingPhase: () => useGameFlowStore.getState().goto('PACKING_PHASE'),
-  goToEventPhase: () => useGameFlowStore.getState().goto('EVENT_PHASE'),
-  goToPlaying: () => useGameFlowStore.getState().goto('PLAYING'),
-};
