@@ -42,7 +42,9 @@ type DayFlowDataItem = {
 export const getEventDataByDayStep = (
   dayStep: Exclude<DayStep, 'EVENT_RESULT_SCREEN'>
 ): DayFlowDataItem | undefined => {
-  return dayFlowDataJson.dayFlowData[dayStep] as DayFlowDataItem;
+  return dayFlowDataJson.dayFlowData[
+    dayStep as keyof typeof dayFlowDataJson.dayFlowData
+  ] as DayFlowDataItem;
 };
 
 // JSON 데이터에서 모든 이벤트 가져오기
