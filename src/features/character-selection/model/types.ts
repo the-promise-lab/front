@@ -1,33 +1,29 @@
-// src/features/character-selection/model/types.ts
-// 캐릭터 선택 관련 타입 정의
-
+/**
+ * 개별 캐릭터 정보
+ * FIXME: 백엔드에서 fullImage, thumbnailImage, colors를 API 응답에 포함하도록 수정 요청 중
+ */
 export interface Character {
-  id: string;
+  id: string; // characterId (string 변환)
   name: string;
-  image: string;
-  description: string;
-  characteristics: {
-    strength: number;
-    intelligence: number;
-    agility: number;
-    luck: number;
-  };
-  specialAbility: string;
+  fullImage: string; // FIXME: 백엔드 추가 예정
+  thumbnailImage: string; // FIXME: 백엔드 추가 예정
+  currentHp: number; // 시작 HP (증감 관리)
+  currentSp: number; // 시작 SP (mentality → sp로 통일)
   colors: {
-    backgroundColor: string;
-    borderColor: string;
+    backgroundColor: string; // FIXME: 백엔드 추가 예정
+    borderColor: string; // FIXME: 백엔드 추가 예정
   };
-  hp: number;
-  mentality: number;
 }
 
-// 캐릭터 세트 (예: 헴과 병철 세트)
+/**
+ * 캐릭터 세트 (캐릭터 그룹)
+ * 예: 헴과 병철 세트
+ */
 export interface CharacterSet {
-  id: string;
+  id: string; // characterGroupId
   name: string;
-  characters: Character[];
+  image: string; // 그룹 대표 이미지
   description: string;
-  specialAbility: string;
   isLocked?: boolean; // 미공개 여부
 }
 
