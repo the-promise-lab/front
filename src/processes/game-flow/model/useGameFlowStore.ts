@@ -206,15 +206,6 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           currentEventData: eventData,
         });
       },
-
-      // 일시정지 메뉴 관련 액션
-      openPauseMenu: () => {
-        set({ isPauseMenuOpen: true });
-      },
-
-      closePauseMenu: () => {
-        set({ isPauseMenuOpen: false });
-      },
     }),
     {
       name: 'game-flow-storage', // localStorage 키

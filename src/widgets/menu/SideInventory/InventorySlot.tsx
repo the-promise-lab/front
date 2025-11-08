@@ -1,6 +1,6 @@
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
-import { IconTrash2 } from '../icons';
+import { IconTrash2 } from '@shared/ui/icons';
 
 interface InventorySlotProps {
   className?: string;
