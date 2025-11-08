@@ -77,10 +77,6 @@ export interface DayFlowEvent {
 export interface GameFlowState {
   step: GameStep;
   isAuthenticated: boolean;
-  // 추가 상태들 (필요시 확장) FIXME: selectedCharacter와 characters는 제거하기 (이전의 임시데이터임)
-  selectedCharacter?: string;
-  // 캐릭터 스탯 관리
-  characters: Character[];
   // DAY_FLOW 관련 상태
   dayStep?: DayStep;
   currentDayStepIndex?: number;
@@ -96,13 +92,6 @@ export interface GameFlowActions {
   next: () => void;
   back: () => void;
   reset: () => void;
-  setSelectedCharacter: (character: string) => void;
-  // 캐릭터 관련 액션
-  setCharacters: (characters: Character[]) => void;
-  updateCharacterStat: (
-    characterName: string,
-    statChanges: StatChanges
-  ) => void;
   // DAY_FLOW 관련 액션
   gotoDayStep: (dayStep: DayStep) => void;
   nextDayStep: () => void;
@@ -149,8 +138,6 @@ export const DAY_STEP_ORDER: readonly DayStep[] = [
 export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
   step: 'AUTH_CHECK',
   isAuthenticated: false,
-  selectedCharacter: undefined,
-  characters: [],
   dayStep: 'PLACE_SCREEN',
   currentDayStepIndex: 0,
   gameSession: undefined,

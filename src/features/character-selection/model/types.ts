@@ -13,6 +13,10 @@ export interface Character {
     luck: number;
   };
   specialAbility: string;
+  colors: {
+    backgroundColor: string;
+    borderColor: string;
+  };
 }
 
 // 캐릭터 세트 (예: 헴과 병철 세트)

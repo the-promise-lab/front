@@ -1,9 +1,9 @@
 import { cn } from '@shared/lib/utils';
 import CharacterProfile from './kit/CharacterProfile';
 // eslint-disable-next-line boundaries/element-types
-import { useGameFlowStore } from '@processes/game-flow';
 import BubblePortrait from './kit/CharacterProfile/BubblePortrait';
 import { SideInventory, PauseMenu } from '@widgets/menu';
+import { mockCharacterSets } from '@features/character-selection/__mocks__';
 
 interface HeaderProps {
   className?: string;
@@ -20,7 +20,7 @@ export default function Header({
   hasCharacterProfiles = true,
   bubblePortraitText,
 }: HeaderProps) {
-  const { characters } = useGameFlowStore();
+  const characters = mockCharacterSets[0].characters;
 
   return (
     <div
@@ -44,8 +44,8 @@ export default function Header({
                   key={profile.name}
                   name={profile.name}
                   image={profile.image}
-                  mentality={profile.mentality}
-                  hp={profile.hp}
+                  mentality={10}
+                  hp={100}
                   characterColors={profile.colors}
                   active={index === 0}
                 />

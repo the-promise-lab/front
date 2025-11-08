@@ -9,8 +9,6 @@ import type {
   GameStep,
   DayStep,
   EventData,
-  Character,
-  StatChanges,
 } from '../types';
 import type { GameSession } from '@features/game-session';
 import {
@@ -91,42 +89,6 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
       reset: () => {
         set(INITIAL_GAME_FLOW_STATE);
-      },
-
-      setSelectedCharacter: (character: string) => {
-        set({ selectedCharacter: character });
-      },
-
-      // 캐릭터 관련 액션들
-      setCharacters: (characters: Character[]) => {
-        set({ characters });
-      },
-
-      updateCharacterStat: (
-        characterName: string,
-        statChanges: StatChanges
-      ) => {
-        const { characters } = get();
-        set({
-          characters: characters.map(character =>
-            character.name === characterName
-              ? {
-                  ...character,
-                  mentality: Math.max(
-                    0,
-                    Math.min(
-                      100,
-                      character.mentality + (statChanges.mentality || 0)
-                    )
-                  ),
-                  hp: Math.max(
-                    0,
-                    Math.min(100, character.hp + (statChanges.hp || 0))
-                  ),
-                }
-              : character
-          ),
-        });
       },
 
       // DAY_FLOW 관련 액션들
@@ -226,8 +188,6 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       partialize: state => ({
         step: state.step,
         isAuthenticated: state.isAuthenticated,
-        selectedCharacter: state.selectedCharacter,
-        characters: state.characters,
         dayStep: state.dayStep,
         currentDayStepIndex: state.currentDayStepIndex,
         currentEventData: state.currentEventData,
@@ -285,12 +245,6 @@ export const gameFlowActions = {
     const store = useGameFlowStore.getState();
     store.goto('DAY_FLOW');
     store.resetDayFlow();
-  },
-
-  // 게임 시작 (FIME: 레거시 - 캐릭터 선택으로 바로 이동)
-  startGame: () => {
-    const store = useGameFlowStore.getState();
-    store.goto('CHARACTER_SELECT');
   },
 
   // 새 게임 시작

@@ -10,7 +10,6 @@ import LandingPage from './pages/LandingPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
 import { CharacterSelect } from '../features/character-selection';
-import { useCharacterSelectionStore } from '../features/character-selection/model/useCharacterSelectionStore';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
@@ -18,8 +17,7 @@ import { BagSelectionScreen } from '../features/event-phase';
 import PauseMenu from '../widgets/menu/PauseMenu';
 
 export default function App() {
-  const { step, next, setSelectedCharacter, setAuthenticated, resetDayFlow } =
-    useGameFlowStore();
+  const { step, next, setAuthenticated, resetDayFlow } = useGameFlowStore();
   const { isLoggedIn } = useAuthStore();
 
   // 인증 상태와 게임 플로우 동기화
@@ -60,32 +58,11 @@ export default function App() {
       return (
         <CharacterSelect
           onNext={() => {
-            console.log('CharacterSelect onNext called');
-            const gameFlowStore = useGameFlowStore.getState();
-            const characterStore = useCharacterSelectionStore.getState();
-
-            // 선택된 캐릭터 세트를 전역 상태에 저장
-            const selectedSet = characterStore.selectedCharacterSet;
-            if (selectedSet && !selectedSet.isLocked) {
-              // 캐릭터 세트의 캐릭터들을 전역 상태로 변환 (초기값: mentality 50, hp 50)
-              gameFlowStore.setCharacters(
-                selectedSet.characters.map((character, index) => ({
-                  name: character.name,
-                  image: character.image,
-                  mentality: 50,
-                  hp: 50,
-                  colors:
-                    index === 0
-                      ? { backgroundColor: '#5C35A299', borderColor: '#CE96F1' }
-                      : {
-                          backgroundColor: '#5B707E99',
-                          borderColor: '#9FEFD2',
-                        },
-                }))
-              );
-
-              setSelectedCharacter(selectedSet.id);
-            }
+            // TODO: 캐릭터 선택 시 gameSession.playingCharacterSet에 저장
+            // const selectedSet = characterStore.selectedCharacterSet;
+            // if (selectedSet && !selectedSet.isLocked) {
+            //   // 향후 gameSession API를 통해 playingCharacterSet 설정
+            // }
 
             console.log('Calling next() from CHARACTER_SELECT');
             // useGameFlowStore.getState().goto('BAG_SELECT');
