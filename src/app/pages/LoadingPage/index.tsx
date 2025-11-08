@@ -25,6 +25,15 @@ export default function LoadingPage({ onComplete }: Props) {
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
 
+  // 게임 플로우 상태
+  const { isNewGame, goto, next } = useGameFlowStore(
+    useShallow(state => ({
+      isNewGame: state.isNewGame,
+      goto: state.goto,
+      next: state.next,
+    }))
+  );
+
   const total = ASSETS_TO_PRELOAD.length;
   const loaded = Array.from(assetEntries.values()).filter(
     entry => entry.status === 'loaded'
@@ -50,31 +59,45 @@ export default function LoadingPage({ onComplete }: Props) {
       timerEnded,
       loaded,
       total,
+      isNewGame,
     });
-    if (allLoaded && timerEnded) {
+
+    // 로딩 완료 조건: 에셋 로딩 + 타이머
+    const isLoadingComplete = allLoaded && timerEnded;
+
+    if (isLoadingComplete) {
       if (onComplete) {
         console.log('LoadingPage: calling onComplete');
         onComplete();
       } else {
-        console.log('LoadingPage: going to CHARACTER_SELECT');
-        useGameFlowStore.getState().goto('CHARACTER_SELECT');
+        if (isNewGame) {
+          console.log('LoadingPage: 새 게임 - CHARACTER_SELECT로 이동');
+          next(); // CHARACTER_SELECT로
+        } else {
+          console.log('LoadingPage: 이어하기 - DAY_FLOW로 이동');
+          goto('DAY_FLOW');
+        }
       }
     }
-  }, [allLoaded, timerEnded, onComplete, loaded, total]);
+  }, [allLoaded, timerEnded, onComplete, loaded, total, isNewGame, next, goto]);
 
-  // 3초 후에는 에셋 로딩 상태와 관계없이 다음 단계로 이동
+  // 3초 후 fallback 타이머 (안전장치)
   useEffect(() => {
     const fallbackTimer = setTimeout(() => {
       console.log('LoadingPage: 3초 후 강제 이동');
       if (onComplete) {
         onComplete();
       } else {
-        useGameFlowStore.getState().goto('CHARACTER_SELECT');
+        if (isNewGame) {
+          useGameFlowStore.getState().next(); // CHARACTER_SELECT로
+        } else {
+          useGameFlowStore.getState().goto('DAY_FLOW');
+        }
       }
     }, 3000);
 
     return () => clearTimeout(fallbackTimer);
-  }, [onComplete]);
+  }, [onComplete, isNewGame]);
 
   return (
     <div className='flex h-screen w-screen items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100'>

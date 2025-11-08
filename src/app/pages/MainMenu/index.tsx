@@ -1,13 +1,29 @@
-import { useGameFlowStore } from '../../../processes/game-flow';
+import { useStartNewGame, useContinueGame } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
 import { PauseMenu } from '@widgets/menu';
 
 export default function MainMenu() {
+  // 새 게임 시작
+  const {
+    startNewGame,
+    isCreating,
+    isError: isCreateError,
+  } = useStartNewGame();
+
+  // 게임 이어하기
+  const {
+    continueGame,
+    hasSession,
+    isLoading: isLoadingSession,
+    isError: isSessionError,
+  } = useContinueGame();
+
   const handleInventory = () => {
     // TODO: 가방/인벤토리 화면으로 이동
     console.log('가방 버튼 클릭');
   };
+
   return (
     <div className='relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100'>
       {/* 상단 우측 일시정지 버튼 */}
@@ -54,17 +70,53 @@ export default function MainMenu() {
           <p className='text-lg text-gray-600'>재난 대비 훈련 게임</p>
         </div>
 
-        {/* 게임 시작 버튼 */}
-        <button
-          onClick={() => {
-            // 게임 시작 시 상태 초기화
-            useGameFlowStore.getState().reset();
-            useGameFlowStore.getState().goto('PROGRESS');
-          }}
-          className='transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800'
-        >
-          🎮 게임 시작하기
-        </button>
+        {/* 게임 시작 버튼들 */}
+        <div className='flex flex-col gap-8'>
+          {/* 새 게임 버튼 */}
+          <button
+            onClick={startNewGame}
+            disabled={isCreating}
+            className='transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl active:scale-95 active:from-blue-700 active:to-indigo-800 disabled:cursor-not-allowed disabled:opacity-50'
+          >
+            {isCreating ? '⏳ 새 게임 시작 중...' : '🎮 새 게임 시작'}
+          </button>
+
+          {isCreateError && (
+            <div className='text-center text-sm text-red-500'>
+              게임 생성 실패. 다시 시도해주세요.
+            </div>
+          )}
+
+          {isLoadingSession && (
+            <div className='text-center text-sm text-gray-500'>
+              세션 확인 중...
+            </div>
+          )}
+          {isSessionError && (
+            <div className='text-center text-sm text-red-500'>
+              세션 확인 실패. 새 게임을 시작해주세요.
+            </div>
+          )}
+
+          {/* 이어하기 버튼 or 세션 없음 표시 */}
+          {!isLoadingSession &&
+            !isSessionError &&
+            (hasSession ? (
+              <button
+                onClick={continueGame}
+                className='transform rounded-full bg-gradient-to-r from-green-500 to-emerald-600 px-12 py-4 text-xl font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:from-green-600 hover:to-emerald-700 hover:shadow-2xl active:scale-95 active:from-green-700 active:to-emerald-800'
+              >
+                ▶️ 이어하기
+              </button>
+            ) : (
+              <button
+                disabled
+                className='cursor-not-allowed rounded-full bg-gray-300 px-12 py-4 text-xl font-bold text-gray-500 opacity-50 shadow-xl'
+              >
+                📭 이어할 세션이 없습니다
+              </button>
+            ))}
+        </div>
 
         {/* 부가 정보 */}
         <div className='mt-12 text-center'>
