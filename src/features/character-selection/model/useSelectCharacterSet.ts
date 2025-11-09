@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GameService } from '@api/services/GameService';
 import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
-import { adaptPlayingCharacterFromApi } from '@entities/game-session/model/adapters';
+import { adaptPlayingCharacterFromApi } from '@entities/game-session';
 import type { PlayingCharacter } from '@entities/game-session';
 
 interface SelectCharacterParams {

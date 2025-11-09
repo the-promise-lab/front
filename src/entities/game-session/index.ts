@@ -3,6 +3,8 @@ export { useCreateGameSession } from './model/useCreateGameSession';
 export {
   adaptGameSessionFromApi,
   adaptCreateGameSessionFromApi,
+  adaptPlayingCharacterFromApi,
+  adaptCharacterSetFromApi,
 } from './model/adapters';
 export type {
   GameSession,

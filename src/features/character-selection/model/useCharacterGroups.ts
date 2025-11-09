@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { GameService } from '@api/services/GameService';
-import { adaptCharacterSetFromApi } from '@entities/game-session/model/adapters';
+import { adaptCharacterSetFromApi } from '@entities/game-session';
 import type { CharacterSet } from '@entities/game-session';
 
 /**

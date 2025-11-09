@@ -2,7 +2,7 @@ import { useGameFlowStore } from '@processes/game-flow/model/useGameFlowStore';
 import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
 import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
-import { adaptPlayingCharacterFromApi } from '@entities/game-session/model/adapters';
+import { adaptPlayingCharacterFromApi } from '@entities/game-session';
 
 export default function CharacterSelectPage() {
   const { goto, savePlayingCharacters } = useGameFlowStore(
