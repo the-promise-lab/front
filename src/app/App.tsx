@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
 import { useGameFlowStore } from '../processes/game-flow';
-import { useAuthStore } from '../shared/auth/model/useAuthStore';
 
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
@@ -10,22 +9,14 @@ import LandingPage from './pages/LandingPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
 import { CharacterSelect } from '../features/character-selection';
-import { useCharacterSelectionStore } from '../features/character-selection/model/useCharacterSelectionStore';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
-import { BagSelectionScreen } from '../features/event-phase';
+import { BagSelectionScreen } from '@features/event-phase';
 import PauseMenu from '../widgets/menu/PauseMenu';
 
 export default function App() {
-  const { step, next, setSelectedCharacter, setAuthenticated, resetDayFlow } =
-    useGameFlowStore();
-  const { isLoggedIn } = useAuthStore();
-
-  // 인증 상태와 게임 플로우 동기화
-  useEffect(() => {
-    setAuthenticated(isLoggedIn);
-  }, [isLoggedIn, setAuthenticated]);
+  const { step, next, resetDayFlow } = useGameFlowStore();
 
   // DAY_FLOW 진입 시 DAY_STEP 초기화
   useEffect(() => {
@@ -37,11 +28,6 @@ export default function App() {
   const renderScreen = () => {
     // 디버깅: 현재 step 상태 확인
     console.log('App.tsx - Current step:', step);
-
-    // 인증 상태에 따른 기본 분기
-    if (!isLoggedIn) {
-      return <LandingPage />;
-    }
 
     // GameFlow 구현 - 단계별 컴포넌트 분기 처리
     if (step === 'AUTH_CHECK') {
@@ -60,32 +46,11 @@ export default function App() {
       return (
         <CharacterSelect
           onNext={() => {
-            console.log('CharacterSelect onNext called');
-            const gameFlowStore = useGameFlowStore.getState();
-            const characterStore = useCharacterSelectionStore.getState();
-
-            // 선택된 캐릭터 세트를 전역 상태에 저장
-            const selectedSet = characterStore.selectedCharacterSet;
-            if (selectedSet && !selectedSet.isLocked) {
-              // 캐릭터 세트의 캐릭터들을 전역 상태로 변환 (초기값: mentality 50, hp 50)
-              gameFlowStore.setCharacters(
-                selectedSet.characters.map((character, index) => ({
-                  name: character.name,
-                  image: character.image,
-                  mentality: 50,
-                  hp: 50,
-                  colors:
-                    index === 0
-                      ? { backgroundColor: '#5C35A299', borderColor: '#CE96F1' }
-                      : {
-                          backgroundColor: '#5B707E99',
-                          borderColor: '#9FEFD2',
-                        },
-                }))
-              );
-
-              setSelectedCharacter(selectedSet.id);
-            }
+            // TODO: 캐릭터 선택 시 gameSession.playingCharacterSet에 저장
+            // const selectedSet = characterStore.selectedCharacterSet;
+            // if (selectedSet && !selectedSet.isLocked) {
+            //   // 향후 gameSession API를 통해 playingCharacterSet 설정
+            // }
 
             console.log('Calling next() from CHARACTER_SELECT');
             // useGameFlowStore.getState().goto('BAG_SELECT');
@@ -122,11 +87,6 @@ export default function App() {
     if (step === 'DAY_FLOW') {
       return <EventPhase />;
     }
-    // if (step === 'EVENT_PHASE') {
-    //   return <EventPhase />;
-    // }
-
-    // 기본값 (fallback)
     return <LandingPage />;
   };
 

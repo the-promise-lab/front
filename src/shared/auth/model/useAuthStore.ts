@@ -5,7 +5,7 @@ import { config } from '@config/env';
 
 export interface User {
   id: string | number;
-  nickname: string;
+  name: string;
   profileImage?: string;
   email?: string;
   provider: 'kakao' | 'guest';
@@ -81,7 +81,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({
+      partialize: state => ({
         user: state.user,
         isLoggedIn: state.isLoggedIn,
         isLoggingOut: state.isLoggingOut,
@@ -96,7 +96,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 export const convertKakaoUserToAppUser = (kakaoUser: KakaoUserInfo): User => {
   return {
     id: kakaoUser.id,
-    nickname:
+    name:
       kakaoUser.properties.nickname || kakaoUser.kakao_account.profile.nickname,
     profileImage:
       kakaoUser.properties.profile_image ||

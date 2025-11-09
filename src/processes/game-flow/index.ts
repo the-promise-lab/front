@@ -3,3 +3,5 @@
 
 export * from './types';
 export * from './model/useGameFlowStore';
+export { useStartNewGame } from './model/useStartNewGame';
+export { useContinueGame } from './model/useContinueGame';

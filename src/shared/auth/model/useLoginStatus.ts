@@ -2,17 +2,16 @@ import { ApiError, AuthService } from '@api';
 import { useAuthStore } from './useAuthStore';
 import { useEffect } from 'react';
 
-export const useCheckAuthState = () => {
-  const { isLoggedIn, isLoggingOut, lastLogoutTime, login } = useAuthStore();
+export const useCheckAuthState = (
+  onAuthCheck: (isLoggedIn: boolean) => void
+) => {
+  const { isLoggedIn, isLoggingOut, lastLogoutTime, login, logout } =
+    useAuthStore();
 
   // 수동으로 인증 상태 확인
   useEffect(() => {
-    if (isLoggedIn || isLoggingOut) {
-      return; // 이미 로그인되어 있거나 로그아웃 중이면 확인하지 않음
-    }
-
-    // 로그아웃 후 0.5초 이내라면 인증 확인하지 않음
-    if (lastLogoutTime && Date.now() - lastLogoutTime < 500) {
+    // 로그아웃 중이거나 로그아웃 후 0.5초 이내라면 인증 확인하지 않음
+    if (isLoggingOut || (lastLogoutTime && Date.now() - lastLogoutTime < 500)) {
       return;
     }
 
@@ -31,17 +30,19 @@ export const useCheckAuthState = () => {
       try {
         const response = await AuthService.authControllerGetProfile();
         login(response, 'cookie-based-token');
+        onAuthCheck(true);
       } catch (error) {
         if (error instanceof ApiError) {
           console.error('로그인 상태 확인 실패:', error.message);
         } else {
           console.error('로그인 상태 확인 실패:', error);
         }
+        onAuthCheck(false);
       }
     };
 
     checkAuthStatus();
-  }, [isLoggedIn, isLoggingOut, lastLogoutTime, login]);
+  }, [isLoggedIn, isLoggingOut, lastLogoutTime, login, logout, onAuthCheck]);
 
   return { isLoggedIn, login };
 };

@@ -1,6 +1,8 @@
 // src/processes/game-flow/types.ts
 // 게임 플로우 관련 타입 정의
 
+import type { GameSession } from '@features/game-session';
+
 export type GameStep =
   | 'AUTH_CHECK' // 인증 상태 확인
   | 'LOGIN' // 로그인 페이지
@@ -75,14 +77,13 @@ export interface DayFlowEvent {
 export interface GameFlowState {
   step: GameStep;
   isAuthenticated: boolean;
-  // 추가 상태들 (필요시 확장)
-  selectedCharacter?: string;
-  // 캐릭터 스탯 관리
-  characters: Character[];
   // DAY_FLOW 관련 상태
   dayStep?: DayStep;
   currentDayStepIndex?: number;
   currentEventData?: EventData; // 현재 이벤트 데이터
+  // 게임 세션 관련 상태
+  gameSession?: GameSession;
+  isNewGame: boolean; // 새 게임인지 이어하기인지 구분
 }
 
 export interface GameFlowActions {
@@ -91,18 +92,15 @@ export interface GameFlowActions {
   next: () => void;
   back: () => void;
   reset: () => void;
-  setSelectedCharacter: (character: string) => void;
-  // 캐릭터 관련 액션
-  setCharacters: (characters: Character[]) => void;
-  updateCharacterStat: (
-    characterName: string,
-    statChanges: StatChanges
-  ) => void;
   // DAY_FLOW 관련 액션
   gotoDayStep: (dayStep: DayStep) => void;
   nextDayStep: () => void;
   backDayStep: () => void;
   resetDayFlow: () => void;
+  // 게임 세션 관련 액션
+  loadGameSession: (session: GameSession) => void;
+  clearGameSession: () => void;
+  setIsNewGame: (isNew: boolean) => void;
 }
 
 // 게임 단계 순서 정의
@@ -140,8 +138,8 @@ export const DAY_STEP_ORDER: readonly DayStep[] = [
 export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
   step: 'AUTH_CHECK',
   isAuthenticated: false,
-  selectedCharacter: undefined,
-  characters: [],
   dayStep: 'PLACE_SCREEN',
   currentDayStepIndex: 0,
+  gameSession: undefined,
+  isNewGame: true,
 };

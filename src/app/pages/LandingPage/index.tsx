@@ -1,22 +1,10 @@
-import { useEffect } from 'react';
-import { useGameFlowStore } from '../../../processes/game-flow';
-import { useAuthStore } from '../../../shared/auth/model/useAuthStore';
-import { useCheckAuthState } from '../../../shared/auth/model/useLoginStatus';
-import { config } from '../../../config/env';
+import { useGameFlowStore } from '@processes/game-flow';
+import { useAuthStore } from '@shared/auth/model/useAuthStore';
+import { config } from '@config/env';
 
 export default function LandingPage() {
   const { setAuthenticated } = useGameFlowStore();
-  const { isLoggedIn, login } = useAuthStore();
-
-  // useCheckAuthState 훅 사용 (로그아웃 플래그 자동 처리)
-  useCheckAuthState();
-
-  // 이미 로그인된 경우 메인메뉴로 리다이렉트
-  useEffect(() => {
-    if (isLoggedIn) {
-      setAuthenticated(true);
-    }
-  }, [isLoggedIn, setAuthenticated]);
+  const { login } = useAuthStore();
 
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트
@@ -27,7 +15,7 @@ export default function LandingPage() {
     // 게스트 로그인 처리 - 바로 메인메뉴로 이동
     const guestUser = {
       id: 'guest',
-      nickname: '게스트',
+      name: '게스트',
       provider: 'guest' as const,
     };
 

@@ -5,8 +5,9 @@ import type { ReactNode } from 'react';
 import Counter from '@shared/ui/Counter';
 import Typography from '@shared/ui/Typography';
 // eslint-disable-next-line boundaries/element-types
-import { useGameFlowStore } from '@processes/game-flow';
+// import { useGameFlowStore } from '@processes/game-flow';
 import { useEffect, useState } from 'react';
+import { mockCharacterSets } from '@features/character-selection/__mocks__';
 
 interface CharacterResult {
   name: string;
@@ -15,7 +16,8 @@ interface CharacterResult {
 }
 
 export default function ChangeStatsScreen() {
-  const { characters } = useGameFlowStore();
+  // const { gameSession } = useGameFlowStore(); // FIXME: 서버 연동 후 수정
+  const characters = mockCharacterSets[0].characters;
   const [previousStats, setPreviousStats] = useState<
     Record<string, { hp: number; mentality: number }>
   >({});
@@ -24,7 +26,7 @@ export default function ChangeStatsScreen() {
   // 서버에서 내려온 전역 상태의 스탯 변화량 계산
   useEffect(() => {
     // characters가 없으면 빈 결과 반환
-    if (characters.length === 0) {
+    if (!characters || characters.length === 0) {
       setResults([]);
       return;
     }
