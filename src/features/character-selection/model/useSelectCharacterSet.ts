@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GameService } from '@api/services/GameService';
 import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
-import { adaptPlayingCharacterToCharacter } from './adapters';
-import type { Character } from './types';
+import { adaptPlayingCharacterFromApi } from '@entities/game-session/model/adapters';
+import type { PlayingCharacter } from '@entities/game-session';
 
 interface SelectCharacterParams {
   characterGroupId: number;
@@ -11,7 +11,7 @@ interface SelectCharacterParams {
 
 interface SelectCharacterResult {
   response: SelectCharacterSetResponseDto;
-  characters: Character[]; // 변환된 캐릭터 정보 (메타데이터 포함)
+  playingCharacters: PlayingCharacter[]; // 변환된 캐릭터 정보 (메타데이터 포함)
 }
 
 interface UseSelectCharacterSetOptions {
@@ -60,7 +60,7 @@ export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
     onSuccess: ({ response }) => {
       // 서버 응답 + 메타데이터 결합
       const characters = response.playingCharacter
-        .map(adaptPlayingCharacterToCharacter)
+        .map(adaptPlayingCharacterFromApi)
         .filter((char): char is NonNullable<typeof char> => char !== null);
 
       if (characters.length === 0) {
@@ -73,14 +73,14 @@ export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
       console.log('[useSelectCharacterSet] 캐릭터 선택 성공:', {
         characterSetId: response.id,
         characterGroupId: response.characterGroupId,
-        characters,
+        playingCharacters: characters,
       });
 
       // 관련 쿼리 무효화
       queryClient.invalidateQueries({ queryKey: ['gameSession'] });
 
       // 사용자 정의 콜백 실행 (저장 로직은 호출하는 쪽에서 처리)
-      options?.onSuccess?.({ response, characters });
+      options?.onSuccess?.({ response, playingCharacters: characters });
     },
     onError: (error: Error) => {
       console.error('[useSelectCharacterSet] 캐릭터 선택 실패:', error);

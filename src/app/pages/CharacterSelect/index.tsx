@@ -1,8 +1,8 @@
 import { useGameFlowStore } from '@processes/game-flow/model/useGameFlowStore';
 import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
-import { getCharacterMetadata } from '@features/character-selection/model/characterMappings';
 import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
+import { adaptPlayingCharacterFromApi } from '@entities/game-session/model/adapters';
 
 export default function CharacterSelectPage() {
   const { goto, savePlayingCharacters } = useGameFlowStore(
@@ -15,26 +15,8 @@ export default function CharacterSelectPage() {
   const handleSelectSuccess = (response: SelectCharacterSetResponseDto) => {
     // gameSession에 선택된 캐릭터 정보 + 메타데이터 저장
     const playingCharacters = response.playingCharacter
-      .map(pc => {
-        const metadata = getCharacterMetadata(pc.characterId);
-        if (!metadata) {
-          console.error(
-            `[CharacterSelectPage] characterId ${pc.characterId}에 대한 메타데이터가 없습니다.`
-          );
-          return null;
-        }
-        return {
-          id: pc.id,
-          characterId: pc.characterId,
-          currentHp: pc.currentHp,
-          currentSp: pc.currentSp,
-          name: metadata.name,
-          fullImage: metadata.fullImage,
-          thumbnailImage: metadata.thumbnailImage,
-          colors: metadata.colors,
-        };
-      })
-      .filter((pc): pc is NonNullable<typeof pc> => pc !== null);
+      .map(adaptPlayingCharacterFromApi)
+      .filter((char): char is NonNullable<typeof char> => char !== null);
 
     savePlayingCharacters({
       characterSetId: response.id,

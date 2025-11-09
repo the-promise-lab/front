@@ -1,11 +1,7 @@
-// src/features/character-selection/ui/CharacterSelect/index.tsx
-// 캐릭터 선택 컴포넌트
-
-import { useEffect } from 'react';
-import { useCharacterSelectionStore } from '../../model/useCharacterSelectionStore';
 import { useCharacterGroups } from '../../model/useCharacterGroups';
 import { useSelectCharacterSet } from '../../model/useSelectCharacterSet';
 import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
+import { useState } from 'react';
 
 interface CharacterSelectProps {
   onNext: () => void;
@@ -18,8 +14,7 @@ export default function CharacterSelect({
   onBack,
   onSelectSuccess,
 }: CharacterSelectProps) {
-  const { currentIndex, setCharacterSets, moveToNext, moveToPrevious } =
-    useCharacterSelectionStore();
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   // 서버에서 캐릭터 그룹 조회
   const { data: characterSets = [], isLoading, error } = useCharacterGroups();
@@ -41,13 +36,6 @@ export default function CharacterSelect({
         alert(`캐릭터 선택 실패: ${error.message}`);
       },
     });
-
-  // 로컬 스토어에 서버 데이터 동기화 (슬라이드 네비게이션용)
-  useEffect(() => {
-    if (characterSets.length > 0) {
-      setCharacterSets(characterSets);
-    }
-  }, [characterSets, setCharacterSets]);
 
   const handleSelectComplete = () => {
     const currentSet = characterSets[currentIndex];
@@ -102,6 +90,15 @@ export default function CharacterSelect({
     );
   }
 
+  const handleMoveToNext = () => {
+    setCurrentIndex((currentIndex + 1) % characterSets.length);
+  };
+  const handleMoveToPrevious = () => {
+    setCurrentIndex(
+      (currentIndex - 1 + characterSets.length) % characterSets.length
+    );
+  };
+
   const currentSet = characterSets[currentIndex];
 
   return (
@@ -130,7 +127,7 @@ export default function CharacterSelect({
       <div className='flex h-screen flex-col items-center justify-center px-4 py-6'>
         {/* 좌측 슬라이드 버튼 */}
         <button
-          onClick={moveToPrevious}
+          onClick={handleMoveToPrevious}
           className='absolute top-1/2 left-4 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-lg transition-all hover:scale-110 hover:bg-white active:scale-95'
         >
           <svg
@@ -148,7 +145,7 @@ export default function CharacterSelect({
 
         {/* 우측 슬라이드 버튼 */}
         <button
-          onClick={moveToNext}
+          onClick={handleMoveToNext}
           className='absolute top-1/2 right-4 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-lg transition-all hover:scale-110 hover:bg-white active:scale-95'
         >
           <svg
@@ -198,11 +195,13 @@ export default function CharacterSelect({
 
         {/* 인디케이터 */}
         <div className='mt-6 flex gap-2'>
-          {characterSets.map((_set, index) => (
+          {characterSets.map(characterSet => (
             <div
-              key={index}
+              key={characterSet.id}
               className={`h-2 w-2 rounded-full transition-all ${
-                index === currentIndex ? 'w-6 bg-red-500' : 'bg-gray-300'
+                characterSet.id === currentSet?.id
+                  ? 'w-6 bg-red-500'
+                  : 'bg-gray-300'
               }`}
             />
           ))}

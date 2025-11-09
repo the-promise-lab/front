@@ -1,7 +1,7 @@
 import { useStartNewGame, useContinueGame } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
-import { PauseMenu } from '@widgets/menu';
+import { PauseMenu } from '@processes/game-flow/ui/menu';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 
 export default function MainMenu() {

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
-import { Header } from '..';
 
 interface BagOption {
   id: string;
@@ -56,8 +55,6 @@ export default function BagSelectionScreen({
 
   return (
     <div className='fixed inset-0 z-50 flex flex-col bg-black/80'>
-      {/* 제목 */}
-      <Header />
       <div className='flex justify-center'>
         <Typography variant='dialogue-b' className='text-white'>
           물건을 넣을 가방을 골라보자

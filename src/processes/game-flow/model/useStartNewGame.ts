@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import {
   useCreateGameSession,
   adaptCreateGameSessionFromApi,
-} from '@features/game-session';
+} from '@entities/game-session';
 import { useGameFlowStore } from './useGameFlowStore';
 import { useShallow } from 'zustand/react/shallow';
 

@@ -2,25 +2,23 @@ import { cn } from '@shared/lib/utils';
 import CharacterProfile from './kit/CharacterProfile';
 // eslint-disable-next-line boundaries/element-types
 import BubblePortrait from './kit/CharacterProfile/BubblePortrait';
-import { SideInventory, PauseMenu } from '@widgets/menu';
-import type { Character } from '@features/character-selection';
+import type { PlayingCharacter } from '@entities/game-session';
+import type { ReactNode } from 'react';
 
 interface HeaderProps {
-  characters?: Character[];
+  playingCharacters?: PlayingCharacter[];
   className?: string;
-  hasBackpackButton?: boolean;
-  hasPauseButton?: boolean;
   hasCharacterProfiles?: boolean;
   bubblePortraitText?: string;
+  menuSlot?: ReactNode;
 }
 
 export default function Header({
-  characters,
+  playingCharacters,
   className,
-  hasBackpackButton = true,
-  hasPauseButton = true,
   hasCharacterProfiles = true,
   bubblePortraitText,
+  menuSlot,
 }: HeaderProps) {
   return (
     <div
@@ -37,9 +35,9 @@ export default function Header({
             hasCharacterProfiles ? 'pl-13' : ''
           )}
         >
-          {hasCharacterProfiles && characters && (
+          {hasCharacterProfiles && playingCharacters && (
             <>
-              {characters.map((char, index) => (
+              {playingCharacters.map((char, index) => (
                 <CharacterProfile
                   key={char.name}
                   name={char.name}
@@ -59,20 +57,19 @@ export default function Header({
           )}
         </div>
         {bubblePortraitText &&
-          characters &&
-          characters.length > 0 &&
-          characters[0].colors && (
+          playingCharacters &&
+          playingCharacters.length > 0 &&
+          playingCharacters[0].colors && (
             <BubblePortrait
               className='mx-9 my-2'
               text={bubblePortraitText}
-              characterColors={characters[0].colors}
+              characterColors={playingCharacters[0].colors}
             />
           )}
       </div>
-      <div className='flex h-full items-start gap-6'>
-        {hasBackpackButton && <SideInventory hasWeightBar weight={100} />}
-        {hasPauseButton && <PauseMenu />}
-      </div>
+      {menuSlot && (
+        <div className='flex h-full items-start gap-6'>{menuSlot}</div>
+      )}
     </div>
   );
 }

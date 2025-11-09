@@ -1,7 +1,7 @@
 // src/processes/game-flow/types.ts
 // 게임 플로우 관련 타입 정의
 
-import type { GameSession } from '@features/game-session';
+import type { GameSession } from '@entities/game-session';
 
 export type GameStep =
   | 'AUTH_CHECK' // 인증 상태 확인

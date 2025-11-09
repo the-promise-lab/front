@@ -6,7 +6,7 @@ import type {
   DayStep,
   EventData,
 } from '../types';
-import type { GameSession } from '@features/game-session';
+import type { GameSession } from '@entities/game-session';
 import {
   GAME_STEP_ORDER,
   DAY_STEP_ORDER,

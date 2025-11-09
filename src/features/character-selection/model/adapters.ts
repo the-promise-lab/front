@@ -1,7 +1,7 @@
 import type { PlayingCharacterDto } from '@api/models/PlayingCharacterDto';
 import type { CharacterGroupResponseDto } from '@api/models/CharacterGroupResponseDto';
-import type { CharacterSet, Character } from './types';
-import { getCharacterMetadata } from './characterMappings';
+import type { CharacterSet, PlayingCharacter } from '@entities/game-session';
+import { getCharacterMetadata } from '@entities/game-session/model/characterMappings';
 
 /**
  * 서버 캐릭터 그룹 응답을 클라이언트 CharacterSet 타입으로 변환
@@ -13,11 +13,11 @@ export function adaptCharacterGroupToCharacterSet(
   group: CharacterGroupResponseDto
 ): CharacterSet {
   return {
-    id: String(group.id),
+    id: group.id,
     name: group.name,
     image: group.image,
     description: group.description,
-    isLocked: false, // TODO: 필요 시 잠금 조건 추가
+    isLocked: group.id !== 1,
   };
 }
 
@@ -28,9 +28,9 @@ export function adaptCharacterGroupToCharacterSet(
  * @param playingCharacter - 서버 응답 (PlayingCharacterDto)
  * @returns 클라이언트 Character 타입 또는 null (메타데이터 없는 경우)
  */
-export function adaptPlayingCharacterToCharacter(
+export function adaptPlayingCharacter(
   playingCharacter: PlayingCharacterDto
-): Character | null {
+): PlayingCharacter | null {
   const metadata = getCharacterMetadata(playingCharacter.characterId);
 
   if (!metadata) {
@@ -41,7 +41,8 @@ export function adaptPlayingCharacterToCharacter(
   }
 
   return {
-    id: playingCharacter.characterId,
+    id: playingCharacter.id,
+    characterId: playingCharacter.characterId,
     name: metadata.name,
     fullImage: metadata.fullImage,
     thumbnailImage: metadata.thumbnailImage,

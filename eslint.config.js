@@ -45,6 +45,7 @@ export default tseslint.config([
         { type: 'shared', pattern: 'src/shared/**' },
         { type: 'config', pattern: 'src/config/**' },
         { type: 'api', pattern: 'src/api/**' },
+        { type: 'entities', pattern: 'src/entities/**' },
       ],
 
       'import/resolver': {
@@ -62,7 +63,7 @@ export default tseslint.config([
 
       /**
        * ★ 단방향/접근 제어
-       * - app → processes → features → (entities/widgets) → shared
+       * - app → processes → features → entities → shared
        * - config는 읽기 전용으로 어디서든 import 허용 (현실적 편의)
        * - api 접근: services(생성물, src/api/services) & models만 허용, core 직접 import 금지
        */
@@ -73,16 +74,25 @@ export default tseslint.config([
           rules: [
             {
               from: 'app',
-              allow: ['processes', 'features', 'shared', 'config', 'api'],
+              allow: [
+                'processes',
+                'entities',
+                'features',
+                'shared',
+                'config',
+                'api',
+              ],
             },
             {
               from: 'processes',
-              allow: ['features', 'shared', 'config', 'api'],
+              allow: ['features', 'entities', 'shared', 'config', 'api'],
             },
             {
               from: 'features',
-              allow: ['shared', 'config', 'api'],
+              allow: ['entities', 'shared', 'config', 'api'],
             },
+
+            { from: 'entities', allow: ['shared', 'config', 'api'] },
 
             { from: 'shared', allow: ['api', 'config'] },
 

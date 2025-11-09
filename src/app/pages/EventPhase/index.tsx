@@ -9,7 +9,11 @@ import {
   ChangeStatsScreen,
   SinglePortraitScreen,
 } from '@features/event-phase/index';
-import { useGameFlowStore } from '@processes/game-flow';
+import {
+  PauseMenu,
+  SideInventory,
+  useGameFlowStore,
+} from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
@@ -142,7 +146,7 @@ export default function EventPhase() {
           />
         );
       case 'CHANGE_STATS_SCREEN':
-        return <ChangeStatsScreen characters={playingCharacters} />;
+        return <ChangeStatsScreen playingCharacters={playingCharacters} />;
       case 'BEFORE_RESULT_SCREEN':
         return (
           <BeforeResultScreen
@@ -184,18 +188,12 @@ export default function EventPhase() {
       onClick={handleNext}
     >
       <Header
-        characters={playingCharacters}
-        hasCharacterProfiles={
-          currentScreen === 'RANDOM_EVENT_STORY' ||
-          currentScreen === 'RANDOM_EVENT_ITEM' ||
-          currentScreen === 'CHANGE_STATS_SCREEN' ||
-          currentScreen === 'BEFORE_RESULT_SCREEN' ||
-          currentScreen === 'SINGLE_PORTRAIT_SCREEN'
-        }
-        bubblePortraitText={
-          currentScreen === 'RANDOM_EVENT_STORY'
-            ? '뱅철아 신중하게 선택해라..'
-            : undefined
+        playingCharacters={playingCharacters}
+        menuSlot={
+          <>
+            <SideInventory hasWeightBar weight={100} />
+            <PauseMenu />
+          </>
         }
       />
       <div className='flex-1'>{renderScreen()}</div>

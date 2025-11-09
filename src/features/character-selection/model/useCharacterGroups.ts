@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { GameService } from '@api/services/GameService';
-import { adaptCharacterGroupToCharacterSet } from './adapters';
-import type { CharacterSet } from './types';
+import { adaptCharacterSetFromApi } from '@entities/game-session/model/adapters';
+import type { CharacterSet } from '@entities/game-session';
 
 /**
  * 캐릭터 그룹 목록 조회 훅
@@ -28,7 +28,7 @@ export function useCharacterGroups() {
     queryKey: ['characterGroups'],
     queryFn: async () => {
       const groups = await GameService.gameControllerGetCharacterGroups();
-      return groups.map(adaptCharacterGroupToCharacterSet);
+      return groups.map(adaptCharacterSetFromApi);
     },
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
     retry: 2, // 실패 시 2번 재시도

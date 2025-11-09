@@ -12,7 +12,7 @@ import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
 import { BagSelectionScreen } from '@features/event-phase';
-import PauseMenu from '../widgets/menu/PauseMenu';
+import PauseMenu from '../processes/game-flow/ui/menu/PauseMenu';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
