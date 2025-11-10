@@ -64,7 +64,7 @@ export default function SinglePortraitScreen({
       {portraitStarted && (
         <PortraitBanner
           onClick={handleNextPortrait}
-          key={`currentPortrait-${portraitIndex}`}
+          key={`${portraitIndex}-${currentPortrait.speaker}-${currentPortrait.text}`}
           portrait={currentPortrait.text}
           characterName={currentPortrait.speaker}
         />

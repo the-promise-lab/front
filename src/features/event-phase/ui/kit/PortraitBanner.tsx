@@ -26,7 +26,7 @@ export default function PortraitBanner({
       </Typography>
       <Divider />
       <Typography variant='dialogue-m'>
-        <TypingText texts={portrait.split('\n')} smooth />
+        <TypingText texts={portrait.split('\n')} smooth speed={40} />
       </Typography>
 
       <div className='flex flex-1 items-end'>
