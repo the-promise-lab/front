@@ -2,21 +2,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $PlayingCharacterResponseDto = {
+export const $BagDto = {
   properties: {
     id: {
       type: 'number',
       isRequired: true,
     },
-    characterId: {
-      type: 'number',
+    name: {
+      type: 'string',
       isRequired: true,
     },
-    currentHp: {
-      type: 'number',
+    image: {
+      type: 'string',
       isRequired: true,
     },
-    currentSp: {
+    capacity: {
       type: 'number',
       isRequired: true,
     },

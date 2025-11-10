@@ -4,6 +4,14 @@
 /* eslint-disable */
 export type SlotDto = {
   /**
+   * 슬롯 ID
+   */
+  id: number;
+  /**
+   * 인벤토리 ID
+   */
+  invId: number;
+  /**
    * 아이템 ID
    */
   itemId: number;

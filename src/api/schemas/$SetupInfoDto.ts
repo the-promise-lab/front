@@ -2,12 +2,19 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $SubmitInventoryResponseDto = {
+export const $SetupInfoDto = {
   properties: {
-    inventories: {
+    bags: {
       type: 'array',
       contains: {
-        type: 'InventoryResponseDto',
+        type: 'BagDto',
+      },
+      isRequired: true,
+    },
+    items: {
+      type: 'array',
+      contains: {
+        type: 'ItemDto',
       },
       isRequired: true,
     },

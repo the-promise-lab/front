@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useAssetStore } from '@shared/model/assetStore';
 import { usePreloadAssets } from '@shared/model/usePreloadAssets';
@@ -15,22 +15,20 @@ const ASSETS_TO_PRELOAD = [
   'ham.png',
 ];
 
-interface Props {
-  onComplete?: () => void;
-}
-
-export default function LoadingPage({ onComplete }: Props) {
+export default function LoadingPage() {
   const [allLoaded, setAllLoaded] = useState(false);
   const [timerEnded, setTimerEnded] = useState(false);
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
 
   // 게임 플로우 상태
-  const { isNewGame, startDayFlow, next } = useGameFlowStore(
+  const { isNewGame, startDayFlow, next, gameSession, goto } = useGameFlowStore(
     useShallow(state => ({
       isNewGame: state.isNewGame,
       startDayFlow: state.startDayFlow,
       next: state.next,
+      goto: state.goto,
+      gameSession: state.gameSession,
     }))
   );
 
@@ -53,60 +51,61 @@ export default function LoadingPage({ onComplete }: Props) {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    console.log('LoadingPage useEffect:', {
+  const onComplete = useCallback(() => {
+    console.log('LoadingPage onComplete:', {
       allLoaded,
       timerEnded,
       loaded,
       total,
       isNewGame,
+      gameSession,
     });
+    if (isNewGame) {
+      console.log('LoadingPage: 새 게임 - CHARACTER_SELECT로 이동');
+      next(); // CHARACTER_SELECT로
+    } else if (!gameSession) {
+      console.warn('LoadingPage: 게임 세션이 정상적으로 생성되지 않음 - ERROR');
+      goto('MAIN_MENU'); // TODO: 적절한 에러 처리 로직 구현.
+    } else if (!gameSession.playingCharacterSet) {
+      console.log('LoadingPage: 이어하기 - CHARACTER_SELECT로 이동');
+      goto('CHARACTER_SELECT');
+    } else if (!gameSession.currentActId) {
+      console.log('LoadingPage: 이어하기 - INTRO_STORY부터 재개');
+      goto('INTRO_STORY');
+    } else {
+      console.log('LoadingPage: 이어하기 - DAY_FLOW로 이동');
+      startDayFlow(); // TODO: 실제로 currentActId부터 이어하기 구현.
+    }
+  }, [
+    isNewGame,
+    gameSession,
+    next,
+    goto,
+    startDayFlow,
+    allLoaded,
+    timerEnded,
+    loaded,
+    total,
+  ]);
 
+  useEffect(() => {
     // 로딩 완료 조건: 에셋 로딩 + 타이머
     const isLoadingComplete = allLoaded && timerEnded;
 
     if (isLoadingComplete) {
-      if (onComplete) {
-        console.log('LoadingPage: calling onComplete');
-        onComplete();
-      } else {
-        if (isNewGame) {
-          console.log('LoadingPage: 새 게임 - CHARACTER_SELECT로 이동');
-          next(); // CHARACTER_SELECT로
-        } else {
-          console.log('LoadingPage: 이어하기 - DAY_FLOW로 이동');
-          startDayFlow();
-        }
-      }
+      onComplete();
     }
-  }, [
-    allLoaded,
-    timerEnded,
-    onComplete,
-    loaded,
-    total,
-    isNewGame,
-    next,
-    startDayFlow,
-  ]);
+  }, [allLoaded, timerEnded, onComplete]);
 
   // 3초 후 fallback 타이머 (안전장치)
   useEffect(() => {
     const fallbackTimer = setTimeout(() => {
-      console.log('LoadingPage: 3초 후 강제 이동');
-      if (onComplete) {
-        onComplete();
-      } else {
-        if (isNewGame) {
-          next(); // CHARACTER_SELECT로
-        } else {
-          startDayFlow();
-        }
-      }
+      console.log('LoadingPage: 3초 경과로 강제 이동');
+      onComplete();
     }, 3000);
 
     return () => clearTimeout(fallbackTimer);
-  }, [onComplete, isNewGame, next, startDayFlow]);
+  }, [onComplete]);
 
   return (
     <div className='flex h-screen w-screen items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100'>

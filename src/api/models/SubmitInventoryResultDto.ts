@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateGameSessionResponseDto = {
-  id: number;
-  userId: number;
-  currentActId: number | null;
-  createdAt: string;
+import type { InventoryDto } from './InventoryDto';
+export type SubmitInventoryResultDto = {
+  inventories: Array<InventoryDto>;
 };

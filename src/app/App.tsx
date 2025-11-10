@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
-import { useGameFlowStore } from '../processes/game-flow';
+import { useGameFlowStore, PauseMenu } from '@processes/game-flow';
 
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
@@ -12,7 +12,6 @@ import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
 import { BagSelectionScreen } from '@features/event-phase';
-import PauseMenu from '../processes/game-flow/ui/menu/PauseMenu';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
@@ -82,7 +81,9 @@ export default function App() {
           {renderScreen()}
         </div>
         {/* 일시정지 메뉴 - 전역 팝업 */}
-        <PauseMenu />
+        <div className='fixed top-11 right-11 z-10'>
+          <PauseMenu />
+        </div>
       </RootLayout>
     </AppProviders>
   );

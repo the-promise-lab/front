@@ -1,8 +1,8 @@
 import type {
-  GameSessionResponseDto,
-  CreateGameSessionResponseDto,
-  CharacterGroupResponseDto,
-  PlayingCharacterSetResponseDto,
+  GameSessionDto,
+  CreateGameSessionDto,
+  CharacterGroupDto,
+  PlayingCharacterSetDto,
   PlayingCharacterDto,
 } from '@api';
 import type {
@@ -19,7 +19,7 @@ import type {
  * @returns 도메인 모델로 변환된 게임 세션
  */
 export function adaptGameSessionFromApi(
-  apiResponse: GameSessionResponseDto
+  apiResponse: GameSessionDto
 ): GameSession {
   return {
     id: apiResponse.id,
@@ -48,7 +48,7 @@ export function adaptGameSessionFromApi(
  * @returns 도메인 모델로 변환된 게임 세션
  */
 export function adaptCreateGameSessionFromApi(
-  apiResponse: CreateGameSessionResponseDto
+  apiResponse: CreateGameSessionDto
 ): GameSession {
   return {
     id: apiResponse.id,
@@ -66,14 +66,13 @@ export function adaptCreateGameSessionFromApi(
  * @returns 클라이언트 PlayingCharacterSet 타입
  */
 export function adaptPlayingCharacterSetFromApi(
-  apiResponse: PlayingCharacterSetResponseDto
+  apiResponse: PlayingCharacterSetDto
 ): PlayingCharacterSet {
   return {
     id: apiResponse.id,
     characterGroupId: apiResponse.characterGroupId,
     playingCharacters: apiResponse.playingCharacter.map(char =>
-      // FIXME: 백엔드에서 GET /api/game/session 에 대한 응답값 수정 후 타입 단언을 제거
-      adaptPlayingCharacterFromApi(char as unknown as PlayingCharacterDto)
+      adaptPlayingCharacterFromApi(char)
     ),
   };
 }
@@ -85,7 +84,7 @@ export function adaptPlayingCharacterSetFromApi(
  * @returns 클라이언트 CharacterSet 타입
  */
 export function adaptCharacterSetFromApi(
-  group: CharacterGroupResponseDto
+  group: CharacterGroupDto
 ): CharacterSet {
   return {
     id: group.id,

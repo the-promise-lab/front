@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $GameSessionResponseDto = {
+export const $CreateGameSessionDto = {
   properties: {
     id: {
       type: 'number',
@@ -21,23 +21,6 @@ export const $GameSessionResponseDto = {
       type: 'string',
       isRequired: true,
       format: 'date-time',
-    },
-    playingCharacterSet: {
-      type: 'all-of',
-      contains: [
-        {
-          type: 'PlayingCharacterSetResponseDto',
-        },
-      ],
-      isRequired: true,
-      isNullable: true,
-    },
-    inventories: {
-      type: 'array',
-      contains: {
-        type: 'InventoryResponseDto',
-      },
-      isRequired: true,
     },
   },
 } as const;
