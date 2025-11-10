@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $BagResponseDto = {
+export const $CharacterGroupDto = {
   properties: {
     id: {
       type: 'number',
@@ -16,8 +16,12 @@ export const $BagResponseDto = {
       type: 'string',
       isRequired: true,
     },
-    capacity: {
+    deathEndAct: {
       type: 'number',
+      isRequired: true,
+    },
+    description: {
+      type: 'string',
       isRequired: true,
     },
   },

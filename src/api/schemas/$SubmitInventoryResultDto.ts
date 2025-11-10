@@ -2,20 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $InventoryResponseDto = {
+export const $SubmitInventoryResultDto = {
   properties: {
-    id: {
-      type: 'number',
-      isRequired: true,
-    },
-    bagId: {
-      type: 'number',
-      isRequired: true,
-    },
-    slots: {
+    inventories: {
       type: 'array',
       contains: {
-        type: 'SlotResponseDto',
+        type: 'InventoryDto',
       },
       isRequired: true,
     },

@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CharacterGroupResponseDto = {
+import type { SlotDto } from './SlotDto';
+export type InventoryDto = {
   id: number;
-  name: string;
-  image: string;
-  deathEndAct: number;
-  description: string;
+  gameSessionId?: number;
+  bagId: number;
+  slots: Array<SlotDto>;
 };

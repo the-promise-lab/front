@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { SlotResponseDto } from './SlotResponseDto';
-export type InventoryResponseDto = {
+export type CreateGameSessionDto = {
   id: number;
-  bagId: number;
-  slots: Array<SlotResponseDto>;
+  userId: number;
+  currentActId: number | null;
+  createdAt: string;
 };

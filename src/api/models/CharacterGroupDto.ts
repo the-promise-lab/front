@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type PlayingCharacterResponseDto = {
+export type CharacterGroupDto = {
   id: number;
-  characterId: number;
-  currentHp: number;
-  currentSp: number;
+  name: string;
+  image: string;
+  deathEndAct: number;
+  description: string;
 };

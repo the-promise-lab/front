@@ -2,19 +2,23 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $SetupInfoResponseDto = {
+export const $InventoryDto = {
   properties: {
-    bags: {
-      type: 'array',
-      contains: {
-        type: 'BagResponseDto',
-      },
+    id: {
+      type: 'number',
       isRequired: true,
     },
-    items: {
+    gameSessionId: {
+      type: 'number',
+    },
+    bagId: {
+      type: 'number',
+      isRequired: true,
+    },
+    slots: {
       type: 'array',
       contains: {
-        type: 'ItemResponseDto',
+        type: 'SlotDto',
       },
       isRequired: true,
     },

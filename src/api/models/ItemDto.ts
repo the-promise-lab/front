@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type ItemResponseDto = {
+export type ItemDto = {
   id: number;
   name: string;
   image: string;
