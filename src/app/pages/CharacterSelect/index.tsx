@@ -13,7 +13,6 @@ export default function CharacterSelectPage() {
   );
 
   const handleSelectSuccess = (response: SelectCharacterSetResponseDto) => {
-    // gameSession에 선택된 캐릭터 정보 + 메타데이터 저장
     const playingCharacters = response.playingCharacter
       .map(adaptPlayingCharacterFromApi)
       .filter((char): char is NonNullable<typeof char> => char !== null);

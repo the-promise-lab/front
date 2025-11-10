@@ -122,7 +122,7 @@ export interface GameFlowActions {
   clearGameSession: () => void;
   setIsNewGame: (isNew: boolean) => void;
   savePlayingCharacters: (params: PlayingCharacterSet) => void;
-  startNewGame: () => void;
+  startNewGame: (newGameSession: GameSession) => void;
   startDayFlow: () => void;
   continueGame: () => void;
   resetGame: () => void;

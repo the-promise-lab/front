@@ -46,7 +46,6 @@ export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [screenIndex, setScreenIndex] = useState(0);
   const currentScreen = SCREEN_ORDER[screenIndex];
-
   // 플레이 중인 캐릭터 정보 가져오기
   const playingCharacters =
     useGameFlowStore(
@@ -155,7 +154,12 @@ export default function EventPhase() {
           />
         );
       case 'SINGLE_PORTRAIT_SCREEN':
-        return <SinglePortraitScreen portraits={portraitData.portraits} />;
+        return (
+          <SinglePortraitScreen
+            portraits={portraitData.portraits}
+            playingCharacters={playingCharacters}
+          />
+        );
       case 'CUT_SCENE_SCREEN':
         return (
           <CutSceneScreen

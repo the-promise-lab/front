@@ -24,9 +24,8 @@ import { useShallow } from 'zustand/react/shallow';
  * ```
  */
 export function useStartNewGame() {
-  const { loadGameSession, startNewGame } = useGameFlowStore(
+  const { startNewGame } = useGameFlowStore(
     useShallow(state => ({
-      loadGameSession: state.loadGameSession,
       startNewGame: state.startNewGame,
     }))
   );
@@ -42,10 +41,9 @@ export function useStartNewGame() {
 
       // 세션 데이터 변환 및 로드
       const adaptedSession = adaptCreateGameSessionFromApi(data);
-      loadGameSession(adaptedSession);
 
       // 게임 플로우 시작 (clearGameSession + isNewGame=true + goto PROGRESS)
-      startNewGame();
+      startNewGame(adaptedSession);
     },
     onError: error => {
       console.error('[useStartNewGame] 게임 세션 생성 실패', error);

@@ -3,6 +3,7 @@ import { useAssetStore } from '@shared/model/assetStore';
 import { PlaceScreen, SinglePortraitScreen } from '@features/event-phase/index';
 import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
+import { useGameFlowStore } from '@processes/game-flow';
 
 // FIXME: 하드코딩된 화면 순서
 type ScreenType = 'SINGLE_PORTRAIT_SCREEN' | 'CUT_SCENE_SCREEN';
@@ -20,7 +21,13 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [screenIndex, setScreenIndex] = useState(0);
   const currentScreen = SCREEN_ORDER[screenIndex];
-
+  const playingCharacters =
+    useGameFlowStore(
+      useShallow(
+        state => state.gameSession?.playingCharacterSet?.playingCharacters
+      )
+    ) || [];
+  console.log('playingCharacters', playingCharacters);
   const portraitData = {
     portraits: [
       {
@@ -45,7 +52,12 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'SINGLE_PORTRAIT_SCREEN':
-        return <SinglePortraitScreen portraits={portraitData.portraits} />;
+        return (
+          <SinglePortraitScreen
+            portraits={portraitData.portraits}
+            playingCharacters={playingCharacters}
+          />
+        );
       case 'CUT_SCENE_SCREEN':
         return (
           <CutSceneScreen
