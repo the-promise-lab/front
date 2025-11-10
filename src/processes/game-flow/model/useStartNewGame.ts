@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import {
   useCreateGameSession,
   adaptCreateGameSessionFromApi,
-} from '@features/game-session';
+} from '@entities/game-session';
 import { useGameFlowStore } from './useGameFlowStore';
-import { gameFlowActions } from './useGameFlowStore';
+import { useShallow } from 'zustand/react/shallow';
 
 /**
  * 새 게임 시작 훅
@@ -24,7 +24,11 @@ import { gameFlowActions } from './useGameFlowStore';
  * ```
  */
 export function useStartNewGame() {
-  const loadGameSession = useGameFlowStore(state => state.loadGameSession);
+  const { startNewGame } = useGameFlowStore(
+    useShallow(state => ({
+      startNewGame: state.startNewGame,
+    }))
+  );
 
   const {
     mutate: createSession,
@@ -37,23 +41,22 @@ export function useStartNewGame() {
 
       // 세션 데이터 변환 및 로드
       const adaptedSession = adaptCreateGameSessionFromApi(data);
-      loadGameSession(adaptedSession);
 
       // 게임 플로우 시작 (clearGameSession + isNewGame=true + goto PROGRESS)
-      gameFlowActions.startNewGame();
+      startNewGame(adaptedSession);
     },
     onError: error => {
       console.error('[useStartNewGame] 게임 세션 생성 실패', error);
     },
   });
 
-  const startNewGame = useCallback(() => {
+  const createNewGameSession = useCallback(() => {
     console.log('[useStartNewGame] 새 게임 시작 요청');
     createSession();
   }, [createSession]);
 
   return {
-    startNewGame,
+    createNewGameSession,
     isCreating,
     isError,
     error,

@@ -4,10 +4,8 @@ import { cn } from '@shared/lib/utils';
 import type { ReactNode } from 'react';
 import Counter from '@shared/ui/Counter';
 import Typography from '@shared/ui/Typography';
-// eslint-disable-next-line boundaries/element-types
-// import { useGameFlowStore } from '@processes/game-flow';
 import { useEffect, useState } from 'react';
-import { mockCharacterSets } from '@features/character-selection/__mocks__';
+import type { PlayingCharacter } from '@entities/game-session';
 
 interface CharacterResult {
   name: string;
@@ -15,9 +13,13 @@ interface CharacterResult {
   deltaMentality: number; // 정신력 변화
 }
 
-export default function ChangeStatsScreen() {
-  // const { gameSession } = useGameFlowStore(); // FIXME: 서버 연동 후 수정
-  const characters = mockCharacterSets[0].characters;
+interface ChangeStatsScreenProps {
+  playingCharacters: PlayingCharacter[];
+}
+
+export default function ChangeStatsScreen({
+  playingCharacters,
+}: ChangeStatsScreenProps) {
   const [previousStats, setPreviousStats] = useState<
     Record<string, { hp: number; mentality: number }>
   >({});
@@ -26,7 +28,7 @@ export default function ChangeStatsScreen() {
   // 서버에서 내려온 전역 상태의 스탯 변화량 계산
   useEffect(() => {
     // characters가 없으면 빈 결과 반환
-    if (!characters || characters.length === 0) {
+    if (!playingCharacters || playingCharacters.length === 0) {
       setResults([]);
       return;
     }
@@ -35,60 +37,67 @@ export default function ChangeStatsScreen() {
       // 첫 렌더링 시 이전 스탯 저장 (서버에서 받은 스탯값 기준)
       const initialStats: Record<string, { hp: number; mentality: number }> =
         {};
-      characters.forEach(character => {
-        initialStats[character.name] = {
-          hp: character.hp,
-          mentality: character.mentality,
+      playingCharacters.forEach(character => {
+        const name = character.name || '-';
+        initialStats[name] = {
+          hp: character.currentHp || 0,
+          mentality: character.currentSp || 0,
         };
       });
       setPreviousStats(initialStats);
 
       // 첫 렌더링 시 변화량 0으로 초기화
-      const initialResults: CharacterResult[] = characters.map(character => ({
-        name: character.name,
-        deltaHp: 0,
-        deltaMentality: 0,
-      }));
+      const initialResults: CharacterResult[] = playingCharacters.map(
+        character => ({
+          name: character.name || '-',
+          deltaHp: 0,
+          deltaMentality: 0,
+        })
+      );
       setResults(initialResults);
       return;
     }
 
     // 서버에서 업데이트된 스탯과 이전 스탯 비교하여 변화량 계산
-    const currentResults: CharacterResult[] = characters.map(character => {
-      const previous = previousStats[character.name];
-      if (!previous) {
+    const currentResults: CharacterResult[] = playingCharacters.map(
+      character => {
+        const name = character.name || '-';
+        const previous = previousStats[name];
+        if (!previous) {
+          return {
+            name,
+            deltaHp: 0,
+            deltaMentality: 0,
+          };
+        }
+
+        // 서버에서 내려온 현재 스탯 - 이전 스탯 = 변화량
+        const deltaHp = character.currentHp || 0 - previous.hp;
+        const deltaMentality = character.currentSp || 0 - previous.mentality;
+
         return {
-          name: character.name,
-          deltaHp: 0,
-          deltaMentality: 0,
+          name,
+          deltaHp,
+          deltaMentality,
         };
       }
-
-      // 서버에서 내려온 현재 스탯 - 이전 스탯 = 변화량
-      const deltaHp = character.hp - previous.hp;
-      const deltaMentality = character.mentality - previous.mentality;
-
-      return {
-        name: character.name,
-        deltaHp,
-        deltaMentality,
-      };
-    });
+    );
 
     setResults(currentResults);
 
     // 현재 스탯을 이전 스탯으로 저장 (다음 변화량 계산을 위해)
     const newPreviousStats: Record<string, { hp: number; mentality: number }> =
       {};
-    characters.forEach(character => {
-      newPreviousStats[character.name] = {
-        hp: character.hp,
-        mentality: character.mentality,
+    playingCharacters.forEach(character => {
+      const name = character.name || '-';
+      newPreviousStats[name] = {
+        hp: character.currentHp || 0,
+        mentality: character.currentSp || 0,
       };
     });
     setPreviousStats(newPreviousStats);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [characters]);
+  }, [playingCharacters]);
 
   // TODO: API 준비되면 서버에서 받은 스탯값으로 전역 상태 업데이트
   // 현재는 전역 상태의 스탯 변화량을 표시 (서버에서 업데이트되면 자동 반영)

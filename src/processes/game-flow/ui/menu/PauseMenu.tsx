@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useGameFlowStore } from '../../processes/game-flow';
-import { useAuthStore } from '../../shared/auth/model/useAuthStore';
+import { useGameFlowStore } from '../..';
+import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import {
   IconCloseButton,
   IconPauseButton,
-} from '../../features/event-phase/ui/kit/icon-button';
-import Typography from '../../shared/ui/Typography';
-import { cn } from '../../shared/lib/utils';
-import LogoutConfirmModal from '../../shared/ui/LogoutConfirmModal';
+} from '@features/event-phase/ui/kit/icon-button';
+import Typography from '@shared/ui/Typography';
+import { cn } from '@shared/lib/utils';
+import LogoutConfirmModal from '@shared/ui/LogoutConfirmModal';
 
 const MENU_ITEMS = [
   { id: 'character-info', label: '캐릭터 정보' },

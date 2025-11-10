@@ -9,7 +9,11 @@ import {
   ChangeStatsScreen,
   SinglePortraitScreen,
 } from '@features/event-phase/index';
-import { useGameFlowStore } from '@processes/game-flow';
+import {
+  PauseMenu,
+  SideInventory,
+  useGameFlowStore,
+} from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
@@ -42,6 +46,11 @@ export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [screenIndex, setScreenIndex] = useState(0);
   const currentScreen = SCREEN_ORDER[screenIndex];
+  // 플레이 중인 캐릭터 정보 가져오기
+  const playingCharacters =
+    useGameFlowStore(
+      state => state.gameSession?.playingCharacterSet?.playingCharacters
+    ) || [];
 
   // FIXME: 하드코딩된 데이터
   const storyEventData = {
@@ -136,7 +145,7 @@ export default function EventPhase() {
           />
         );
       case 'CHANGE_STATS_SCREEN':
-        return <ChangeStatsScreen />;
+        return <ChangeStatsScreen playingCharacters={playingCharacters} />;
       case 'BEFORE_RESULT_SCREEN':
         return (
           <BeforeResultScreen
@@ -145,7 +154,12 @@ export default function EventPhase() {
           />
         );
       case 'SINGLE_PORTRAIT_SCREEN':
-        return <SinglePortraitScreen portraits={portraitData.portraits} />;
+        return (
+          <SinglePortraitScreen
+            portraits={portraitData.portraits}
+            playingCharacters={playingCharacters}
+          />
+        );
       case 'CUT_SCENE_SCREEN':
         return (
           <CutSceneScreen
@@ -178,17 +192,12 @@ export default function EventPhase() {
       onClick={handleNext}
     >
       <Header
-        hasCharacterProfiles={
-          currentScreen === 'RANDOM_EVENT_STORY' ||
-          currentScreen === 'RANDOM_EVENT_ITEM' ||
-          currentScreen === 'CHANGE_STATS_SCREEN' ||
-          currentScreen === 'BEFORE_RESULT_SCREEN' ||
-          currentScreen === 'SINGLE_PORTRAIT_SCREEN'
-        }
-        bubblePortraitText={
-          currentScreen === 'RANDOM_EVENT_STORY'
-            ? '뱅철아 신중하게 선택해라..'
-            : undefined
+        playingCharacters={playingCharacters}
+        menuSlot={
+          <>
+            <SideInventory hasWeightBar weight={100} />
+            <PauseMenu />
+          </>
         }
       />
       <div className='flex-1'>{renderScreen()}</div>

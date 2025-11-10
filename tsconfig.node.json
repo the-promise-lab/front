@@ -15,7 +15,7 @@
       "@api": ["./src/api"],
       "@shared/*": ["./src/shared/*"],
       "@config/*": ["./src/config/*"],
-      "@widgets/*": ["./src/widgets/*"]
+      "@entities/*": ["./src/entities/*"]
     },
     "jsx": "react-jsx",
 

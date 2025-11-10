@@ -1,7 +1,7 @@
 // src/processes/game-flow/types.ts
 // 게임 플로우 관련 타입 정의
 
-import type { GameSession } from '@features/game-session';
+import type { GameSession, PlayingCharacterSet } from '@entities/game-session';
 
 export type GameStep =
   | 'AUTH_CHECK' // 인증 상태 확인
@@ -86,6 +86,26 @@ export interface GameFlowState {
   isNewGame: boolean; // 새 게임인지 이어하기인지 구분
 }
 
+export interface PlayingCharacter {
+  id: number;
+  characterId: number;
+  currentHp: number;
+  currentSp: number;
+  name: string;
+  fullImage: string;
+  thumbnailImage: string;
+  colors: {
+    backgroundColor: string;
+    borderColor: string;
+  };
+}
+
+export interface PlayingCharacters {
+  characterSetId: number;
+  characterGroupId: number;
+  playingCharacters: PlayingCharacter[];
+}
+
 export interface GameFlowActions {
   setAuthenticated: (isAuthenticated: boolean) => void;
   goto: (step: GameStep) => void;
@@ -101,6 +121,11 @@ export interface GameFlowActions {
   loadGameSession: (session: GameSession) => void;
   clearGameSession: () => void;
   setIsNewGame: (isNew: boolean) => void;
+  savePlayingCharacters: (params: PlayingCharacterSet) => void;
+  startNewGame: (newGameSession: GameSession) => void;
+  startDayFlow: () => void;
+  continueGame: () => void;
+  resetGame: () => void;
 }
 
 // 게임 단계 순서 정의
@@ -110,8 +135,8 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'LOGIN_PROGRESS',
   'MAIN_MENU',
   'PROGRESS',
-  'INTRO_STORY',
   'CHARACTER_SELECT',
+  'INTRO_STORY',
   'BAG_SELECT',
   'PACKING_PHASE',
   'DAY_FLOW',

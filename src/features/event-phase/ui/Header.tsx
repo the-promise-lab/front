@@ -2,26 +2,24 @@ import { cn } from '@shared/lib/utils';
 import CharacterProfile from './kit/CharacterProfile';
 // eslint-disable-next-line boundaries/element-types
 import BubblePortrait from './kit/CharacterProfile/BubblePortrait';
-import { SideInventory, PauseMenu } from '@widgets/menu';
-import { mockCharacterSets } from '@features/character-selection/__mocks__';
+import type { PlayingCharacter } from '@entities/game-session';
+import type { ReactNode } from 'react';
 
 interface HeaderProps {
+  playingCharacters?: PlayingCharacter[];
   className?: string;
-  hasBackpackButton?: boolean;
-  hasPauseButton?: boolean;
   hasCharacterProfiles?: boolean;
   bubblePortraitText?: string;
+  menuSlot?: ReactNode;
 }
 
 export default function Header({
+  playingCharacters,
   className,
-  hasBackpackButton = true,
-  hasPauseButton = true,
   hasCharacterProfiles = true,
   bubblePortraitText,
+  menuSlot,
 }: HeaderProps) {
-  const characters = mockCharacterSets[0].characters;
-
   return (
     <div
       className={cn(
@@ -37,16 +35,18 @@ export default function Header({
             hasCharacterProfiles ? 'pl-13' : ''
           )}
         >
-          {hasCharacterProfiles && (
+          {hasCharacterProfiles && playingCharacters && (
             <>
-              {characters.map((profile, index) => (
+              {playingCharacters.map((char, index) => (
                 <CharacterProfile
-                  key={profile.name}
-                  name={profile.name}
-                  image={profile.image}
-                  mentality={profile.mentality}
-                  hp={profile.hp}
-                  characterColors={profile.colors}
+                  key={char.id}
+                  name={char.name || '-'}
+                  image={char.profileImage || ''}
+                  mentality={char.currentSp || 0}
+                  hp={char.currentHp || 0}
+                  characterColors={
+                    char.colors || { backgroundColor: null, borderColor: null }
+                  }
                   active={index === 0}
                 />
               ))}
@@ -54,19 +54,19 @@ export default function Header({
           )}
         </div>
         {bubblePortraitText &&
-          characters.length > 0 &&
-          characters[0].colors && (
+          playingCharacters &&
+          playingCharacters.length > 0 &&
+          playingCharacters[0].colors && (
             <BubblePortrait
               className='mx-9 my-2'
               text={bubblePortraitText}
-              characterColors={characters[0].colors}
+              characterColors={playingCharacters[0].colors}
             />
           )}
       </div>
-      <div className='flex h-full items-start gap-6'>
-        {hasBackpackButton && <SideInventory hasWeightBar weight={100} />}
-        {hasPauseButton && <PauseMenu />}
-      </div>
+      {menuSlot && (
+        <div className='flex h-full items-start gap-6'>{menuSlot}</div>
+      )}
     </div>
   );
 }

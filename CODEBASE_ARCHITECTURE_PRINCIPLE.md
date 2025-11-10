@@ -3,12 +3,13 @@
 ## 1) 의존 방향(단방향)
 
 ```
-app  →  (processes)  →  features  →  shared
-                         ↘ api (codegen)
+app  →  processes  →  features  →  entities  →  shared
+                                   ↘ api (codegen)
 ```
 
 - 역방향 금지. 같은 레벨끼리 직접 의존 금지.
 - **shared**는 어떤 상위도 import하지 않는다.
+- **entities**는 순수 도메인 모델만 다루며, 상위 레이어(features/processes/app)를 참조할 수 없다.
 - **features**는 **services**만 통해 네트워크/스토리지 접근(직접 api 호출 금지 — 엄격 모드).
 
 ## 2) shared는 “도메인 무취”
@@ -28,41 +29,50 @@ app  →  (processes)  →  features  →  shared
 - 프로세스 상태는 여기서 관리(예: `processes/game-flow/model/useGameFlowStore.ts`).
 - 커지면 FSM(XState) 등으로 승격 가능.
 
-## 5) features는 “사용자 시나리오 단위의 응집”
+## 5) entities는 "핵심 도메인 엔티티"
+
+- 프로젝트 전반에서 공유되는 **핵심 비즈니스 도메인 개념**(GameSession, User, Character 등)을 담는다.
+- 구조: `entities/<entity>/{model, lib, api}`
+- **순수 도메인 로직과 타입 정의**에 집중. UI 컴포넌트는 포함하지 않는 것을 권장.
+- features와 processes에서 공통으로 사용하는 도메인 모델이 여기 위치.
+- 여러 feature에서 중복되는 도메인 개념이 3회 이상 반복될 때 entities로 승격 고려.
+
+## 6) features는 "사용자 시나리오 단위의 응집"
 
 - 구조: `features/<feat>/{ui, model, lib, mocks}`
 - **공개 표면**만 `index.ts`로 배럴 export. 내부 구조는 외부에서 직접 접근 금지.
-- feature 내부 유틸/훅은 **공용처럼 보여도** 우선 여기에 둔다(진짜 범용이면 승격하여 shared로 이동).
+- feature 내부 유틸/훅은 **공용처럼 보여도** 우선 여기에 둔다(진짜 범용이면 entities 또는 shared로 승격).
+- entities의 도메인 모델을 가져다가 특정 사용자 시나리오에 맞게 활용.
 
-## 6) services와 api의 분리
+## 7) services와 api의 분리
 
 - `src/api/` = **openapi-typescript-codegen 생성물(편집 금지)**
 - `src/services/` = **우리가 만든 어댑터/래퍼**(토큰주입, 에러표준화, 리트라이/캐싱, 로깅).
 - features는 services만 의존(엄격 모드).
 
-## 7) 네이밍/코로케이션 규약
+## 8) 네이밍/코로케이션 규약
 
 - 폴더: kebab-case / 컴포넌트: PascalCase / 훅·유틸: camelCase.
 - 테스트/스토리/스타일은 **같은 폴더에 코로케이션**.
 - 루트에 **barrel** 두어 외부 노출 최소화(`index.ts`).
 
-## 8) 환경/설정의 경계
+## 9) 환경/설정의 경계
 
 - `src/config/`에 환경 래퍼(`env.ts`), 전역 상수/플래그, API 기본설정.
 - 어디서나 읽을 수 있지만 **쓰기/부작용은 금지**(쓰기/사이드이펙트는 services에서).
 
-## 9) Mock/테스트 자산의 위치
+## 10) Mock/테스트 자산의 위치
 
 - 기능 전용 mock: `features/<feat>/mocks/*`(co-location).
 - 여러 곳에서 쓰는 공통 테스트 인프라: `src/test/*` (MSW server, 공통 factories, RTL render 등).
 - 런타임 데모용 정적 JSON은 `public/mocks/*`.
 
-## 10) 변경의 신호와 승격/분리 기준
+## 11) 변경의 신호와 승격/분리 기준
 
-- ~~같은 유형 조립이 3회 이상 반복 → `widgets/`(선택) 승격 고려.~~
-- ~~도메인 최소 단위가 여러 feature에서 반복 → `entities/`(선택) 승격 고려.~~
-- 어떤 유틸이 3개 이상 feature에서 중복 → shared로 승격.
-- 반대로 shared가 도메인 냄새 나기 시작 → 해당 feature/process로 **하향 이동**.
+- 도메인 모델이 여러 feature에서 3회 이상 중복 → `entities/`로 승격.
+- 어떤 유틸이 3개 이상 feature에서 중복되고 도메인 무관 → `shared/`로 승격.
+- entities에 UI 로직이 섞이기 시작 → 해당 feature로 **하향 이동**.
+- shared가 도메인 냄새 나기 시작 → 해당 entities/feature/process로 **하향 이동**.
 
 ---
 
@@ -90,7 +100,7 @@ app  →  (processes)  →  features  →  shared
 
 ### E. 경로 별칭
 
-- `@app/*`, `@processes/*`, `@features/*`, `@shared/*`, `@api/*`, `@config/*`
+- `@app/*`, `@processes/*`, `@features/*`, `@entities/*`, `@shared/*`, `@api/*`, `@config/*`
 - 깊은 상대경로 금지.
 
 ---
@@ -123,6 +133,14 @@ src/
         types.ts
         useShelfSelectionStore.ts
       __mocks__/
+      index.ts
+
+  entities/                   # 핵심 도메인 엔티티
+    game-session/
+      model/
+        types.ts
+        adapters.ts
+        useGameSession.ts
       index.ts
 
   api/                        # codegen 산출물 (편집 금지)

@@ -8,12 +8,12 @@ import AuthCheck from './pages/AuthCheck';
 import LandingPage from './pages/LandingPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
-import { CharacterSelect } from '../features/character-selection';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
 import { BagSelectionScreen } from '@features/event-phase';
-import PauseMenu from '../widgets/menu/PauseMenu';
+import PauseMenu from '../processes/game-flow/ui/menu/PauseMenu';
+import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
   const { step, next, resetDayFlow } = useGameFlowStore();
@@ -43,22 +43,7 @@ export default function App() {
       return <LoadingPage />;
     }
     if (step === 'CHARACTER_SELECT') {
-      return (
-        <CharacterSelect
-          onNext={() => {
-            // TODO: 캐릭터 선택 시 gameSession.playingCharacterSet에 저장
-            // const selectedSet = characterStore.selectedCharacterSet;
-            // if (selectedSet && !selectedSet.isLocked) {
-            //   // 향후 gameSession API를 통해 playingCharacterSet 설정
-            // }
-
-            console.log('Calling next() from CHARACTER_SELECT');
-            // useGameFlowStore.getState().goto('BAG_SELECT');
-            useGameFlowStore.getState().goto('INTRO_STORY');
-          }}
-          onBack={() => useGameFlowStore.getState().goto('MAIN_MENU')}
-        />
-      );
+      return <CharacterSelectPage />;
     }
     if (step === 'INTRO_STORY') {
       return (
