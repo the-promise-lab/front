@@ -191,9 +191,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           gameSession: {
             ...state.gameSession,
             playingCharacterSet: {
-              id: params.characterSetId,
-              characterGroupId: params.characterGroupId,
-              playingCharacters: params.playingCharacters,
+              ...params,
             },
           },
         };

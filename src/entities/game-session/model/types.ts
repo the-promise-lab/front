@@ -25,15 +25,15 @@ export interface CharacterSet {
 export interface PlayingCharacter {
   id: number;
   characterId: number;
-  currentHp: number;
-  currentSp: number;
-  name: string;
-  fullImage: string;
-  thumbnailImage: string;
+  currentHp: number | null;
+  currentSp: number | null;
+  name: string | null;
+  fullImage: string | null;
+  profileImage: string | null;
   colors: {
-    backgroundColor: string;
-    borderColor: string;
-  };
+    backgroundColor: string | null;
+    borderColor: string | null;
+  } | null;
 }
 
 export interface PlayingCharacterSet {

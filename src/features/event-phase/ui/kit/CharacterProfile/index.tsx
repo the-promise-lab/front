@@ -10,8 +10,8 @@ interface CharacterProfileProps {
   image: string;
   className?: string;
   characterColors?: {
-    backgroundColor: string;
-    borderColor: string;
+    backgroundColor: string | null;
+    borderColor: string | null;
   };
   active?: boolean;
 }
@@ -25,6 +25,8 @@ export default function CharacterProfile({
   characterColors,
   active = false,
 }: CharacterProfileProps) {
+  const backgroundColor = characterColors?.backgroundColor || '#666';
+  const borderColor = characterColors?.borderColor || '#999';
   return (
     <div
       className={cn(
@@ -37,7 +39,7 @@ export default function CharacterProfile({
       <Avatar
         name={name}
         image={image}
-        characterColors={characterColors}
+        characterColors={{ backgroundColor, borderColor }}
         active={active}
       />
 

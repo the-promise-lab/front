@@ -5,8 +5,8 @@ interface BubblePortraitProps {
   className?: string;
   text: string;
   characterColors: {
-    backgroundColor: string;
-    borderColor: string;
+    backgroundColor: string | null;
+    borderColor: string | null;
   };
 }
 
@@ -15,6 +15,8 @@ export default function BubblePortrait({
   text,
   characterColors,
 }: BubblePortraitProps) {
+  const backgroundColor = characterColors.backgroundColor || '#666';
+  const borderColor = characterColors.borderColor || '#999';
   return (
     <div
       className={cn(
@@ -25,8 +27,8 @@ export default function BubblePortrait({
         className
       )}
       style={{
-        backgroundColor: characterColors.backgroundColor,
-        borderColor: characterColors.borderColor,
+        backgroundColor,
+        borderColor,
       }}
     >
       <TypingText smooth texts={[text]} variant='dialogue-m' />

@@ -38,10 +38,10 @@ export default function ChangeStatsScreen({
       const initialStats: Record<string, { hp: number; mentality: number }> =
         {};
       playingCharacters.forEach(character => {
-        const name = character.name;
+        const name = character.name || '-';
         initialStats[name] = {
-          hp: character.currentHp,
-          mentality: character.currentSp,
+          hp: character.currentHp || 0,
+          mentality: character.currentSp || 0,
         };
       });
       setPreviousStats(initialStats);
@@ -49,7 +49,7 @@ export default function ChangeStatsScreen({
       // 첫 렌더링 시 변화량 0으로 초기화
       const initialResults: CharacterResult[] = playingCharacters.map(
         character => ({
-          name: character.name,
+          name: character.name || '-',
           deltaHp: 0,
           deltaMentality: 0,
         })
@@ -61,7 +61,7 @@ export default function ChangeStatsScreen({
     // 서버에서 업데이트된 스탯과 이전 스탯 비교하여 변화량 계산
     const currentResults: CharacterResult[] = playingCharacters.map(
       character => {
-        const name = character.name;
+        const name = character.name || '-';
         const previous = previousStats[name];
         if (!previous) {
           return {
@@ -72,8 +72,8 @@ export default function ChangeStatsScreen({
         }
 
         // 서버에서 내려온 현재 스탯 - 이전 스탯 = 변화량
-        const deltaHp = character.currentHp - previous.hp;
-        const deltaMentality = character.currentSp - previous.mentality;
+        const deltaHp = character.currentHp || 0 - previous.hp;
+        const deltaMentality = character.currentSp || 0 - previous.mentality;
 
         return {
           name,
@@ -89,10 +89,10 @@ export default function ChangeStatsScreen({
     const newPreviousStats: Record<string, { hp: number; mentality: number }> =
       {};
     playingCharacters.forEach(character => {
-      const name = character.name;
+      const name = character.name || '-';
       newPreviousStats[name] = {
-        hp: character.currentHp,
-        mentality: character.currentSp,
+        hp: character.currentHp || 0,
+        mentality: character.currentSp || 0,
       };
     });
     setPreviousStats(newPreviousStats);

@@ -2,10 +2,15 @@ import type {
   GameSessionResponseDto,
   CreateGameSessionResponseDto,
   CharacterGroupResponseDto,
+  PlayingCharacterSetResponseDto,
   PlayingCharacterDto,
 } from '@api';
-import type { CharacterSet, GameSession, PlayingCharacter } from './types';
-import { getCharacterMetadata } from './characterMappings';
+import type {
+  CharacterSet,
+  GameSession,
+  PlayingCharacter,
+  PlayingCharacterSet,
+} from './types';
 
 /**
  * GameSessionResponseDto를 도메인 GameSession 타입으로 변환
@@ -21,27 +26,7 @@ export function adaptGameSessionFromApi(
     userId: apiResponse.userId,
     currentActId: apiResponse.currentActId,
     playingCharacterSet: apiResponse.playingCharacterSet
-      ? {
-          id: apiResponse.playingCharacterSet.id,
-          characterGroupId: apiResponse.playingCharacterSet.characterGroupId,
-          playingCharacters:
-            apiResponse.playingCharacterSet.playingCharacter.map(char => {
-              const metadata = getCharacterMetadata(char.characterId);
-              return {
-                id: char.id,
-                characterId: char.characterId,
-                currentHp: char.currentHp,
-                currentSp: char.currentSp,
-                name: metadata?.name || '',
-                fullImage: metadata?.fullImage || '',
-                thumbnailImage: metadata?.thumbnailImage || '',
-                colors: metadata?.colors || {
-                  backgroundColor: '#666',
-                  borderColor: '#999',
-                },
-              };
-            }),
-        }
+      ? adaptPlayingCharacterSetFromApi(apiResponse.playingCharacterSet)
       : null,
     inventories: apiResponse.inventories.map(inv => ({
       id: inv.id,
@@ -75,6 +60,25 @@ export function adaptCreateGameSessionFromApi(
 }
 
 /**
+ * 서버 PlayingCharacterSetResponseDto를 클라이언트 PlayingCharacterSet 타입으로 변환
+ *
+ * @param apiResponse - 서버 응답 (PlayingCharacterSetResponseDto)
+ * @returns 클라이언트 PlayingCharacterSet 타입
+ */
+export function adaptPlayingCharacterSetFromApi(
+  apiResponse: PlayingCharacterSetResponseDto
+): PlayingCharacterSet {
+  return {
+    id: apiResponse.id,
+    characterGroupId: apiResponse.characterGroupId,
+    playingCharacters: apiResponse.playingCharacter.map(char =>
+      // FIXME: 백엔드에서 GET /api/game/session 에 대한 응답값 수정 후 타입 단언을 제거
+      adaptPlayingCharacterFromApi(char as unknown as PlayingCharacterDto)
+    ),
+  };
+}
+
+/**
  * 서버 캐릭터 그룹 응답을 클라이언트 CharacterSet 타입으로 변환
  *
  * @param group - 서버 응답 (CharacterGroupResponseDto)
@@ -101,24 +105,18 @@ export function adaptCharacterSetFromApi(
  */
 export function adaptPlayingCharacterFromApi(
   playingCharacter: PlayingCharacterDto
-): PlayingCharacter | null {
-  const metadata = getCharacterMetadata(playingCharacter.characterId);
-
-  if (!metadata) {
-    console.error(
-      `[adapters] characterId ${playingCharacter.characterId}에 대한 메타데이터가 없습니다. CHARACTER_METADATA에 추가하세요.`
-    );
-    return null;
-  }
-
+): PlayingCharacter {
   return {
     id: playingCharacter.id,
-    characterId: playingCharacter.characterId,
-    name: metadata.name,
-    fullImage: metadata.fullImage,
-    thumbnailImage: metadata.thumbnailImage,
-    currentHp: playingCharacter.currentHp,
-    currentSp: playingCharacter.currentSp,
-    colors: metadata.colors,
+    characterId: playingCharacter.character.id,
+    name: playingCharacter.character.name || null,
+    fullImage: playingCharacter.character.selectImage || null,
+    profileImage: playingCharacter.character.potraitImage || null,
+    currentHp: playingCharacter.currentHp || null,
+    currentSp: playingCharacter.currentSp || null,
+    colors: {
+      backgroundColor: playingCharacter.character.bgColor || null,
+      borderColor: playingCharacter.character.borderColor || null,
+    },
   };
 }

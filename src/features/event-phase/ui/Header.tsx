@@ -39,16 +39,13 @@ export default function Header({
             <>
               {playingCharacters.map((char, index) => (
                 <CharacterProfile
-                  key={char.name}
-                  name={char.name}
-                  image={char.thumbnailImage || ''}
-                  mentality={char.currentSp}
-                  hp={char.currentHp}
+                  key={char.id}
+                  name={char.name || '-'}
+                  image={char.profileImage || ''}
+                  mentality={char.currentSp || 0}
+                  hp={char.currentHp || 0}
                   characterColors={
-                    char.colors || {
-                      backgroundColor: '#666',
-                      borderColor: '#999',
-                    }
+                    char.colors || { backgroundColor: null, borderColor: null }
                   }
                   active={index === 0}
                 />

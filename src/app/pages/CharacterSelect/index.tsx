@@ -19,7 +19,7 @@ export default function CharacterSelectPage() {
       .filter((char): char is NonNullable<typeof char> => char !== null);
 
     savePlayingCharacters({
-      characterSetId: response.id,
+      id: response.id,
       characterGroupId: response.characterGroupId,
       playingCharacters,
     });
