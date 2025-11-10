@@ -8,8 +8,10 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { BagResponseDto } from './models/BagResponseDto';
+export type { CharacterDto } from './models/CharacterDto';
 export type { CharacterGroupResponseDto } from './models/CharacterGroupResponseDto';
 export type { CreateGameSessionResponseDto } from './models/CreateGameSessionResponseDto';
+export { EventResponseDto } from './models/EventResponseDto';
 export type { GameSessionResponseDto } from './models/GameSessionResponseDto';
 export { HealthCheckDto } from './models/HealthCheckDto';
 export type { InventoryResponseDto } from './models/InventoryResponseDto';
@@ -26,8 +28,10 @@ export type { SubmitInventoryDto } from './models/SubmitInventoryDto';
 export type { SubmitInventoryResponseDto } from './models/SubmitInventoryResponseDto';
 
 export { $BagResponseDto } from './schemas/$BagResponseDto';
+export { $CharacterDto } from './schemas/$CharacterDto';
 export { $CharacterGroupResponseDto } from './schemas/$CharacterGroupResponseDto';
 export { $CreateGameSessionResponseDto } from './schemas/$CreateGameSessionResponseDto';
+export { $EventResponseDto } from './schemas/$EventResponseDto';
 export { $GameSessionResponseDto } from './schemas/$GameSessionResponseDto';
 export { $HealthCheckDto } from './schemas/$HealthCheckDto';
 export { $InventoryResponseDto } from './schemas/$InventoryResponseDto';

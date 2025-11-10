@@ -2,30 +2,43 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $PlayingCharacterDto = {
+export const $EventResponseDto = {
   properties: {
     id: {
       type: 'number',
-      description: `플레이 중인 캐릭터 ID`,
       isRequired: true,
+      format: 'int64',
     },
-    playingCharacterSetId: {
+    actId: {
       type: 'number',
-      description: `플레이 중인 캐릭터 셋 ID`,
+      isRequired: true,
+      format: 'int64',
+    },
+    eventType: {
+      type: 'Enum',
       isRequired: true,
     },
-    character: {
-      type: 'CharacterDto',
-      isRequired: true,
-    },
-    currentHp: {
+    order: {
       type: 'number',
-      description: `현재 체력`,
       isRequired: true,
     },
-    currentSp: {
+    speakerId: {
       type: 'number',
-      description: `현재 정신력`,
+    },
+    script: {
+      type: 'string',
+      isRequired: true,
+    },
+    position: {
+      type: 'string',
+      isRequired: true,
+    },
+    emotion: {
+      type: 'string',
+      isRequired: true,
+    },
+    bgImage: {
+      type: 'string',
       isRequired: true,
     },
   },

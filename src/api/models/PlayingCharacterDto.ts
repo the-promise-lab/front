@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CharacterDto } from './CharacterDto';
 export type PlayingCharacterDto = {
   /**
    * 플레이 중인 캐릭터 ID
@@ -11,10 +12,7 @@ export type PlayingCharacterDto = {
    * 플레이 중인 캐릭터 셋 ID
    */
   playingCharacterSetId: number;
-  /**
-   * 캐릭터 ID
-   */
-  characterId: number;
+  character: CharacterDto;
   /**
    * 현재 체력
    */

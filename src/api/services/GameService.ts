@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { CharacterGroupResponseDto } from '../models/CharacterGroupResponseDto';
 import type { CreateGameSessionResponseDto } from '../models/CreateGameSessionResponseDto';
+import type { EventResponseDto } from '../models/EventResponseDto';
 import type { GameSessionResponseDto } from '../models/GameSessionResponseDto';
 import type { SelectCharacterSetDto } from '../models/SelectCharacterSetDto';
 import type { SelectCharacterSetResponseDto } from '../models/SelectCharacterSetResponseDto';
@@ -37,8 +38,21 @@ export class GameService {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/api/game/session',
+    });
+  }
+  /**
+   * 선택한 캐릭터 그룹의 프롤로그 이벤트 목록 조회
+   * @returns EventResponseDto 프롤로그 이벤트 목록 조회 성공
+   * @throws ApiError
+   */
+  public static gameControllerGetPrologEvents(): CancelablePromise<
+    Array<EventResponseDto>
+  > {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/game/session/prolog',
       errors: {
-        409: `이미 진행 중인 게임 세션이 존재합니다.`,
+        404: `리소스를 찾을 수 없습니다.`,
       },
     });
   }
