@@ -42,6 +42,17 @@ const SCREEN_ORDER: ScreenType[] = [
   'BEFORE_RESULT_SCREEN',
 ];
 
+const hasCharacterProfileScreens: ScreenType[] = [
+  'RANDOM_EVENT_STORY',
+  'CHANGE_STATS_SCREEN',
+  'SINGLE_PORTRAIT_SCREEN',
+  'CUT_SCENE_SCREEN',
+  'BEFORE_RESULT_SCREEN',
+];
+
+const hasCharacterProfile = (currentScreen: ScreenType) =>
+  hasCharacterProfileScreens.includes(currentScreen);
+
 export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [screenIndex, setScreenIndex] = useState(0);
@@ -192,6 +203,7 @@ export default function EventPhase() {
       onClick={handleNext}
     >
       <Header
+        hasCharacterProfiles={hasCharacterProfile(currentScreen)}
         playingCharacters={playingCharacters}
         menuSlot={
           <>

@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $EventResponseDto = {
+export const $EventDto = {
   properties: {
     id: {
       type: 'number',

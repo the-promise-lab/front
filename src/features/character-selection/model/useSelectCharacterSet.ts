@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GameService } from '@api/services/GameService';
-import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
+import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
 import { adaptPlayingCharacterFromApi } from '@entities/game-session';
 import type { PlayingCharacter } from '@entities/game-session';
 
@@ -10,7 +10,7 @@ interface SelectCharacterParams {
 }
 
 interface SelectCharacterResult {
-  response: SelectCharacterSetResponseDto;
+  response: SelectCharacterSetResultDto;
   playingCharacters: PlayingCharacter[]; // 변환된 캐릭터 정보 (메타데이터 포함)
 }
 

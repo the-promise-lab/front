@@ -1,7 +1,7 @@
 import { useGameFlowStore } from '@processes/game-flow/model/useGameFlowStore';
 import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
-import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
+import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
 import { adaptPlayingCharacterFromApi } from '@entities/game-session';
 
 export default function CharacterSelectPage() {
@@ -12,7 +12,7 @@ export default function CharacterSelectPage() {
     }))
   );
 
-  const handleSelectSuccess = (response: SelectCharacterSetResponseDto) => {
+  const handleSelectSuccess = (response: SelectCharacterSetResultDto) => {
     const playingCharacters = response.playingCharacter
       .map(adaptPlayingCharacterFromApi)
       .filter((char): char is NonNullable<typeof char> => char !== null);

@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type EventResponseDto = {
+export type EventDto = {
   id: number;
   actId: number;
-  eventType: EventResponseDto.eventType;
+  eventType: EventDto.eventType;
   order: number;
   speakerId?: number;
   script: string;
@@ -13,7 +13,7 @@ export type EventResponseDto = {
   emotion: string;
   bgImage: string;
 };
-export namespace EventResponseDto {
+export namespace EventDto {
   export enum eventType {
     SIMPLE = 'Simple',
     SYSTEM = 'System',

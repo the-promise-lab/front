@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type BagResponseDto = {
+export type BagDto = {
   id: number;
   name: string;
   image: string;

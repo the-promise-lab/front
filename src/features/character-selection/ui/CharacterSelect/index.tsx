@@ -1,12 +1,12 @@
 import { useCharacterGroups } from '../../model/useCharacterGroups';
 import { useSelectCharacterSet } from '../../model/useSelectCharacterSet';
-import type { SelectCharacterSetResponseDto } from '@api/models/SelectCharacterSetResponseDto';
+import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
 import { useState } from 'react';
 
 interface CharacterSelectProps {
   onNext: () => void;
   onBack: () => void;
-  onSelectSuccess?: (response: SelectCharacterSetResponseDto) => void;
+  onSelectSuccess?: (response: SelectCharacterSetResultDto) => void;
 }
 
 export default function CharacterSelect({
