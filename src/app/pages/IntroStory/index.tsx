@@ -16,6 +16,7 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSkipped, setIsSkipped] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -54,13 +55,19 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
   }, [currentEvent?.BGImage, getObjectUrl]);
 
   const handleNext = () => {
-    if (!events.length) return;
+    if (isSkipped) return;
 
     if (currentIndex < events.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else if (onNext) {
       onNext();
     }
+  };
+
+  const handleSkip = () => {
+    if (isSkipped) return;
+    setIsSkipped(true);
+    onNext?.();
   };
 
   if (isLoading) {
@@ -95,6 +102,17 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
       <div className='flex-1 bg-black/40'>
         <IntroEventRenderer event={currentEvent} />
       </div>
+      {!isSkipped && (
+        <button
+          onClick={e => {
+            e.stopPropagation();
+            handleSkip();
+          }}
+          className='absolute top-6 right-6 rounded-full border border-white/30 bg-black/40 px-5 py-2 text-sm font-semibold text-white/80 transition hover:border-white/60 hover:text-white'
+        >
+          Skip
+        </button>
+      )}
     </div>
   );
 }

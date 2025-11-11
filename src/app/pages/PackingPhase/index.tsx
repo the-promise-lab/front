@@ -2,37 +2,46 @@ import { useState, useEffect } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShelfSelection } from '@features/shelf-selection';
+import CautionNotice from '@features/event-phase/ui/kit/CautionNotice';
+import Typography from '@shared/ui/Typography';
 
 export default function PackingPhase() {
   const { goto, back } = useGameFlowStore();
-  const [timeLeft, setTimeLeft] = useState(3); // 90초 카운트다운
+  const [timeLeft, setTimeLeft] = useState(10); // 실제 남은 시간 (3초 후 04:00부터 카운트다운)
   const [showModal, setShowModal] = useState(false);
   const [countdownMoved, setCountdownMoved] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
+  const [displayCountdown, setDisplayCountdown] = useState(false);
 
   // 디버깅: PackingPhase 컴포넌트가 렌더링되는지 확인
   console.log('PackingPhase 컴포넌트 렌더링됨');
 
   // 카운트다운 로직
   useEffect(() => {
+    if (!displayCountdown) return;
     if (timeLeft > 0) {
       const timer = setTimeout(() => {
-        setTimeLeft(timeLeft - 1);
+        setTimeLeft(prev => prev - 1);
       }, 1000);
       return () => clearTimeout(timer);
     } else {
-      // 카운트다운이 끝나면 모달 표시
       setShowModal(true);
     }
-  }, [timeLeft]);
+  }, [timeLeft, displayCountdown]);
 
   // 1초 후 카운트다운을 상단으로 이동하고 배경 표시
   useEffect(() => {
     const moveTimer = setTimeout(() => {
       setCountdownMoved(true);
       setShowBackground(true);
-    }, 1000);
-    return () => clearTimeout(moveTimer);
+    }, 4000);
+    const startCountdownTimer = setTimeout(() => {
+      setDisplayCountdown(true);
+    }, 3000);
+    return () => {
+      clearTimeout(moveTimer);
+      clearTimeout(startCountdownTimer);
+    };
   }, []);
 
   // 시간을 MM:SS 형식으로 변환
@@ -110,27 +119,54 @@ export default function PackingPhase() {
         transition={{ duration: 0.8, ease: 'easeInOut' }}
       />
 
-      {/* 카운트다운 타이머 */}
-      <motion.div
-        className='pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-mono text-6xl font-bold text-white'
-        animate={
-          countdownMoved
-            ? {
-                y: -150, // 상단으로 이동
-                scale: 0.8, // 크기 축소
-              }
-            : {}
-        }
-        transition={{
-          duration: 0.8,
-          ease: 'easeInOut',
-        }}
-        style={{
-          fontSize: countdownMoved ? '30px' : '60px',
-        }}
-      >
-        {formatTime(timeLeft)}
-      </motion.div>
+      {/* 초기 카운트다운 CAUTION 오버레이 */}
+      <AnimatePresence>
+        {!countdownMoved && (
+          <motion.div
+            className='pointer-events-none absolute inset-0 z-20 flex items-center justify-center'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            <div className='flex w-full max-w-[640px] flex-col items-center gap-6 px-6 text-center'>
+              <CautionNotice className='w-full max-w-[320px]' />
+              <div className='w-full rounded-3xl bg-black/70 px-12 py-10 shadow-[0_25px_60px_rgba(0,0,0,0.55)] backdrop-blur-md'>
+                <Typography
+                  variant='subtitle-2-b'
+                  className='mb-4 text-white/70'
+                >
+                  제한 시간 내에 가방 안에 생존을 위한 물품을 담으세요!
+                </Typography>
+                <div className='font-mono text-7xl font-bold tracking-[0.2em] text-white'>
+                  {formatTime(timeLeft)}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 카운트다운 타이머 (상단) */}
+      {countdownMoved && (
+        <motion.div
+          className='pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-mono text-6xl font-bold text-white'
+          initial={{ y: 0, scale: 1 }}
+          animate={{
+            y: -150,
+            scale: 0.8,
+          }}
+          transition={{
+            duration: 0.8,
+            ease: 'easeInOut',
+          }}
+          style={{
+            fontSize: '30px',
+          }}
+        >
+          {formatTime(timeLeft)}
+        </motion.div>
+      )}
 
       {/* 모달 */}
       <AnimatePresence>
