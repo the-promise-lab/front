@@ -31,4 +31,19 @@ export class AppService {
       url: '/api/health',
     });
   }
+  /**
+   * Sentry 테스트
+   * Sentry 에러 캡처 테스트를 위한 의도적인 에러를 발생시킵니다.
+   * @returns void
+   * @throws ApiError
+   */
+  public static appControllerGetError(): CancelablePromise<void> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/debug-sentry',
+      errors: {
+        500: `테스트용 에러`,
+      },
+    });
+  }
 }

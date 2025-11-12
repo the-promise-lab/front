@@ -72,7 +72,7 @@ export const getQueryString = (params: Record<string, any>): string => {
   const process = (key: string, value: any) => {
     if (isDefined(value)) {
       if (Array.isArray(value)) {
-        value.forEach((v) => {
+        value.forEach(v => {
           process(key, v);
         });
       } else if (typeof value === 'object') {
@@ -133,7 +133,7 @@ export const getFormData = (
       .filter(([_, value]) => isDefined(value))
       .forEach(([key, value]) => {
         if (Array.isArray(value)) {
-          value.forEach((v) => process(key, v));
+          value.forEach(v => process(key, v));
         } else {
           process(key, value);
         }
