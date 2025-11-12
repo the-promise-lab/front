@@ -41,12 +41,15 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
       position: 'left' | 'right'
     ): PlayingCharacter => {
       const imageKey = id ? CHARACTER_IMAGE_MAP[id] : undefined;
+      const resolvedName = CHARACTER_NAME_MAP[id ?? ''] ?? id ?? position;
       return {
-        id: id ?? position,
-        name: CHARACTER_NAME_MAP[id ?? ''] ?? id ?? position,
-        profileImage: imageKey,
-        mentality: 50,
-        hp: 50,
+        id: position === 'left' ? 1 : 2,
+        characterId: position === 'left' ? 1 : 2,
+        name: resolvedName,
+        fullImage: null,
+        profileImage: imageKey ?? null,
+        currentHp: null,
+        currentSp: null,
         colors:
           position === 'left'
             ? {
