@@ -15,7 +15,7 @@ import { BagSelectionScreen } from '@features/event-phase';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
-  const { step, next, resetDayFlow } = useGameFlowStore();
+  const { step, resetDayFlow } = useGameFlowStore();
 
   // DAY_FLOW 진입 시 DAY_STEP 초기화
   useEffect(() => {
@@ -47,6 +47,7 @@ export default function App() {
     if (step === 'INTRO_STORY') {
       return (
         <IntroStory
+          jsonPath='/JSON/intro1.json'
           onNext={() => {
             useGameFlowStore.getState().goto('BAG_SELECT');
           }}
@@ -60,13 +61,33 @@ export default function App() {
             console.log('Selected bag:', selectedBagId);
 
             // TODO: 선택된 가방을 전역 상태에 저장
-            next();
+            useGameFlowStore.getState().goto('INTRO_STORY_2');
+          }}
+        />
+      );
+    }
+    if (step === 'INTRO_STORY_2') {
+      return (
+        <IntroStory
+          jsonPath='/JSON/intro2.json'
+          onNext={() => {
+            useGameFlowStore.getState().goto('PACKING_PHASE');
           }}
         />
       );
     }
     if (step === 'PACKING_PHASE') {
       return <PackingPhase />;
+    }
+    if (step === 'INTRO_STORY_3') {
+      return (
+        <IntroStory
+          jsonPath='/JSON/intro3.json'
+          onNext={() => {
+            useGameFlowStore.getState().goto('DAY_FLOW');
+          }}
+        />
+      );
     }
     if (step === 'DAY_FLOW') {
       return <EventPhase />;

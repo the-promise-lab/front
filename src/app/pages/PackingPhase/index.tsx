@@ -192,7 +192,7 @@ export default function PackingPhase() {
                 onClick={e => {
                   e.stopPropagation();
                   // handleConfirm();
-                  goto('DAY_FLOW');
+                  goto('INTRO_STORY_3');
                 }}
                 disabled={false}
                 className='w-full rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50'

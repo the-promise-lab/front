@@ -9,11 +9,13 @@ export type GameStep =
   | 'LOGIN_PROGRESS' // 로그인 진행 중
   | 'MAIN_MENU' // 메인 메뉴
   | 'PROGRESS' // 게임 준비 진행 중
-  | 'INTRO_STORY' // 인트로 스토리
+  | 'INTRO_STORY' // 인트로 스토리 (첫 번째)
   | 'CHARACTER_SELECT' // 캐릭터 선택
   | 'BAG_SELECT' // 가방 선택
-  | 'DAY_FLOW' // 시나리오 DAY 플로우
+  | 'INTRO_STORY_2' // 인트로 스토리 (두 번째)
   | 'PACKING_PHASE' // 가방 싸기
+  | 'INTRO_STORY_3' // 인트로 스토리 (세 번째)
+  | 'DAY_FLOW' // 시나리오 DAY 플로우
   | 'EVENT_PHASE' // 이벤트 페이즈
   | 'PLAYING'; // 게임 플레이
 
@@ -138,7 +140,9 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'CHARACTER_SELECT',
   'INTRO_STORY',
   'BAG_SELECT',
+  'INTRO_STORY_2',
   'PACKING_PHASE',
+  'INTRO_STORY_3',
   'DAY_FLOW',
   'EVENT_PHASE',
   'PLAYING',
