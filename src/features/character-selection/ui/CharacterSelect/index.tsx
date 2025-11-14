@@ -3,11 +3,16 @@ import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSet
 import { useEffect, useMemo, useState } from 'react';
 import { cn } from '@shared/lib/utils';
 import type { CharacterSet } from '@entities/game-session';
+import type { PlayingCharacter } from '@entities/game-session';
 
 interface CharacterSelectProps {
   onNext: () => void;
   onBack: () => void;
-  onSelectSuccess?: (response: SelectCharacterSetResultDto) => void;
+  onSelectSuccess?: (result: {
+    response: SelectCharacterSetResultDto;
+    playingCharacters: PlayingCharacter[];
+    groupName: string;
+  }) => void;
 }
 
 type CharacterStat = {
@@ -224,8 +229,8 @@ export default function CharacterSelect({
 
   const { mutate: selectCharacter, isPending: isSelecting } =
     useSelectCharacterSet({
-      onSuccess: ({ response }) => {
-        onSelectSuccess?.(response);
+      onSuccess: result => {
+        onSelectSuccess?.(result);
         onNext();
       },
       onError: (error: Error) => {

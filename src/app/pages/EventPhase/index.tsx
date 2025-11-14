@@ -9,14 +9,11 @@ import {
   ChangeStatsScreen,
   SinglePortraitScreen,
 } from '@features/event-phase/index';
-import {
-  PauseMenu,
-  SideInventory,
-  useGameFlowStore,
-} from '@processes/game-flow';
+import { SideInventory, useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
+import { IconPauseButton } from '@features/event-phase/ui/kit/icon-button';
 
 // FIXME: 하드코딩된 화면 순서
 type ScreenType =
@@ -62,6 +59,11 @@ export default function EventPhase() {
     useGameFlowStore(
       state => state.gameSession?.playingCharacterSet?.playingCharacters
     ) || [];
+  const { openPauseMenu } = useGameFlowStore(
+    useShallow(state => ({
+      openPauseMenu: state.openPauseMenu,
+    }))
+  );
 
   // FIXME: 하드코딩된 데이터
   const storyEventData = {
@@ -208,7 +210,7 @@ export default function EventPhase() {
         menuSlot={
           <>
             <SideInventory hasWeightBar weight={100} />
-            <PauseMenu />
+            <IconPauseButton onClick={openPauseMenu} />
           </>
         }
       />

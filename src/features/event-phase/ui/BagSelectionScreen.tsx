@@ -5,30 +5,35 @@ import Typography from '@shared/ui/Typography';
 interface BagOption {
   id: string;
   title: string;
-  subtitle: string;
+  description: string;
+  capacity: number;
   image?: string;
 }
 
 const BAG_OPTIONS: BagOption[] = [
   {
+    id: 'travel-carrier',
+    title: '캐리어',
+    description: '바퀴가 달려 있어 끌고 다닐 수 있는 여행 가방.',
+    capacity: 28,
+  },
+  {
     id: 'travel-backpack',
-    title: '| 여행용 백팩',
-    subtitle: '가방 설명 블라블라',
+    title: '여행용 백팩',
+    description: '어깨에 멜 수 있는 크고 튼튼한 배낭.',
+    capacity: 20,
   },
   {
     id: 'shopping-bag',
-    title: '| 장바구니',
-    subtitle: '가방 설명 블라블라',
-  },
-  {
-    id: 'travel-carrier',
-    title: '| 여행용 캐리어',
-    subtitle: '가방 설명 블라블라',
+    title: '장바구니',
+    description: '가벼운 소재로 된 손가방.',
+    capacity: 16,
   },
   {
     id: 'hamburger-bag',
-    title: '| 햄버거 가방',
-    subtitle: '가방 설명 블라블라',
+    title: '햄버거 가방',
+    description: '귀엽고 독특한 디자인의 가방.',
+    capacity: 8,
   },
 ];
 
@@ -158,9 +163,18 @@ function BagCard({
         </Typography>
         <Typography
           variant='body'
-          className={cn(isSelected ? 'text-white/90' : 'text-white/60')}
+          className={cn(
+            'text-xs leading-relaxed',
+            isSelected ? 'text-white/90' : 'text-white/60'
+          )}
         >
-          {bag.subtitle}
+          {bag.description}
+        </Typography>
+        <Typography
+          variant='caption'
+          className={cn(isSelected ? 'text-white/80' : 'text-white/50')}
+        >
+          아이템 적재 가능 : {bag.capacity}개
         </Typography>
       </div>
     </button>

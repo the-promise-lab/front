@@ -86,6 +86,10 @@ export interface GameFlowState {
   // 게임 세션 관련 상태
   gameSession?: GameSession;
   isNewGame: boolean; // 새 게임인지 이어하기인지 구분
+  // 일시정지 메뉴 관련 상태
+  isPauseMenuOpen: boolean;
+  // 선택된 캐릭터 그룹 이름 (상세 정보 조회용)
+  selectedCharacterGroupName?: string;
 }
 
 export interface PlayingCharacter {
@@ -123,11 +127,17 @@ export interface GameFlowActions {
   loadGameSession: (session: GameSession) => void;
   clearGameSession: () => void;
   setIsNewGame: (isNew: boolean) => void;
-  savePlayingCharacters: (params: PlayingCharacterSet) => void;
+  savePlayingCharacters: (
+    params: PlayingCharacterSet,
+    groupName?: string
+  ) => void;
   startNewGame: (newGameSession: GameSession) => void;
   startDayFlow: () => void;
   continueGame: () => void;
   resetGame: () => void;
+  // 일시정지 메뉴 관련 액션
+  openPauseMenu: () => void;
+  closePauseMenu: () => void;
 }
 
 // 게임 단계 순서 정의
@@ -171,4 +181,6 @@ export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
   currentDayStepIndex: 0,
   gameSession: undefined,
   isNewGame: true,
+  isPauseMenuOpen: false,
+  selectedCharacterGroupName: undefined,
 };
