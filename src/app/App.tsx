@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
-import { useGameFlowStore, PauseMenu } from '@processes/game-flow';
+import { useGameFlowStore } from '@processes/game-flow';
 
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
@@ -76,15 +76,7 @@ export default function App() {
 
   return (
     <AppProviders>
-      <RootLayout>
-        <div className='fixed inset-0 z-10 touch-pan-y overflow-hidden'>
-          {renderScreen()}
-        </div>
-        {/* 일시정지 메뉴 - 전역 팝업 */}
-        <div className='fixed top-11 right-11 z-10'>
-          <PauseMenu />
-        </div>
-      </RootLayout>
+      <RootLayout>{renderScreen()}</RootLayout>
     </AppProviders>
   );
 }
