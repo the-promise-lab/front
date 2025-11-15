@@ -140,7 +140,7 @@ function SystemMessage({ event }: { event: IntroEvent }) {
 
   return (
     <div className='flex h-full items-center justify-center px-6'>
-      <NoticeBanner withCaution className='max-w-[720px]'>
+      <NoticeBanner withCaution className='max-w-[1020px]'>
         <Typography variant='dialogue-2' className='text-white'>
           {message}
         </Typography>
