@@ -1,7 +1,11 @@
 import { useCallback, useEffect, type ReactNode } from 'react';
 
 const SCROLL_RESET_RATIO = 0.75;
-export default function BackgroundLayer({ children }: { children: ReactNode }) {
+export default function FullscreenScroll({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const handleScrollReset = useCallback(() => {
     const doc = document.documentElement;
     const scrollTop =
