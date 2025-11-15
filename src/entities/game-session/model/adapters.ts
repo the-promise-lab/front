@@ -110,7 +110,7 @@ export function adaptPlayingCharacterFromApi(
     characterId: playingCharacter.character.id,
     name: playingCharacter.character.name || null,
     fullImage: playingCharacter.character.selectImage || null,
-    profileImage: playingCharacter.character.potraitImage || null,
+    profileImage: playingCharacter.character.portraitImage || null,
     currentHp: playingCharacter.currentHp || null,
     currentSp: playingCharacter.currentSp || null,
     colors: {
