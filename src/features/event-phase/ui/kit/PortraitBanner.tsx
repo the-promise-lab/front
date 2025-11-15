@@ -16,7 +16,7 @@ export default function PortraitBanner({
   return (
     <div
       className={cn(
-        'absolute right-0 bottom-0 left-0 flex h-105 w-screen flex-col items-center justify-start gap-4.5 pt-10.5 pb-17',
+        'absolute right-0 bottom-0 left-0 flex h-105 w-full flex-col items-center justify-start gap-4.5 pt-10.5 pb-17',
         '[background-image:linear-gradient(180deg,_rgba(1,0,9,0.00)_0%,_rgba(1,0,9,0.60)_58.65%,_rgba(1,0,9,0.80)_100%)]'
       )}
       {...props}

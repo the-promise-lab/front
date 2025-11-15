@@ -25,7 +25,7 @@ export const $CharacterDto = {
       type: 'string',
       isNullable: true,
     },
-    potraitImage: {
+    portraitImage: {
       type: 'string',
       isNullable: true,
     },

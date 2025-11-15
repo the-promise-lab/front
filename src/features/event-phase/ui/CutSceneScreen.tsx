@@ -1,5 +1,6 @@
 import TypingText from '@shared/ui/TypingText';
 import { cn } from '@shared/lib/utils';
+import { useSetBackground } from '@shared/background';
 
 interface Props {
   imageUrl: string;
@@ -7,12 +8,14 @@ interface Props {
 }
 
 export function CutSceneScreen({ imageUrl, text }: Props) {
+  useSetBackground({
+    image: imageUrl,
+  });
   return (
     <div
       className={cn(
-        'fixed inset-0 z-[100] h-screen w-screen bg-cover bg-center bg-no-repeat'
+        'fixed inset-0 z-[100] h-full w-full bg-cover bg-center bg-no-repeat'
       )}
-      style={{ backgroundImage: `url(${imageUrl})` }}
     >
       <div
         className={cn(

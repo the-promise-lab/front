@@ -171,3 +171,21 @@ src/
   - ex. Figma 디자인이 72px인 경우 `h-18`로 반영 -> 모바일 가로모드에서는 `36px`로 계산되어 반영된다.
 - 여러 className을 병합하는 경우 `cn` 함수를 사용한다.
   - ex. `cn('h-18', 'w-131', 'px-10.75', 'py-0')`
+
+### 화면 컨텐츠 영역 종횡비 고정 및 배경 관리
+
+#### UI 레이아웃 구조
+- 모든 페이지 컨텐츠는 **16:9 고정 비율 컨테이너** 안에 렌더링됩니다 (RootLayout의 z-10 레이어)
+- 페이지/컴포넌트 루트는 **반드시 `w-full h-full`** 또는 **`absolute inset-0`**으로 컨테이너를 채워야 합니다
+- `fixed` 포지셔닝은 16:9 영역을 벗어나므로 주의 (z-10 컨테이너가 relative이므로 이를 기준으로 `absolute` 사용 권장)
+
+#### 배경 변경
+- 페이지/컴포넌트의 배경(색상/이미지/그라디언트)을 변경할 때는 **`useSetBackground` 훅**을 사용합니다
+- 인라인 스타일이나 className으로 배경을 직접 설정하지 마세요 (16:9 영역 밖까지 배경 적용 필요)
+- 사용법: `useSetBackground({ color: '#000' })` 또는 `useSetBackground({ className: 'bg-black' })`
+- 또는 명령형으로 `setBackgroundColor`, `setBackgroundImage`, `setBackgroundGradient`, `setBackgroundClassName` 함수를 사용할 수 있습니다. (useSetBackground 훅에서 반환되는 함수)
+- 상세 문서: `/docs/BACKGROUND_USAGE.md` 참조
+
+#### 주의사항
+- GlobalBackground(z-0)가 전체 화면 배경을 담당하므로, 페이지 컴포넌트는 배경 스타일 불필요
+- 페이지 전환 시 배경은 자동으로 초기화됩니다 (cleanup 옵션으로 제어 가능)

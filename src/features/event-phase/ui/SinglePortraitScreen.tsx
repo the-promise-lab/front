@@ -1,6 +1,6 @@
 import { useEffect, useState, type MouseEvent } from 'react';
 import PortraitBanner from './kit/PortraitBanner';
-import { useAssetStore } from '@shared/model/assetStore';
+import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import PortraitCharacterImage from './kit/PortraitCharacterImage';
 import type { PlayingCharacter } from '@entities/game-session';

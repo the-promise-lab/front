@@ -25,7 +25,7 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
 
   if (!currentShelf) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className='flex min-h-screen items-center justify-center'>
         <div>데이터를 로딩 중...</div>
       </div>
     );
@@ -33,37 +33,37 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
   return (
     <div>
       {/* 뒤로가기 버튼 */}
-      <div className="fixed top-4 left-4 z-10">
+      <div className='absolute top-4 left-4 z-10'>
         <button
-          className="bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95"
+          className='bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95'
           onClick={onBack}
         >
           <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="text-gray-700"
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            className='text-gray-700'
           >
-            <polyline points="15 18 9 12 15 6" />
+            <polyline points='15 18 9 12 15 6' />
           </svg>
         </button>
       </div>
 
-      <div className="fixed top-1/2 left-2 z-10 -translate-y-1/2">
+      <div className='absolute top-1/2 left-2 z-10 -translate-y-1/2'>
         <button
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
+          className='flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm'
           onClick={() => moveToPreviousShelf()}
         >
           <PreviousIcon />
         </button>
       </div>
 
-      <div className="fixed top-1/2 right-2 z-10 -translate-y-1/2">
+      <div className='absolute top-1/2 right-2 z-10 -translate-y-1/2'>
         <button
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
+          className='flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm'
           onClick={() => moveToNextShelf()}
         >
           <NextIcon />
@@ -82,30 +82,30 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
 
 const PreviousIcon = () => (
   <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    width='24'
+    height='24'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='2'
+    strokeLinecap='round'
+    strokeLinejoin='round'
   >
-    <polyline points="15 18 9 12 15 6" />
+    <polyline points='15 18 9 12 15 6' />
   </svg>
 );
 
 const NextIcon = () => (
   <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    width='24'
+    height='24'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='2'
+    strokeLinecap='round'
+    strokeLinejoin='round'
   >
-    <polyline points="9 6 15 12 9 18" />
+    <polyline points='9 6 15 12 9 18' />
   </svg>
 );
