@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useAssetStore } from '@shared/model/assetStore';
+import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import NoticeBanner from '@features/event-phase/ui/kit/NoticeBanner';
 import Typography from '@shared/ui/Typography';

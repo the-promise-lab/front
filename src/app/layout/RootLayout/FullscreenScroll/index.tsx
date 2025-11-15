@@ -30,10 +30,6 @@ export default function FullscreenScroll({
     <div
       aria-hidden
       className='relative h-[1000vh] select-none'
-      style={{
-        background:
-          'linear-gradient(180deg, rgba(2,6,23,1) 0%, rgba(15,23,42,1) 50%, rgba(2,6,23,1) 100%)',
-      }}
       onScroll={handleScrollReset}
     >
       {children}

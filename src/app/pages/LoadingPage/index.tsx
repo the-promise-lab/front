@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
-import { useAssetStore } from '@shared/model/assetStore';
-import { usePreloadAssets } from '@shared/model/usePreloadAssets';
+import { useAssetStore, usePreloadAssets } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 
 const ASSETS_TO_PRELOAD = [

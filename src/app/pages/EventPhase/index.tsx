@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAssetStore } from '@shared/model/assetStore';
+import { useAssetStore } from '@shared/preload-assets';
 import {
   DayScreen,
   Header,
