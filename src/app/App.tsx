@@ -56,8 +56,8 @@ export default function App() {
     if (step === 'BAG_SELECT') {
       return (
         <BagSelection
-          onComplete={selectedBagId => {
-            console.log('Selected bag:', selectedBagId);
+          onComplete={selectedBag => {
+            console.log('Selected bag:', selectedBag);
 
             // TODO: 선택된 가방을 전역 상태에 저장
             next();
