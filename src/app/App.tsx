@@ -15,7 +15,7 @@ import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
-  const { step, next, resetDayFlow } = useGameFlowStore();
+  const { step, next, resetDayFlow, saveBag } = useGameFlowStore();
 
   // DAY_FLOW 진입 시 DAY_STEP 초기화
   useEffect(() => {
@@ -58,8 +58,7 @@ export default function App() {
         <BagSelection
           onComplete={selectedBag => {
             console.log('Selected bag:', selectedBag);
-
-            // TODO: 선택된 가방을 전역 상태에 저장
+            saveBag(selectedBag);
             next();
           }}
         />

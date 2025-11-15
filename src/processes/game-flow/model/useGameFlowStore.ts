@@ -198,6 +198,24 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       });
     },
 
+    saveBag: bag => {
+      set(state => {
+        if (!state.gameSession) {
+          console.warn(
+            '[useGameFlowStore] gameSession이 없습니다. 먼저 게임 세션을 생성하세요.'
+          );
+          return state;
+        }
+
+        return {
+          gameSession: {
+            ...state.gameSession,
+            selectedBag: bag,
+          },
+        };
+      });
+    },
+
     // DAY_FLOW 관련 편의 함수들
     startDayFlow: () => {
       const store = useGameFlowStore.getState();

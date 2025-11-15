@@ -68,4 +68,5 @@ export interface GameSession {
   currentActId: number | null;
   playingCharacterSet: PlayingCharacterSet | null;
   inventories: Array<Inventory>;
+  selectedBag?: Bag;
 }
