@@ -1,7 +1,6 @@
 import { useStartNewGame, useContinueGame } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
-import { PauseMenu } from '@processes/game-flow/ui/menu';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 
 export default function MainMenu() {
@@ -27,11 +26,6 @@ export default function MainMenu() {
 
   return (
     <div className='relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100'>
-      {/* 상단 우측 일시정지 버튼 */}
-      <div className='absolute top-4 right-4 z-10'>
-        <PauseMenu />
-      </div>
-
       {/* 좌측 하단 가방 버튼 */}
       <div className='absolute bottom-4 left-4 z-10'>
         <button
