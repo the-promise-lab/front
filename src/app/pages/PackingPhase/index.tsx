@@ -100,7 +100,7 @@ export default function PackingPhase() {
   // };
 
   return (
-    <div className='relative h-screen w-screen'>
+    <div className='relative h-full w-full'>
       {/* 기존 PACKING_PHASE 배경 (ShelfSelection) */}
       <motion.div
         className='absolute inset-0'

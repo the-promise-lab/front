@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useAssetStore, usePreloadAssets } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
+import { useSetBackground } from '@shared/background';
 
 const ASSETS_TO_PRELOAD = [
   'shelter-bg.png',
@@ -19,6 +20,10 @@ export default function LoadingPage() {
   const [timerEnded, setTimerEnded] = useState(false);
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
+  useSetBackground({
+    color: '#fff',
+    className: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
+  });
 
   // 게임 플로우 상태
   const { isNewGame, startDayFlow, next, gameSession, goto } = useGameFlowStore(
@@ -107,7 +112,7 @@ export default function LoadingPage() {
   }, [onComplete]);
 
   return (
-    <div className='flex h-screen w-screen items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100'>
+    <div className='flex h-full w-full items-center justify-center'>
       <div className='text-center'>
         {/* 로딩 애니메이션 */}
         <div className='mb-8'>

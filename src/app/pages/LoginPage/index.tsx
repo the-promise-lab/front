@@ -1,11 +1,14 @@
 import { useGameFlowStore } from '@processes/game-flow';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { config } from '@config/env';
+import { useSetBackground } from '@shared/background';
 
 export default function LandingPage() {
   const { setAuthenticated } = useGameFlowStore();
   const { login } = useAuthStore();
-
+  useSetBackground({
+    color: '#fff',
+  });
   const handleKakaoLogin = () => {
     // 서버의 카카오 로그인 엔드포인트로 리다이렉트
     window.location.href = `${config.API_BASE_URL}/api/auth/kakao`;
@@ -24,7 +27,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className='h-dvh w-screen overflow-hidden bg-gradient-to-br from-yellow-50 to-yellow-100'>
+    <div className='h-full w-full overflow-hidden'>
       {/* 가로모드 메인 컨텐츠 */}
       <div className='flex h-full'>
         {/* 왼쪽 영역: 브랜딩 */}

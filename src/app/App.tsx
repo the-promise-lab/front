@@ -5,7 +5,7 @@ import { useGameFlowStore } from '@processes/game-flow';
 
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
-import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
@@ -33,7 +33,7 @@ export default function App() {
       return <AuthCheck />;
     }
     if (step === 'LOGIN') {
-      return <LandingPage />;
+      return <LoginPage />;
     }
     if (step === 'MAIN_MENU') {
       return <MainMenu />;
@@ -71,7 +71,7 @@ export default function App() {
     if (step === 'DAY_FLOW') {
       return <EventPhase />;
     }
-    return <LandingPage />;
+    return <LoginPage />;
   };
 
   return (

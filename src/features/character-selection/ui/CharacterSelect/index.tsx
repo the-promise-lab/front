@@ -3,6 +3,7 @@ import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSet
 import { useEffect, useMemo, useState } from 'react';
 import { cn } from '@shared/lib/utils';
 import type { CharacterSet } from '@entities/game-session';
+import { useSetBackground } from '@shared/background';
 
 interface CharacterSelectProps {
   onNext: () => void;
@@ -219,6 +220,10 @@ export default function CharacterSelect({
   const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
     null
   );
+  useSetBackground({
+    image: '/shelter-bg.png',
+    className: 'backdrop-blur-[100px]',
+  });
 
   const characterSets = LOCAL_CHARACTER_SETS;
 
@@ -268,7 +273,7 @@ export default function CharacterSelect({
   }
 
   return (
-    <div className='flex h-screen w-screen bg-[#0c0f15] text-white'>
+    <div className='flex h-full w-full text-white'>
       <aside className='w-[260px] border-r border-white/10 px-10 py-16'>
         <div className='flex flex-col gap-4'>
           <div className='w-full justify-start'>
