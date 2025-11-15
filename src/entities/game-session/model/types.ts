@@ -54,6 +54,14 @@ export interface Inventory {
   slots: Array<InventorySlot>;
 }
 
+export interface Bag {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  capacity: number;
+}
+
 export interface GameSession {
   id: number;
   userId: number;

@@ -4,12 +4,14 @@ import type {
   CharacterGroupDto,
   PlayingCharacterSetDto,
   PlayingCharacterDto,
+  BagDto,
 } from '@api';
 import type {
   CharacterSet,
   GameSession,
   PlayingCharacter,
   PlayingCharacterSet,
+  Bag,
 } from './types';
 
 /**
@@ -117,5 +119,22 @@ export function adaptPlayingCharacterFromApi(
       backgroundColor: playingCharacter.character.bgColor || null,
       borderColor: playingCharacter.character.borderColor || null,
     },
+  };
+}
+
+/**
+ * BagDto를 클라이언트 Bag 타입으로 변환
+ * description 필드는 DTO에 없으므로 하드코딩
+ *
+ * @param dto - 서버 응답 (BagDto)
+ * @returns 클라이언트 Bag 타입
+ */
+export function adaptBagFromApi(dto: BagDto): Bag {
+  return {
+    id: dto.id,
+    name: dto.name,
+    description: `${dto.name}에 대한 설명`,
+    image: dto.image,
+    capacity: dto.capacity,
   };
 }
