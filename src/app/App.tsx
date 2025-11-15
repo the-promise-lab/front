@@ -11,7 +11,7 @@ import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
-import { BagSelectionScreen } from '@features/event-phase';
+import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
@@ -55,7 +55,7 @@ export default function App() {
     }
     if (step === 'BAG_SELECT') {
       return (
-        <BagSelectionScreen
+        <BagSelection
           onComplete={selectedBagId => {
             console.log('Selected bag:', selectedBagId);
 

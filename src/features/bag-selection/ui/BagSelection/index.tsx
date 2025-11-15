@@ -32,13 +32,11 @@ const BAG_OPTIONS: BagOption[] = [
   },
 ];
 
-interface BagSelectionScreenProps {
+interface BagSelectionProps {
   onComplete?: (selectedBagId: string) => void;
 }
 
-export default function BagSelectionScreen({
-  onComplete,
-}: BagSelectionScreenProps) {
+export function BagSelection({ onComplete }: BagSelectionProps) {
   const [selectedBagId, setSelectedBagId] = useState<string | null>(
     BAG_OPTIONS[0]?.id || null
   );
