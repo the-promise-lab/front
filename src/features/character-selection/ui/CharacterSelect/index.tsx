@@ -429,8 +429,7 @@ export default function CharacterSelect({
                   disabled={currentSet?.isLocked || isSelecting}
                   className={cn('')}
                 >
-                  {/* FIXME: h4-b임  */}
-                  <Typography variant='h3-b'>
+                  <Typography variant='h4-b'>
                     {isSelecting
                       ? '선택 중...'
                       : currentSet?.isLocked

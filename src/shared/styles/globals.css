@@ -40,6 +40,14 @@
 }
 
 @font-face {
+  font-family: 'NEXON Lv1 Gothic Low OTF';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic Low OTF.woff')
+    format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'NanumSquareNeoOTF-Rg';
   src: url('/fonts/NanumSquareNeoOTF-Rg.otf') format('opentype');
   font-weight: normal;
@@ -151,6 +159,9 @@ body {
 }
 
 @theme inline {
+  --font-nexon-lv2-gothic: 'NEXON Lv2 Gothic', sans-serif;
+  --font-nexon-lv1-gothic-low-otf: 'NEXON Lv1 Gothic Low OTF', sans-serif;
+  --font-nanumsquare-neo-otf: 'NanumSquare Neo OTF', sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

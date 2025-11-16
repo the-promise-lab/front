@@ -43,16 +43,3 @@ export const CHARACTER_METADATA: Record<number, CharacterMetadata> = {
     },
   },
 };
-
-/**
- * characterId로 메타데이터 조회
- * FIXME: 백엔드 API 응답에 포함되면 이 함수 제거
- *
- * @param characterId - 서버에서 받은 캐릭터 ID
- * @returns 캐릭터 메타데이터 또는 null
- */
-export function getCharacterMetadata(
-  characterId: number
-): CharacterMetadata | null {
-  return CHARACTER_METADATA[characterId] || null;
-}

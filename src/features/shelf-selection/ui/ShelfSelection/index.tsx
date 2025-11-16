@@ -127,8 +127,7 @@ export default function ShelfSelection({
         onClick={handleComplete}
         disabled={isPending}
       >
-        {/* FIXME: h4-b임  */}
-        <Typography variant='h3-b'>
+        <Typography variant='h4-b'>
           {isPending ? '제출 중...' : '담기 완료'}
         </Typography>
       </GlassButton>
