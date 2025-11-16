@@ -233,7 +233,8 @@ body {
 
   @media (max-width: 1024px) {
     html {
-      /* font-size: 8px; */
+      /* default: 0.25rem */
+      /* 0.125 -> 0.1로 한번 더 줄여야할까? */
       --spacing: 0.125rem;
     }
   }

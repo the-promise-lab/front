@@ -11,11 +11,11 @@ import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
-import { BagSelectionScreen } from '@features/event-phase';
+import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
-  const { step, next, resetDayFlow } = useGameFlowStore();
+  const { step, next, resetDayFlow, saveBag } = useGameFlowStore();
 
   // DAY_FLOW 진입 시 DAY_STEP 초기화
   useEffect(() => {
@@ -55,11 +55,10 @@ export default function App() {
     }
     if (step === 'BAG_SELECT') {
       return (
-        <BagSelectionScreen
-          onComplete={selectedBagId => {
-            console.log('Selected bag:', selectedBagId);
-
-            // TODO: 선택된 가방을 전역 상태에 저장
+        <BagSelection
+          onComplete={selectedBag => {
+            console.log('Selected bag:', selectedBag);
+            saveBag(selectedBag);
             next();
           }}
         />
