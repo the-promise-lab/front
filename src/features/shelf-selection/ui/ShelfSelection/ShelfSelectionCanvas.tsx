@@ -3,7 +3,7 @@ import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
 import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
-import ItemPreviewDialog from './ItemPreviewDialog';
+import { toastItemAdded } from '@shared/ui/toast-variants';
 
 const ITEM_SIZE_PIXEL = 20;
 
@@ -252,21 +252,21 @@ export default function ShelfSelectionCanvas({
   );
 
   // 🖱️ 아이템 클릭 훅
-  const { selectedItem, clickPosition, handleClick, clearSelection } =
-    useCanvasItemClick({
-      items,
-      getImageCoordinates,
-      detectItemSelection,
-      isDragging,
-    });
+  const { selectedItem, handleClick } = useCanvasItemClick({
+    items,
+    getImageCoordinates,
+    detectItemSelection,
+    isDragging,
+  });
 
-  // 선택된 아이템을 스토어에 추가
+  // 선택된 아이템을 즉시 스토어에 추가
   const { selectNewShelfItem } = useShelfSelectionStore();
-  const handleConfirmAdd = useCallback(() => {
-    if (!selectedItem) return;
-    selectNewShelfItem(selectedItem);
-    clearSelection();
-  }, [selectedItem, selectNewShelfItem, clearSelection]);
+  useEffect(() => {
+    if (selectedItem) {
+      selectNewShelfItem(selectedItem);
+      toastItemAdded();
+    }
+  }, [selectedItem, selectNewShelfItem]);
 
   return (
     <div className='absolute inset-0 h-full w-full overflow-hidden'>
@@ -281,14 +281,6 @@ export default function ShelfSelectionCanvas({
         className='block'
         onClick={handleClick}
         {...dragHandlers}
-      />
-
-      <ItemPreviewDialog
-        item={selectedItem}
-        open={!!selectedItem}
-        onClose={clearSelection}
-        onConfirm={handleConfirmAdd}
-        position={clickPosition}
       />
     </div>
   );

@@ -4,12 +4,27 @@ import { ShelfSelection } from '@features/shelf-selection';
 import CautionNotice from '@features/event-phase/ui/kit/CautionNotice';
 import Typography from '@shared/ui/Typography';
 import { useCountdown } from '@features/shelf-selection/model/useCountdown';
+import { useEffect } from 'react';
+import type { SubmitInventoryResultDto } from '@api';
 
 export default function PackingPhase() {
-  const { goto, back } = useGameFlowStore();
+  const { goto, back, gameSession } = useGameFlowStore();
   const { showModal, formattedTime, countdownMoved, showBackground } =
     useCountdown();
 
+  const bagId = gameSession?.selectedBag?.id;
+
+  const onComplete = (result: SubmitInventoryResultDto) => {
+    console.log('onComplete', result); // 디버깅용
+  };
+
+  useEffect(() => {
+    if (!bagId) {
+      back();
+    }
+  }, [bagId, back]);
+
+  if (!bagId) return null;
   return (
     <div className='relative h-full w-full'>
       {/* 기존 PACKING_PHASE 배경 (ShelfSelection) */}
@@ -19,7 +34,7 @@ export default function PackingPhase() {
         animate={{ opacity: showBackground ? 1 : 0 }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
       >
-        <ShelfSelection onBack={back} />
+        <ShelfSelection onBack={back} bagId={bagId} onComplete={onComplete} />
       </motion.div>
 
       {/* 어두운 오버레이 (카운트다운 중에만) */}

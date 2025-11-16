@@ -3,14 +3,24 @@ import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import SelectedItemsPanel from './SelectedItemsPanel';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShelfData } from '../../model/useShelfData';
+import { adaptShelfItemsToInventoryPayload } from '../../model/adapters';
+import { useSubmitInventory } from '@entities/game-session/model/useSubmitInventory';
+import type { SubmitInventoryResultDto } from '@api';
 import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
+import { toast } from 'sonner';
 
 interface ShelfSelectionProps {
   onBack: () => void;
+  bagId: number;
+  onComplete: (result: SubmitInventoryResultDto) => void;
 }
 
-export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
+export default function ShelfSelection({
+  onBack,
+  bagId,
+  onComplete,
+}: ShelfSelectionProps) {
   const {
     getCurrentShelf,
     selectedShelfItems,
@@ -20,6 +30,30 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
   } = useShelfSelectionStore();
 
   const { shelves, isLoading, error } = useShelfData();
+  const { mutate: submitInventory, isPending } = useSubmitInventory({
+    onSuccess: result => {
+      onComplete(result);
+    },
+    onError: err => {
+      toast.error('인벤토리 제출에 실패했습니다', {
+        description: err.message,
+      });
+    },
+  });
+
+  const handleComplete = () => {
+    if (selectedShelfItems.length === 0) {
+      toast.error('아이템을 선택해주세요');
+      return;
+    }
+
+    const payload = adaptShelfItemsToInventoryPayload(
+      selectedShelfItems,
+      bagId
+    );
+
+    submitInventory(payload);
+  };
 
   useEffect(() => {
     if (shelves.length > 0) {
@@ -93,9 +127,15 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
         items={currentShelf.shelfItems}
       />
 
-      <GlassButton className='absolute bottom-12 left-1/2 -translate-x-1/2'>
+      <GlassButton
+        className='absolute bottom-12 left-1/2 -translate-x-1/2'
+        onClick={handleComplete}
+        disabled={isPending || selectedShelfItems.length === 0}
+      >
         {/* FIXME: h4-b임  */}
-        <Typography variant='h3-b'>담기 완료</Typography>
+        <Typography variant='h3-b'>
+          {isPending ? '제출 중...' : '담기 완료'}
+        </Typography>
       </GlassButton>
     </div>
   );

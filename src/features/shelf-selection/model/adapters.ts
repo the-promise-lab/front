@@ -1,4 +1,5 @@
 import type { ItemDto } from '@api/models/ItemDto';
+import type { SubmitInventoryDto, SlotDto } from '@api';
 import type { Shelf, ShelfItem } from './types';
 
 /**
@@ -99,4 +100,29 @@ export function adaptShelvesFromSetupInfo(items: ItemDto[]): Shelf[] {
   );
 
   return shelves;
+}
+
+/**
+ * ShelfItem[]을 SubmitInventoryDto로 변환
+ *
+ * @param items - 선택된 ShelfItem 목록
+ * @param bagId - 선택한 가방 ID
+ * @param inventoryId - 인벤토리 ID
+ * @returns SubmitInventoryDto
+ */
+export function adaptShelfItemsToInventoryPayload(
+  items: ShelfItem[],
+  bagId: number
+): SubmitInventoryDto {
+  const slots: SlotDto[] = items.map((item, index) => ({
+    id: index + 1, // FIXME: 임시 슬롯 ID (서버에서 재할당될 수 있음)
+    invId: 1, // FIXME: 임시 인벤토리 ID (서버에서 재할당될 수 있음)
+    itemId: Number(item.id),
+    quantity: item.quantity,
+  }));
+
+  return {
+    bagId,
+    slots,
+  };
 }
