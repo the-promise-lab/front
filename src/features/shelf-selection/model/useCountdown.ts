@@ -9,7 +9,7 @@ const formatTime = (seconds: number) => {
 };
 
 export function useCountdown() {
-  const [secondsLeft, setSecondsLeft] = useState(100); // 실제 남은 시간 (3초 후 04:00부터 카운트다운)
+  const [secondsLeft, setSecondsLeft] = useState(300); // 남은 시간 (초 단위)
   const [showModal, setShowModal] = useState(false);
   const [countdownMoved, setCountdownMoved] = useState(false);
   const [showBackground, setShowBackground] = useState(false);

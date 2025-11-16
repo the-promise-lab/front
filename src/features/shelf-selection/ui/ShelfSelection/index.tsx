@@ -31,7 +31,7 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
     );
   }
   return (
-    <div>
+    <div className='relative h-full w-full'>
       {/* 뒤로가기 버튼 */}
       <div className='absolute top-4 left-4 z-10'>
         <button

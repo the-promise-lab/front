@@ -53,21 +53,17 @@ export default function ShelfSelectionCanvas({
   // 이미지 스케일 계산 (높이 100svh 기준, 원본 비율 유지)
   const calculateImageScale = useCallback(
     (imgWidth: number, imgHeight: number) => {
-      const { width: containerWidth, height: containerHeight } =
-        calculateCanvasSize();
+      const { height: containerHeight } = calculateCanvasSize();
 
       // 높이를 100dvh에 맞추고 원본 비율 유지
       const scaleRatio = containerHeight / imgHeight;
       const scaledWidth = imgWidth * scaleRatio;
       const scaledHeight = containerHeight;
 
-      // 중앙 정렬을 위한 오프셋 계산 (이미지가 작든 크든 항상 중앙 정렬)
-      const offsetX = (containerWidth - scaledWidth) / 2;
-
       return {
         width: scaledWidth,
         height: scaledHeight,
-        offsetX,
+        offsetX: 0,
       };
     },
     [calculateCanvasSize]
@@ -81,7 +77,7 @@ export default function ShelfSelectionCanvas({
       ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
       ctx.lineWidth = 2;
 
-      items.forEach((item) => {
+      items.forEach(item => {
         // 이미지 내 상대 좌표를 스케일된 캔버스 좌표로 변환
         const isWide = imageScale.width > canvasSize.width;
         const baseX = item.x * imageScale.width;
@@ -136,7 +132,7 @@ export default function ShelfSelectionCanvas({
         setImageScale(newScale);
         // 리사이즈 시 현재 오프셋을 허용 범위로 클램프
         const maxScroll = Math.max(0, newScale.width - newSize.width);
-        setViewOffsetX((prev) => Math.min(Math.max(prev, 0), maxScroll));
+        setViewOffsetX(prev => Math.min(Math.max(prev, 0), maxScroll));
       }
     };
 
@@ -283,7 +279,7 @@ export default function ShelfSelectionCanvas({
   );
 
   return (
-    <div className="fixed inset-0 h-full w-full overflow-hidden">
+    <div className='absolute inset-0 h-full w-full overflow-hidden'>
       <canvas
         ref={canvasRef}
         style={{
@@ -291,15 +287,15 @@ export default function ShelfSelectionCanvas({
           height: `${canvasSize.height}px`,
           touchAction: 'none',
         }}
-        className="block cursor-pointer"
+        className='block cursor-pointer'
         onClick={handleCanvasInteraction}
-        onTouchStart={(e) => {
+        onTouchStart={e => {
           if (e.touches.length > 0) {
             setDragStartX(e.touches[0].clientX);
             setDragStartOffsetX(viewOffsetX);
           }
         }}
-        onTouchMove={(e) => {
+        onTouchMove={e => {
           if (dragStartX == null) return;
           const x = e.touches[0]?.clientX;
           if (x == null) return;
@@ -311,7 +307,7 @@ export default function ShelfSelectionCanvas({
           );
           setViewOffsetX(next);
         }}
-        onTouchEnd={(e) => {
+        onTouchEnd={e => {
           // 탭 제스처 처리: 이동량이 매우 작으면 선택으로 간주
           const endX = e.changedTouches?.[0]?.clientX;
           const endY = e.changedTouches?.[0]?.clientY;
