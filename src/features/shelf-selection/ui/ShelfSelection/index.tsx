@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import SelectedItemsPanel from './SelectedItemsPanel';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
-import { mockShelves } from '../../__mocks__';
+import { useShelfData } from '../../model/useShelfData';
 
 interface ShelfSelectionProps {
   onBack: () => void;
@@ -17,13 +17,27 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
     moveToPreviousShelf,
   } = useShelfSelectionStore();
 
+  const { shelves, isLoading, error } = useShelfData();
+
   useEffect(() => {
-    initShelves(mockShelves);
-  }, [initShelves]);
+    if (shelves.length > 0) {
+      initShelves(shelves);
+    }
+  }, [shelves, initShelves]);
 
   const currentShelf = getCurrentShelf();
 
-  if (!currentShelf) {
+  if (error) {
+    return (
+      <div className='flex min-h-screen items-center justify-center'>
+        <div className='text-red-500'>
+          데이터를 불러오는데 실패했습니다: {error.message}
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !currentShelf) {
     return (
       <div className='flex min-h-screen items-center justify-center'>
         <div>데이터를 로딩 중...</div>

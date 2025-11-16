@@ -8,7 +8,7 @@ const ASSETS_TO_PRELOAD = [
   'shelter-bg.png',
   'chicken-breast.png',
   'long-shelf-example.png',
-  'shelf-example.png',
+  'shelf-household.png',
   'shelf-clothing.png',
   'shelf-food.png',
   'byungcheol.png',

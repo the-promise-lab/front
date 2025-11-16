@@ -6,9 +6,10 @@ import type { Shelf, ShelfItem } from './types';
  * TODO: 백엔드에서 storeSection에 backgroundImage 포함 시 제거
  */
 const STORE_SECTION_BACKGROUND_MAP: Record<string, string> = {
-  food: '/shelf-food.png',
-  household: '/shelf-example.png',
-  clothing: '/shelf-clothing.png',
+  groupgrocery: '/shelf-food.png',
+  groupfood: '/shelf-food.png',
+  grouphousehold: '/shelf-household.png',
+  groupapparel: '/shelf-clothing.png',
   default: '/long-shelf-example.png',
 };
 

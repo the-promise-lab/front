@@ -1,24 +1,7 @@
-export interface StoreSection {
-  id: number;
-  name: string;
-  backgroundImage: string;
-}
-
-export interface Item {
-  id: number;
-  name: string;
-  image: string;
-  capacityCost: number;
-  isConsumable: boolean;
-  storeSection: string;
-  isVisable: boolean;
-  itemCategoryId: number;
-  necessity: number;
-  position: {
-    x: number;
-    y: number;
-  };
-}
+/**
+ * 레거시 타입 정의
+ * TODO: 백엔드 API 구조가 변경되면 이 타입들도 재검토 필요
+ */
 
 export interface ShelfItem {
   id: string;
