@@ -8,6 +8,7 @@ import {
 } from '@entities/game-session';
 import { useSetBackground } from '@shared/background';
 import BagCard from './BagCard';
+import GlassButton from '@shared/ui/GlassButton';
 
 interface BagSelectionProps {
   onComplete?: (selectedBag: Bag) => void;
@@ -77,20 +78,14 @@ export function BagSelection({ onComplete }: BagSelectionProps) {
 
       {/* 선택 완료 버튼 */}
       <div className='mt-10 flex items-center justify-center'>
-        <button
+        <GlassButton
           onClick={handleComplete}
           disabled={!selectedBagId}
-          className={cn(
-            'rounded-6 px-10 py-1',
-            'text-center text-white',
-            'transition-all duration-200',
-            'h-20 w-120',
-            'rounded-3xl',
-            'background-glass border-1'
-          )}
+          className={cn('')}
         >
-          <Typography variant='dialogue-2'>선택 완료</Typography>
-        </button>
+          {/* FIXME: h4-b임  */}
+          <Typography variant='h3-b'>선택 완료</Typography>
+        </GlassButton>
       </div>
     </div>
   );

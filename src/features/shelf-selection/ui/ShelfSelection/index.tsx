@@ -3,6 +3,8 @@ import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import SelectedItemsPanel from './SelectedItemsPanel';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShelfData } from '../../model/useShelfData';
+import GlassButton from '@shared/ui/GlassButton';
+import Typography from '@shared/ui/Typography';
 
 interface ShelfSelectionProps {
   onBack: () => void;
@@ -90,6 +92,11 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
         backgroundImage={currentShelf.backgroundImage}
         items={currentShelf.shelfItems}
       />
+
+      <GlassButton className='absolute bottom-12 left-1/2 -translate-x-1/2'>
+        {/* FIXME: h4-b임  */}
+        <Typography variant='h3-b'>담기 완료</Typography>
+      </GlassButton>
     </div>
   );
 }

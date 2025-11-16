@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { cn } from '@shared/lib/utils';
 import type { CharacterSet } from '@entities/game-session';
 import { useSetBackground } from '@shared/background';
+import GlassButton from '@shared/ui/GlassButton';
+import Typography from '@shared/ui/Typography';
 
 interface CharacterSelectProps {
   onNext: () => void;
@@ -422,22 +424,20 @@ export default function CharacterSelect({
                 </div>
               </div>
               <div className='flex items-center justify-center gap-6 pb-12'>
-                <button
+                <GlassButton
                   onClick={handleSelectComplete}
                   disabled={currentSet?.isLocked || isSelecting}
-                  className={cn(
-                    'rounded-full px-16 py-4 text-base font-semibold transition-all',
-                    currentSet?.isLocked
-                      ? 'cursor-not-allowed border border-white/10 bg-white/5 text-white/40'
-                      : 'bg-gradient-to-r from-[#ff956c] to-[#ff6363] text-white shadow-[0_12px_30px_rgba(255,99,99,0.35)] hover:shadow-[0_20px_50px_rgba(255,99,99,0.45)] active:scale-95'
-                  )}
+                  className={cn('')}
                 >
-                  {isSelecting
-                    ? '선택 중...'
-                    : currentSet?.isLocked
-                      ? '공개 예정'
-                      : '선택 완료'}
-                </button>
+                  {/* FIXME: h4-b임  */}
+                  <Typography variant='h3-b'>
+                    {isSelecting
+                      ? '선택 중...'
+                      : currentSet?.isLocked
+                        ? '공개 예정'
+                        : '선택 완료'}
+                  </Typography>
+                </GlassButton>
               </div>
             </div>
           </div>
