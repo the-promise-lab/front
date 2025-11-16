@@ -3,6 +3,8 @@ import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
 import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
 import { adaptPlayingCharacterFromApi } from '@entities/game-session';
+import { useState } from 'react';
+import { cn } from '@shared/lib/utils';
 
 export default function CharacterSelectPage() {
   const { goto, savePlayingCharacters } = useGameFlowStore(
@@ -11,6 +13,7 @@ export default function CharacterSelectPage() {
       savePlayingCharacters: state.savePlayingCharacters,
     }))
   );
+  const [skip, setSkip] = useState(false);
 
   const handleSelectSuccess = (response: SelectCharacterSetResultDto) => {
     const playingCharacters = response.playingCharacter
@@ -24,26 +27,32 @@ export default function CharacterSelectPage() {
     });
   };
 
-  const handleSkipToInventory = () => {
-    // 인트로 이벤트를 건너뛰고 바로 가방 선택으로 이동
-    goto('BAG_SELECT');
+  const handleNext = () => {
+    console.log(
+      `Goto ${skip ? 'BAG_SELECT' : 'INTRO_STORY'} from CHARACTER_SELECT`
+    );
+    if (skip) {
+      goto('BAG_SELECT');
+    } else {
+      goto('INTRO_STORY');
+    }
   };
 
   return (
     <div className='relative h-full w-full'>
       <CharacterSelect
-        onNext={() => {
-          console.log('Calling next() from CHARACTER_SELECT');
-          goto('INTRO_STORY');
-        }}
+        onNext={handleNext}
         onBack={() => goto('MAIN_MENU')}
         onSelectSuccess={handleSelectSuccess}
       />
 
       {/* 테스트용 스킵 버튼 - 우측 상단에 작게 배치 */}
       <button
-        onClick={handleSkipToInventory}
-        className='absolute top-4 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-yellow-500/80 text-xs font-bold text-white shadow-lg transition-colors hover:bg-yellow-400'
+        onClick={() => setSkip(true)}
+        className={cn(
+          'absolute top-4 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-gray-500 text-xs font-bold text-white shadow-lg transition-colors hover:bg-yellow-400',
+          { 'bg-yellow-500/80': skip }
+        )}
         title='가방 선택으로 스킵 (테스트용)'
       >
         ⏭

@@ -38,6 +38,10 @@ export default function ShelfSelection({
       toast.error('인벤토리 제출에 실패했습니다', {
         description: err.message,
       });
+
+      onComplete({
+        inventories: [],
+      }); // FIXME: 임시로 넘어가기
     },
   });
 

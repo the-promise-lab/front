@@ -95,6 +95,14 @@ export default function EventPhase() {
           hp: 2,
         },
       },
+      {
+        text: '가만히 있는다',
+        value: 'stay',
+        statChanges: {
+          mentality: -1,
+          hp: 2,
+        },
+      },
     ],
   };
 

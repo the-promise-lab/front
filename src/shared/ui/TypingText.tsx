@@ -24,9 +24,11 @@ function splitGraphemes(text: string, locale = 'ko') {
   return Array.from(text);
 }
 
+const NEWLINE_CHAR = '\n' as const;
+
 export default function TypingText({
   texts,
-  speed = 70,
+  speed = 30,
   startDelay = 0,
   cursor = false,
   playWhenVisible = true,
@@ -36,12 +38,20 @@ export default function TypingText({
   smooth = false,
   variant = 'dialogue-m',
 }: TypingTextProps) {
-  // 모든 텍스트를 개행으로 연결하여 하나의 문자열로 만들기
-  const fullText = useMemo(() => texts.join('\n'), [texts]);
-  const units = useMemo(
-    () => splitGraphemes(fullText, locale),
-    [fullText, locale]
-  );
+  console.log(texts);
+  // 각 텍스트를 grapheme 단위로 분리하고, 각 텍스트 끝에 <br />을 위한 구분자 추가
+  const units = useMemo(() => {
+    const result: (string | typeof NEWLINE_CHAR)[] = [];
+    texts.forEach((text, index) => {
+      const graphemes = splitGraphemes(text, locale);
+      result.push(...graphemes);
+      // 마지막 텍스트가 아니면 구분자 추가
+      if (index < texts.length - 1) {
+        result.push(NEWLINE_CHAR);
+      }
+    });
+    return result;
+  }, [texts, locale]);
   const [count, setCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(!playWhenVisible);
   const containerRef = useRef<HTMLSpanElement | null>(null);
@@ -128,7 +138,8 @@ export default function TypingText({
     };
   }, [cursor, cursorControls]);
 
-  const out = units.slice(0, Math.min(count, units.length)).join('');
+  // 현재까지 타이핑된 units
+  const visibleUnits = units.slice(0, Math.min(count, units.length));
 
   return (
     <Typography
@@ -139,25 +150,33 @@ export default function TypingText({
     >
       {smooth ? (
         // smooth 모드: 모든 글자를 미리 렌더링하고 opacity 0, 제자리에서 fade-in 효과
-        <span style={{ display: 'inline', whiteSpace: 'pre-line' }}>
-          {units.map((char, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: i < count ? 1 : 0 }}
-              transition={{
-                duration: Math.min((speed / 1000) * 2, 0.8),
-                ease: 'easeOut',
-              }}
-              style={{ display: 'inline' }}
-            >
-              {char}
-            </motion.span>
-          ))}
+        <span style={{ display: 'inline' }}>
+          {units.map((unit, i) =>
+            unit === NEWLINE_CHAR ? (
+              <br key={i} />
+            ) : (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: i < count ? 1 : 0 }}
+                transition={{
+                  duration: Math.min((speed / 1000) * 2, 0.8),
+                  ease: 'easeOut',
+                }}
+                style={{ display: unit === NEWLINE_CHAR ? 'block' : 'inline' }}
+              >
+                {unit}
+              </motion.span>
+            )
+          )}
         </span>
       ) : (
-        // 기본 모드: 기존처럼 문자 하나하나 추가하며 타이핑 효과 렌더링
-        <span style={{ whiteSpace: 'pre-line' }}>{out}</span>
+        // 기본 모드: 문자 하나하나 추가하며 타이핑 효과 렌더링
+        <span>
+          {visibleUnits.map((unit, i) =>
+            unit === NEWLINE_CHAR ? <br key={i} /> : <span key={i}>{unit}</span>
+          )}
+        </span>
       )}
       {cursor && (
         <motion.span
