@@ -1,3 +1,4 @@
+import type React from 'react';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
@@ -252,7 +253,7 @@ export default function ShelfSelectionCanvas({
   );
 
   // 🖱️ 아이템 클릭 훅
-  const { selectedItem, handleClick } = useCanvasItemClick({
+  const { handleClick: baseHandleClick } = useCanvasItemClick({
     items,
     getImageCoordinates,
     detectItemSelection,
@@ -261,12 +262,27 @@ export default function ShelfSelectionCanvas({
 
   // 선택된 아이템을 즉시 스토어에 추가
   const { selectNewShelfItem } = useShelfSelectionStore();
-  useEffect(() => {
-    if (selectedItem) {
-      selectNewShelfItem(selectedItem);
-      toastItemAdded();
-    }
-  }, [selectedItem, selectNewShelfItem]);
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      baseHandleClick(e);
+
+      // 클릭 좌표로 아이템 감지
+      const imageCoords = getImageCoordinates(e.clientX, e.clientY);
+      if (!imageCoords) return;
+
+      const item = detectItemSelection(imageCoords.x, imageCoords.y);
+      if (item) {
+        selectNewShelfItem(item);
+        toastItemAdded();
+      }
+    },
+    [
+      baseHandleClick,
+      getImageCoordinates,
+      detectItemSelection,
+      selectNewShelfItem,
+    ]
+  );
 
   return (
     <div className='absolute inset-0 h-full w-full overflow-hidden'>
