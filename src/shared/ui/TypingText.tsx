@@ -160,7 +160,7 @@ export default function TypingText({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: i < count ? 1 : 0 }}
                 transition={{
-                  duration: Math.min((speed / 1000) * 2, 0.8),
+                  duration: Math.min((speed / 500) * 2, 0.8),
                   ease: 'easeOut',
                 }}
                 style={{ display: unit === NEWLINE_CHAR ? 'block' : 'inline' }}

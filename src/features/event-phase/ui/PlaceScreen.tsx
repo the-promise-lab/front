@@ -28,9 +28,7 @@ export default function PlaceScreen() {
             isMoving ? 'opacity-0' : 'opacity-100'
           )}
         >
-          <Typography variant='h2-b' className='text-white'>
-            {placeTitle}
-          </Typography>
+          <Typography variant='h3-b'>{placeTitle}</Typography>
         </NoticeBanner>
       )}
 
@@ -38,16 +36,16 @@ export default function PlaceScreen() {
       {!isAnimationEnd && (
         <div
           className={cn(
-            'fixed z-[60] text-white',
+            'fixed z-[60]',
             'transition-all duration-700 ease-in-out',
             isMoving
-              ? 'top-16 left-15 translate-x-0 translate-y-0'
+              ? 'top-14.5 left-16.5 translate-x-0 translate-y-0'
               : 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
           )}
           onTransitionEnd={handleTransitionEnd}
         >
           <Typography
-            variant='h2-b'
+            variant='h3-b'
             className={cn(
               'origin-top-left',
               'transition-transform duration-700 ease-in-out',
