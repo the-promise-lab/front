@@ -234,8 +234,8 @@ body {
   @media (max-width: 1024px) {
     html {
       /* default: 0.25rem */
-      /* 0.125 -> 0.1로 한번 더 줄여야할까? */
-      --spacing: 0.125rem;
+      /* 1024px 미만에서는 픽셀 스케일 0.4배까지 축소 */
+      --spacing: 0.1rem;
     }
   }
 }
