@@ -1,5 +1,7 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
+import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
+import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
 import ItemPreviewDialog from './ItemPreviewDialog';
 
@@ -25,23 +27,13 @@ export default function ShelfSelectionCanvas({
     offsetX: 0, // 가로 중앙 정렬을 위한 오프셋
   });
 
-  // 가로 스와이프(횡스크롤) 상태
-  const [viewOffsetX, setViewOffsetX] = useState(0); // 현재 뷰의 가로 시작 위치(px)
-  const [dragStartX, setDragStartX] = useState<number | null>(null);
-  const [dragStartOffsetX, setDragStartOffsetX] = useState(0);
-
-  const [previewItem, setPreviewItem] = useState<ShelfItem | null>(null);
-  const [clickPosition, setClickPosition] = useState<
-    { x: number; y: number } | undefined
-  >(undefined);
-
-  const { selectNewShelfItem } = useShelfSelectionStore();
-  const handleConfirmAdd = useCallback(() => {
-    if (!previewItem) return;
-    selectNewShelfItem(previewItem);
-    setPreviewItem(null);
-    setClickPosition(undefined);
-  }, [previewItem, selectNewShelfItem]);
+  // 🎨 횡스크롤 훅
+  const { viewOffsetX, setViewOffsetX, isDragging, dragHandlers } =
+    useCanvasSideScroll({
+      maxScrollWidth: imageScale.width,
+      viewportWidth: canvasSize.width,
+      initialOffset: 0,
+    });
 
   // 뷰포트 크기 계산 (svw, svh 기준)
   const calculateCanvasSize = useCallback(() => {
@@ -112,7 +104,12 @@ export default function ShelfSelectionCanvas({
       setViewOffsetX(maxScroll > 0 ? Math.floor(maxScroll / 2) : 0);
     };
     img.src = backgroundImage;
-  }, [backgroundImage, calculateImageScale, calculateCanvasSize]);
+  }, [
+    backgroundImage,
+    calculateImageScale,
+    calculateCanvasSize,
+    setViewOffsetX,
+  ]);
 
   // Canvas 크기 설정 및 리사이즈 처리
   useEffect(() => {
@@ -132,13 +129,20 @@ export default function ShelfSelectionCanvas({
         setImageScale(newScale);
         // 리사이즈 시 현재 오프셋을 허용 범위로 클램프
         const maxScroll = Math.max(0, newScale.width - newSize.width);
-        setViewOffsetX(prev => Math.min(Math.max(prev, 0), maxScroll));
+        const clampedOffset = Math.min(Math.max(viewOffsetX, 0), maxScroll);
+        setViewOffsetX(clampedOffset);
       }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [calculateCanvasSize, calculateImageScale, backgroundImg]);
+  }, [
+    calculateCanvasSize,
+    calculateImageScale,
+    backgroundImg,
+    viewOffsetX,
+    setViewOffsetX,
+  ]);
 
   // Canvas 렌더링
   useEffect(() => {
@@ -247,36 +251,22 @@ export default function ShelfSelectionCanvas({
     [items, imageScale]
   );
 
-  // 터치/클릭 이벤트 핸들러
-  const handleCanvasInteraction = useCallback(
-    (event: React.MouseEvent | React.TouchEvent) => {
-      event.preventDefault();
+  // 🖱️ 아이템 클릭 훅
+  const { selectedItem, clickPosition, handleClick, clearSelection } =
+    useCanvasItemClick({
+      items,
+      getImageCoordinates,
+      detectItemSelection,
+      isDragging,
+    });
 
-      let clientX: number, clientY: number;
-
-      if ('touches' in event && event.touches.length > 0) {
-        // 터치 이벤트
-        clientX = event.touches[0].clientX;
-        clientY = event.touches[0].clientY;
-      } else if ('clientX' in event) {
-        // 마우스 이벤트
-        clientX = event.clientX;
-        clientY = event.clientY;
-      } else {
-        return;
-      }
-
-      const imageCoords = getImageCoordinates(clientX, clientY);
-      if (!imageCoords) return;
-
-      const selectedItem = detectItemSelection(imageCoords.x, imageCoords.y);
-      if (selectedItem) {
-        setPreviewItem(selectedItem);
-        setClickPosition({ x: clientX, y: clientY });
-      }
-    },
-    [getImageCoordinates, detectItemSelection]
-  );
+  // 선택된 아이템을 스토어에 추가
+  const { selectNewShelfItem } = useShelfSelectionStore();
+  const handleConfirmAdd = useCallback(() => {
+    if (!selectedItem) return;
+    selectNewShelfItem(selectedItem);
+    clearSelection();
+  }, [selectedItem, selectNewShelfItem, clearSelection]);
 
   return (
     <div className='absolute inset-0 h-full w-full overflow-hidden'>
@@ -286,62 +276,17 @@ export default function ShelfSelectionCanvas({
           width: `${canvasSize.width}px`,
           height: `${canvasSize.height}px`,
           touchAction: 'none',
+          cursor: isDragging ? 'grabbing' : 'grab',
         }}
-        className='block cursor-pointer'
-        onClick={handleCanvasInteraction}
-        onTouchStart={e => {
-          if (e.touches.length > 0) {
-            setDragStartX(e.touches[0].clientX);
-            setDragStartOffsetX(viewOffsetX);
-          }
-        }}
-        onTouchMove={e => {
-          if (dragStartX == null) return;
-          const x = e.touches[0]?.clientX;
-          if (x == null) return;
-          const deltaX = x - dragStartX; // 오른쪽(+)으로 드래그 시 오른쪽 영역을 보도록 이동
-          const maxScroll = Math.max(0, imageScale.width - canvasSize.width);
-          const next = Math.min(
-            Math.max(dragStartOffsetX - deltaX, 0),
-            maxScroll
-          );
-          setViewOffsetX(next);
-        }}
-        onTouchEnd={e => {
-          // 탭 제스처 처리: 이동량이 매우 작으면 선택으로 간주
-          const endX = e.changedTouches?.[0]?.clientX;
-          const endY = e.changedTouches?.[0]?.clientY;
-          if (dragStartX != null && endX != null && endY != null) {
-            const moved = Math.abs(endX - dragStartX);
-            if (moved < 5) {
-              const rect = canvasRef.current?.getBoundingClientRect();
-              if (!rect) return setDragStartX(null);
-              const clientX = endX;
-              const clientY = endY;
-              const imageCoords = getImageCoordinates(clientX, clientY);
-              if (imageCoords) {
-                const selectedItem = detectItemSelection(
-                  imageCoords.x,
-                  imageCoords.y
-                );
-                if (selectedItem) {
-                  setPreviewItem(selectedItem);
-                  setClickPosition({ x: clientX, y: clientY });
-                }
-              }
-            }
-          }
-          setDragStartX(null);
-        }}
+        className='block'
+        onClick={handleClick}
+        {...dragHandlers}
       />
 
       <ItemPreviewDialog
-        item={previewItem}
-        open={!!previewItem}
-        onClose={() => {
-          setPreviewItem(null);
-          setClickPosition(undefined);
-        }}
+        item={selectedItem}
+        open={!!selectedItem}
+        onClose={clearSelection}
         onConfirm={handleConfirmAdd}
         position={clickPosition}
       />
