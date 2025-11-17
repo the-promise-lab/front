@@ -2,17 +2,24 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $SubmitInventoryDto = {
+export const $StoreSectionDto = {
   properties: {
-    bagId: {
+    id: {
       type: 'number',
-      description: `가방 ID`,
       isRequired: true,
     },
-    slots: {
+    name: {
+      type: 'string',
+      isRequired: true,
+    },
+    backgroundImage: {
+      type: 'string',
+      isRequired: true,
+    },
+    items: {
       type: 'array',
       contains: {
-        type: 'CreateSlotDto',
+        type: 'ItemDto',
       },
       isRequired: true,
     },

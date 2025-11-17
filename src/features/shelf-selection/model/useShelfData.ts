@@ -14,9 +14,9 @@ export function useShelfData() {
   const { data, isLoading, error } = useBagItemInfo();
 
   const shelves = useMemo<Shelf[]>(() => {
-    if (!data?.items) return [];
-    return adaptShelvesFromSetupInfo(data.items);
-  }, [data?.items]);
+    if (!data) return [];
+    return adaptShelvesFromSetupInfo(data);
+  }, [data]);
 
   return {
     shelves,

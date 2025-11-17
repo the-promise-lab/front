@@ -1,5 +1,5 @@
 import type { ItemDto } from '@api/models/ItemDto';
-import type { SubmitInventoryDto, SlotDto } from '@api';
+import type { SubmitInventoryDto, CreateSlotDto, SetupInfoDto } from '@api';
 import type { Shelf, ShelfItem } from './types';
 
 /**
@@ -60,46 +60,25 @@ function adaptShelfItemFromItemDto(
 }
 
 /**
- * SetupInfoDto의 items를 Shelf[] 구조로 변환
- * storeSection별로 그룹화하여 각각을 Shelf로 만듦
+ * SetupInfoDto의 storeSections를 Shelf[] 구조로 변환
  *
- * TODO: 백엔드에서 storeSection을 상위로 하고 items를 하위로 제공하면
- *       이 역전 로직 제거 가능
- *
- * @param items - 백엔드에서 받은 ItemDto[]
+ * @param setupInfo - 백엔드에서 받은 SetupInfoDto
  * @returns Shelf[] (레거시 UI 구조)
  */
-export function adaptShelvesFromSetupInfo(items: ItemDto[]): Shelf[] {
-  // 1. storeSection별로 아이템 그룹화
-  const itemsBySection = items.reduce(
-    (acc, item) => {
-      const sectionName = item.storeSection || 'default';
-      if (!acc[sectionName]) {
-        acc[sectionName] = [];
-      }
-      acc[sectionName].push(item);
-      return acc;
-    },
-    {} as Record<string, ItemDto[]>
-  );
+export function adaptShelvesFromSetupInfo(setupInfo: SetupInfoDto): Shelf[] {
+  return setupInfo.storeSections.map(section => {
+    const shelfItems = section.items.map((item, itemIndex) =>
+      adaptShelfItemFromItemDto(item, itemIndex, section.items.length)
+    );
 
-  // 2. 각 섹션을 Shelf로 변환
-  const shelves: Shelf[] = Object.entries(itemsBySection).map(
-    ([sectionName, sectionItems], sectionIndex) => {
-      const shelfItems = sectionItems.map((item, itemIndex) =>
-        adaptShelfItemFromItemDto(item, itemIndex, sectionItems.length)
-      );
-
-      return {
-        id: `section-${sectionIndex}`, // 고유 ID 생성
-        name: sectionName,
-        backgroundImage: getBackgroundImageForSection(sectionName),
-        shelfItems,
-      };
-    }
-  );
-
-  return shelves;
+    return {
+      id: String(section.id),
+      name: section.name,
+      backgroundImage:
+        section.backgroundImage || getBackgroundImageForSection(section.name),
+      shelfItems,
+    };
+  });
 }
 
 /**
@@ -107,16 +86,13 @@ export function adaptShelvesFromSetupInfo(items: ItemDto[]): Shelf[] {
  *
  * @param items - 선택된 ShelfItem 목록
  * @param bagId - 선택한 가방 ID
- * @param inventoryId - 인벤토리 ID
  * @returns SubmitInventoryDto
  */
 export function adaptShelfItemsToInventoryPayload(
   items: ShelfItem[],
   bagId: number
 ): SubmitInventoryDto {
-  const slots: SlotDto[] = items.map((item, index) => ({
-    id: index + 1, // FIXME: 임시 슬롯 ID (서버에서 재할당될 수 있음)
-    invId: 1, // FIXME: 임시 인벤토리 ID (서버에서 재할당될 수 있음)
+  const slots: CreateSlotDto[] = items.map(item => ({
     itemId: Number(item.id),
     quantity: item.quantity,
   }));
