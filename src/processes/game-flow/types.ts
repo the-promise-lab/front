@@ -5,6 +5,7 @@ import type {
   GameSession,
   PlayingCharacterSet,
   Bag,
+  Inventory,
 } from '@entities/game-session';
 
 export type GameStep =
@@ -127,6 +128,7 @@ export interface GameFlowActions {
   setIsNewGame: (isNew: boolean) => void;
   savePlayingCharacters: (params: PlayingCharacterSet) => void;
   saveBag: (bag: Bag) => void;
+  saveInventory: (inventories: Inventory[]) => void;
   startNewGame: (newGameSession: GameSession) => void;
   startDayFlow: () => void;
   continueGame: () => void;

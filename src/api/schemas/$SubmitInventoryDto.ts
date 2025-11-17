@@ -12,7 +12,7 @@ export const $SubmitInventoryDto = {
     slots: {
       type: 'array',
       contains: {
-        type: 'SlotDto',
+        type: 'CreateSlotDto',
       },
       isRequired: true,
     },

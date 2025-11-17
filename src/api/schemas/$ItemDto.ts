@@ -24,8 +24,8 @@ export const $ItemDto = {
       type: 'boolean',
       isRequired: true,
     },
-    storeSection: {
-      type: 'string',
+    storeSectionId: {
+      type: 'number',
       isRequired: true,
     },
     isVisable: {

@@ -3,15 +3,16 @@ import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { config } from '@config/env';
 import { useSetBackground } from '@shared/background';
 
-export default function LandingPage() {
+export default function LoginPage() {
   const { setAuthenticated } = useGameFlowStore();
   const { login } = useAuthStore();
   useSetBackground({
     color: '#fff',
   });
   const handleKakaoLogin = () => {
-    // 서버의 카카오 로그인 엔드포인트로 리다이렉트
-    window.location.href = `${config.API_BASE_URL}/api/auth/kakao`;
+    // 서버의 카카오 로그인 엔드포인트로 리다이렉트 (redirect URI 포함)
+    const redirectUri = encodeURIComponent(window.location.origin);
+    window.location.href = `${config.API_BASE_URL}/api/auth/kakao?redirect_uri=${redirectUri}`;
   };
 
   const handleGuestLogin = () => {

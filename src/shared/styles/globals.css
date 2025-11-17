@@ -400,3 +400,32 @@ body {
     border-width: 1px;
   }
 }
+
+/* 아이템 담기 Toast 전용 fade 애니메이션 */
+@keyframes itemAddedFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes itemAddedFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.item-added-toast-container {
+  animation: itemAddedFadeIn 0.2s ease-out;
+}
+
+.item-added-toast-container[data-removed='true'] {
+  animation: itemAddedFadeOut 0.2s ease-out;
+}

@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BagDto } from './BagDto';
-import type { ItemDto } from './ItemDto';
+import type { StoreSectionDto } from './StoreSectionDto';
 export type SetupInfoDto = {
   bags: Array<BagDto>;
-  items: Array<ItemDto>;
+  storeSections: Array<StoreSectionDto>;
 };

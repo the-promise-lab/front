@@ -2,13 +2,25 @@ import { useEffect } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import SelectedItemsPanel from './SelectedItemsPanel';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
-import { mockShelves } from '../../__mocks__';
+import { useShelfData } from '../../model/useShelfData';
+import { adaptShelfItemsToInventoryPayload } from '../../model/adapters';
+import { useSubmitInventory } from '@entities/game-session/model/useSubmitInventory';
+import type { SubmitInventoryResultDto } from '@api';
+import GlassButton from '@shared/ui/GlassButton';
+import Typography from '@shared/ui/Typography';
+import { toast } from 'sonner';
 
 interface ShelfSelectionProps {
   onBack: () => void;
+  bagId: number;
+  onComplete: (result: SubmitInventoryResultDto) => void;
 }
 
-export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
+export default function ShelfSelection({
+  onBack,
+  bagId,
+  onComplete,
+}: ShelfSelectionProps) {
   const {
     getCurrentShelf,
     selectedShelfItems,
@@ -17,13 +29,46 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
     moveToPreviousShelf,
   } = useShelfSelectionStore();
 
+  const { shelves, isLoading, error } = useShelfData();
+  const { mutate: submitInventory, isPending } = useSubmitInventory({
+    onSuccess: result => {
+      onComplete(result);
+    },
+    onError: err => {
+      toast.error('인벤토리 제출에 실패했습니다', {
+        description: err.message,
+      });
+    },
+  });
+
+  const handleComplete = () => {
+    const payload = adaptShelfItemsToInventoryPayload(
+      selectedShelfItems,
+      bagId
+    );
+
+    submitInventory(payload);
+  };
+
   useEffect(() => {
-    initShelves(mockShelves);
-  }, [initShelves]);
+    if (shelves.length > 0) {
+      initShelves(shelves);
+    }
+  }, [shelves, initShelves]);
 
   const currentShelf = getCurrentShelf();
 
-  if (!currentShelf) {
+  if (error) {
+    return (
+      <div className='flex min-h-screen items-center justify-center'>
+        <div className='text-red-500'>
+          데이터를 불러오는데 실패했습니다: {error.message}
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !currentShelf) {
     return (
       <div className='flex min-h-screen items-center justify-center'>
         <div>데이터를 로딩 중...</div>
@@ -31,7 +76,7 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
     );
   }
   return (
-    <div>
+    <div className='relative h-full w-full'>
       {/* 뒤로가기 버튼 */}
       <div className='absolute top-4 left-4 z-10'>
         <button
@@ -76,6 +121,17 @@ export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
         backgroundImage={currentShelf.backgroundImage}
         items={currentShelf.shelfItems}
       />
+
+      <GlassButton
+        className='absolute bottom-12 left-1/2 -translate-x-1/2'
+        onClick={handleComplete}
+        disabled={isPending}
+      >
+        {/* FIXME: h4-b임  */}
+        <Typography variant='h3-b'>
+          {isPending ? '제출 중...' : '담기 완료'}
+        </Typography>
+      </GlassButton>
     </div>
   );
 }
