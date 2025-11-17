@@ -13,16 +13,14 @@ import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
-import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
+import BagSelectPage from './pages/BagSelectPage';
 
 export default function App() {
-  const { step, resetDayFlow, saveBag, setAuthenticated } = useGameFlowStore(
+  const { step, resetDayFlow, setAuthenticated } = useGameFlowStore(
     useShallow(state => ({
       step: state.step,
       resetDayFlow: state.resetDayFlow,
-      next: state.next,
-      saveBag: state.saveBag,
       setAuthenticated: state.setAuthenticated,
     }))
   );
@@ -72,21 +70,7 @@ export default function App() {
       );
     }
     if (step === 'BAG_SELECT') {
-      return (
-        // <BagSelectionScreen
-        //   onComplete={selectedBagId => {
-        //     console.log('Selected bag:', selectedBagId);
-
-        //     // TODO: 선택된 가방을 전역 상태에 저장
-        //     useGameFlowStore.getState().goto('INTRO_STORY_2');
-        <BagSelection
-          onComplete={selectedBag => {
-            console.log('Selected bag:', selectedBag);
-            saveBag(selectedBag);
-            useGameFlowStore.getState().goto('INTRO_STORY_2');
-          }}
-        />
-      );
+      return <BagSelectPage />;
     }
     if (step === 'INTRO_STORY_2') {
       return (

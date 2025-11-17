@@ -44,7 +44,7 @@ export default function CharacterProfile({
       />
 
       {/* 스탯 */}
-      <div className='flex items-center justify-start gap-2'>
+      <div className='flex items-center justify-start gap-1'>
         <MentalityStat value={mentality} />
         <HPStat value={hp} />
       </div>

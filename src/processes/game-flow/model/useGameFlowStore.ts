@@ -273,3 +273,10 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     },
   })
 );
+
+export const playingCharacterSetSelector = (state: GameFlowState) =>
+  state.gameSession?.playingCharacterSet;
+export const selectedBagSelector = (state: GameFlowState) =>
+  state.gameSession?.selectedBag;
+export const inventoriesSelector = (state: GameFlowState) =>
+  state.gameSession?.inventories;

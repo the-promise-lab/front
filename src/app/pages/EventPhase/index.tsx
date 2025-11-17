@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { useAssetStore } from '@shared/preload-assets';
 import {
   DayScreen,
-  Header,
   PlaceScreen,
   RandomEventScreen,
   WarningBeforeStartScreen,
   ChangeStatsScreen,
   SinglePortraitScreen,
 } from '@features/event-phase/index';
-import { SideInventory, useGameFlowStore } from '@processes/game-flow';
+import { SideInventory, useGameFlowStore, Header } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
