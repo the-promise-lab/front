@@ -42,11 +42,6 @@ export default function ShelfSelection({
   });
 
   const handleComplete = () => {
-    if (selectedShelfItems.length === 0) {
-      toast.error('아이템을 선택해주세요');
-      return;
-    }
-
     const payload = adaptShelfItemsToInventoryPayload(
       selectedShelfItems,
       bagId
@@ -130,7 +125,7 @@ export default function ShelfSelection({
       <GlassButton
         className='absolute bottom-12 left-1/2 -translate-x-1/2'
         onClick={handleComplete}
-        disabled={isPending || selectedShelfItems.length === 0}
+        disabled={isPending}
       >
         {/* FIXME: h4-b임  */}
         <Typography variant='h3-b'>

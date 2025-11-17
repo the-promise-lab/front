@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import type { SubmitInventoryResultDto } from '@api';
 
 export default function PackingPhase() {
-  const { goto, back, gameSession } = useGameFlowStore();
+  const { goto, back, gameSession, saveInventory, next } = useGameFlowStore();
   const { showModal, formattedTime, countdownMoved, showBackground } =
     useCountdown();
 
@@ -16,6 +16,8 @@ export default function PackingPhase() {
 
   const onComplete = (result: SubmitInventoryResultDto) => {
     console.log('onComplete', result); // 디버깅용
+    saveInventory(result.inventories);
+    next();
   };
 
   useEffect(() => {
