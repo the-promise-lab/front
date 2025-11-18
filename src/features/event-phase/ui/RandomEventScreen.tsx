@@ -101,7 +101,7 @@ export default function RandomEventScreen({
   ];
 
   return (
-    <div className='flex h-[92%] w-full gap-11 pt-4.5 pl-14'>
+    <div className='flex w-full gap-13.75 pt-22.5 pl-14'>
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -109,7 +109,7 @@ export default function RandomEventScreen({
           stiffness: 300,
           duration: 0.5,
         }}
-        className='h-full w-[45dvw] rounded-[4px] border-2 border-white bg-white/15'
+        className='h-157.5 w-225.5 rounded-[2px] border-1 border-white bg-white/15 lg:rounded-[4px] lg:border-2'
       >
         {/* 이미지영역 */}
       </motion.div>

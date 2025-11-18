@@ -99,7 +99,6 @@ export function adaptCharacterSetFromApi(
 
 /**
  * 서버 PlayingCharacterDto를 클라이언트 Character 타입으로 변환
- * FIXME: 백엔드에서 메타데이터 포함하면 이 로직 단순화 가능
  *
  * @param playingCharacter - 서버 응답 (PlayingCharacterDto)
  * @returns 클라이언트 Character 타입 또는 null (메타데이터 없는 경우)

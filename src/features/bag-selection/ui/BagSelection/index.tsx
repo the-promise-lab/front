@@ -83,8 +83,7 @@ export function BagSelection({ onComplete }: BagSelectionProps) {
           disabled={!selectedBagId}
           className={cn('')}
         >
-          {/* FIXME: h4-b임  */}
-          <Typography variant='h3-b'>선택 완료</Typography>
+          <Typography variant='h4-b'>선택 완료</Typography>
         </GlassButton>
       </div>
     </div>

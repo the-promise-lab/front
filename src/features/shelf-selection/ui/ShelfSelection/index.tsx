@@ -38,6 +38,10 @@ export default function ShelfSelection({
       toast.error('인벤토리 제출에 실패했습니다', {
         description: err.message,
       });
+
+      onComplete({
+        inventories: [],
+      }); // FIXME: 임시로 넘어가기
     },
   });
 
@@ -127,8 +131,7 @@ export default function ShelfSelection({
         onClick={handleComplete}
         disabled={isPending}
       >
-        {/* FIXME: h4-b임  */}
-        <Typography variant='h3-b'>
+        <Typography variant='h4-b'>
           {isPending ? '제출 중...' : '담기 완료'}
         </Typography>
       </GlassButton>

@@ -44,16 +44,16 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
       <div
         onClick={handlePress}
         className={cn(
-          'relative z-0 flex h-20 w-full cursor-pointer items-center gap-4.5 px-7',
+          'relative z-0 flex h-24 w-full cursor-pointer items-center gap-4.5 px-7',
           'bg-gradient-to-r from-white/10 to-transparent',
           'backdrop-blur-[43.5px]',
-          'rounded-tl-[80px] rounded-bl-[80px]',
+          'rounded-tl-[56px] rounded-bl-[56px]',
           'gradient-border transition-all duration-200 ease-in-out',
           isPressed && 'active scale-[1.05]'
         )}
       >
         {isPressed && (
-          <IconOptionPressedShadow className='absolute top-1/2 -left-4 h-32 w-[105%] -translate-y-1/2' />
+          <IconOptionPressedShadow className='absolute top-1/2 -left-4 h-[105%] w-[105%] -translate-y-1/2' />
         )}
         {/* 체크박스 아이콘 */}
         <div className='relative z-[1] size-10 shrink-0'>

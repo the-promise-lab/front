@@ -22,6 +22,7 @@ export default function SinglePortraitScreen({
   const [portraitIndex, setPortraitIndex] = useState(0);
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
+  console.log('playingCharacters', playingCharacters);
   const firstCharacterUrl = getObjectUrl(
     playingCharacters[0].profileImage || 'byungcheol.png'
   );

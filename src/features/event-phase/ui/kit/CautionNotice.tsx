@@ -26,7 +26,7 @@ export default function CautionNotice({ className }: CautionNoticeProps) {
 
       {/* CAUTION 텍스트 */}
       <div className='flex flex-col justify-center'>
-        <Typography variant='h3-b' className='text-[#fed046]'>
+        <Typography variant='h3-b' className='text-caution-1'>
           caution
         </Typography>
       </div>

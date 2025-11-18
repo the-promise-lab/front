@@ -28,7 +28,7 @@ export function CutSceneScreen({ imageUrl, text }: Props) {
             'linear-gradient(90deg, rgba(25, 25, 32, 0.00) 5%, rgba(25, 25, 32, 0.60) 25%, rgba(0, 0, 0, 0.80) 50%, #191920 75.48%, rgba(25, 25, 32, 0.00) 95%)',
         }}
       >
-        <TypingText texts={text.split('\n')} variant='dialogue-m' smooth />
+        <TypingText texts={text.split('\\n')} variant='dialogue-m' smooth />
       </div>
     </div>
   );
