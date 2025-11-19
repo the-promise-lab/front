@@ -2,8 +2,13 @@ import { useStartNewGame, useContinueGame } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
+import { useSetBackground } from '@shared/background';
 
 export default function MainMenu() {
+  useSetBackground({
+    color: '#fff',
+    className: 'bg-gradient-to-br from-blue-50 to-indigo-100',
+  });
   // 새 게임 시작
   const {
     createNewGameSession,

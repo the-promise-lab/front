@@ -8,7 +8,7 @@ export type ItemDto = {
   image: string;
   capacityCost: number;
   isConsumable: boolean;
-  storeSection: string;
+  storeSectionId: number;
   isVisable: boolean;
   itemCategoryId: number;
   necessity: number;

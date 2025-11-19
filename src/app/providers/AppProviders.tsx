@@ -1,8 +1,6 @@
-// src/app/providers/AppProviders.tsx
-// 전역 프로바이더 컴포넌트
-
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Toast from '@shared/ui/toast';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +17,9 @@ interface AppProvidersProps {
 
 export default function AppProviders({ children }: AppProvidersProps) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <Toast />
+    </QueryClientProvider>
   );
 }

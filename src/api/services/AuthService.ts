@@ -17,13 +17,19 @@ export class AuthService {
     });
   }
   /**
+   * @param redirectUri
    * @returns any
    * @throws ApiError
    */
-  public static authControllerKakaoLogin(): CancelablePromise<any> {
+  public static authControllerKakaoLogin(
+    redirectUri: string
+  ): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/api/auth/kakao',
+      query: {
+        redirect_uri: redirectUri,
+      },
     });
   }
   /**

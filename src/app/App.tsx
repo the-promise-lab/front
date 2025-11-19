@@ -1,27 +1,30 @@
 import { useEffect } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
+
 import { useGameFlowStore, PauseMenu } from '@processes/game-flow';
 import { IconPauseButton } from '@features/event-phase/ui/kit/icon-button';
 import { useShallow } from 'zustand/react/shallow';
 
 // 페이지 컴포넌트들
 import AuthCheck from './pages/AuthCheck';
-import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
-import { BagSelectionScreen } from '@features/event-phase';
+import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
-  const { step, resetDayFlow, openPauseMenu } = useGameFlowStore(
+  const { step, resetDayFlow, openPauseMenu, saveBag } = useGameFlowStore(
     useShallow(state => ({
       step: state.step,
       resetDayFlow: state.resetDayFlow,
       openPauseMenu: state.openPauseMenu,
+      next: state.next,
+      saveBag: state.saveBag,
     }))
   );
 
@@ -41,7 +44,7 @@ export default function App() {
       return <AuthCheck />;
     }
     if (step === 'LOGIN') {
-      return <LandingPage />;
+      return <LoginPage />;
     }
     if (step === 'MAIN_MENU') {
       return <MainMenu />;
@@ -64,11 +67,16 @@ export default function App() {
     }
     if (step === 'BAG_SELECT') {
       return (
-        <BagSelectionScreen
-          onComplete={selectedBagId => {
-            console.log('Selected bag:', selectedBagId);
+        // <BagSelectionScreen
+        //   onComplete={selectedBagId => {
+        //     console.log('Selected bag:', selectedBagId);
 
-            // TODO: 선택된 가방을 전역 상태에 저장
+        //     // TODO: 선택된 가방을 전역 상태에 저장
+        //     useGameFlowStore.getState().goto('INTRO_STORY_2');
+        <BagSelection
+          onComplete={selectedBag => {
+            console.log('Selected bag:', selectedBag);
+            saveBag(selectedBag);
             useGameFlowStore.getState().goto('INTRO_STORY_2');
           }}
         />
@@ -100,7 +108,7 @@ export default function App() {
     if (step === 'DAY_FLOW') {
       return <EventPhase />;
     }
-    return <LandingPage />;
+    return <LoginPage />;
   };
 
   // 로그인 화면을 제외한 모든 화면에서 일시정지 버튼 표시

@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useAssetStore } from '@shared/model/assetStore';
+import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import NoticeBanner from '@features/event-phase/ui/kit/NoticeBanner';
 import Typography from '@shared/ui/Typography';
 import IntroSimpleScreen from '../../ui/IntroSimpleScreen';
 import type { IntroEvent } from './types';
+import { useSetBackground } from '@shared/background';
 
 interface IntroStoryProps {
   onNext?: () => void;
@@ -57,6 +58,9 @@ export default function IntroStory({
     const asset = getObjectUrl(currentEvent.BGImage);
     return asset || null;
   }, [currentEvent?.BGImage, getObjectUrl]);
+  useSetBackground({
+    image: backgroundImage || '/shelter-bg.png',
+  });
 
   const handleNext = () => {
     if (isSkipped) return;
@@ -76,7 +80,7 @@ export default function IntroStory({
 
   if (isLoading) {
     return (
-      <div className='flex h-screen w-screen items-center justify-center bg-black text-white'>
+      <div className='flex h-full w-full items-center justify-center text-white'>
         <Typography variant='dialogue-b'>인트로를 불러오는 중…</Typography>
       </div>
     );
@@ -84,7 +88,7 @@ export default function IntroStory({
 
   if (error || !currentEvent) {
     return (
-      <div className='flex h-screen w-screen items-center justify-center bg-black text-white'>
+      <div className='flex h-full w-full items-center justify-center text-white'>
         <Typography variant='dialogue-b'>
           {error || '표시할 이벤트가 없습니다.'}
         </Typography>
@@ -93,17 +97,8 @@ export default function IntroStory({
   }
 
   return (
-    <div
-      className='relative flex h-screen w-screen flex-col bg-cover bg-center'
-      style={{
-        backgroundImage: backgroundImage
-          ? `url(${backgroundImage})`
-          : undefined,
-        backgroundColor: '#1e293b',
-      }}
-      onClick={handleNext}
-    >
-      <div className='flex-1 bg-black/40'>
+    <div className='relative flex h-full w-full flex-col' onClick={handleNext}>
+      <div className='flex-1'>
         <IntroEventRenderer event={currentEvent} />
       </div>
       {!isSkipped && (
@@ -145,7 +140,7 @@ function SystemMessage({ event }: { event: IntroEvent }) {
 
   return (
     <div className='flex h-full items-center justify-center px-6'>
-      <NoticeBanner withCaution className='max-w-[720px]'>
+      <NoticeBanner withCaution className='max-w-[1020px]'>
         <Typography variant='dialogue-2' className='text-white'>
           {message}
         </Typography>

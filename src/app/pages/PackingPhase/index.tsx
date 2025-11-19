@@ -1,106 +1,34 @@
-import { useState, useEffect } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShelfSelection } from '@features/shelf-selection';
 import CautionNotice from '@features/event-phase/ui/kit/CautionNotice';
 import Typography from '@shared/ui/Typography';
+import { useCountdown } from '@features/shelf-selection/model/useCountdown';
+import { useEffect } from 'react';
+import type { SubmitInventoryResultDto } from '@api';
 
 export default function PackingPhase() {
-  const { goto, back } = useGameFlowStore();
-  const [timeLeft, setTimeLeft] = useState(10); // 실제 남은 시간 (3초 후 04:00부터 카운트다운)
-  const [showModal, setShowModal] = useState(false);
-  const [countdownMoved, setCountdownMoved] = useState(false);
-  const [showBackground, setShowBackground] = useState(false);
-  const [displayCountdown, setDisplayCountdown] = useState(false);
+  const { goto, back, gameSession, saveInventory, next } = useGameFlowStore();
+  const { showModal, formattedTime, countdownMoved, showBackground } =
+    useCountdown();
 
-  // 디버깅: PackingPhase 컴포넌트가 렌더링되는지 확인
-  console.log('PackingPhase 컴포넌트 렌더링됨');
+  const bagId = gameSession?.selectedBag?.id;
 
-  // 카운트다운 로직
-  useEffect(() => {
-    if (!displayCountdown) return;
-    if (timeLeft > 0) {
-      const timer = setTimeout(() => {
-        setTimeLeft(prev => prev - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else {
-      setShowModal(true);
-    }
-  }, [timeLeft, displayCountdown]);
-
-  // 1초 후 카운트다운을 상단으로 이동하고 배경 표시
-  useEffect(() => {
-    const moveTimer = setTimeout(() => {
-      setCountdownMoved(true);
-      setShowBackground(true);
-    }, 4000);
-    const startCountdownTimer = setTimeout(() => {
-      setDisplayCountdown(true);
-    }, 3000);
-    return () => {
-      clearTimeout(moveTimer);
-      clearTimeout(startCountdownTimer);
-    };
-  }, []);
-
-  // 시간을 MM:SS 형식으로 변환
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  const onComplete = (result: SubmitInventoryResultDto) => {
+    console.log('onComplete', result); // 디버깅용
+    saveInventory(result.inventories);
+    next();
   };
 
-  // const handleConfirm = async () => {
-  //   if (isSubmitting) return; // 중복 제출 방지
+  useEffect(() => {
+    if (!bagId) {
+      back();
+    }
+  }, [bagId, back]);
 
-  //   setIsSubmitting(true);
-
-  //   try {
-  //     // 쿠키에서 accessToken 가져오기
-  //     const accessToken = getCookie('accessToken');
-
-  //      if (!accessToken) {
-  //        throw new Error('인증 토큰이 없습니다.');
-  //      }
-
-  //     // 선택한 아이템들을 서버에 전송
-  //     const response = await fetch(`${config.API_BASE_URL}/api/packing/items`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${accessToken}`,
-  //       },
-  //       body: JSON.stringify({
-  //         items: selectedShelfItems.map(item => ({
-  //           id: item.id,
-  //           name: item.name,
-  //           quantity: item.quantity,
-  //         })),
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('서버 요청 실패');
-  //     }
-
-  //     // 서버 응답 확인 (필요시 처리)
-  //     const data = await response.json();
-  //     console.log('선택한 아이템 전송 완료:', data);
-
-  //     // 성공 시 다음 단계로 이동
-  //     goto('DAY_FLOW');
-  //   } catch (error) {
-  //     console.error('아이템 전송 중 오류:', error);
-  //     // 에러 처리 (사용자에게 알림 표시 등)
-  //     alert('아이템 전송에 실패했습니다. 다시 시도해주세요.');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
+  if (!bagId) return null;
   return (
-    <div className='relative h-screen w-screen'>
+    <div className='relative h-full w-full'>
       {/* 기존 PACKING_PHASE 배경 (ShelfSelection) */}
       <motion.div
         className='absolute inset-0'
@@ -108,7 +36,7 @@ export default function PackingPhase() {
         animate={{ opacity: showBackground ? 1 : 0 }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
       >
-        <ShelfSelection onBack={back} />
+        <ShelfSelection onBack={back} bagId={bagId} onComplete={onComplete} />
       </motion.div>
 
       {/* 어두운 오버레이 (카운트다운 중에만) */}
@@ -139,7 +67,7 @@ export default function PackingPhase() {
                   제한 시간 내에 가방 안에 생존을 위한 물품을 담으세요!
                 </Typography>
                 <div className='font-mono text-7xl font-bold tracking-[0.2em] text-white'>
-                  {formatTime(timeLeft)}
+                  {formattedTime}
                 </div>
               </div>
             </div>
@@ -164,7 +92,7 @@ export default function PackingPhase() {
             fontSize: '30px',
           }}
         >
-          {formatTime(timeLeft)}
+          {formattedTime}
         </motion.div>
       )}
 

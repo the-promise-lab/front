@@ -4,12 +4,14 @@ import type {
   CharacterGroupDto,
   PlayingCharacterSetDto,
   PlayingCharacterDto,
+  BagDto,
 } from '@api';
 import type {
   CharacterSet,
   GameSession,
   PlayingCharacter,
   PlayingCharacterSet,
+  Bag,
 } from './types';
 
 /**
@@ -97,7 +99,6 @@ export function adaptCharacterSetFromApi(
 
 /**
  * 서버 PlayingCharacterDto를 클라이언트 Character 타입으로 변환
- * FIXME: 백엔드에서 메타데이터 포함하면 이 로직 단순화 가능
  *
  * @param playingCharacter - 서버 응답 (PlayingCharacterDto)
  * @returns 클라이언트 Character 타입 또는 null (메타데이터 없는 경우)
@@ -110,12 +111,29 @@ export function adaptPlayingCharacterFromApi(
     characterId: playingCharacter.character.id,
     name: playingCharacter.character.name || null,
     fullImage: playingCharacter.character.selectImage || null,
-    profileImage: playingCharacter.character.potraitImage || null,
+    profileImage: playingCharacter.character.portraitImage || null,
     currentHp: playingCharacter.currentHp || null,
     currentSp: playingCharacter.currentSp || null,
     colors: {
       backgroundColor: playingCharacter.character.bgColor || null,
       borderColor: playingCharacter.character.borderColor || null,
     },
+  };
+}
+
+/**
+ * BagDto를 클라이언트 Bag 타입으로 변환
+ * description 필드는 DTO에 없으므로 하드코딩
+ *
+ * @param dto - 서버 응답 (BagDto)
+ * @returns 클라이언트 Bag 타입
+ */
+export function adaptBagFromApi(dto: BagDto): Bag {
+  return {
+    id: dto.id,
+    name: dto.name,
+    description: `${dto.name}에 대한 설명`,
+    image: dto.image,
+    capacity: dto.capacity,
   };
 }

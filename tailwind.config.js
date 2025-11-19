@@ -45,6 +45,11 @@ export default {
       aspectRatio: {
         'mobile-landscape': '896/414', // 2.16:1 비율
       },
+      fontFamily: {
+        'nexon-lv2-gothic': 'var(--font-nexon-lv2-gothic)',
+        'nexon-lv1-gothic-low-otf': 'var(--font-nexon-lv1-gothic-low-otf)',
+        'nanumsquare-neo-otf': 'var(--font-nanumsquare-neo-otf)',
+      },
     },
   },
   plugins: [scrollbar],

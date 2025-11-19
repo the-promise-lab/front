@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@shared/lib/utils';
 import CautionNotice from './CautionNotice';
+import { useSetBackground } from '@shared/background';
 
 interface NoticeBannerProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -14,12 +15,19 @@ export default function NoticeBanner({
   className,
   ...props
 }: NoticeBannerProps) {
+  useSetBackground(
+    {
+      className: 'bg-black/60 backdrop-blur-sm',
+    },
+    {
+      cleanup: false,
+    }
+  );
   return (
     <div
       className={cn(
         'fixed inset-0 z-50',
         'flex flex-col items-center justify-center gap-6',
-        'bg-black/60 backdrop-blur-sm',
         className
       )}
       {...props}

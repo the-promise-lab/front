@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAssetStore } from '@shared/model/assetStore';
+import { useAssetStore } from '@shared/preload-assets';
 import {
   DayScreen,
   Header,
@@ -14,6 +14,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
 import { IconPauseButton } from '@features/event-phase/ui/kit/icon-button';
+import { useSetBackground } from '@shared/background';
 
 // FIXME: 하드코딩된 화면 순서
 type ScreenType =
@@ -54,6 +55,10 @@ export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [screenIndex, setScreenIndex] = useState(0);
   const currentScreen = SCREEN_ORDER[screenIndex];
+  const backgroundImage = getObjectUrl('shelter-bg.png');
+  useSetBackground({
+    image: backgroundImage,
+  });
   // 플레이 중인 캐릭터 정보 가져오기
   const playingCharacters =
     useGameFlowStore(
@@ -87,6 +92,14 @@ export default function EventPhase() {
       {
         text: '안전을 위해 피한다',
         value: 'avoid',
+        statChanges: {
+          mentality: -1,
+          hp: 2,
+        },
+      },
+      {
+        text: '가만히 있는다',
+        value: 'stay',
         statChanges: {
           mentality: -1,
           hp: 2,
@@ -185,8 +198,6 @@ export default function EventPhase() {
     }
   };
 
-  const backgroundImage = getObjectUrl('shelter-bg.png');
-
   const handleNext = () => {
     // BEFORE_RESULT_SCREEN에서는 클릭 이벤트 비활성화 (버튼 클릭만 허용)
     if (currentScreen !== 'BEFORE_RESULT_SCREEN') {
@@ -197,11 +208,7 @@ export default function EventPhase() {
   };
   return (
     <div
-      className='relative flex h-screen w-screen flex-col gap-4 bg-cover bg-center'
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundColor: '#1e293b', // fallback 배경색
-      }}
+      className='relative flex h-full w-full flex-col gap-4'
       onClick={handleNext}
     >
       <Header

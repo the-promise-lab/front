@@ -1,7 +1,12 @@
 // src/processes/game-flow/types.ts
 // 게임 플로우 관련 타입 정의
 
-import type { GameSession, PlayingCharacterSet } from '@entities/game-session';
+import type {
+  GameSession,
+  PlayingCharacterSet,
+  Bag,
+  Inventory,
+} from '@entities/game-session';
 
 export type GameStep =
   | 'AUTH_CHECK' // 인증 상태 확인
@@ -131,6 +136,8 @@ export interface GameFlowActions {
     params: PlayingCharacterSet,
     groupName?: string
   ) => void;
+  saveBag: (bag: Bag) => void;
+  saveInventory: (inventories: Inventory[]) => void;
   startNewGame: (newGameSession: GameSession) => void;
   startDayFlow: () => void;
   continueGame: () => void;

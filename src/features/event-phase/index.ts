@@ -4,5 +4,5 @@ export { default as PlaceScreen } from './ui/PlaceScreen';
 export { default as WarningBeforeStartScreen } from './ui/WarningBeforeStartScreen';
 export { default as Header } from './ui/Header';
 export { default as ChangeStatsScreen } from './ui/ChangeStatsScreen';
-export { default as BagSelectionScreen } from './ui/BagSelectionScreen';
 export { default as SinglePortraitScreen } from './ui/SinglePortraitScreen';
+export { default as BagSelectionScreen } from './ui/BagSelectionScreen';

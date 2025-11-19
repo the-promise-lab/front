@@ -1,6 +1,6 @@
 import { useEffect, useState, type MouseEvent } from 'react';
 import PortraitBanner from './kit/PortraitBanner';
-import { useAssetStore } from '@shared/model/assetStore';
+import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import PortraitCharacterImage from './kit/PortraitCharacterImage';
 import type { PlayingCharacter } from '@entities/game-session';
@@ -22,6 +22,7 @@ export default function SinglePortraitScreen({
   const [portraitIndex, setPortraitIndex] = useState(0);
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
+  console.log('playingCharacters', playingCharacters);
   const firstCharacterUrl = getObjectUrl(
     playingCharacters[0].profileImage || 'byungcheol.png'
   );

@@ -8,7 +8,7 @@ export type CharacterDto = {
   age?: number | null;
   description?: string | null;
   selectImage?: string | null;
-  potraitImage?: string | null;
+  portraitImage?: string | null;
   defaultHp?: number | null;
   defaultSp?: number | null;
   characterGroupId?: number | null;

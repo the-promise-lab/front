@@ -1,5 +1,6 @@
 import TypingText from '@shared/ui/TypingText';
 import { cn } from '@shared/lib/utils';
+import { useSetBackground } from '@shared/background';
 
 interface Props {
   imageUrl: string;
@@ -7,12 +8,14 @@ interface Props {
 }
 
 export function CutSceneScreen({ imageUrl, text }: Props) {
+  useSetBackground({
+    image: imageUrl,
+  });
   return (
     <div
       className={cn(
-        'fixed inset-0 z-[100] h-screen w-screen bg-cover bg-center bg-no-repeat'
+        'fixed inset-0 z-[100] h-full w-full bg-cover bg-center bg-no-repeat'
       )}
-      style={{ backgroundImage: `url(${imageUrl})` }}
     >
       <div
         className={cn(
@@ -25,7 +28,7 @@ export function CutSceneScreen({ imageUrl, text }: Props) {
             'linear-gradient(90deg, rgba(25, 25, 32, 0.00) 5%, rgba(25, 25, 32, 0.60) 25%, rgba(0, 0, 0, 0.80) 50%, #191920 75.48%, rgba(25, 25, 32, 0.00) 95%)',
         }}
       >
-        <TypingText texts={text.split('\n')} variant='dialogue-m' smooth />
+        <TypingText texts={text.split('\\n')} variant='dialogue-m' smooth />
       </div>
     </div>
   );

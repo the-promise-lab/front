@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { SlotDto } from './SlotDto';
+import type { CreateSlotDto } from './CreateSlotDto';
 export type SubmitInventoryDto = {
   /**
    * 가방 ID
@@ -11,5 +11,5 @@ export type SubmitInventoryDto = {
   /**
    * 인벤토리 슬롯 목록
    */
-  slots: Array<SlotDto>;
+  slots: Array<CreateSlotDto>;
 };

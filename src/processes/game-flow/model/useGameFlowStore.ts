@@ -6,7 +6,7 @@ import type {
   DayStep,
   EventData,
 } from '../types';
-import type { GameSession } from '@entities/game-session';
+import type { GameSession, Inventory } from '@entities/game-session';
 import {
   GAME_STEP_ORDER,
   DAY_STEP_ORDER,
@@ -195,6 +195,42 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
             },
           },
           selectedCharacterGroupName: groupName,
+        };
+      });
+    },
+
+    saveBag: bag => {
+      set(state => {
+        if (!state.gameSession) {
+          console.warn(
+            '[useGameFlowStore] gameSession이 없습니다. 먼저 게임 세션을 생성하세요.'
+          );
+          return state;
+        }
+
+        return {
+          gameSession: {
+            ...state.gameSession,
+            selectedBag: bag,
+          },
+        };
+      });
+    },
+
+    saveInventory: (inventories: Inventory[]) => {
+      set(state => {
+        if (!state.gameSession) {
+          console.warn(
+            '[useGameFlowStore] gameSession이 없습니다. 먼저 게임 세션을 생성하세요.'
+          );
+          return state;
+        }
+
+        return {
+          gameSession: {
+            ...state.gameSession,
+            inventories: inventories,
+          },
         };
       });
     },
