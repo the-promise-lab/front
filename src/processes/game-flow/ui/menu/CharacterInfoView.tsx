@@ -325,7 +325,7 @@ export function CharacterInfoView() {
                     {detail.description}
                   </p>
                 )}
-                {detail.traits && (
+                {'traits' in detail && detail.traits && (
                   <p className='text-xs whitespace-pre-line text-white/50'>
                     {detail.traits}
                   </p>
