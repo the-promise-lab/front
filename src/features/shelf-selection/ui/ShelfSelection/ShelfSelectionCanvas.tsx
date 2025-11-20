@@ -5,6 +5,7 @@ import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
 import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
 import { toastItemAdded } from '@shared/ui/toast-variants';
+import { drawMarker } from '../../lib/drawMarker';
 
 const ITEM_SIZE_PIXEL = 20;
 
@@ -67,9 +68,6 @@ export default function ShelfSelectionCanvas({
     (ctx: CanvasRenderingContext2D) => {
       if (imageScale.width === 0) return;
 
-      ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
-      ctx.lineWidth = 2;
-
       items.forEach(item => {
         // 이미지 내 상대 좌표를 스케일된 캔버스 좌표로 변환
         const isWide = imageScale.width > canvasSize.width;
@@ -79,13 +77,7 @@ export default function ShelfSelectionCanvas({
           : baseX + imageScale.offsetX; // 전체 이미지가 보이는 경우 중앙 오프셋 적용
         const scaledY = item.y * imageScale.height;
 
-        // 아이템 영역 그리기
-        ctx.strokeRect(
-          scaledX - ITEM_SIZE_PIXEL / 2,
-          scaledY - ITEM_SIZE_PIXEL / 2,
-          ITEM_SIZE_PIXEL,
-          ITEM_SIZE_PIXEL
-        );
+        drawMarker(ctx, scaledX, scaledY, ITEM_SIZE_PIXEL, ITEM_SIZE_PIXEL);
       });
     },
     [items, imageScale, canvasSize.width, viewOffsetX]
