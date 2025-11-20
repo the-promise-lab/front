@@ -276,7 +276,7 @@ export default function ShelfSelectionCanvas({
       const item = detectItemSelection(imageCoords.x, imageCoords.y);
       if (item) {
         selectNewShelfItem(item);
-        toastItemAdded();
+        toastItemAdded(item.name);
       }
     },
     [

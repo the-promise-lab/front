@@ -422,31 +422,36 @@ body {
   }
 }
 
-/* 아이템 담기 Toast 전용 fade 애니메이션 */
-@keyframes itemAddedFadeIn {
-  from {
+/* 아이템 담기 Toast 전용 애니메이션 */
+@keyframes itemAddedSlideIn {
+  0% {
+    transform: translateX(120%);
     opacity: 0;
   }
 
-  to {
+  100% {
+    transform: translateX(0);
     opacity: 1;
   }
 }
 
 @keyframes itemAddedFadeOut {
-  from {
+  0% {
     opacity: 1;
   }
 
-  to {
+  100% {
     opacity: 0;
   }
 }
 
 .item-added-toast-container {
-  animation: itemAddedFadeIn 0.2s ease-out;
+  pointer-events: none;
 }
 
-.item-added-toast-container[data-removed='true'] {
-  animation: itemAddedFadeOut 0.2s ease-out;
+.item-added-toast {
+  animation:
+    itemAddedSlideIn 240ms ease-out forwards,
+    itemAddedFadeOut 220ms ease-in forwards 1780ms;
+  will-change: transform, opacity;
 }
