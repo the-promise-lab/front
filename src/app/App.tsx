@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
 
-import { useGameFlowStore, PauseMenu } from '@processes/game-flow';
-import { IconPauseButton } from '@features/event-phase/ui/kit/icon-button';
+import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 
 // 페이지 컴포넌트들
@@ -18,11 +17,10 @@ import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
-  const { step, resetDayFlow, openPauseMenu, saveBag } = useGameFlowStore(
+  const { step, resetDayFlow, saveBag } = useGameFlowStore(
     useShallow(state => ({
       step: state.step,
       resetDayFlow: state.resetDayFlow,
-      openPauseMenu: state.openPauseMenu,
       next: state.next,
       saveBag: state.saveBag,
     }))
@@ -111,26 +109,21 @@ export default function App() {
     return <LoginPage />;
   };
 
-  // 로그인 화면을 제외한 모든 화면에서 일시정지 버튼 표시
-  // DAY_FLOW에서는 Header의 menuSlot에 포함되므로 여기서는 제외
-  const showPauseButton =
-    step !== 'LOGIN' && step !== 'AUTH_CHECK' && step !== 'DAY_FLOW';
-
   return (
     <AppProviders>
-      <RootLayout>
+      {/* <RootLayout>
         <div className='fixed inset-0 z-10 touch-pan-y overflow-hidden'>
           {renderScreen()}
         </div>
-        {/* 일시정지 버튼 - 로그인 화면 제외, DAY_FLOW는 Header에서 처리 */}
+        일시정지 버튼 - 로그인 화면 제외, DAY_FLOW는 Header에서 처리
         {showPauseButton && (
           <div className='fixed top-11 right-11 z-[50]'>
             <IconPauseButton onClick={openPauseMenu} />
           </div>
         )}
-        {/* 일시정지 메뉴 - 전역 팝업 */}
-        <PauseMenu />
-      </RootLayout>
+        일시정지 메뉴 - 전역 팝업
+        <PauseMenu /> */}
+      <RootLayout>{renderScreen()}</RootLayout>
     </AppProviders>
   );
 }

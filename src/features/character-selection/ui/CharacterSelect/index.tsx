@@ -41,14 +41,14 @@ interface CharacterPairDetail {
 }
 
 const CHARACTER_PAIR_DETAILS: Record<string, CharacterPairDetail> = {
-  '헴과 병철': {
-    title: '헴과 병철',
-    overview:
-      '득근과 근손실 사이에서 살아가는 헴과 그를 따르는 병철. 극한 상황에서도 근손실을 막기 위해 고군분투한다.',
+  '김형빈과 이병철': {
+    title: '김형빈과 이병철',
+    // overview:
+    //   '득근과 근손실 사이에서 살아가는 헴과 그를 따르는 병철. 극한 상황에서도 근손실을 막기 위해 고군분투한다.',
     characters: [
       {
         id: 'hem',
-        name: '헴',
+        name: '김형빈',
         age: '35세',
         stats: [
           { label: '체력', value: 'High' },
@@ -58,121 +58,158 @@ const CHARACTER_PAIR_DETAILS: Record<string, CharacterPairDetail> = {
           '득근에 살고 근손실에 죽는 헬스 미친 자. 가오를 중시하고 매일 데리고 다니는 병철에게 헬스를 부리며 모든 것을 가르치려고 함.',
         traits:
           '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
-        image: '/public/캐릭터선택창헴.png',
-        thumbnail: '/public/캐릭터선택창헴.png',
+        image: '/public/image/introImage/char_hb_intro.png',
+        thumbnail: '/public/image/introImage/char_hb_intro.png',
       },
       {
         id: 'bang',
-        name: '병철',
+        name: '이병철',
         age: '29세',
         stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'Mid' },
+          { label: '체력', value: 'Low' },
+          { label: '정신력', value: 'Low' },
         ],
         description:
           '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
         traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
-        image: '/public/캐릭터선택창뱅철.png',
-        thumbnail: '/public/캐릭터선택창뱅철.png',
+        image: '/public/image/introImage/char_bc_intro.png',
+        thumbnail: '/public/image/introImage/char_bc_intro.png',
       },
     ],
   },
   '정복순&진실이': {
     title: '정복순 & 진실이',
-    overview:
-      '진실을 밝히기 위해 몸을 사리지 않는 기자 복순과, 냉철한 분석가 진실이의 조합.',
+    // overview:
+    //   '진실을 밝히기 위해 몸을 사리지 않는 기자 복순과, 냉철한 분석가 진실이의 조합.',
     characters: [
       {
         id: 'boksun',
         name: '정복순',
-        age: '32세',
+        age: '77세',
         stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'High' },
+          { label: '체력', value: 'Low' },
+          { label: '정신력', value: 'Very High' },
         ],
         description:
-          '집요한 추적과 강단으로 사건을 끝까지 파고드는 베테랑 기자. 재난 속에서도 진실을 밝혀내려 한다.',
-        image: '',
-        thumbnail: '',
+          '한 때 엄청나게 이름을 날리던 만신 무당. 지금은 재야에 은둔해 유기견 진실이와 함께 조용히 살고 있다. 인자한 미소 뒤에 엄청나게 날카로운 동자신을 모시고 있다.',
+        traits: '※특징: 노환으로 몸이 쇠약하고 악몽을 자주 꾼다.',
+        image: '/public/image/introImage/char_bs_intro.png',
+        thumbnail: '/public/image/introImage/char_bs_intro.png',
       },
       {
         id: 'jinsil',
         name: '진실이',
-        age: '27세',
+        age: '7세, 말티즈(♀︎)',
         stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'High' },
+          { label: '체력', value: 'Normal' },
+          { label: '정신력', value: 'Normal' },
         ],
         description:
-          '데이터 분석 전문가. 복순이 놓치는 단서를 찾아내 팀의 생존 확률을 높인다.',
-        image: '',
-        thumbnail: '',
+          '할머니 앞에서는 천사견, 다른 사람 앞에선 까칠 포악 그 자체인 강아지. 하지만 간식 앞에서는 한 마리의 순한 양(?)처럼 변한다.',
+        traits: '※특징: 특별히 아픈 곳은 없지만 기분을 잘 맞춰줘야 한다.',
+        image: '/public/image/introImage/char_js_intro.png',
+        thumbnail: '/public/image/introImage/char_js_intro.png',
       },
     ],
   },
   '소재옥&문예원': {
     title: '소재옥 & 문예원',
-    overview:
-      '현장 경험 풍부한 기사 소재옥과 드론 엔지니어 문예원이 만드는 즉석 생존 키트.',
+    // overview:
+    //   '현장 경험 풍부한 기사 소재옥과 드론 엔지니어 문예원이 만드는 즉석 생존 키트.',
     characters: [
       {
         id: 'sojaeok',
         name: '소재옥',
-        age: '41세',
+        age: '25세',
         stats: [
-          { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Mid' },
+          { label: '체력', value: 'Normal' },
+          { label: '정신력', value: 'Low' },
         ],
         description:
-          '무너지는 구조물 속에서도 침착하게 장비를 수리하는 베테랑 기사.',
-        image: '',
-        thumbnail: '',
+          '카메라 앞에서는 세상 다정한 스윗함을 보여주지만 실제로는 시청자 수와 반응에 예민하고 강박이 있다. 여자친구와의 일상을 기록하려 유튜브 <소문커플>을 시작했지만 지금은 인플루언서 병에 걸렸다.',
+        traits:
+          '※특징: 조금 긴장하거나 당황하면 과민성대장증후군으로 화장실이 급해진다.',
+        image: '/public/image/introImage/char_jo_intro.png',
+        thumbnail: '/public/image/introImage/char_jo_intro.png',
       },
       {
         id: 'munyewon',
         name: '문예원',
-        age: '33세',
+        age: '23세',
         stats: [
-          { label: '체력', value: 'Mid' },
+          { label: '체력', value: 'Low' },
           { label: '정신력', value: 'High' },
         ],
-        description: '드론과 로봇을 활용해 정찰과 구조를 담당하는 엔지니어.',
-        image: '',
-        thumbnail: '',
+        description:
+          '유튜브 브이로그에서는 귀엽고 애교 많은 소녀. 하지만 방송을 끄면 누구보다 대담하고 털털하다. 재욱이 자존심을 상하게 만들면 불같이 화를 낸다.',
+        traits:
+          '※특징: 발목을 다친 적이 있어 오래 걷거나 무거운 물건을 들면 통증에 시달린다.',
+        image: '/public/image/introImage/char_yw_intro.png',
+        thumbnail: '/public/image/introImage/char_yw_intro.png',
       },
     ],
   },
   '방미리&류재호': {
     title: '방미리 & 류재호',
-    overview:
-      '우연히 마주친 두 사람이 재난 속에서 서로를 의지하게 되는 성장 스토리.',
+    // overview:
+    //   '우연히 마주친 두 사람이 재난 속에서 서로를 의지하게 되는 성장 스토리.',
     characters: [
       {
         id: 'bangmiri',
         name: '방미리',
         age: '28세',
         stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'Mid' },
+          { label: '체력', value: 'Normal' },
+          { label: '정신력', value: 'High' },
         ],
-        description: '분위기 메이커지만 위기 상황에서 쉽게 겁먹는 평범한 시민.',
-        image: '',
-        thumbnail: '',
+        description:
+          '대기업 마트 본사에 최연소 팀장으로 승진한 일잘러. MBTI J 끝판왕으로 어디서나 계획하고, 기획하고, 정리하려는 강박을 가지고 있다.',
+        traits: '※특징: 자기 관리 강박증으로 방문 횟수가 많은 편이다.',
+        image: '/public/image/introImage/char_mr_intro.png',
+        thumbnail: '/public/image/introImage/char_mr_intro.png',
       },
       {
         id: 'ryujaeho',
         name: '류재호',
-        age: '30세',
+        age: '32세',
         stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'Mid' },
+          { label: '체력', value: 'High' },
+          { label: '정신력', value: 'Normal' },
         ],
         description:
-          '책임감 강한 회사원. 방미리를 지키기 위해 자신을 단련한다.',
-        image: '',
-        thumbnail: '',
+          '대한민국 최고 수재만 간다는 대학교, 아이비리그 대학원 출신이자 재벌 3세. 대학원 졸업 후 귀국하자마자 아버지 회사의 마트 본사 본부장이 되었다. 9살 때 당한 큰 사고로 어릴 적에 대한 기억이 없다.',
+        traits:
+          '※특징: 만성 비염 환자로 온도차가 심한 환경에서는 재채기를 하거나 코가 꽉 막힌다.',
+        image: '/public/image/introImage/char_jh_intro.png',
+        thumbnail: '/public/image/introImage/char_jh_intro.png',
       },
     ],
+  },
+};
+
+const CHARACTER_TAB_IMAGES: Record<
+  string,
+  { defaultSrc: string; selectedSrc: string; alt: string }
+> = {
+  '김형빈과 이병철': {
+    defaultSrc: '/image/charSelect/char_select_hb_bc.svg',
+    selectedSrc: '/image/charSelect/char_selected_hb_bc.svg',
+    alt: '김형빈과 이병철 선택 탭',
+  },
+  '정복순&진실이': {
+    defaultSrc: '/image/charSelect/char_select_bs_js.svg',
+    selectedSrc: '/image/charSelect/char_selected_bs_js.svg',
+    alt: '정복순과 진실이 선택 탭',
+  },
+  '소재옥&문예원': {
+    defaultSrc: '/image/charSelect/char_select_jo_yw.svg',
+    selectedSrc: '/image/charSelect/char_selected_jo_yw.svg',
+    alt: '소재옥과 문예원 선택 탭',
+  },
+  '방미리&류재호': {
+    defaultSrc: '/image/charSelect/char_select_mr_jh.svg',
+    selectedSrc: '/image/charSelect/char_selected_mr_jh.svg',
+    alt: '방미리와 류재호 선택 탭',
   },
 };
 
@@ -220,7 +257,7 @@ function createPairDetail(set?: CharacterSet): CharacterPairDetail {
 
 export default function CharacterSelect({
   onNext,
-  onBack,
+  onBack: _onBack,
   onSelectSuccess,
 }: CharacterSelectProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -281,71 +318,89 @@ export default function CharacterSelect({
 
   return (
     <div className='flex h-full w-full text-white'>
-      <aside className='w-[260px] border-r border-white/10 px-10 py-16'>
-        <div className='flex flex-col gap-4'>
-          <div className='w-full justify-start'>
-            <button
-              onClick={onBack}
-              className='rounded-full px-4 py-2 text-sm font-semibold text-white/70 transition hover:bg-white/10 hover:text-white'
-            >
-              ←
-            </button>
-          </div>
-          <div className='flex flex-col gap-8'>
-            {characterSets.map((set, index) => {
-              const isActive = index === currentIndex;
-              return (
-                <button
-                  key={set.id}
-                  onClick={() => setCurrentIndex(index)}
-                  className={cn(
-                    'rounded-full px-6 py-3 text-left text-base font-semibold transition-all',
-                    isActive
-                      ? 'border border-white/40 bg-white/10 text-white shadow-[0_0_24px_rgba(255,255,255,0.15)]'
-                      : 'border border-transparent text-white/55 hover:border-white/20 hover:text-white'
-                  )}
-                >
-                  {set.name}
-                </button>
-              );
-            })}
-          </div>
+      <aside className='w-[220px] py-6'>
+        <div className='flex w-full flex-col justify-items-start gap-1'>
+          {characterSets.map((set, index) => {
+            const isActive = index === currentIndex;
+            const tabAssets = CHARACTER_TAB_IMAGES[set.name];
+            const fallbackSrc = isActive
+              ? (tabAssets?.selectedSrc ?? tabAssets?.defaultSrc)
+              : tabAssets?.defaultSrc;
+            return (
+              <button
+                key={set.id}
+                onClick={() => setCurrentIndex(index)}
+                className={cn(
+                  'group relative rounded-3xl border border-transparent py-1 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
+                  isActive ? 'ring-0' : 'hover:border-white/15'
+                )}
+              >
+                {fallbackSrc ? (
+                  <div className='flex w-full justify-start'>
+                    <img
+                      src={fallbackSrc}
+                      alt={tabAssets?.alt ?? set.name}
+                      className={cn(
+                        'h-[80px] object-contain transition-transform duration-200 ease-out',
+                        isActive ? 'scale-[1.1]' : 'scale-100'
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <span className='block px-6 py-3 text-left text-base font-semibold text-white'>
+                    {set.name}
+                  </span>
+                )}
+                <span className='sr-only'>{set.name}</span>
+              </button>
+            );
+          })}
         </div>
       </aside>
 
       <main className='flex flex-1 flex-col'>
-        <header className='flex items-center justify-between px-12 py-8'>
-          <div className='text-sm text-white/40'>
-            {pairDetail.characters.length > 0
-              ? `${pairDetail.characters.length} PLAYERS`
-              : '준비중'}
-          </div>
-        </header>
-
-        <div className='flex flex-1 items-center gap-16 px-16 pb-12'>
-          <div className='flex flex-1 items-center justify-center'>
+        <div className='flex flex-1 gap-16 px-16'>
+          <div className='relative flex flex-1 items-center justify-center px-20'>
             {activeCharacter?.image ? (
               <img
                 src={activeCharacter.image}
                 alt={activeCharacter.name}
-                className='max-h-[540px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+                className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
               />
             ) : (
-              <div className='flex h-[200px] w-[200px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
+              <div className='flex h-[140px] w-[140px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
                 이미지 준비 중
               </div>
             )}
+            <div className='pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-10'>
+              <GlassButton
+                onClick={handleSelectComplete}
+                disabled={currentSet?.isLocked || isSelecting}
+                className={cn(
+                  'pointer-events-auto px-14 py-6 text-white transition-all',
+                  currentSet?.isLocked ? 'opacity-70' : ''
+                )}
+              >
+                <Typography variant='h4-b'>
+                  {isSelecting
+                    ? '선택 중...'
+                    : currentSet?.isLocked
+                      ? '공개 예정'
+                      : '선택 완료'}
+                </Typography>
+              </GlassButton>
+            </div>
           </div>
 
-          <div className='flex w-[420px] flex-col gap-8'>
+          <div className='flex w-[410] flex-col gap-8'>
             <div className='flex flex-col gap-3'>
               <span className='text-sm font-semibold text-white/40'>
-                {pairDetail.title}
+                {/* {pairDetail.title} */}
               </span>
               {activeCharacter ? (
                 <>
                   <div className='flex items-baseline gap-3'>
-                    <span className='text-xl font-extrabold tracking-tight'>
+                    <span className='text-lg font-extrabold tracking-tight'>
                       {activeCharacter.name}
                     </span>
                     {activeCharacter.age && (
@@ -382,18 +437,18 @@ export default function CharacterSelect({
             )}
 
             {activeCharacter?.description && (
-              <p className='text-sm leading-relaxed whitespace-pre-line text-white/80'>
+              <p className='text-[10px] leading-relaxed whitespace-pre-line text-white/80'>
                 {activeCharacter.description}
               </p>
             )}
 
             {activeCharacter?.traits && (
-              <p className='text-xs whitespace-pre-line text-white/50'>
+              <p className='text-[10px] whitespace-pre-line text-white/50'>
                 {activeCharacter.traits}
               </p>
             )}
 
-            <div className='flex h-full w-full items-end justify-between'>
+            <div className='flex w-full items-start justify-between'>
               <div>
                 <div className='text-xs font-semibold tracking-[0.3em] text-white/40 uppercase'>
                   플레이어 페어
@@ -427,21 +482,6 @@ export default function CharacterSelect({
                     );
                   })}
                 </div>
-              </div>
-              <div className='flex items-center justify-center gap-6 pb-12'>
-                <GlassButton
-                  onClick={handleSelectComplete}
-                  disabled={currentSet?.isLocked || isSelecting}
-                  className={cn('')}
-                >
-                  <Typography variant='h4-b'>
-                    {isSelecting
-                      ? '선택 중...'
-                      : currentSet?.isLocked
-                        ? '공개 예정'
-                        : '선택 완료'}
-                  </Typography>
-                </GlassButton>
               </div>
             </div>
           </div>

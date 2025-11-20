@@ -21,12 +21,12 @@ const CHARACTER_NAME_MAP: Record<string, string> = {
 };
 
 const CHARACTER_IMAGE_MAP: Record<string, string> = {
-  Char_hem: 'char_ham_portrait.png',
-  char_hem: 'char_ham_portrait.png',
-  Char_ham: 'char_ham_portrait.png',
-  char_ham: 'char_ham_portrait.png',
-  Char_bang: 'char_bang_portrait.png',
-  char_bang: 'char_bang_portrait.png',
+  Char_hem: 'char_hb_intro.png',
+  char_hem: 'char_hb_intro.png',
+  Char_ham: 'char_hb_intro.png',
+  char_ham: 'char_hb_intro.png',
+  Char_bang: 'char_bc_intro.png',
+  char_bang: 'char_bc_intro.png',
 };
 
 interface IntroSimpleScreenProps {
