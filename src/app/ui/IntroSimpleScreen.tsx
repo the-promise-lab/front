@@ -12,15 +12,21 @@ const CHARACTER_NAME_MAP: Record<string, string> = {
   char_ham: '헴',
   Char_bang: '병철',
   char_bang: '병철',
+  char_boksoon: '복순',
+  char_dog: '진실',
+  char_yewon: '예원',
+  char_zewook: '재욱',
+  char_miri: '미리',
+  char_jeaho: '재호',
 };
 
 const CHARACTER_IMAGE_MAP: Record<string, string> = {
-  Char_hem: 'char_ham_portrait.png',
-  char_hem: 'char_ham_portrait.png',
-  Char_ham: 'char_ham_portrait.png',
-  char_ham: 'char_ham_portrait.png',
-  Char_bang: 'char_bang_portrait.png',
-  char_bang: 'char_bang_portrait.png',
+  Char_hem: 'char_hb_intro.png',
+  char_hem: 'char_hb_intro.png',
+  Char_ham: 'char_hb_intro.png',
+  char_ham: 'char_hb_intro.png',
+  Char_bang: 'char_bc_intro.png',
+  char_bang: 'char_bc_intro.png',
 };
 
 interface IntroSimpleScreenProps {
@@ -80,18 +86,28 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
     playingCharacters.length >= 2 ? playingCharacters : fallbackCharacters;
 
   const speakerName = useMemo(() => {
-    if (event.CharSpeakerOX1) {
+    // boolean 또는 number를 boolean으로 변환
+    const isSpeaker1 = Boolean(event.CharSpeakerOX1);
+    const isSpeaker2 = Boolean(event.CharSpeakerOX2);
+    const isSpeaker3 = Boolean(event.CharSpeakerOX3);
+
+    if (isSpeaker1) {
       return CHARACTER_NAME_MAP[event.CharID1 ?? ''] ?? event.CharID1 ?? '';
     }
-    if (event.CharSpeakerOX2) {
+    if (isSpeaker2) {
       return CHARACTER_NAME_MAP[event.CharID2 ?? ''] ?? event.CharID2 ?? '';
+    }
+    if (isSpeaker3) {
+      return CHARACTER_NAME_MAP[event.CharID3 ?? ''] ?? event.CharID3 ?? '';
     }
     return CHARACTER_NAME_MAP[event.CharID1 ?? ''] ?? event.CharID1 ?? '';
   }, [
     event.CharSpeakerOX1,
     event.CharSpeakerOX2,
+    event.CharSpeakerOX3,
     event.CharID1,
     event.CharID2,
+    event.CharID3,
   ]);
 
   const script = event.Script ?? '';

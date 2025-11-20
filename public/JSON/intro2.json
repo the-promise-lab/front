@@ -1,0 +1,66 @@
+[
+  {
+    "EventID": 10002001,
+    "Event": "Simple",
+    "CharID1": "Char_hem",
+    "CharPosition1": "left",
+    "CharEmotion1": "default",
+    "CharSpeakerOX1": 1.0,
+    "CharID2": "Char_bang",
+    "CharPosition2": "right",
+    "CharEmotion2": "default",
+    "CharSpeakerOX2": 0.0,
+    "Script": "뱅철아, 정신 똑띠 차려라!",
+    "BGImage": "아수라장이 된 마트통로",
+    "SE": "웅성웅성.wav",
+    "SEVolume": 100.0,
+    "SELoop": 1.0
+  },
+  {
+    "EventID": 10002002,
+    "Event": "Simple",
+    "CharID1": "Char_hem",
+    "CharPosition1": "left",
+    "CharEmotion1": "default",
+    "CharSpeakerOX1": 1.0,
+    "CharID2": "Char_bang",
+    "CharPosition2": "right",
+    "CharEmotion2": "default",
+    "CharSpeakerOX2": 0.0,
+    "Script": "지금부터 100초 안에 생존에 필요한 물품을 챙긴다!"
+  },
+  {
+    "EventID": 10002003,
+    "Event": "Simple",
+    "CharID1": "Char_hem",
+    "CharPosition1": "left",
+    "CharEmotion1": "default",
+    "CharSpeakerOX1": 0.0,
+    "CharID2": "Char_bang",
+    "CharPosition2": "right",
+    "CharEmotion2": "default",
+    "CharSpeakerOX2": 1.0,
+    "Script": "예! 헴! 말씀만 하십쇼!"
+  },
+  {
+    "EventID": 10002004,
+    "Event": "System",
+    "SystemScript": "마트 안은 혼돈 그 자체입니다."
+  },
+  {
+    "EventID": 10002005,
+    "Event": "System",
+    "SystemScript": "제한 시간 100초 안에 생존에 필요한 물품을"
+  },
+  {
+    "EventID": 10002006,
+    "Event": "System",
+    "SystemScript": "최대한 많이 카트에 담으세요!"
+  },
+  {
+    "EventID": 10002007,
+    "Event": "System",
+    "SystemScript": "헴과 병철의 생존 여부는 당신의 선택에 따라 달라집니다.",
+    "SE": "STOP"
+  }
+]

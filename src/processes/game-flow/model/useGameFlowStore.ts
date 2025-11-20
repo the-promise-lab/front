@@ -178,7 +178,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       set({ isNewGame: isNew });
     },
 
-    savePlayingCharacters: params => {
+    savePlayingCharacters: (params, groupName) => {
       set(state => {
         if (!state.gameSession) {
           console.warn(
@@ -194,6 +194,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
               ...params,
             },
           },
+          selectedCharacterGroupName: groupName,
         };
       });
     },
@@ -260,6 +261,15 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     resetGame: () => {
       const store = useGameFlowStore.getState();
       store.reset();
+    },
+
+    // 일시정지 메뉴 관련 액션
+    openPauseMenu: () => {
+      set({ isPauseMenuOpen: true });
+    },
+
+    closePauseMenu: () => {
+      set({ isPauseMenuOpen: false });
     },
   })
 );

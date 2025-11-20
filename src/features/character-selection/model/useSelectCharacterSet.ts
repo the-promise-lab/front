@@ -12,6 +12,7 @@ interface SelectCharacterParams {
 interface SelectCharacterResult {
   response: SelectCharacterSetResultDto;
   playingCharacters: PlayingCharacter[]; // 변환된 캐릭터 정보 (메타데이터 포함)
+  groupName: string; // 선택된 캐릭터 그룹 이름
 }
 
 interface UseSelectCharacterSetOptions {
@@ -57,7 +58,7 @@ export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
       });
       return { response, groupName: params.groupName };
     },
-    onSuccess: ({ response }) => {
+    onSuccess: ({ response, groupName }) => {
       // 서버 응답 + 메타데이터 결합
       const characters = response.playingCharacter
         .map(adaptPlayingCharacterFromApi)
@@ -73,6 +74,7 @@ export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
       console.log('[useSelectCharacterSet] 캐릭터 선택 성공:', {
         characterSetId: response.id,
         characterGroupId: response.characterGroupId,
+        groupName,
         playingCharacters: characters,
       });
 
@@ -80,7 +82,11 @@ export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
       queryClient.invalidateQueries({ queryKey: ['gameSession'] });
 
       // 사용자 정의 콜백 실행 (저장 로직은 호출하는 쪽에서 처리)
-      options?.onSuccess?.({ response, playingCharacters: characters });
+      options?.onSuccess?.({
+        response,
+        playingCharacters: characters,
+        groupName,
+      });
     },
     onError: (error: Error) => {
       console.error('[useSelectCharacterSet] 캐릭터 선택 실패:', error);

@@ -5,3 +5,4 @@ export { default as WarningBeforeStartScreen } from './ui/WarningBeforeStartScre
 export { default as Header } from './ui/Header';
 export { default as ChangeStatsScreen } from './ui/ChangeStatsScreen';
 export { default as SinglePortraitScreen } from './ui/SinglePortraitScreen';
+export { default as BagSelectionScreen } from './ui/BagSelectionScreen';

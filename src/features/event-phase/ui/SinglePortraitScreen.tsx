@@ -19,12 +19,13 @@ export default function SinglePortraitScreen({
   portraits = [],
   playingCharacters,
 }: SinglePortraitScreenProps) {
+  console.log('현재 플레이 중인 캐릭터: ', playingCharacters);
   const [portraitIndex, setPortraitIndex] = useState(0);
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   console.log('playingCharacters', playingCharacters);
   const firstCharacterUrl = getObjectUrl(
-    playingCharacters[0].profileImage || 'byungcheol.png'
+    playingCharacters[0]?.profileImage || 'byungcheol.png'
   );
   const secondCharacterUrl = getObjectUrl(
     playingCharacters[1].profileImage || 'ham.png'

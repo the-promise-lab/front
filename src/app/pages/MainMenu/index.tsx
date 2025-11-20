@@ -23,14 +23,13 @@ export default function MainMenu() {
     isLoading: isLoadingSession,
     isError: isSessionError,
   } = useContinueGame();
-
   const handleInventory = () => {
     // TODO: 가방/인벤토리 화면으로 이동
     console.log('가방 버튼 클릭');
   };
 
   return (
-    <div className='relative h-dvh overflow-hidden'>
+    <div className='relative h-dvh w-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100'>
       {/* 좌측 하단 가방 버튼 */}
       <div className='absolute bottom-4 left-4 z-10'>
         <button

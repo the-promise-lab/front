@@ -14,11 +14,13 @@ export type GameStep =
   | 'LOGIN_PROGRESS' // 로그인 진행 중
   | 'MAIN_MENU' // 메인 메뉴
   | 'PROGRESS' // 게임 준비 진행 중
-  | 'INTRO_STORY' // 인트로 스토리
+  | 'INTRO_STORY' // 인트로 스토리 (첫 번째)
   | 'CHARACTER_SELECT' // 캐릭터 선택
   | 'BAG_SELECT' // 가방 선택
-  | 'DAY_FLOW' // 시나리오 DAY 플로우
+  | 'INTRO_STORY_2' // 인트로 스토리 (두 번째)
   | 'PACKING_PHASE' // 가방 싸기
+  | 'INTRO_STORY_3' // 인트로 스토리 (세 번째)
+  | 'DAY_FLOW' // 시나리오 DAY 플로우
   | 'EVENT_PHASE' // 이벤트 페이즈
   | 'PLAYING'; // 게임 플레이
 
@@ -89,6 +91,10 @@ export interface GameFlowState {
   // 게임 세션 관련 상태
   gameSession?: GameSession;
   isNewGame: boolean; // 새 게임인지 이어하기인지 구분
+  // 일시정지 메뉴 관련 상태
+  isPauseMenuOpen: boolean;
+  // 선택된 캐릭터 그룹 이름 (상세 정보 조회용)
+  selectedCharacterGroupName?: string;
 }
 
 export interface PlayingCharacter {
@@ -126,13 +132,19 @@ export interface GameFlowActions {
   loadGameSession: (session: GameSession) => void;
   clearGameSession: () => void;
   setIsNewGame: (isNew: boolean) => void;
-  savePlayingCharacters: (params: PlayingCharacterSet) => void;
+  savePlayingCharacters: (
+    params: PlayingCharacterSet,
+    groupName?: string
+  ) => void;
   saveBag: (bag: Bag) => void;
   saveInventory: (inventories: Inventory[]) => void;
   startNewGame: (newGameSession: GameSession) => void;
   startDayFlow: () => void;
   continueGame: () => void;
   resetGame: () => void;
+  // 일시정지 메뉴 관련 액션
+  openPauseMenu: () => void;
+  closePauseMenu: () => void;
 }
 
 // 게임 단계 순서 정의
@@ -145,7 +157,9 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'CHARACTER_SELECT',
   'INTRO_STORY',
   'BAG_SELECT',
+  'INTRO_STORY_2',
   'PACKING_PHASE',
+  'INTRO_STORY_3',
   'DAY_FLOW',
   'EVENT_PHASE',
   'PLAYING',
@@ -174,4 +188,6 @@ export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
   currentDayStepIndex: 0,
   gameSession: undefined,
   isNewGame: true,
+  isPauseMenuOpen: false,
+  selectedCharacterGroupName: undefined,
 };

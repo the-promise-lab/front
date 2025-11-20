@@ -9,9 +9,13 @@ import { useSetBackground } from '@shared/background';
 
 interface IntroStoryProps {
   onNext?: () => void;
+  jsonPath?: string; // JSON 파일 경로 (기본값: '/JSON/intro1.json')
 }
 
-export default function IntroStory({ onNext }: IntroStoryProps) {
+export default function IntroStory({
+  onNext,
+  jsonPath = '/JSON/intro1.json',
+}: IntroStoryProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [events, setEvents] = useState<IntroEvent[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,9 +27,9 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
     let isMounted = true;
     const loadEvents = async () => {
       try {
-        const response = await fetch('/introAct.json');
+        const response = await fetch(jsonPath);
         if (!response.ok) {
-          throw new Error(`introAct.json fetch failed (${response.status})`);
+          throw new Error(`${jsonPath} fetch failed (${response.status})`);
         }
         const data: IntroEvent[] = await response.json();
         if (isMounted) {
@@ -45,7 +49,7 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [jsonPath]);
 
   const currentEvent = events[currentIndex];
 
@@ -115,6 +119,7 @@ export default function IntroStory({ onNext }: IntroStoryProps) {
 function IntroEventRenderer({ event }: { event: IntroEvent }) {
   switch (event.Event) {
     case 'Simple':
+    case 'Multi':
       return <IntroSimpleScreen event={event} />;
     case 'System':
       return <SystemMessage event={event} />;
