@@ -262,15 +262,6 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       const store = useGameFlowStore.getState();
       store.reset();
     },
-
-    // 일시정지 메뉴 관련 액션
-    openPauseMenu: () => {
-      set({ isPauseMenuOpen: true });
-    },
-
-    closePauseMenu: () => {
-      set({ isPauseMenuOpen: false });
-    },
   })
 );
 

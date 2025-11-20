@@ -1,12 +1,11 @@
 import {
   useStartNewGame,
   useContinueGame,
-  useGameFlowStore,
+  PauseMenu,
 } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
 import { useSetBackground } from '@shared/background';
-import { useShallow } from 'zustand/react/shallow';
 
 export default function MainMenu() {
   useSetBackground({
@@ -26,11 +25,6 @@ export default function MainMenu() {
     isLoading: isLoadingSession,
     isError: isSessionError,
   } = useContinueGame();
-  const { openPauseMenu } = useGameFlowStore(
-    useShallow(state => ({
-      openPauseMenu: state.openPauseMenu,
-    }))
-  );
 
   return (
     <div className='relative h-screen w-screen overflow-hidden'>
@@ -103,17 +97,20 @@ export default function MainMenu() {
               </button>
             ))}
 
-          {/* 설정 버튼 */}
-          <button
-            onClick={openPauseMenu}
-            className='block h-30 w-134 leading-none transition-all'
-          >
-            <img
-              src='/image/mainPage/main_setting_btn.svg'
-              alt='설정'
-              className='block leading-none'
-            />
-          </button>
+          <PauseMenu
+            renderButton={openPauseMenu => (
+              <button
+                onClick={openPauseMenu}
+                className='block h-30 w-134 leading-none transition-all'
+              >
+                <img
+                  src='/image/mainPage/main_setting_btn.svg'
+                  alt='설정'
+                  className='block leading-none'
+                />
+              </button>
+            )}
+          />
         </div>
       </div>
 

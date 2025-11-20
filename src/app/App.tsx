@@ -15,6 +15,7 @@ import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
 import CharacterSelectPage from './pages/CharacterSelect';
 import BagSelectPage from './pages/BagSelectPage';
+import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
 
 export default function App() {
   const { step, resetDayFlow, setAuthenticated } = useGameFlowStore(
@@ -103,19 +104,10 @@ export default function App() {
 
   return (
     <AppProviders>
-      {/* <RootLayout>
-        <div className='fixed inset-0 z-10 touch-pan-y overflow-hidden'>
-          {renderScreen()}
-        </div>
-        일시정지 버튼 - 로그인 화면 제외, DAY_FLOW는 Header에서 처리
-        {showPauseButton && (
-          <div className='fixed top-11 right-11 z-[50]'>
-            <IconPauseButton onClick={openPauseMenu} />
-          </div>
-        )}
-        일시정지 메뉴 - 전역 팝업
-        <PauseMenu /> */}
-      <RootLayout>{renderScreen()}</RootLayout>
+      <RootLayout>
+        {renderScreen()}
+        <PauseMenu hidden={step === 'LOGIN' || step === 'PROGRESS'} />
+      </RootLayout>
     </AppProviders>
   );
 }
