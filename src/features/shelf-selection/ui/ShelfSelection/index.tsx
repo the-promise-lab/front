@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
-import SelectedItemsPanel from './SelectedItemsPanel';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShelfData } from '../../model/useShelfData';
 import { adaptShelfItemsToInventoryPayload } from '../../model/adapters';
@@ -24,6 +23,8 @@ export default function ShelfSelection({
 }: ShelfSelectionProps) {
   const {
     getCurrentShelf,
+    getNextShelf,
+    getPreviousShelf,
     selectedShelfItems,
     initShelves,
     moveToNextShelf,
@@ -62,6 +63,8 @@ export default function ShelfSelection({
   }, [shelves, initShelves]);
 
   const currentShelf = getCurrentShelf();
+  const nextShelf = getNextShelf();
+  const previousShelf = getPreviousShelf();
 
   if (error) {
     return (
@@ -102,29 +105,13 @@ export default function ShelfSelection({
         </button>
       </div>
 
-      <div className='absolute top-1/2 left-2 z-10 -translate-y-1/2'>
-        <button
-          className='flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm'
-          onClick={() => moveToPreviousShelf()}
-        >
-          <PreviousIcon />
-        </button>
-      </div>
-
-      <div className='absolute top-1/2 right-2 z-10 -translate-y-1/2'>
-        <button
-          className='flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm'
-          onClick={() => moveToNextShelf()}
-        >
-          <NextIcon />
-        </button>
-      </div>
-
-      <SelectedItemsPanel selectedItems={selectedShelfItems} />
-
       <ShelfSelectionCanvas
         backgroundImage={currentShelf.backgroundImage}
         items={currentShelf.shelfItems}
+        previousShelfName={previousShelf?.name || ''}
+        nextShelfName={nextShelf?.name || ''}
+        onPreviousShelfClick={moveToPreviousShelf}
+        onNextShelfClick={moveToNextShelf}
       />
 
       <GlassButton
@@ -141,33 +128,3 @@ export default function ShelfSelection({
     </div>
   );
 }
-
-const PreviousIcon = () => (
-  <svg
-    width='24'
-    height='24'
-    viewBox='0 0 24 24'
-    fill='none'
-    stroke='currentColor'
-    strokeWidth='2'
-    strokeLinecap='round'
-    strokeLinejoin='round'
-  >
-    <polyline points='15 18 9 12 15 6' />
-  </svg>
-);
-
-const NextIcon = () => (
-  <svg
-    width='24'
-    height='24'
-    viewBox='0 0 24 24'
-    fill='none'
-    stroke='currentColor'
-    strokeWidth='2'
-    strokeLinecap='round'
-    strokeLinejoin='round'
-  >
-    <polyline points='9 6 15 12 9 18' />
-  </svg>
-);

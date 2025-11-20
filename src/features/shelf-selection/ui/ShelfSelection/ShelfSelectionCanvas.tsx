@@ -6,17 +6,28 @@ import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
 import { toastItemAdded } from '@shared/ui/toast-variants';
 import { drawMarker } from '../../lib/drawMarker';
+import { IconGlowChevronLeft, IconGlowChevronRight } from './kit/icons';
+import { cn } from '@shared/lib/utils';
+import Typography from '@shared/ui/Typography';
 
 const ITEM_SIZE_PIXEL = 20;
 
 interface ShelfSelectionCanvasProps {
   backgroundImage: string;
   items: ShelfItem[];
+  previousShelfName: string;
+  nextShelfName: string;
+  onPreviousShelfClick: () => void;
+  onNextShelfClick: () => void;
 }
 
 export default function ShelfSelectionCanvas({
   backgroundImage,
   items,
+  previousShelfName,
+  nextShelfName,
+  onPreviousShelfClick,
+  onNextShelfClick,
 }: ShelfSelectionCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
@@ -277,19 +288,58 @@ export default function ShelfSelectionCanvas({
   );
 
   return (
-    <div className='absolute inset-0 h-full w-full overflow-hidden'>
-      <canvas
-        ref={canvasRef}
-        style={{
-          width: `${canvasSize.width}px`,
-          height: `${canvasSize.height}px`,
-          touchAction: 'none',
-          cursor: isDragging ? 'grabbing' : 'grab',
-        }}
-        className='block'
-        onClick={handleClick}
-        {...dragHandlers}
-      />
-    </div>
+    <>
+      <div className='absolute inset-0 h-full w-full overflow-hidden'>
+        <canvas
+          ref={canvasRef}
+          style={{
+            width: `${canvasSize.width}px`,
+            height: `${canvasSize.height}px`,
+            touchAction: 'none',
+            cursor: isDragging ? 'grabbing' : 'grab',
+          }}
+          className='block'
+          onClick={handleClick}
+          {...dragHandlers}
+        />
+      </div>
+      <div className='absolute top-1/2 left-2 z-10 -translate-y-1/2'>
+        <button
+          className={cn('flex flex-col gap-2.5', { hidden: viewOffsetX !== 0 })}
+          onClick={onPreviousShelfClick}
+        >
+          <IconGlowChevronLeft className='h-12 w-12' />
+          <Typography
+            variant='body-b'
+            style={{
+              textShadow: '0 0 4px var(--color-sky-1, #01ead6)',
+            }}
+          >
+            {previousShelfName}
+          </Typography>
+        </button>
+      </div>
+
+      <div className='absolute top-1/2 right-2 z-10 -translate-y-1/2'>
+        <button
+          className={cn('flex flex-col items-end gap-2.5', {
+            hidden:
+              viewOffsetX !== imageScale.width - canvasSize.width ||
+              imageScale.width === 0,
+          })}
+          onClick={onNextShelfClick}
+        >
+          <IconGlowChevronRight className='h-12 w-12' />
+          <Typography
+            variant='body-b'
+            style={{
+              textShadow: '0 0 4px var(--color-sky-1, #01ead6)',
+            }}
+          >
+            {nextShelfName}
+          </Typography>
+        </button>
+      </div>
+    </>
   );
 }

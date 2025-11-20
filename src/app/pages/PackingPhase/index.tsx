@@ -1,8 +1,6 @@
 import { SideInventory, useGameFlowStore } from '@processes/game-flow';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShelfSelection } from '@features/shelf-selection';
-import CautionNotice from '@features/event-phase/ui/kit/CautionNotice';
-import Typography from '@shared/ui/Typography';
 import { useCountdown } from '@features/shelf-selection/model/useCountdown';
 import { useEffect } from 'react';
 import type { SubmitInventoryResultDto } from '@api';
@@ -10,8 +8,7 @@ import { useShelfSelectionStore } from '@features/shelf-selection/model/useShelf
 
 export default function PackingPhase() {
   const { goto, back, gameSession, saveInventory, next } = useGameFlowStore();
-  const { showModal, formattedTime, countdownMoved, showBackground } =
-    useCountdown();
+  const { showModal, formattedTime } = useCountdown();
   const { selectedShelfItems } = useShelfSelectionStore();
 
   const bagId = gameSession?.selectedBag?.id;
@@ -35,7 +32,7 @@ export default function PackingPhase() {
       <motion.div
         className='absolute inset-0'
         initial={{ opacity: 0 }}
-        animate={{ opacity: showBackground ? 1 : 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
       >
         <ShelfSelection onBack={back} bagId={bagId} onComplete={onComplete} />
@@ -52,62 +49,23 @@ export default function PackingPhase() {
         />
       </div>
 
-      {/* 어두운 오버레이 (카운트다운 중에만) */}
       <motion.div
-        className='pointer-events-none absolute inset-0 bg-black/70 backdrop-blur-[7.5px]'
-        initial={{ opacity: 0.8 }}
-        animate={{ opacity: showBackground ? 0 : 0.8 }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
-      />
-
-      {/* 초기 카운트다운 CAUTION 오버레이 */}
-      <AnimatePresence>
-        {!countdownMoved && (
-          <motion.div
-            className='pointer-events-none absolute inset-0 z-20 flex items-center justify-center'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          >
-            <div className='flex w-full max-w-[640px] flex-col items-center gap-6 px-6 text-center'>
-              <CautionNotice className='w-full max-w-[320px]' />
-              <div className='w-full rounded-3xl bg-black/70 px-12 py-10 shadow-[0_25px_60px_rgba(0,0,0,0.55)] backdrop-blur-md'>
-                <Typography
-                  variant='subtitle-2-b'
-                  className='mb-4 text-white/70'
-                >
-                  제한 시간 내에 가방 안에 생존을 위한 물품을 담으세요!
-                </Typography>
-                <div className='font-mono text-7xl font-bold tracking-[0.2em] text-white'>
-                  {formattedTime}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* 카운트다운 타이머 (상단) */}
-      {countdownMoved && (
-        <motion.div
-          className='pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-mono text-6xl font-bold text-white'
-          initial={{ y: 0, scale: 1 }}
-          animate={{
-            y: -150,
-            scale: 0.8,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: 'easeInOut',
-          }}
-          style={{
-            fontSize: '30px',
-          }}
-        >
-          {formattedTime}
-        </motion.div>
-      )}
+        className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-mono text-6xl font-bold text-white'
+        initial={{ y: 0, scale: 1 }}
+        animate={{
+          y: -150,
+          scale: 0.8,
+        }}
+        transition={{
+          duration: 0.8,
+          ease: 'easeInOut',
+        }}
+        style={{
+          fontSize: '30px',
+        }}
+      >
+        {formattedTime}
+      </motion.div>
 
       {/* 모달 */}
       <AnimatePresence>
