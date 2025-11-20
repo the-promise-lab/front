@@ -9,6 +9,7 @@ import type { SubmitInventoryResultDto } from '@api';
 import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
 import { toast } from 'sonner';
+import Minimap from './Minimap';
 
 interface ShelfSelectionProps {
   onBack: () => void;
@@ -135,6 +136,8 @@ export default function ShelfSelection({
           {isPending ? '제출 중...' : '담기 완료'}
         </Typography>
       </GlassButton>
+
+      <Minimap />
     </div>
   );
 }
