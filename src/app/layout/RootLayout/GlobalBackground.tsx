@@ -1,3 +1,4 @@
+import { BACKGROUND_PORTAL_ID } from '@shared/background-portal';
 import { useBackgroundStore } from '@shared/background';
 import { cn } from '@shared/lib/utils';
 import type { ReactNode } from 'react';
@@ -40,6 +41,7 @@ export default function GlobalBackground({
       style={backgroundStyle}
     >
       {children}
+      <div id={BACKGROUND_PORTAL_ID} className='h-0 w-0' aria-hidden />
     </div>
   );
 }
