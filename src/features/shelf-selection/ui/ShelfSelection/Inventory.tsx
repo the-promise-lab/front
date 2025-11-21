@@ -24,7 +24,8 @@ export default function Inventory({ bag }: { bag: Bag }) {
   const radius = 65; // 원의 반지름
   const circumference = 2 * Math.PI * radius;
   const progress = Math.min(Math.max(currentWieght, 1), bagCapacity); // 0~MAX 범위 제한
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const strokeDashoffset =
+    circumference - (progress / bagCapacity) * circumference;
 
   const handleSlotClick = (item: SlotItem) => {
     if (item.state === 'default') {
@@ -83,7 +84,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
         bagTitle='여행용 백팩'
         bagDescription='가방 설명 블라블라'
         hasWeightBar
-        weight={currentWieght}
+        weight={(progress / bagCapacity) * 100}
         items={slotItems}
         handleSlotClick={handleSlotClick}
       />
