@@ -24,7 +24,7 @@ export function toastItemAdded(name: string) {
         padding: 0,
         margin: 0,
       },
-      className: 'item-added-toast-container item-added-toast !bottom-30',
+      className: 'item-added-toast-container item-added-toast !bottom-35',
     }
   );
 }

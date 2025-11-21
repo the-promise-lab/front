@@ -46,7 +46,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
   return (
     <>
       <button
-        className='absolute right-11 bottom-11 z-[10] h-36 w-36'
+        className='pointer-events-auto absolute right-11 bottom-11 z-[10] h-36 w-36'
         onClick={() => setIsOpen(true)}
       >
         <div className='relative h-full w-full'>

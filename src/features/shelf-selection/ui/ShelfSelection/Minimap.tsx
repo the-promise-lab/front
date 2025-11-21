@@ -27,7 +27,8 @@ export default function Minimap() {
         className={cn(
           'absolute top-11 right-43',
           'aspect-square h-65 w-65 rounded-full',
-          'border-yellow-1 border-[0.8px]'
+          'border-yellow-1 border-[0.8px]',
+          'pointer-events-auto'
         )}
         style={{
           backgroundImage: `url(${minimapThumbnail})`,
