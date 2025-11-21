@@ -80,9 +80,9 @@ export default function Inventory({ bag }: { bag: Bag }) {
       <InventoryDrawer
         isOpen={isOpen}
         handleClickClose={() => setIsOpen(false)}
-        bagImage='/bag.png'
-        bagTitle='여행용 백팩'
-        bagDescription='가방 설명 블라블라'
+        bagImage={'/bag.png'}
+        bagTitle={bag.name}
+        bagDescription={`아이템 적재 가능: ${bagCapacity}개`}
         hasWeightBar
         weight={(progress / bagCapacity) * 100}
         items={slotItems}

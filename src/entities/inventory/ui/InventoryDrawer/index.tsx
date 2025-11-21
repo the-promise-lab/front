@@ -68,11 +68,11 @@ export default function InventoryDrawer({
 
                   {/* 가방 제목 및 설명 */}
                   <div className='flex flex-col gap-4.5 pb-8'>
-                    <div className='flex items-end gap-4'>
-                      <div className='flex items-center gap-4'>
+                    <div className='flex items-end gap-4.5'>
+                      <div className='flex items-center gap-3'>
                         <div className='h-10 w-1.5 bg-white' />
                         <Typography
-                          variant='h3-b'
+                          variant='h4-b'
                           className='text-white uppercase'
                         >
                           {bagTitle}
