@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useAssetStore, usePreloadAssets } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
-import { useSetBackground } from '@shared/background';
 
 const ASSETS_TO_PRELOAD = [
   'shelter-bg.png',
@@ -20,10 +19,6 @@ export default function LoadingPage() {
   const [timerEnded, setTimerEnded] = useState(false);
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
-  useSetBackground({
-    color: '#fff',
-    className: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
-  });
 
   // 게임 플로우 상태
   const { isNewGame, startDayFlow, next, gameSession, goto } = useGameFlowStore(
@@ -112,25 +107,26 @@ export default function LoadingPage() {
   }, [onComplete]);
 
   return (
-    <div className='flex h-full w-full items-center justify-center'>
-      <div className='text-center'>
-        {/* 로딩 애니메이션 */}
-        <div className='mb-8'>
-          <div className='mx-auto mb-4 h-20 w-20'>
-            {/* <div className="animate-spin rounded-full h-20 w-20 border-4 border-yellow-200 border-t-yellow-500"></div> */}
-          </div>
-        </div>
-
+    <div className='relative flex h-full w-full flex-col'>
+      <div className='flex flex-1 items-center justify-center text-center'>
         {/* 제목 */}
-        <h2 className='mb-10 text-2xl font-bold text-gray-800'>
-          게임을 준비하고 있습니다.
-        </h2>
+        <div className='text-center'>
+          <img
+            src='/image/mainPage/game_logo.svg'
+            alt='back to the future'
+            className='mx-auto h-60 w-200'
+          />
+        </div>
+      </div>
 
+      {/* 하단 고정 영역 */}
+      <div className='flex flex-col items-center justify-center gap-5 pb-20'>
+        <p className='text-sm text-gray-500'>{'Preparing to load data'}</p>
         {/* Progress Bar */}
-        <div className='mx-auto w-64'>
-          <div className='h-2 overflow-hidden rounded-full bg-gray-200'>
+        <div className='mx-auto w-105'>
+          <div className='h-2 overflow-hidden rounded-full'>
             <div
-              className='h-full animate-pulse rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500'
+              className='h-full animate-pulse rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500'
               style={{
                 animation: 'progress 3s linear forwards',
                 width: `${(loaded / total) * 100}%`,
@@ -138,11 +134,9 @@ export default function LoadingPage() {
             />
           </div>
         </div>
-
-        {/* 진행률 텍스트 */}
-        <p className='mt-4 text-sm text-gray-500'>
+        {/* <p className='text-sm text-gray-500'>
           {'TIP: 소리를 키고 진행해주세요.'}
-        </p>
+        </p> */}
       </div>
 
       <style>{`

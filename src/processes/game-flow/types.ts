@@ -9,7 +9,6 @@ import type {
 } from '@entities/game-session';
 
 export type GameStep =
-  | 'AUTH_CHECK' // 인증 상태 확인
   | 'LOGIN' // 로그인 페이지
   | 'LOGIN_PROGRESS' // 로그인 진행 중
   | 'MAIN_MENU' // 메인 메뉴
@@ -149,7 +148,6 @@ export interface GameFlowActions {
 
 // 게임 단계 순서 정의
 export const GAME_STEP_ORDER: readonly GameStep[] = [
-  'AUTH_CHECK',
   'LOGIN',
   'LOGIN_PROGRESS',
   'MAIN_MENU',
@@ -182,7 +180,7 @@ export const DAY_STEP_ORDER: readonly DayStep[] = [
 
 // 초기 상태
 export const INITIAL_GAME_FLOW_STATE: GameFlowState = {
-  step: 'AUTH_CHECK',
+  step: 'LOGIN',
   isAuthenticated: false,
   dayStep: 'PLACE_SCREEN',
   currentDayStepIndex: 0,

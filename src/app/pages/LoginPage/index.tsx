@@ -12,7 +12,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='flex h-full w-full items-center justify-center bg-black text-white'>
+    <div className='flex h-full w-full items-center justify-center text-white'>
       <div
         className='flex flex-col items-center justify-center rounded-[12px] border-[2px] border-white/40 px-45 py-25 text-center backdrop-blur-md'
         style={{

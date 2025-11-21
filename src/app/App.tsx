@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
 
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
+import { useCheckAuthState } from '@shared/auth/model/useLoginStatus';
 
 // 페이지 컴포넌트들
-import AuthCheck from './pages/AuthCheck';
 import LoginPage from './pages/LoginPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
@@ -17,14 +17,25 @@ import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
 
 export default function App() {
-  const { step, resetDayFlow, saveBag } = useGameFlowStore(
+  const { step, resetDayFlow, saveBag, setAuthenticated } = useGameFlowStore(
     useShallow(state => ({
       step: state.step,
       resetDayFlow: state.resetDayFlow,
       next: state.next,
       saveBag: state.saveBag,
+      setAuthenticated: state.setAuthenticated,
     }))
   );
+
+  // 인증 상태 확인 - useCallback으로 메모이제이션하여 무한 렌더링 방지
+  const handleAuthCheck = useCallback(
+    (isLoggedIn: boolean) => {
+      setAuthenticated(isLoggedIn);
+    },
+    [setAuthenticated]
+  );
+
+  useCheckAuthState(handleAuthCheck);
 
   // DAY_FLOW 진입 시 DAY_STEP 초기화
   useEffect(() => {
@@ -38,9 +49,6 @@ export default function App() {
     console.log('App.tsx - Current step:', step);
 
     // GameFlow 구현 - 단계별 컴포넌트 분기 처리
-    if (step === 'AUTH_CHECK') {
-      return <AuthCheck />;
-    }
     if (step === 'LOGIN') {
       return <LoginPage />;
     }

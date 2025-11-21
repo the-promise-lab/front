@@ -1,12 +1,18 @@
 import { ApiError, AuthService } from '@api';
 import { useAuthStore } from './useAuthStore';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const useCheckAuthState = (
   onAuthCheck: (isLoggedIn: boolean) => void
 ) => {
   const { isLoggedIn, isLoggingOut, lastLogoutTime, login, logout } =
     useAuthStore();
+
+  // onAuthCheck 콜백을 ref로 저장하여 의존성 배열에서 제거
+  const onAuthCheckRef = useRef(onAuthCheck);
+  useEffect(() => {
+    onAuthCheckRef.current = onAuthCheck;
+  }, [onAuthCheck]);
 
   // 수동으로 인증 상태 확인
   useEffect(() => {
@@ -30,19 +36,19 @@ export const useCheckAuthState = (
       try {
         const response = await AuthService.authControllerGetProfile();
         login(response, 'cookie-based-token');
-        onAuthCheck(true);
+        onAuthCheckRef.current(true);
       } catch (error) {
         if (error instanceof ApiError) {
           console.error('로그인 상태 확인 실패:', error.message);
         } else {
           console.error('로그인 상태 확인 실패:', error);
         }
-        onAuthCheck(false);
+        onAuthCheckRef.current(false);
       }
     };
 
     checkAuthStatus();
-  }, [isLoggedIn, isLoggingOut, lastLogoutTime, login, logout, onAuthCheck]);
+  }, [isLoggedIn, isLoggingOut, lastLogoutTime, login, logout]);
 
   return { isLoggedIn, login };
 };

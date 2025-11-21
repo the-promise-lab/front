@@ -33,7 +33,7 @@ export default function MainMenu() {
   );
 
   return (
-    <div className='relative h-screen w-screen overflow-hidden bg-black'>
+    <div className='relative h-screen w-screen overflow-hidden'>
       {/* 중앙 메인 컨텐츠 */}
       <div className='flex flex-col items-center justify-center'>
         <div className='text-center'>
