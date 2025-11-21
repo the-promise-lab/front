@@ -23,7 +23,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
   // 원형 프로그레스 바를 위한 SVG 계산
   const radius = 65; // 원의 반지름
   const circumference = 2 * Math.PI * radius;
-  const progress = Math.min(Math.max(currentWieght, 1), bagCapacity); // 0~MAX 범위 제한
+  const progress = Math.min(Math.max(currentWieght, 0), bagCapacity); // 0~MAX 범위 제한
   const strokeDashoffset =
     circumference - (progress / bagCapacity) * circumference;
 

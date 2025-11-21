@@ -5,7 +5,7 @@ import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
 import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
 import { toastItemAdded } from '@shared/ui/toast-variants';
-import { drawMarker } from '../../lib/drawMarker';
+import { drawMarker, preloadMarkerImage } from '../../lib/drawMarker';
 import { IconGlowChevronLeft, IconGlowChevronRight } from './kit/icons';
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
@@ -88,11 +88,19 @@ export default function ShelfSelectionCanvas({
           : baseX + imageScale.offsetX; // 전체 이미지가 보이는 경우 중앙 오프셋 적용
         const scaledY = item.y * imageScale.height;
 
+        // 이제 동기적으로 즉시 그려짐
         drawMarker(ctx, scaledX, scaledY, ITEM_SIZE_PIXEL, ITEM_SIZE_PIXEL);
       });
     },
     [items, imageScale, canvasSize.width, viewOffsetX]
   );
+
+  // 마커 이미지 미리 로드
+  useEffect(() => {
+    preloadMarkerImage().catch(error => {
+      console.error('Failed to preload marker image:', error);
+    });
+  }, []);
 
   // 배경 이미지 로드
   useEffect(() => {
