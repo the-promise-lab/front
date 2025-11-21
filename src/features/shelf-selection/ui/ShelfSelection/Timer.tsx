@@ -3,6 +3,8 @@ import { memo } from 'react';
 import { useTimer } from '../../model/useTimer';
 import Typography from '@shared/ui/Typography';
 import { cn } from '@shared/lib/utils';
+import NoticeBanner from '@shared/ui/NoticeBanner';
+import { BackgroundPortal } from '@shared/background-portal';
 
 function HourglassIcon({ className }: { className?: string }) {
   return (
@@ -43,13 +45,47 @@ const TimerDisplay = memo(
 
 TimerDisplay.displayName = 'TimerDisplay';
 
+const SECONDS_GIVEN = 102;
+const SECONDS_MAX_TO_SHOW = 100;
+
 export default function Timer({ onTimeout }: { onTimeout: () => void }) {
-  const { secondsLeft, showModal } = useTimer(600);
+  const { secondsLeft, showModal } = useTimer(SECONDS_GIVEN);
   const isImminent = secondsLeft < 10;
+  const NoticeOn = SECONDS_GIVEN - secondsLeft <= 2;
 
   return (
     <>
-      <TimerDisplay seconds={secondsLeft} isImminent={isImminent} />
+      <TimerDisplay
+        seconds={
+          secondsLeft > SECONDS_MAX_TO_SHOW ? SECONDS_MAX_TO_SHOW : secondsLeft
+        }
+        isImminent={isImminent}
+      />
+
+      <AnimatePresence>
+        {NoticeOn && (
+          <BackgroundPortal>
+            <motion.div
+              initial={{ opacity: 0.9 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className='fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-[7.5px]'
+            >
+              <NoticeBanner withCaution>
+                <div className='flex flex-col items-center justify-center gap-12'>
+                  <Typography variant='dialogue-m'>
+                    제한 시간 내에 가방 안에 생존을 위한 물품을 담으세요!
+                  </Typography>
+                  <Typography variant='h1-80'>
+                    {SECONDS_MAX_TO_SHOW}s
+                  </Typography>
+                </div>
+              </NoticeBanner>
+            </motion.div>
+          </BackgroundPortal>
+        )}
+      </AnimatePresence>
 
       {/* 모달 */}
       <AnimatePresence>

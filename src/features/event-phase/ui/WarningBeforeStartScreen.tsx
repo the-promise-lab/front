@@ -1,5 +1,5 @@
 import TypingText from '@shared/ui/TypingText';
-import NoticeBanner from './kit/NoticeBanner';
+import NoticeBanner from '../../../shared/ui/NoticeBanner';
 import Typography from '@shared/ui/Typography';
 
 export default function WarningBeforeStartScreen() {
