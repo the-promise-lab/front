@@ -9,7 +9,7 @@ export default function BagSelectPage() {
   const { saveBag, next } = useGameFlowStore();
   const playingCharacterSet = useGameFlowStore(playingCharacterSetSelector);
   return (
-    <div className='relative flex h-full w-full flex-col gap-4'>
+    <div className='relative flex h-full w-full flex-col gap-0'>
       <Header
         hasCharacterProfiles
         playingCharacters={playingCharacterSet?.playingCharacters}

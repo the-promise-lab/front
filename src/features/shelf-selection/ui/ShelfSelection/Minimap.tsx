@@ -4,9 +4,9 @@ import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useState } from 'react';
 
-const minimapThumbnail = '/images/minimap/minimap_thumbnail.png';
-const minimap1024 = '/images/minimap/minimap@1024.png';
-const minimap1920 = '/images/minimap/minimap@1920.png';
+const minimapThumbnail = '/image/minimap/minimap_thumbnail.png';
+const minimap1024 = '/image/minimap/minimap@1024.png';
+const minimap1920 = '/image/minimap/minimap@1920.png';
 const minimapSrcSet = `${minimap1024} 1024w, ${minimap1920} 1920w`;
 
 export default function Minimap() {
