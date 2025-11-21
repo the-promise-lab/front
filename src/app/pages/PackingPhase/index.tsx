@@ -1,5 +1,4 @@
-import { useGameFlowStore } from '@processes/game-flow';
-import { motion } from 'framer-motion';
+import { Header, PauseMenu, useGameFlowStore } from '@processes/game-flow';
 import { ShelfSelection } from '@features/shelf-selection';
 import { useEffect } from 'react';
 import type { InventoryDto } from '@api';
@@ -22,16 +21,26 @@ export default function PackingPhase() {
 
   if (!bag) return null;
   return (
-    <div className='relative h-full w-full'>
-      {/* 기존 PACKING_PHASE 배경 (ShelfSelection) */}
-      <motion.div
-        className='absolute inset-0'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
-      >
-        <ShelfSelection onBack={back} bag={bag} onComplete={onComplete} />
-      </motion.div>
-    </div>
+    <>
+      <ShelfSelection
+        onBack={back}
+        bag={bag}
+        onComplete={onComplete}
+        renderHeader={() => (
+          <Header
+            className='z-[100]'
+            hasCharacterProfiles
+            playingCharacters={
+              gameSession?.playingCharacterSet?.playingCharacters
+            }
+            menuSlot={
+              <div className='fixed top-0 left-1/2 z-[100] aspect-16/9 h-dvh -translate-x-1/2'>
+                <PauseMenu />
+              </div>
+            }
+          />
+        )}
+      />
+    </>
   );
 }

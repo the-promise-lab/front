@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShelfData } from '../../model/useShelfData';
@@ -17,12 +17,14 @@ interface ShelfSelectionProps {
   onBack: () => void;
   bag: Bag;
   onComplete: (result: InventoryDto) => void;
+  renderHeader: () => ReactNode;
 }
 
 export default function ShelfSelection({
   onBack,
   bag,
   onComplete,
+  renderHeader,
 }: ShelfSelectionProps) {
   const {
     getCurrentShelf,
@@ -128,6 +130,7 @@ export default function ShelfSelection({
           <Timer onTimeout={handleComplete} />
         </div>
       </div>
+      {renderHeader()}
     </BackgroundPortal>
   );
 }
