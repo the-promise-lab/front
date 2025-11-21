@@ -36,21 +36,21 @@ export default function MainMenu() {
     <div className='relative h-screen w-screen overflow-hidden'>
       {/* 중앙 메인 컨텐츠 */}
       <div className='flex flex-col items-center justify-center'>
-        <div className='text-center'>
+        <div className='py-30 text-center'>
           <img
             src='/image/mainPage/game_logo.svg'
             alt='back to the future'
-            className='mx-auto h-[185px] w-[380px]'
+            className='mx-auto h-62 w-400'
           />
         </div>
 
         {/* 게임 시작 버튼들 */}
-        <div className='flex flex-col items-center justify-center gap-[2px]'>
+        <div className='flex flex-col items-center justify-center gap-2'>
           {/* 새 게임 버튼 */}
           <button
             onClick={createNewGameSession}
             disabled={isCreating}
-            className='block h-[60px] w-[230px] leading-none transition-all disabled:cursor-not-allowed disabled:opacity-50'
+            className='block h-30 w-134 leading-none transition-all disabled:cursor-not-allowed disabled:opacity-50'
           >
             <img
               src='/image/mainPage/main_new_game_btn.svg'
@@ -82,7 +82,7 @@ export default function MainMenu() {
             (hasSession ? (
               <button
                 onClick={continueGameSession}
-                className='block h-[60px] w-[230px] leading-none transition-all'
+                className='block h-30 w-134 leading-none transition-all'
               >
                 <img
                   src='/image/mainPage/main_continue_game_btn .svg'
@@ -93,7 +93,7 @@ export default function MainMenu() {
             ) : (
               <button
                 disabled
-                className='block h-[60px] w-[230px] leading-none disabled:cursor-not-allowed disabled:opacity-50'
+                className='block h-30 w-134 leading-none disabled:cursor-not-allowed disabled:opacity-50'
               >
                 <img
                   src='/image/mainPage/main_continue_game_btn .svg'
@@ -106,7 +106,7 @@ export default function MainMenu() {
           {/* 설정 버튼 */}
           <button
             onClick={openPauseMenu}
-            className='block h-[60px] w-[230px] leading-none transition-all'
+            className='block h-30 w-134 leading-none transition-all'
           >
             <img
               src='/image/mainPage/main_setting_btn.svg'
