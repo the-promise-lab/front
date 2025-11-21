@@ -7,4 +7,5 @@ export type BagDto = {
   name: string;
   image: string;
   capacity: number;
+  description: string;
 };

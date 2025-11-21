@@ -30,15 +30,7 @@ export function adaptGameSessionFromApi(
     playingCharacterSet: apiResponse.playingCharacterSet
       ? adaptPlayingCharacterSetFromApi(apiResponse.playingCharacterSet)
       : null,
-    inventories: apiResponse.inventories.map(inv => ({
-      id: inv.id,
-      bagId: inv.bagId,
-      slots: inv.slots.map(slot => ({
-        id: slot.id,
-        itemId: slot.itemId,
-        quantity: slot.quantity,
-      })),
-    })),
+    inventory: apiResponse.inventory,
   };
 }
 
@@ -57,7 +49,7 @@ export function adaptCreateGameSessionFromApi(
     userId: apiResponse.userId,
     currentActId: apiResponse.currentActId,
     playingCharacterSet: null,
-    inventories: [],
+    inventory: null,
   };
 }
 

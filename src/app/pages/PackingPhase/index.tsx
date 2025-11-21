@@ -2,16 +2,15 @@ import { useGameFlowStore } from '@processes/game-flow';
 import { motion } from 'framer-motion';
 import { ShelfSelection } from '@features/shelf-selection';
 import { useEffect } from 'react';
-import type { SubmitInventoryResultDto } from '@api';
+import type { InventoryDto } from '@api';
 
 export default function PackingPhase() {
   const { back, gameSession, saveInventory, next } = useGameFlowStore();
 
   const bag = gameSession?.selectedBag;
 
-  const onComplete = (result: SubmitInventoryResultDto) => {
-    console.log('onComplete', result); // 디버깅용
-    saveInventory(result.inventories);
+  const onComplete = (result: InventoryDto) => {
+    saveInventory(result);
     next();
   };
 

@@ -12,11 +12,15 @@ export const $SlotDto = {
     invId: {
       type: 'number',
       description: `인벤토리 ID`,
-      isRequired: true,
     },
-    itemId: {
-      type: 'number',
-      description: `아이템 ID`,
+    item: {
+      type: 'all-of',
+      description: `아이템 정보`,
+      contains: [
+        {
+          type: 'ItemDto',
+        },
+      ],
       isRequired: true,
     },
     quantity: {

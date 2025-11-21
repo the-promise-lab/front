@@ -10,5 +10,5 @@ export type GameSessionDto = {
   currentActId: number | null;
   createdAt: string;
   playingCharacterSet: PlayingCharacterSetDto | null;
-  inventories: Array<InventoryDto>;
+  inventory: InventoryDto | null;
 };

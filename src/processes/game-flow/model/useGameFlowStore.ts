@@ -217,7 +217,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       });
     },
 
-    saveInventory: (inventories: Inventory[]) => {
+    saveInventory: (inventory: Inventory) => {
       set(state => {
         if (!state.gameSession) {
           console.warn(
@@ -229,7 +229,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         return {
           gameSession: {
             ...state.gameSession,
-            inventories: inventories,
+            inventory: inventory,
           },
         };
       });
@@ -269,5 +269,5 @@ export const playingCharacterSetSelector = (state: GameFlowState) =>
   state.gameSession?.playingCharacterSet;
 export const selectedBagSelector = (state: GameFlowState) =>
   state.gameSession?.selectedBag;
-export const inventoriesSelector = (state: GameFlowState) =>
-  state.gameSession?.inventories;
+export const inventorySelector = (state: GameFlowState) =>
+  state.gameSession?.inventory;

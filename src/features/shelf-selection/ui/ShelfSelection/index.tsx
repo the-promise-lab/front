@@ -4,7 +4,6 @@ import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShelfData } from '../../model/useShelfData';
 import { adaptShelfItemsToInventoryPayload } from '../../model/adapters';
 import { useSubmitInventory } from '@entities/game-session/model/useSubmitInventory';
-import type { SubmitInventoryResultDto } from '@api';
 import Typography from '@shared/ui/Typography';
 import { toast } from 'sonner';
 import Minimap from './Minimap';
@@ -12,11 +11,12 @@ import Inventory from './Inventory';
 import type { Bag } from '@entities/game-session';
 import Timer from './Timer';
 import { BackgroundPortal } from '@shared/background-portal';
+import type { InventoryDto } from '@api';
 
 interface ShelfSelectionProps {
   onBack: () => void;
   bag: Bag;
-  onComplete: (result: SubmitInventoryResultDto) => void;
+  onComplete: (result: InventoryDto) => void;
 }
 
 export default function ShelfSelection({
@@ -43,10 +43,6 @@ export default function ShelfSelection({
       toast.error('인벤토리 제출에 실패했습니다', {
         description: err.message,
       });
-
-      onComplete({
-        inventories: [],
-      }); // FIXME: 임시로 넘어가기
     },
   });
 

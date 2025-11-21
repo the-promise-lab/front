@@ -5,7 +5,11 @@ export const mockGameSessionResponse: GameSessionDto = {
   userId: 1,
   currentActId: 1,
   createdAt: '2024-01-01T00:00:00Z',
-  inventories: [],
+  inventory: {
+    id: 1,
+    bagId: 1,
+    slots: [],
+  },
   playingCharacterSet: {
     id: 1,
     characterGroupId: 1,
@@ -50,5 +54,5 @@ export const mockEmptyGameSessionResponse: GameSessionDto = {
   currentActId: null,
   createdAt: '2024-01-01T00:00:00Z',
   playingCharacterSet: null,
-  inventories: [],
+  inventory: null,
 };

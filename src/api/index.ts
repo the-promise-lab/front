@@ -24,7 +24,6 @@ export type { SetupInfoDto } from './models/SetupInfoDto';
 export type { SlotDto } from './models/SlotDto';
 export type { StoreSectionDto } from './models/StoreSectionDto';
 export type { SubmitInventoryDto } from './models/SubmitInventoryDto';
-export type { SubmitInventoryResultDto } from './models/SubmitInventoryResultDto';
 
 export { $BagDto } from './schemas/$BagDto';
 export { $CharacterDto } from './schemas/$CharacterDto';
@@ -43,7 +42,6 @@ export { $SetupInfoDto } from './schemas/$SetupInfoDto';
 export { $SlotDto } from './schemas/$SlotDto';
 export { $StoreSectionDto } from './schemas/$StoreSectionDto';
 export { $SubmitInventoryDto } from './schemas/$SubmitInventoryDto';
-export { $SubmitInventoryResultDto } from './schemas/$SubmitInventoryResultDto';
 
 export { AppService } from './services/AppService';
 export { AuthService } from './services/AuthService';

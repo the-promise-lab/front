@@ -32,12 +32,15 @@ export const $GameSessionDto = {
       isRequired: true,
       isNullable: true,
     },
-    inventories: {
-      type: 'array',
-      contains: {
-        type: 'InventoryDto',
-      },
+    inventory: {
+      type: 'all-of',
+      contains: [
+        {
+          type: 'InventoryDto',
+        },
+      ],
       isRequired: true,
+      isNullable: true,
     },
   },
 } as const;

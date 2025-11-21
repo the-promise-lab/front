@@ -134,7 +134,7 @@ export interface GameFlowActions {
     groupName?: string
   ) => void;
   saveBag: (bag: Bag) => void;
-  saveInventory: (inventories: Inventory[]) => void;
+  saveInventory: (inventory: Inventory) => void;
   startNewGame: (newGameSession: GameSession) => void;
   startDayFlow: () => void;
   continueGame: () => void;
