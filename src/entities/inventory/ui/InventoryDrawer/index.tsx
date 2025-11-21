@@ -43,7 +43,7 @@ export default function InventoryDrawer({
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className={cn(
                 'fixed top-0 right-0 z-[91]',
-                'h-full w-1/2 pl-20',
+                'h-full w-240 pl-16',
 
                 'border-[0.75px] border-l border-white/10',
                 'bg-black/20 shadow-[0_0_42.5px_2px_rgba(0,0,0,0.50)] backdrop-blur-[30px]'
@@ -51,7 +51,7 @@ export default function InventoryDrawer({
               onClick={e => e.stopPropagation()}
             >
               {/* 인벤토리 컨텐츠 */}
-              <div className='flex h-screen w-full flex-col gap-14 pt-15'>
+              <div className='flex max-h-screen w-full flex-col gap-14 pt-15'>
                 {/* 상단: 가방 이미지 및 정보 */}
                 <div className='flex items-end gap-8'>
                   <div className='relative size-40'>
@@ -89,7 +89,7 @@ export default function InventoryDrawer({
                 </div>
 
                 {/* 아이템 그리드 (4x5) */}
-                <div className='grid w-full flex-1 grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-5 overflow-y-auto pr-4 pb-4'>
+                <div className='flex w-full flex-1 flex-wrap gap-5 overflow-y-auto pr-4 pb-4'>
                   {items.map(item => (
                     <InventorySlot
                       key={item.id}

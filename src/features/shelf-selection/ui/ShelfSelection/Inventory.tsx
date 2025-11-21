@@ -1,4 +1,4 @@
-import { InventoryDrawer } from '@entities/inventory';
+import { InventoryDrawer, type SlotItem } from '@entities/inventory';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { IconBackpackCircle } from '@shared/ui/icons';
 import { useState } from 'react';
@@ -6,8 +6,9 @@ import { cn } from '@shared/lib/utils';
 import type { Bag } from '@entities/game-session';
 
 export default function Inventory({ bag }: { bag: Bag }) {
-  const { selectedShelfItems } = useShelfSelectionStore();
+  const { selectedShelfItems, removeSelectedItem } = useShelfSelectionStore();
   const [isOpen, setIsOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<SlotItem | null>(null);
 
   const currentWieght = selectedShelfItems.reduce(
     (acc, item) => acc + item.quantity,
@@ -24,6 +25,22 @@ export default function Inventory({ bag }: { bag: Bag }) {
   const circumference = 2 * Math.PI * radius;
   const progress = Math.min(Math.max(currentWieght, 1), bagCapacity); // 0~MAX 범위 제한
   const strokeDashoffset = circumference - (progress / 100) * circumference;
+
+  const handleSlotClick = (item: SlotItem) => {
+    if (item.state === 'default') {
+      setItemToDelete(item);
+    } else if (item.state === 'delete') {
+      setItemToDelete(null);
+      removeSelectedItem(item.id);
+    }
+  };
+
+  const slotItems: SlotItem[] = selectedShelfItems.map(item => ({
+    id: item.id.toString(),
+    name: item.name,
+    image: '/chicken-breast.png',
+    state: itemToDelete?.id === item.id ? 'delete' : ('default' as const),
+  }));
 
   return (
     <>
@@ -67,13 +84,8 @@ export default function Inventory({ bag }: { bag: Bag }) {
         bagDescription='가방 설명 블라블라'
         hasWeightBar
         weight={currentWieght}
-        items={selectedShelfItems.map(item => ({
-          id: item.id.toString(),
-          name: item.name,
-          image: '/chicken-breast.png',
-          state: 'default' as const,
-        }))}
-        handleSlotClick={() => {}}
+        items={slotItems}
+        handleSlotClick={handleSlotClick}
       />
     </>
   );

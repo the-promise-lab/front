@@ -23,8 +23,8 @@ export default function InventorySlot({
   return (
     <div
       className={cn(
-        'relative aspect-square w-full shrink-0',
-        'cursor-pointer',
+        'relative aspect-square w-47.5 shrink-0',
+        'cursor-pointer truncate',
         className
       )}
       onClick={onClick}
@@ -45,7 +45,7 @@ export default function InventorySlot({
         )}
       >
         {/* 아이템 이미지 */}
-        <div className='relative size-32 shrink-0'>
+        <div className='relative size-31.5 shrink-0'>
           {itemImage ? (
             <img
               alt={itemName}
