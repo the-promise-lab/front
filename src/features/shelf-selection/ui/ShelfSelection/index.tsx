@@ -5,12 +5,12 @@ import { useShelfData } from '../../model/useShelfData';
 import { adaptShelfItemsToInventoryPayload } from '../../model/adapters';
 import { useSubmitInventory } from '@entities/game-session/model/useSubmitInventory';
 import type { SubmitInventoryResultDto } from '@api';
-import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
 import { toast } from 'sonner';
 import Minimap from './Minimap';
 import Inventory from './Inventory';
 import type { Bag } from '@entities/game-session';
+import Timer from './Timer';
 
 interface ShelfSelectionProps {
   onBack: () => void;
@@ -87,6 +87,15 @@ export default function ShelfSelection({
   }
   return (
     <div className='relative h-full w-full'>
+      <ShelfSelectionCanvas
+        backgroundImage={currentShelf.backgroundImage}
+        items={currentShelf.shelfItems}
+        previousShelfName={previousShelf?.name || ''}
+        nextShelfName={nextShelf?.name || ''}
+        onPreviousShelfClick={moveToPreviousShelf}
+        onNextShelfClick={moveToNextShelf}
+      />
+
       {/* 뒤로가기 버튼 */}
       <div className='absolute top-4 left-4 z-10'>
         <button
@@ -107,27 +116,17 @@ export default function ShelfSelection({
         </button>
       </div>
 
-      <ShelfSelectionCanvas
-        backgroundImage={currentShelf.backgroundImage}
-        items={currentShelf.shelfItems}
-        previousShelfName={previousShelf?.name || ''}
-        nextShelfName={nextShelf?.name || ''}
-        onPreviousShelfClick={moveToPreviousShelf}
-        onNextShelfClick={moveToNextShelf}
-      />
-
-      <GlassButton
-        className='absolute bottom-12 left-1/2 -translate-x-1/2'
+      <button
+        className='absolute bottom-0 left-0 h-20 w-40 bg-black/50'
         onClick={handleComplete}
         disabled={isPending}
       >
-        <Typography variant='h4-b'>
-          {isPending ? '제출 중...' : '담기 완료'}
-        </Typography>
-      </GlassButton>
+        <Typography variant='mini-dialogue'>OK(임시)</Typography>
+      </button>
 
       <Minimap />
       <Inventory bag={bag} />
+      <Timer onTimeout={handleComplete} />
     </div>
   );
 }
