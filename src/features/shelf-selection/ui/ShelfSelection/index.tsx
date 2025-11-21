@@ -9,6 +9,7 @@ import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
 import { toast } from 'sonner';
 import Minimap from './Minimap';
+import Inventory from './Inventory';
 
 interface ShelfSelectionProps {
   onBack: () => void;
@@ -125,6 +126,7 @@ export default function ShelfSelection({
       </GlassButton>
 
       <Minimap />
+      <Inventory />
     </div>
   );
 }

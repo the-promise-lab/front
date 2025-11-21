@@ -1,15 +1,13 @@
-import { SideInventory, useGameFlowStore } from '@processes/game-flow';
+import { useGameFlowStore } from '@processes/game-flow';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShelfSelection } from '@features/shelf-selection';
 import { useCountdown } from '@features/shelf-selection/model/useCountdown';
 import { useEffect } from 'react';
 import type { SubmitInventoryResultDto } from '@api';
-import { useShelfSelectionStore } from '@features/shelf-selection/model/useShelfSelectionStore';
 
 export default function PackingPhase() {
   const { goto, back, gameSession, saveInventory, next } = useGameFlowStore();
   const { showModal, formattedTime } = useCountdown();
-  const { selectedShelfItems } = useShelfSelectionStore();
 
   const bagId = gameSession?.selectedBag?.id;
 
@@ -37,17 +35,6 @@ export default function PackingPhase() {
       >
         <ShelfSelection onBack={back} bagId={bagId} onComplete={onComplete} />
       </motion.div>
-
-      <div className='absolute right-15 bottom-15'>
-        <SideInventory
-          hasWeightBar
-          weight={100}
-          items={selectedShelfItems.map(item => ({
-            id: item.id.toString(),
-            name: item.name,
-          }))}
-        />
-      </div>
 
       <motion.div
         className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-mono text-6xl font-bold text-white'
