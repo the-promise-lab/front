@@ -9,7 +9,7 @@ export default function PackingPhase() {
   const { goto, back, gameSession, saveInventory, next } = useGameFlowStore();
   const { showModal, formattedTime } = useCountdown();
 
-  const bagId = gameSession?.selectedBag?.id;
+  const bag = gameSession?.selectedBag;
 
   const onComplete = (result: SubmitInventoryResultDto) => {
     console.log('onComplete', result); // 디버깅용
@@ -18,12 +18,12 @@ export default function PackingPhase() {
   };
 
   useEffect(() => {
-    if (!bagId) {
+    if (!bag) {
       back();
     }
-  }, [bagId, back]);
+  }, [bag, back]);
 
-  if (!bagId) return null;
+  if (!bag) return null;
   return (
     <div className='relative h-full w-full'>
       {/* 기존 PACKING_PHASE 배경 (ShelfSelection) */}
@@ -33,7 +33,7 @@ export default function PackingPhase() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
       >
-        <ShelfSelection onBack={back} bagId={bagId} onComplete={onComplete} />
+        <ShelfSelection onBack={back} bag={bag} onComplete={onComplete} />
       </motion.div>
 
       <motion.div

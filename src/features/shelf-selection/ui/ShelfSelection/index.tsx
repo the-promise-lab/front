@@ -10,16 +10,17 @@ import Typography from '@shared/ui/Typography';
 import { toast } from 'sonner';
 import Minimap from './Minimap';
 import Inventory from './Inventory';
+import type { Bag } from '@entities/game-session';
 
 interface ShelfSelectionProps {
   onBack: () => void;
-  bagId: number;
+  bag: Bag;
   onComplete: (result: SubmitInventoryResultDto) => void;
 }
 
 export default function ShelfSelection({
   onBack,
-  bagId,
+  bag,
   onComplete,
 }: ShelfSelectionProps) {
   const {
@@ -51,7 +52,7 @@ export default function ShelfSelection({
   const handleComplete = () => {
     const payload = adaptShelfItemsToInventoryPayload(
       selectedShelfItems,
-      bagId
+      bag.id
     );
 
     submitInventory(payload);
@@ -126,7 +127,7 @@ export default function ShelfSelection({
       </GlassButton>
 
       <Minimap />
-      <Inventory />
+      <Inventory bag={bag} />
     </div>
   );
 }
