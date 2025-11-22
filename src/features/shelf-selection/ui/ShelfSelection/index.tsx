@@ -72,8 +72,6 @@ export default function ShelfSelection({
   const nextShelf = getNextShelf();
   const previousShelf = getPreviousShelf();
 
-  console.log('currentShelf', currentShelf);
-
   if (error) {
     return (
       <div className='flex min-h-screen items-center justify-center'>

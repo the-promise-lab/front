@@ -247,7 +247,7 @@ export default function Minimap({
                     <button
                       key={section.id}
                       className={cn(
-                        'absolute h-30 w-auto -translate-x-1/2 -translate-y-1/2',
+                        'absolute h-35 w-auto -translate-x-1/2 -translate-y-1/2',
                         config.positionClassName
                       )}
                       title={section.displayName}
