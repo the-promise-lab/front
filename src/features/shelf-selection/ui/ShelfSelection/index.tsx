@@ -18,6 +18,8 @@ interface ShelfSelectionProps {
   bag: Bag;
   onComplete: (result: GameSessionDto) => void;
   renderHeader: () => ReactNode;
+  secondsLeft: number;
+  showTimeoutModal: boolean;
 }
 
 export default function ShelfSelection({
@@ -25,6 +27,8 @@ export default function ShelfSelection({
   bag,
   onComplete,
   renderHeader,
+  secondsLeft,
+  showTimeoutModal,
 }: ShelfSelectionProps) {
   const {
     getCurrentShelf,
@@ -134,7 +138,11 @@ export default function ShelfSelection({
             currentShelfId={currentShelf?.id}
           />
           <Inventory bag={bag} />
-          <Timer onTimeout={handleComplete} />
+          <Timer
+            secondsLeft={secondsLeft}
+            showModal={showTimeoutModal}
+            onTimeout={handleComplete}
+          />
 
           {renderHeader()}
         </div>

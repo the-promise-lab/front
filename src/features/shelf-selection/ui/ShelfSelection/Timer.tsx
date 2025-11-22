@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { memo } from 'react';
-import { useTimer } from '../../model/useTimer';
 import Typography from '@shared/ui/Typography';
 import { cn } from '@shared/lib/utils';
 import NoticeBanner from '@shared/ui/NoticeBanner';
@@ -48,8 +47,17 @@ TimerDisplay.displayName = 'TimerDisplay';
 const SECONDS_GIVEN = 102;
 const SECONDS_MAX_TO_SHOW = 100;
 
-export default function Timer({ onTimeout }: { onTimeout: () => void }) {
-  const { secondsLeft, showModal } = useTimer(SECONDS_GIVEN);
+interface TimerProps {
+  secondsLeft: number;
+  showModal: boolean;
+  onTimeout: () => void;
+}
+
+export default function Timer({
+  secondsLeft,
+  showModal,
+  onTimeout,
+}: TimerProps) {
   const isImminent = secondsLeft < 10;
   const NoticeOn = SECONDS_GIVEN - secondsLeft <= 2;
 
