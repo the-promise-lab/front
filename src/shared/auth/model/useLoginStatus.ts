@@ -20,18 +20,6 @@ export const useCheckAuthState = (
     if (isLoggingOut || (lastLogoutTime && Date.now() - lastLogoutTime < 500)) {
       return;
     }
-
-    // 카카오 로그인 후 인증 확인을 위해 1초 지연
-    const isKakaoCallback =
-      window.location.search.includes('code=') &&
-      window.location.search.includes('state=');
-    if (isKakaoCallback) {
-      setTimeout(() => {
-        checkAuthStatus();
-      }, 1000);
-      return;
-    }
-
     const checkAuthStatus = async () => {
       try {
         const response = await AuthService.authControllerGetProfile();
@@ -46,6 +34,17 @@ export const useCheckAuthState = (
         onAuthCheckRef.current(false);
       }
     };
+
+    // 카카오 로그인 후 인증 확인을 위해 1초 지연
+    const isKakaoCallback =
+      window.location.search.includes('code=') &&
+      window.location.search.includes('state=');
+    if (isKakaoCallback) {
+      setTimeout(() => {
+        checkAuthStatus();
+      }, 1000);
+      return;
+    }
 
     checkAuthStatus();
   }, [isLoggedIn, isLoggingOut, lastLogoutTime, login, logout]);

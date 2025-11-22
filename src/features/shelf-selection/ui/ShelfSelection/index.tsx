@@ -36,7 +36,7 @@ export default function ShelfSelection({
     moveToPreviousShelf,
   } = useShelfSelectionStore();
 
-  const { shelves, isLoading, error } = useShelfData();
+  const { shelves, storeSections, isLoading, error } = useShelfData();
   const { mutate: submitInventory, isPending } = useSubmitInventory({
     onSuccess: result => {
       onComplete(result);
@@ -125,7 +125,7 @@ export default function ShelfSelection({
             <Typography variant='mini-dialogue'>OK(임시)</Typography>
           </button>
 
-          <Minimap />
+          <Minimap storeSections={storeSections} />
           <Inventory bag={bag} />
           <Timer onTimeout={handleComplete} />
 
