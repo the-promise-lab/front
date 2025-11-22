@@ -128,9 +128,10 @@ export default function ShelfSelection({
           <Minimap />
           <Inventory bag={bag} />
           <Timer onTimeout={handleComplete} />
+
+          {renderHeader()}
         </div>
       </div>
-      {renderHeader()}
     </BackgroundPortal>
   );
 }

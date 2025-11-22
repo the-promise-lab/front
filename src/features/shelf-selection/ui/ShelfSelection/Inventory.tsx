@@ -36,12 +36,19 @@ export default function Inventory({ bag }: { bag: Bag }) {
     }
   };
 
-  const slotItems: SlotItem[] = selectedShelfItems.map(item => ({
-    id: item.id.toString(),
-    name: item.name,
-    image: '/chicken-breast.png',
-    state: itemToDelete?.id === item.id ? 'delete' : ('default' as const),
-  }));
+  const slotItems: SlotItem[] = selectedShelfItems.flatMap(item => {
+    const slotId = item.id.toString();
+    const quantity = Math.max(1, item.quantity ?? 1);
+    const slotState =
+      itemToDelete?.id === slotId ? 'delete' : ('default' as const);
+
+    return Array.from({ length: quantity }, () => ({
+      id: slotId,
+      name: item.name,
+      image: '/chicken-breast.png',
+      state: slotState,
+    }));
+  });
 
   return (
     <>

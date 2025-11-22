@@ -33,11 +33,7 @@ export default function PackingPhase() {
             playingCharacters={
               gameSession?.playingCharacterSet?.playingCharacters
             }
-            menuSlot={
-              <div className='fixed top-0 left-1/2 z-[100] aspect-16/9 h-dvh -translate-x-1/2'>
-                <PauseMenu />
-              </div>
-            }
+            menuSlot={<PauseMenu buttonClassName='pointer-events-auto' />}
           />
         )}
       />
