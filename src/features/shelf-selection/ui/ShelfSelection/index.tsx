@@ -12,6 +12,9 @@ import type { Bag } from '@entities/game-session';
 import Timer from './Timer';
 import { BackgroundPortal } from '@shared/background-portal';
 import type { GameSessionDto } from '@api';
+import { useCapacityWarning } from '../../model/useCapacityWarning';
+import type { ShelfItem } from '../../model/types';
+import { toastItemAdded } from '@shared/ui/toast-variants';
 
 interface ShelfSelectionProps {
   onBack: () => void;
@@ -30,6 +33,8 @@ export default function ShelfSelection({
   secondsLeft,
   showTimeoutModal,
 }: ShelfSelectionProps) {
+  const { showWarning, CapacityWarningBanner } = useCapacityWarning();
+
   const {
     getCurrentShelf,
     getNextShelf,
@@ -39,7 +44,13 @@ export default function ShelfSelection({
     moveToNextShelf,
     moveToPreviousShelf,
     moveToShelf,
+    selectNewShelfItem,
   } = useShelfSelectionStore();
+  const currentWeight = selectedShelfItems.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
+  const canPutInMoreItems = currentWeight < bag.capacity;
 
   const { shelves, storeSections, isLoading, error } = useShelfData();
   const { mutate: submitInventory, isPending } = useSubmitInventory({
@@ -68,6 +79,15 @@ export default function ShelfSelection({
     }
   }, [shelves, initShelves]);
 
+  const onClickItem = (item: ShelfItem) => {
+    if (canPutInMoreItems) {
+      selectNewShelfItem(item);
+      toastItemAdded(item.name);
+    } else {
+      showWarning();
+    }
+  };
+
   const currentShelf = getCurrentShelf();
   const nextShelf = getNextShelf();
   const previousShelf = getPreviousShelf();
@@ -95,6 +115,7 @@ export default function ShelfSelection({
         <ShelfSelectionCanvas
           backgroundImage={currentShelf.backgroundImage}
           items={currentShelf.shelfItems}
+          onClickItem={onClickItem}
           previousShelfName={previousShelf?.name || ''}
           nextShelfName={nextShelf?.name || ''}
           onPreviousShelfClick={moveToPreviousShelf}
@@ -143,6 +164,7 @@ export default function ShelfSelection({
           />
 
           {renderHeader()}
+          {CapacityWarningBanner}
         </div>
       </div>
     </BackgroundPortal>

@@ -1,10 +1,8 @@
 import type React from 'react';
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
 import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
-import { toastItemAdded } from '@shared/ui/toast-variants';
 import { drawMarker, preloadMarkerImage } from '../../lib/drawMarker';
 import { IconGlowChevronLeft, IconGlowChevronRight } from './kit/icons';
 import { cn } from '@shared/lib/utils';
@@ -15,6 +13,7 @@ const ITEM_SIZE_PIXEL = 20;
 interface ShelfSelectionCanvasProps {
   backgroundImage: string;
   items: ShelfItem[];
+  onClickItem: (item: ShelfItem) => void;
   previousShelfName: string;
   nextShelfName: string;
   onPreviousShelfClick: () => void;
@@ -24,6 +23,7 @@ interface ShelfSelectionCanvasProps {
 export default function ShelfSelectionCanvas({
   backgroundImage,
   items,
+  onClickItem,
   previousShelfName,
   nextShelfName,
   onPreviousShelfClick,
@@ -271,8 +271,6 @@ export default function ShelfSelectionCanvas({
     isDragging,
   });
 
-  // 선택된 아이템을 즉시 스토어에 추가
-  const { selectNewShelfItem } = useShelfSelectionStore();
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       baseHandleClick(e);
@@ -283,16 +281,10 @@ export default function ShelfSelectionCanvas({
 
       const item = detectItemSelection(imageCoords.x, imageCoords.y);
       if (item) {
-        selectNewShelfItem(item);
-        toastItemAdded(item.name);
+        onClickItem(item);
       }
     },
-    [
-      baseHandleClick,
-      getImageCoordinates,
-      detectItemSelection,
-      selectNewShelfItem,
-    ]
+    [baseHandleClick, getImageCoordinates, detectItemSelection, onClickItem]
   );
 
   return (
