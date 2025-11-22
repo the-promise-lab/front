@@ -14,9 +14,14 @@ export const $GameSessionDto = {
       description: `유저 ID`,
       isRequired: true,
     },
-    bagId: {
-      type: 'number',
-      description: `가방 ID`,
+    bag: {
+      type: 'all-of',
+      description: `가방 정보`,
+      contains: [
+        {
+          type: 'BagDto',
+        },
+      ],
       isRequired: true,
     },
     bagCapacityUsed: {

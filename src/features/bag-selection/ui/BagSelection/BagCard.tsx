@@ -30,10 +30,9 @@ export default function BagCard({ bag, isSelected, onClick }: BagCardProps) {
       {/* 가방 이미지 영역 */}
       <div className='flex h-72.5 w-full items-center justify-center'>
         <div className='h-full w-65'>
-          {/* TODO: 가방 이미지 추가 */}
           <img
-            src={'item_bag_hambuger.png'}
-            alt='hamburger'
+            src={bag.image}
+            alt={bag.name}
             className='h-full w-full object-cover'
           />
         </div>

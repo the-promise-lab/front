@@ -39,7 +39,7 @@ export function adaptGameSessionFromApi(
             })),
           }
         : null,
-    bag: null, // TODO: API가 bagDto를 제공하면 adaptBagFromApi(apiResponse.bag) 사용
+    bag: adaptBagFromApi(apiResponse.bag),
   };
 }
 

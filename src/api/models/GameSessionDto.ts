@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { BagDto } from './BagDto';
 import type { GameSessionInventoryDto } from './GameSessionInventoryDto';
 import type { PlayingCharacterSetDto } from './PlayingCharacterSetDto';
 export type GameSessionDto = {
@@ -14,9 +15,9 @@ export type GameSessionDto = {
    */
   userId: number;
   /**
-   * 가방 ID
+   * 가방 정보
    */
-  bagId: number;
+  bag: BagDto;
   /**
    * 가방 사용량
    */

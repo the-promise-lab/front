@@ -211,7 +211,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         return {
           gameSession: {
             ...state.gameSession,
-            selectedBag: bag,
+            bag: bag,
           },
         };
       });

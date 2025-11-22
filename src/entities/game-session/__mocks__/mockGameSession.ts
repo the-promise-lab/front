@@ -3,7 +3,14 @@ import type { GameSessionDto } from '@api';
 export const mockGameSessionResponse: GameSessionDto = {
   id: 1,
   userId: 1,
-  bagId: 1,
+  bag: {
+    id: 1,
+    name: '여행용 백팩',
+    code: 'backpack',
+    image: '/bag.png',
+    capacity: 100,
+    description: '여행하기 좋은 중형 백팩입니다.',
+  },
   bagCapacityUsed: 10,
   bagConfirmedAt: '2024-01-01T00:00:00Z',
   status: 'ACTIVE',
@@ -67,7 +74,14 @@ export const mockGameSessionResponse: GameSessionDto = {
 export const mockEmptyGameSessionResponse: GameSessionDto = {
   id: 2,
   userId: 1,
-  bagId: 0,
+  bag: {
+    id: 0,
+    name: '기본 가방',
+    code: 'default',
+    image: '/bag.png',
+    capacity: 50,
+    description: '기본으로 제공되는 가방입니다.',
+  },
   bagCapacityUsed: null,
   bagConfirmedAt: null,
   status: 'PENDING',
