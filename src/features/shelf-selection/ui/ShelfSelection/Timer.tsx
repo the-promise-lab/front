@@ -25,7 +25,6 @@ const TimerDisplay = memo(
   ({ seconds, isImminent }: { seconds: number; isImminent: boolean }) => {
     return (
       <div className='absolute bottom-15 left-1/2 z-10 flex h-15 -translate-x-1/2 items-center gap-1'>
-        {/* 발광 배경 효과 */}
         <div className='absolute top-0 left-1/2 z-[-1] -mt-[50%] h-74 w-81.5 -translate-x-1/2 rounded-full bg-black opacity-50 shadow-[0_0_47.8px_31px_#000]' />
 
         <HourglassIcon
