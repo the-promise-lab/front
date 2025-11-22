@@ -8,7 +8,7 @@ import type { Bag } from '@entities/game-session';
 export default function Inventory({ bag }: { bag: Bag }) {
   const { selectedShelfItems, removeSelectedItem } = useShelfSelectionStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<SlotItem | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const currentWieght = selectedShelfItems.reduce(
     (acc, item) => acc + item.quantity,
@@ -29,25 +29,31 @@ export default function Inventory({ bag }: { bag: Bag }) {
 
   const handleSlotClick = (item: SlotItem) => {
     if (item.state === 'default') {
-      setItemToDelete(item);
+      setItemToDelete(item.id);
     } else if (item.state === 'delete') {
       setItemToDelete(null);
-      removeSelectedItem(item.id);
+      // slotId에서 실제 itemId와 인덱스를 추출
+      const [itemId] = item.id.split('-');
+      removeSelectedItem(itemId);
     }
   };
 
   const slotItems: SlotItem[] = selectedShelfItems.flatMap(item => {
-    const slotId = item.id.toString();
+    const itemId = item.id.toString();
     const quantity = Math.max(1, item.quantity ?? 1);
-    const slotState =
-      itemToDelete?.id === slotId ? 'delete' : ('default' as const);
 
-    return Array.from({ length: quantity }, () => ({
-      id: slotId,
-      name: item.name,
-      image: '/chicken-breast.png',
-      state: slotState,
-    }));
+    return Array.from({ length: quantity }, (_, index) => {
+      const slotId = `${itemId}-${index}`;
+      const slotState =
+        itemToDelete === slotId ? 'delete' : ('default' as const);
+
+      return {
+        id: slotId,
+        name: item.name,
+        image: '/chicken-breast.png',
+        state: slotState,
+      };
+    });
   });
 
   return (

@@ -77,11 +77,27 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
 
       removeSelectedItem: itemId => {
         const { selectedShelfItems } = get();
-        set({
-          selectedShelfItems: selectedShelfItems.filter(
-            item => item.id !== itemId
-          ),
-        });
+        const targetItem = selectedShelfItems.find(item => item.id === itemId);
+
+        if (!targetItem) return;
+
+        if (targetItem.quantity > 1) {
+          // 수량이 2개 이상이면 1개 감소
+          set({
+            selectedShelfItems: selectedShelfItems.map(item =>
+              item.id === itemId
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
+            ),
+          });
+        } else {
+          // 수량이 1개면 아이템 제거
+          set({
+            selectedShelfItems: selectedShelfItems.filter(
+              item => item.id !== itemId
+            ),
+          });
+        }
       },
 
       clearSelectedItems: () => {
