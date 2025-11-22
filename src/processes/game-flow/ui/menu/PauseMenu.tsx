@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { useGameFlowStore } from '../..';
-import { IconCloseButton } from '@features/event-phase/ui/kit/icon-button';
+import {
+  IconCloseButton,
+  IconPauseButton,
+} from '@features/event-phase/ui/kit/icon-button';
 import { cn } from '@shared/lib/utils';
 import LogoutConfirmModal from '@shared/ui/LogoutConfirmModal';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,7 +11,6 @@ import { CharacterInfoView } from './CharacterInfoView';
 import { SettingsView } from './SettingsView';
 import { ResultReportView } from './ResultReportView';
 import { TeamIntroView } from './TeamIntroView';
-import { useShallow } from 'zustand/react/shallow';
 
 type MenuCategory =
   | 'character-info'
@@ -23,13 +25,22 @@ const MENU_CATEGORIES = [
   { id: 'team-intro' as MenuCategory, label: '프로젝트 팀 소개' },
 ] as const;
 
-export default function PauseMenu() {
-  const { isPauseMenuOpen, closePauseMenu } = useGameFlowStore(
-    useShallow(state => ({
-      isPauseMenuOpen: state.isPauseMenuOpen,
-      closePauseMenu: state.closePauseMenu,
-    }))
-  );
+interface PauseMenuProps {
+  hidden?: boolean;
+  renderButton?: (onClick: () => void) => ReactNode;
+}
+
+export default function PauseMenu({
+  hidden = false,
+  renderButton,
+}: PauseMenuProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const open = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const close = useCallback(() => {
+    setIsOpen(false);
+  }, []);
   const [selectedCategory, setSelectedCategory] =
     useState<MenuCategory>('character-info');
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -39,7 +50,7 @@ export default function PauseMenu() {
     await useAuthStore.getState().logout();
     useGameFlowStore.getState().goto('LOGIN');
     setIsLogoutModalOpen(false);
-    closePauseMenu();
+    close();
   };
 
   const handleLogoutCancel = () => {
@@ -65,8 +76,20 @@ export default function PauseMenu() {
 
   return (
     <>
+      {renderButton ? (
+        renderButton(open)
+      ) : (
+        <div
+          className={cn(
+            'absolute top-11 right-11 z-10',
+            hidden ? 'hidden' : ''
+          )}
+        >
+          <IconPauseButton onClick={open} />
+        </div>
+      )}
       <AnimatePresence>
-        {isPauseMenuOpen ? (
+        {isOpen ? (
           <>
             {/* 블러 배경 오버레이 - 뒷배경이 보이도록 투명하게 */}
             <motion.div
@@ -74,7 +97,7 @@ export default function PauseMenu() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={closePauseMenu}
+              onClick={close}
             />
 
             {/* 팝업 메뉴 - 전체 화면 덮기 */}
@@ -93,7 +116,7 @@ export default function PauseMenu() {
                 exit={{ opacity: 0, scale: 0.8, y: -12 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
               >
-                <IconCloseButton onClick={closePauseMenu} />
+                <IconCloseButton onClick={close} />
               </motion.div>
 
               {/* 팝업 메뉴 컨텐츠 - 전체 화면, 뒷배경이 보이도록 투명하게 */}

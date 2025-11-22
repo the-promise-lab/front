@@ -29,7 +29,7 @@ export default function WeightGauge({
           height='31.6719'
           rx='15.8359'
           stroke='url(#paint0_radial_1008_1525)'
-          stroke-width='2'
+          strokeWidth='2'
         />
         <defs>
           <radialGradient
@@ -40,8 +40,8 @@ export default function WeightGauge({
             gradientTransform='matrix(569.16 -19.193 129.73 11.6457 330.48 16.8359)'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stop-color='white' />
-            <stop offset='1' stop-color='white' stop-opacity='0.4' />
+            <stop stopColor='white' />
+            <stop offset='1' stopColor='white' stopOpacity='0.4' />
           </radialGradient>
         </defs>
       </svg>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
-import NoticeBanner from '@features/event-phase/ui/kit/NoticeBanner';
+import NoticeBanner from '@shared/ui/NoticeBanner';
 import Typography from '@shared/ui/Typography';
 import IntroSimpleScreen from '../../ui/IntroSimpleScreen';
 import type { IntroEvent } from './types';

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { cn } from '@shared/lib/utils';
-import NoticeBanner from './kit/NoticeBanner';
+import NoticeBanner from '../../../shared/ui/NoticeBanner';
 import PlaceTitle from './kit/PlaceTitle';
 import Typography from '@shared/ui/Typography';
 

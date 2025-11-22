@@ -13,16 +13,15 @@ import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
 import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
-import { BagSelection } from '@features/bag-selection';
 import CharacterSelectPage from './pages/CharacterSelect';
+import BagSelectPage from './pages/BagSelectPage';
+import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
 
 export default function App() {
-  const { step, resetDayFlow, saveBag, setAuthenticated } = useGameFlowStore(
+  const { step, resetDayFlow, setAuthenticated } = useGameFlowStore(
     useShallow(state => ({
       step: state.step,
       resetDayFlow: state.resetDayFlow,
-      next: state.next,
-      saveBag: state.saveBag,
       setAuthenticated: state.setAuthenticated,
     }))
   );
@@ -72,21 +71,7 @@ export default function App() {
       );
     }
     if (step === 'BAG_SELECT') {
-      return (
-        // <BagSelectionScreen
-        //   onComplete={selectedBagId => {
-        //     console.log('Selected bag:', selectedBagId);
-
-        //     // TODO: 선택된 가방을 전역 상태에 저장
-        //     useGameFlowStore.getState().goto('INTRO_STORY_2');
-        <BagSelection
-          onComplete={selectedBag => {
-            console.log('Selected bag:', selectedBag);
-            saveBag(selectedBag);
-            useGameFlowStore.getState().goto('INTRO_STORY_2');
-          }}
-        />
-      );
+      return <BagSelectPage />;
     }
     if (step === 'INTRO_STORY_2') {
       return (
@@ -119,19 +104,10 @@ export default function App() {
 
   return (
     <AppProviders>
-      {/* <RootLayout>
-        <div className='fixed inset-0 z-10 touch-pan-y overflow-hidden'>
-          {renderScreen()}
-        </div>
-        일시정지 버튼 - 로그인 화면 제외, DAY_FLOW는 Header에서 처리
-        {showPauseButton && (
-          <div className='fixed top-11 right-11 z-[50]'>
-            <IconPauseButton onClick={openPauseMenu} />
-          </div>
-        )}
-        일시정지 메뉴 - 전역 팝업
-        <PauseMenu /> */}
-      <RootLayout>{renderScreen()}</RootLayout>
+      <RootLayout>
+        {renderScreen()}
+        <PauseMenu hidden={step === 'LOGIN' || step === 'PROGRESS'} />
+      </RootLayout>
     </AppProviders>
   );
 }

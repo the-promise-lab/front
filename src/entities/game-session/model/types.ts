@@ -3,6 +3,8 @@
  * API 응답과 독립적인 비즈니스 로직용 타입
  */
 
+import type { ItemDto } from '@api';
+
 export interface Character {
   id: number;
   name: string;
@@ -42,9 +44,12 @@ export interface PlayingCharacterSet {
   playingCharacters: Array<PlayingCharacter>;
 }
 
+export type Item = ItemDto;
+
 export interface InventorySlot {
   id: number;
-  itemId: number;
+  invId?: number;
+  item: Item;
   quantity: number;
 }
 
@@ -67,6 +72,6 @@ export interface GameSession {
   userId: number;
   currentActId: number | null;
   playingCharacterSet: PlayingCharacterSet | null;
-  inventories: Array<Inventory>;
+  inventory: Inventory | null;
   selectedBag?: Bag;
 }

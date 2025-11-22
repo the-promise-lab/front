@@ -5,17 +5,29 @@ import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
 import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
 import { toastItemAdded } from '@shared/ui/toast-variants';
+import { drawMarker, preloadMarkerImage } from '../../lib/drawMarker';
+import { IconGlowChevronLeft, IconGlowChevronRight } from './kit/icons';
+import { cn } from '@shared/lib/utils';
+import Typography from '@shared/ui/Typography';
 
 const ITEM_SIZE_PIXEL = 20;
 
 interface ShelfSelectionCanvasProps {
   backgroundImage: string;
   items: ShelfItem[];
+  previousShelfName: string;
+  nextShelfName: string;
+  onPreviousShelfClick: () => void;
+  onNextShelfClick: () => void;
 }
 
 export default function ShelfSelectionCanvas({
   backgroundImage,
   items,
+  previousShelfName,
+  nextShelfName,
+  onPreviousShelfClick,
+  onNextShelfClick,
 }: ShelfSelectionCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
@@ -67,9 +79,6 @@ export default function ShelfSelectionCanvas({
     (ctx: CanvasRenderingContext2D) => {
       if (imageScale.width === 0) return;
 
-      ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
-      ctx.lineWidth = 2;
-
       items.forEach(item => {
         // 이미지 내 상대 좌표를 스케일된 캔버스 좌표로 변환
         const isWide = imageScale.width > canvasSize.width;
@@ -79,17 +88,19 @@ export default function ShelfSelectionCanvas({
           : baseX + imageScale.offsetX; // 전체 이미지가 보이는 경우 중앙 오프셋 적용
         const scaledY = item.y * imageScale.height;
 
-        // 아이템 영역 그리기
-        ctx.strokeRect(
-          scaledX - ITEM_SIZE_PIXEL / 2,
-          scaledY - ITEM_SIZE_PIXEL / 2,
-          ITEM_SIZE_PIXEL,
-          ITEM_SIZE_PIXEL
-        );
+        // 이제 동기적으로 즉시 그려짐
+        drawMarker(ctx, scaledX, scaledY, ITEM_SIZE_PIXEL, ITEM_SIZE_PIXEL);
       });
     },
     [items, imageScale, canvasSize.width, viewOffsetX]
   );
+
+  // 마커 이미지 미리 로드
+  useEffect(() => {
+    preloadMarkerImage().catch(error => {
+      console.error('Failed to preload marker image:', error);
+    });
+  }, []);
 
   // 배경 이미지 로드
   useEffect(() => {
@@ -273,7 +284,7 @@ export default function ShelfSelectionCanvas({
       const item = detectItemSelection(imageCoords.x, imageCoords.y);
       if (item) {
         selectNewShelfItem(item);
-        toastItemAdded();
+        toastItemAdded(item.name);
       }
     },
     [
@@ -285,19 +296,58 @@ export default function ShelfSelectionCanvas({
   );
 
   return (
-    <div className='absolute inset-0 h-full w-full overflow-hidden'>
-      <canvas
-        ref={canvasRef}
-        style={{
-          width: `${canvasSize.width}px`,
-          height: `${canvasSize.height}px`,
-          touchAction: 'none',
-          cursor: isDragging ? 'grabbing' : 'grab',
-        }}
-        className='block'
-        onClick={handleClick}
-        {...dragHandlers}
-      />
-    </div>
+    <>
+      <div className='absolute inset-0 h-full w-full overflow-hidden'>
+        <canvas
+          ref={canvasRef}
+          style={{
+            width: `${canvasSize.width}px`,
+            height: `${canvasSize.height}px`,
+            touchAction: 'none',
+            cursor: isDragging ? 'grabbing' : 'grab',
+          }}
+          className='block'
+          onClick={handleClick}
+          {...dragHandlers}
+        />
+      </div>
+      <div className='absolute top-1/2 left-2 z-10 -translate-y-1/2'>
+        <button
+          className={cn('flex flex-col gap-2.5', { hidden: viewOffsetX !== 0 })}
+          onClick={onPreviousShelfClick}
+        >
+          <IconGlowChevronLeft className='h-12 w-12' />
+          <Typography
+            variant='body-b'
+            style={{
+              textShadow: '0 0 4px var(--color-sky-1, #01ead6)',
+            }}
+          >
+            {previousShelfName}
+          </Typography>
+        </button>
+      </div>
+
+      <div className='absolute top-1/2 right-2 z-10 -translate-y-1/2'>
+        <button
+          className={cn('flex flex-col items-end gap-2.5', {
+            hidden:
+              viewOffsetX !== imageScale.width - canvasSize.width ||
+              imageScale.width === 0,
+          })}
+          onClick={onNextShelfClick}
+        >
+          <IconGlowChevronRight className='h-12 w-12' />
+          <Typography
+            variant='body-b'
+            style={{
+              textShadow: '0 0 4px var(--color-sky-1, #01ead6)',
+            }}
+          >
+            {nextShelfName}
+          </Typography>
+        </button>
+      </div>
+    </>
   );
 }

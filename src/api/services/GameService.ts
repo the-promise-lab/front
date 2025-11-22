@@ -5,11 +5,11 @@
 import type { CharacterGroupDto } from '../models/CharacterGroupDto';
 import type { CreateGameSessionDto } from '../models/CreateGameSessionDto';
 import type { GameSessionDto } from '../models/GameSessionDto';
+import type { InventoryDto } from '../models/InventoryDto';
 import type { SelectCharacterSetDto } from '../models/SelectCharacterSetDto';
 import type { SelectCharacterSetResultDto } from '../models/SelectCharacterSetResultDto';
 import type { SetupInfoDto } from '../models/SetupInfoDto';
 import type { SubmitInventoryDto } from '../models/SubmitInventoryDto';
-import type { SubmitInventoryResultDto } from '../models/SubmitInventoryResultDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -85,12 +85,12 @@ export class GameService {
   /**
    * 인벤토리 제출
    * @param requestBody
-   * @returns SubmitInventoryResultDto 인벤토리 제출 성공
+   * @returns InventoryDto 인벤토리 제출 성공
    * @throws ApiError
    */
   public static gameControllerSubmitInventory(
     requestBody: SubmitInventoryDto
-  ): CancelablePromise<SubmitInventoryResultDto> {
+  ): CancelablePromise<InventoryDto> {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/api/game/session/inventory',

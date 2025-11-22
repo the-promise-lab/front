@@ -61,6 +61,9 @@ export default {
         'secondary-1': 'var(--color-secondary-1)',
         'w-1': 'var(--color-w-1)',
       },
+      textShadow: {
+        neon: '0 0 4px var(--color-sky-1, #01ead6)',
+      },
     },
   },
   plugins: [scrollbar],

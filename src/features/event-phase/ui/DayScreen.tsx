@@ -1,5 +1,5 @@
 import Typography from '@shared/ui/Typography';
-import NoticeBanner from './kit/NoticeBanner';
+import NoticeBanner from '../../../shared/ui/NoticeBanner';
 
 export default function DayScreen() {
   const day = 1;

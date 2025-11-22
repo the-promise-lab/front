@@ -1,4 +1,4 @@
-import NoticeBanner from './kit/NoticeBanner';
+import NoticeBanner from '../../../shared/ui/NoticeBanner';
 import { IconHeart, IconLightning } from '@shared/ui/icons';
 import { cn } from '@shared/lib/utils';
 import type { ReactNode } from 'react';

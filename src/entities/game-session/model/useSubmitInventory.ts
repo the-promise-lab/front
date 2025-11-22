@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GameService } from '@api';
-import type { SubmitInventoryDto, SubmitInventoryResultDto } from '@api';
+import type { SubmitInventoryDto, InventoryDto } from '@api';
 
 /**
  * 인벤토리 제출 훅
@@ -10,7 +10,7 @@ import type { SubmitInventoryDto, SubmitInventoryResultDto } from '@api';
  * - isLoading: 로딩 상태
  * - isError: 에러 상태
  * - isSuccess: 성공 상태
- * - data: 제출 결과 데이터 (SubmitInventoryResultDto)
+ * - data: 제출 결과 데이터 (InventoryDto)
  *
  * @example
  * const { mutate: submitInventory } = useSubmitInventory({
@@ -22,7 +22,7 @@ import type { SubmitInventoryDto, SubmitInventoryResultDto } from '@api';
  * submitInventory({ bagId: 1, slots: [...] });
  */
 export function useSubmitInventory(options?: {
-  onSuccess?: (data: SubmitInventoryResultDto) => void;
+  onSuccess?: (data: InventoryDto) => void;
   onError?: (error: Error) => void;
 }) {
   const queryClient = useQueryClient();

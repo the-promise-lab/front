@@ -217,7 +217,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       });
     },
 
-    saveInventory: (inventories: Inventory[]) => {
+    saveInventory: (inventory: Inventory) => {
       set(state => {
         if (!state.gameSession) {
           console.warn(
@@ -229,7 +229,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
         return {
           gameSession: {
             ...state.gameSession,
-            inventories: inventories,
+            inventory: inventory,
           },
         };
       });
@@ -262,14 +262,12 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       const store = useGameFlowStore.getState();
       store.reset();
     },
-
-    // 일시정지 메뉴 관련 액션
-    openPauseMenu: () => {
-      set({ isPauseMenuOpen: true });
-    },
-
-    closePauseMenu: () => {
-      set({ isPauseMenuOpen: false });
-    },
   })
 );
+
+export const playingCharacterSetSelector = (state: GameFlowState) =>
+  state.gameSession?.playingCharacterSet;
+export const selectedBagSelector = (state: GameFlowState) =>
+  state.gameSession?.selectedBag;
+export const inventorySelector = (state: GameFlowState) =>
+  state.gameSession?.inventory;

@@ -20,5 +20,9 @@ export const $BagDto = {
       type: 'number',
       isRequired: true,
     },
+    description: {
+      type: 'string',
+      isRequired: true,
+    },
   },
 } as const;

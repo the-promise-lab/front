@@ -47,7 +47,7 @@ export function BagSelection({ onComplete }: BagSelectionProps) {
   if (isError || bags.length === 0) {
     return (
       <div className='flex h-full w-full items-center justify-center bg-black/80'>
-        <Typography variant='dialogue-b' className='text-white'>
+        <Typography variant='title' className='text-white'>
           가방 정보를 불러올 수 없습니다
         </Typography>
       </div>
@@ -55,15 +55,15 @@ export function BagSelection({ onComplete }: BagSelectionProps) {
   }
 
   return (
-    <div className='flex h-full w-full flex-col justify-center'>
+    <div className='flex h-full w-full flex-col justify-center gap-10'>
       <div className='flex justify-center'>
-        <Typography variant='dialogue-b' className='text-white'>
-          물건을 넣을 가방을 골라보자
+        <Typography variant='title' className='text-white'>
+          지금 어떤 가방을 선택해야 할까?
         </Typography>
       </div>
 
       {/* 가방 카드 컨테이너 - 가로 스크롤 */}
-      <div className='mt-10 flex items-center overflow-x-auto'>
+      <div className='flex items-center overflow-x-auto'>
         <div className='flex min-w-full items-center justify-center gap-9'>
           {bags.map(bag => (
             <BagCard
@@ -77,7 +77,7 @@ export function BagSelection({ onComplete }: BagSelectionProps) {
       </div>
 
       {/* 선택 완료 버튼 */}
-      <div className='mt-10 flex items-center justify-center'>
+      <div className='flex items-center justify-center'>
         <GlassButton
           onClick={handleComplete}
           disabled={!selectedBagId}

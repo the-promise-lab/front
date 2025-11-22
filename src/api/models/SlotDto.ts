@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ItemDto } from './ItemDto';
 export type SlotDto = {
   /**
    * 슬롯 ID
@@ -10,11 +11,11 @@ export type SlotDto = {
   /**
    * 인벤토리 ID
    */
-  invId: number;
+  invId?: number;
   /**
-   * 아이템 ID
+   * 아이템 정보
    */
-  itemId: number;
+  item: ItemDto;
   /**
    * 수량
    */
