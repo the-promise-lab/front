@@ -2,7 +2,13 @@ import { IconCloseButton } from '@features/event-phase/ui/kit/icon-button';
 import { BackgroundPortal } from '@shared/background-portal';
 import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { cloneElement, useCallback, useState, type ReactElement } from 'react';
+import {
+  cloneElement,
+  useCallback,
+  useMemo,
+  useState,
+  type ReactElement,
+} from 'react';
 import type { StoreSectionDto } from '@api';
 import {
   IconMinimapClothesActive,
@@ -17,6 +23,10 @@ import {
   IconMinimapDigitalDefault,
   IconMinimapDigitalFocus,
   IconMinimapDigitalInactive,
+  IconMinimapDrinkDefault,
+  IconMinimapDrinkActive,
+  IconMinimapDrinkFocus,
+  IconMinimapDrinkInactive,
   IconMinimapFoodActive,
   IconMinimapFoodDefault,
   IconMinimapFoodFocus,
@@ -58,7 +68,7 @@ const minimapIconButtonsById: Record<number, MinimapIconButtonConfig> = {
       focus: <IconMinimapFoodFocus />,
       inactive: <IconMinimapFoodInactive />,
     },
-    positionClassName: 'top-[40%] left-[43%]',
+    positionClassName: 'top-[38%] left-[34%]',
     status: 'default',
   },
   2: {
@@ -68,7 +78,7 @@ const minimapIconButtonsById: Record<number, MinimapIconButtonConfig> = {
       focus: <IconMinimapDigitalFocus />,
       inactive: <IconMinimapDigitalInactive />,
     },
-    positionClassName: 'top-[60%] left-[56%]',
+    positionClassName: 'top-[67%] left-[48%]',
     status: 'default',
   },
   3: {
@@ -78,27 +88,27 @@ const minimapIconButtonsById: Record<number, MinimapIconButtonConfig> = {
       focus: <IconMinimapPharmacyFocus />,
       inactive: <IconMinimapPharmacyInactive />,
     },
-    positionClassName: 'top-[38%] left-[29%]',
+    positionClassName: 'top-[38%] left-[21%]',
     status: 'default',
   },
   4: {
-    icons: {
-      default: <IconMinimapSaleDefault />,
-      active: <IconMinimapSaleActive />,
-      focus: <IconMinimapSaleFocus />,
-      inactive: <IconMinimapSaleInactive />,
-    },
-    positionClassName: 'top-[38%] left-[73%]',
-    status: 'default',
-  },
-  5: {
     icons: {
       default: <IconMinimapDailyDefault />,
       active: <IconMinimapDailyActive />,
       focus: <IconMinimapDailyFocus />,
       inactive: <IconMinimapDailyInactive />,
     },
-    positionClassName: 'top-[40%] left-[57%]',
+    positionClassName: 'top-[38%] left-[49%]',
+    status: 'default',
+  },
+  5: {
+    icons: {
+      default: <IconMinimapClothesDefault />,
+      active: <IconMinimapClothesActive />,
+      focus: <IconMinimapClothesFocus />,
+      inactive: <IconMinimapClothesInactive />,
+    },
+    positionClassName: 'top-[90%] left-[45%]',
     status: 'default',
   },
   6: {
@@ -108,26 +118,42 @@ const minimapIconButtonsById: Record<number, MinimapIconButtonConfig> = {
       focus: <IconMinimapNoteFocus />,
       inactive: <IconMinimapNoteInactive />,
     },
-    positionClassName: 'top-[60%] left-[45%]',
+    positionClassName: 'top-[67%] left-[38%]',
     status: 'default',
   },
   7: {
     icons: {
-      default: <IconMinimapClothesDefault />,
-      active: <IconMinimapClothesActive />,
-      focus: <IconMinimapClothesFocus />,
-      inactive: <IconMinimapClothesInactive />,
+      default: <IconMinimapSaleDefault />,
+      active: <IconMinimapSaleActive />,
+      focus: <IconMinimapSaleFocus />,
+      inactive: <IconMinimapSaleInactive />,
     },
-    positionClassName: 'top-[74%] left-[54%]',
+    positionClassName: 'top-[38%] left-[64%]',
+    status: 'default',
+  },
+  9: {
+    icons: {
+      default: <IconMinimapDrinkDefault />,
+      active: <IconMinimapDrinkActive />,
+      focus: <IconMinimapDrinkFocus />,
+      inactive: <IconMinimapDrinkInactive />,
+    },
+    positionClassName: 'top-[38%] left-[42%]',
     status: 'default',
   },
 };
 
 interface MinimapProps {
   storeSections: StoreSectionDto[];
+  onSectionClick: (storeSectionId: number) => void;
+  currentShelfId: number | null;
 }
 
-export default function Minimap({ storeSections }: MinimapProps) {
+export default function Minimap({
+  storeSections,
+  onSectionClick,
+  currentShelfId,
+}: MinimapProps) {
   const [opened, setOpened] = useState(false);
 
   const close = useCallback(() => {
@@ -137,6 +163,29 @@ export default function Minimap({ storeSections }: MinimapProps) {
   const open = useCallback(() => {
     setOpened(true);
   }, []);
+
+  const handleSectionClick = useCallback(
+    (storeSectionId: number) => {
+      onSectionClick(storeSectionId);
+      close();
+    },
+    [onSectionClick, close]
+  );
+
+  const currentStoreSectionIcon = useMemo(() => {
+    const icon = cloneElement(
+      minimapIconButtonsById[currentShelfId || 0].icons['focus'],
+      {
+        className: cn(
+          'h-45 w-auto absolute bottom-[48%] left-1/2 -translate-x-1/2 translate-y-1/2',
+          minimapIconButtonsById[currentShelfId || 0].icons['focus'].props
+            .className
+        ),
+      }
+    );
+
+    return icon;
+  }, [currentShelfId]);
 
   return (
     <>
@@ -155,7 +204,9 @@ export default function Minimap({ storeSections }: MinimapProps) {
           backgroundRepeat: 'no-repeat',
         }}
         onClick={open}
-      ></button>
+      >
+        {currentStoreSectionIcon}
+      </button>
       <BackgroundPortal>
         <AnimatePresence>
           {opened && (
@@ -185,13 +236,15 @@ export default function Minimap({ storeSections }: MinimapProps) {
                   const config = minimapIconButtonsById[section.id];
                   if (!config) return null;
 
-                  const activeIcon = config.icons[config.status];
+                  const isCurrentShelf = section.id === currentShelfId;
+                  const status = isCurrentShelf ? 'focus' : config.status;
+                  const activeIcon = config.icons[status];
                   const iconWithClass = cloneElement(activeIcon, {
                     className: cn('h-full w-full', activeIcon.props.className),
                   });
 
                   return (
-                    <div
+                    <button
                       key={section.id}
                       className={cn(
                         'absolute h-30 w-auto -translate-x-1/2 -translate-y-1/2',
@@ -199,9 +252,10 @@ export default function Minimap({ storeSections }: MinimapProps) {
                       )}
                       title={section.displayName}
                       aria-label={section.displayName}
+                      onClick={() => handleSectionClick(section.id)}
                     >
                       {iconWithClass}
-                    </div>
+                    </button>
                   );
                 })}
               </div>

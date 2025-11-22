@@ -5,11 +5,11 @@ import type { Shelf, ShelfItem } from './types';
 const STORAGE_KEY = 'shelf-selection-storage';
 interface ShelfSelectionStore {
   shelves: Shelf[];
-  currentShelfId: string | null;
+  currentShelfId: number | null;
   selectedShelfItems: ShelfItem[];
 
   setShelves: (shelves: Shelf[]) => void;
-  setCurrentShelfId: (shelfId: string | null) => void;
+  setCurrentShelfId: (shelfId: number | null) => void;
   setSelectedShelfItems: (items: ShelfItem[]) => void;
 
   initShelves: (shelves: Shelf[]) => void;
@@ -18,11 +18,12 @@ interface ShelfSelectionStore {
   clearSelectedItems: () => void;
   moveToNextShelf: () => void;
   moveToPreviousShelf: () => void;
+  moveToShelf: (storeSectionId: number) => void;
 
   getCurrentShelf: () => Shelf | null;
   getNextShelf: () => Shelf | null;
   getPreviousShelf: () => Shelf | null;
-  getShelfById: (shelfId: string) => Shelf | null;
+  getShelfById: (shelfId: number) => Shelf | null;
 }
 
 export const useShelfSelectionStore = create<ShelfSelectionStore>()(
@@ -133,6 +134,14 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
         const previousIndex =
           (currentIndex - 1 + shelves.length) % shelves.length;
         set({ currentShelfId: shelves[previousIndex].id });
+      },
+
+      moveToShelf: storeSectionId => {
+        const { shelves } = get();
+        const shelf = shelves.find(shelf => shelf.id === storeSectionId);
+        if (shelf) {
+          set({ currentShelfId: shelf.id });
+        }
       },
     }),
     {

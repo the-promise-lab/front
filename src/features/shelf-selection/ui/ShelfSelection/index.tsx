@@ -34,6 +34,7 @@ export default function ShelfSelection({
     initShelves,
     moveToNextShelf,
     moveToPreviousShelf,
+    moveToShelf,
   } = useShelfSelectionStore();
 
   const { shelves, storeSections, isLoading, error } = useShelfData();
@@ -66,6 +67,8 @@ export default function ShelfSelection({
   const currentShelf = getCurrentShelf();
   const nextShelf = getNextShelf();
   const previousShelf = getPreviousShelf();
+
+  console.log('currentShelf', currentShelf);
 
   if (error) {
     return (
@@ -125,7 +128,11 @@ export default function ShelfSelection({
             <Typography variant='mini-dialogue'>OK(임시)</Typography>
           </button>
 
-          <Minimap storeSections={storeSections} />
+          <Minimap
+            storeSections={storeSections}
+            onSectionClick={moveToShelf}
+            currentShelfId={currentShelf?.id}
+          />
           <Inventory bag={bag} />
           <Timer onTimeout={handleComplete} />
 

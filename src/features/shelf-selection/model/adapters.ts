@@ -82,7 +82,7 @@ export function adaptShelvesFromSetupInfo(setupInfo: SetupInfoDto): Shelf[] {
     );
 
     return {
-      id: String(section.id),
+      id: section.id,
       name: section.displayName,
       backgroundImage:
         section.backgroundImage ||
