@@ -15,6 +15,6 @@ export type {
   PlayingCharacter,
   PlayingCharacterSet,
   Inventory,
-  InventorySlot,
+  InventoryItem,
   Bag,
 } from './model/types';

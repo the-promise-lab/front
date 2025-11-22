@@ -55,7 +55,7 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
         fullImage: null,
         profileImage: imageKey ?? null,
         currentHp: null,
-        currentSp: null,
+        currentMental: null,
         colors:
           position === 'left'
             ? {

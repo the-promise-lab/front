@@ -197,8 +197,8 @@ export default function Minimap({ storeSections }: MinimapProps) {
                         'absolute h-30 w-auto -translate-x-1/2 -translate-y-1/2',
                         config.positionClassName
                       )}
-                      title={section.name}
-                      aria-label={section.name}
+                      title={section.displayName}
+                      aria-label={section.displayName}
                     >
                       {iconWithClass}
                     </div>

@@ -18,6 +18,7 @@ export const $SelectCharacterSetResultDto = {
       type: 'number',
       description: `캐릭터 그룹 ID`,
       isRequired: true,
+      isNullable: true,
     },
     playingCharacter: {
       type: 'array',

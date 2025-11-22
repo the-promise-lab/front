@@ -20,7 +20,7 @@ export interface CharacterSet {
   id: number;
   name: string;
   image: string;
-  description: string;
+  description: string | null;
   isLocked?: boolean;
 }
 
@@ -28,7 +28,7 @@ export interface PlayingCharacter {
   id: number;
   characterId: number;
   currentHp: number | null;
-  currentSp: number | null;
+  currentMental: number | null;
   name: string | null;
   fullImage: string | null;
   profileImage: string | null;
@@ -40,23 +40,20 @@ export interface PlayingCharacter {
 
 export interface PlayingCharacterSet {
   id: number;
-  characterGroupId: number;
+  characterGroupId: number | null;
   playingCharacters: Array<PlayingCharacter>;
 }
 
 export type Item = ItemDto;
 
-export interface InventorySlot {
-  id: number;
-  invId?: number;
-  item: Item;
+export interface InventoryItem {
+  sessionId: number;
+  item: ItemDto;
   quantity: number;
 }
 
 export interface Inventory {
-  id: number;
-  bagId: number;
-  slots: Array<InventorySlot>;
+  items: Array<InventoryItem>;
 }
 
 export interface Bag {
@@ -73,5 +70,5 @@ export interface GameSession {
   currentActId: number | null;
   playingCharacterSet: PlayingCharacterSet | null;
   inventory: Inventory | null;
-  selectedBag?: Bag;
+  bag: Bag | null;
 }

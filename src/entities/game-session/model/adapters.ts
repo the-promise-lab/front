@@ -1,6 +1,5 @@
 import type {
   GameSessionDto,
-  CreateGameSessionDto,
   CharacterGroupDto,
   PlayingCharacterSetDto,
   PlayingCharacterDto,
@@ -30,7 +29,17 @@ export function adaptGameSessionFromApi(
     playingCharacterSet: apiResponse.playingCharacterSet
       ? adaptPlayingCharacterSetFromApi(apiResponse.playingCharacterSet)
       : null,
-    inventory: apiResponse.inventory,
+    inventory:
+      apiResponse.gameSessionInventory.length > 0
+        ? {
+            items: apiResponse.gameSessionInventory.map(inv => ({
+              sessionId: inv.sessionId,
+              item: inv.item,
+              quantity: inv.quantity,
+            })),
+          }
+        : null,
+    bag: null, // TODO: API가 bagDto를 제공하면 adaptBagFromApi(apiResponse.bag) 사용
   };
 }
 
@@ -42,15 +51,9 @@ export function adaptGameSessionFromApi(
  * @returns 도메인 모델로 변환된 게임 세션
  */
 export function adaptCreateGameSessionFromApi(
-  apiResponse: CreateGameSessionDto
+  apiResponse: GameSessionDto
 ): GameSession {
-  return {
-    id: apiResponse.id,
-    userId: apiResponse.userId,
-    currentActId: apiResponse.currentActId,
-    playingCharacterSet: null,
-    inventory: null,
-  };
+  return adaptGameSessionFromApi(apiResponse);
 }
 
 /**
@@ -83,7 +86,7 @@ export function adaptCharacterSetFromApi(
   return {
     id: group.id,
     name: group.name,
-    image: group.image,
+    image: group.groupSelectImage,
     description: group.description,
     isLocked: group.id !== 1,
   };
@@ -105,7 +108,7 @@ export function adaptPlayingCharacterFromApi(
     fullImage: playingCharacter.character.selectImage || null,
     profileImage: playingCharacter.character.portraitImage || null,
     currentHp: playingCharacter.currentHp || null,
-    currentSp: playingCharacter.currentSp || null,
+    currentMental: playingCharacter.currentMental || null,
     colors: {
       backgroundColor: playingCharacter.character.bgColor || null,
       borderColor: playingCharacter.character.borderColor || null,
@@ -115,7 +118,6 @@ export function adaptPlayingCharacterFromApi(
 
 /**
  * BagDto를 클라이언트 Bag 타입으로 변환
- * description 필드는 DTO에 없으므로 하드코딩
  *
  * @param dto - 서버 응답 (BagDto)
  * @returns 클라이언트 Bag 타입
@@ -124,7 +126,7 @@ export function adaptBagFromApi(dto: BagDto): Bag {
   return {
     id: dto.id,
     name: dto.name,
-    description: `${dto.name}에 대한 설명`,
+    description: dto.description,
     image: dto.image,
     capacity: dto.capacity,
   };

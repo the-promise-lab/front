@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GameService } from '@api';
-import type { SubmitInventoryDto, InventoryDto } from '@api';
+import type { SubmitGameSessionInventoryDto, GameSessionDto } from '@api';
 
 /**
  * 인벤토리 제출 훅
@@ -10,7 +10,7 @@ import type { SubmitInventoryDto, InventoryDto } from '@api';
  * - isLoading: 로딩 상태
  * - isError: 에러 상태
  * - isSuccess: 성공 상태
- * - data: 제출 결과 데이터 (InventoryDto)
+ * - data: 제출 결과 데이터 (GameSessionDto)
  *
  * @example
  * const { mutate: submitInventory } = useSubmitInventory({
@@ -19,17 +19,17 @@ import type { SubmitInventoryDto, InventoryDto } from '@api';
  *   },
  * });
  *
- * submitInventory({ bagId: 1, slots: [...] });
+ * submitInventory({ bagId: 1, items: [...] });
  */
 export function useSubmitInventory(options?: {
-  onSuccess?: (data: InventoryDto) => void;
+  onSuccess?: (data: GameSessionDto) => void;
   onError?: (error: Error) => void;
 }) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: SubmitInventoryDto) =>
-      GameService.gameControllerSubmitInventory(payload),
+    mutationFn: (payload: SubmitGameSessionInventoryDto) =>
+      GameService.gameControllerSubmitGameSessionInventory(payload),
     onSuccess: data => {
       // 인벤토리 제출 성공시 게임 세션 캐시 무효화
       queryClient.invalidateQueries({ queryKey: ['gameSession'] });

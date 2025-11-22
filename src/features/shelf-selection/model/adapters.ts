@@ -1,5 +1,9 @@
 import type { ItemDto } from '@api/models/ItemDto';
-import type { SubmitInventoryDto, CreateSlotDto, SetupInfoDto } from '@api';
+import type {
+  SubmitGameSessionInventoryDto,
+  GameSessionInventoryItemDto,
+  SetupInfoDto,
+} from '@api';
 import type { Shelf, ShelfItem } from './types';
 
 /**
@@ -30,7 +34,7 @@ function getBackgroundImageForSection(storeSectionName: string): string {
 
 /**
  * ItemDto를 ShelfItem으로 변환
- * position(x, y)은 임시로 일렬 배치 계산
+ * positionX/Y가 제공되면 사용, 없으면 fallback 계산
  *
  * @param item - 백엔드 ItemDto
  * @param index - 배열 내 인덱스
@@ -42,10 +46,16 @@ function adaptShelfItemFromItemDto(
   index: number,
   totalCount: number
 ): ShelfItem {
-  // TODO: 백엔드에서 position(x, y) 제공 시 제거
-  // 일렬 배치: x는 균등 분배, y는 고정
-  const x = (index + 1) / (totalCount + 1);
-  const y = Math.random();
+  // positionX/Y가 제공되면 사용, 없으면 fallback 계산
+  const x =
+    item.positionX !== null && item.positionX !== undefined
+      ? item.positionX
+      : (index + 1) / (totalCount + 1);
+
+  const y =
+    item.positionY !== null && item.positionY !== undefined
+      ? item.positionY
+      : 0.5;
 
   return {
     id: String(item.id),
@@ -73,32 +83,33 @@ export function adaptShelvesFromSetupInfo(setupInfo: SetupInfoDto): Shelf[] {
 
     return {
       id: String(section.id),
-      name: section.name,
+      name: section.displayName,
       backgroundImage:
-        section.backgroundImage || getBackgroundImageForSection(section.name),
+        section.backgroundImage ||
+        getBackgroundImageForSection(section.displayName),
       shelfItems,
     };
   });
 }
 
 /**
- * ShelfItem[]을 SubmitInventoryDto로 변환
+ * ShelfItem[]을 SubmitGameSessionInventoryDto로 변환
  *
  * @param items - 선택된 ShelfItem 목록
  * @param bagId - 선택한 가방 ID
- * @returns SubmitInventoryDto
+ * @returns SubmitGameSessionInventoryDto
  */
 export function adaptShelfItemsToInventoryPayload(
   items: ShelfItem[],
   bagId: number
-): SubmitInventoryDto {
-  const slots: CreateSlotDto[] = items.map(item => ({
+): SubmitGameSessionInventoryDto {
+  const inventoryItems: GameSessionInventoryItemDto[] = items.map(item => ({
     itemId: Number(item.id),
     quantity: item.quantity,
   }));
 
   return {
     bagId,
-    slots,
+    items: inventoryItems,
   };
 }

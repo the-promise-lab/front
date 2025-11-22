@@ -3,13 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CharacterGroupDto } from '../models/CharacterGroupDto';
-import type { CreateGameSessionDto } from '../models/CreateGameSessionDto';
 import type { GameSessionDto } from '../models/GameSessionDto';
-import type { InventoryDto } from '../models/InventoryDto';
 import type { SelectCharacterSetDto } from '../models/SelectCharacterSetDto';
 import type { SelectCharacterSetResultDto } from '../models/SelectCharacterSetResultDto';
 import type { SetupInfoDto } from '../models/SetupInfoDto';
-import type { SubmitInventoryDto } from '../models/SubmitInventoryDto';
+import type { SubmitGameSessionInventoryDto } from '../models/SubmitGameSessionInventoryDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -30,10 +28,10 @@ export class GameService {
   }
   /**
    * 게임 세션 생성
-   * @returns CreateGameSessionDto 게임 세션 생성 성공
+   * @returns GameSessionDto 게임 세션 생성 성공
    * @throws ApiError
    */
-  public static gameControllerCreateGameSession(): CancelablePromise<CreateGameSessionDto> {
+  public static gameControllerCreateGameSession(): CancelablePromise<GameSessionDto> {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/api/game/session',
@@ -85,12 +83,12 @@ export class GameService {
   /**
    * 인벤토리 제출
    * @param requestBody
-   * @returns InventoryDto 인벤토리 제출 성공
+   * @returns GameSessionDto 인벤토리 제출 성공
    * @throws ApiError
    */
-  public static gameControllerSubmitInventory(
-    requestBody: SubmitInventoryDto
-  ): CancelablePromise<InventoryDto> {
+  public static gameControllerSubmitGameSessionInventory(
+    requestBody: SubmitGameSessionInventoryDto
+  ): CancelablePromise<GameSessionDto> {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/api/game/session/inventory',

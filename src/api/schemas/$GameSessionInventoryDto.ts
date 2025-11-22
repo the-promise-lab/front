@@ -2,16 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $SlotDto = {
+export const $GameSessionInventoryDto = {
   properties: {
-    id: {
+    sessionId: {
       type: 'number',
-      description: `슬롯 ID`,
+      description: `게임 세션 ID`,
       isRequired: true,
-    },
-    invId: {
-      type: 'number',
-      description: `인벤토리 ID`,
     },
     item: {
       type: 'all-of',

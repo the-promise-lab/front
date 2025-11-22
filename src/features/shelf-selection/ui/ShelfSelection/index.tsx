@@ -11,12 +11,12 @@ import Inventory from './Inventory';
 import type { Bag } from '@entities/game-session';
 import Timer from './Timer';
 import { BackgroundPortal } from '@shared/background-portal';
-import type { InventoryDto } from '@api';
+import type { GameSessionDto } from '@api';
 
 interface ShelfSelectionProps {
   onBack: () => void;
   bag: Bag;
-  onComplete: (result: InventoryDto) => void;
+  onComplete: (result: GameSessionDto) => void;
   renderHeader: () => ReactNode;
 }
 

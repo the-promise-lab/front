@@ -2,11 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateSlotDto = {
+import type { ItemDto } from './ItemDto';
+export type GameSessionInventoryDto = {
   /**
-   * 아이템 ID
+   * 게임 세션 ID
    */
-  itemId: number;
+  sessionId: number;
+  /**
+   * 아이템 정보
+   */
+  item: ItemDto;
   /**
    * 수량
    */

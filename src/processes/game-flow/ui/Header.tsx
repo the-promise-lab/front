@@ -42,7 +42,7 @@ export default function Header({
                   key={char.id}
                   name={char.name || '-'}
                   image={char.profileImage || ''}
-                  mentality={char.currentSp || 0}
+                  mentality={char.currentMental || 0}
                   hp={char.currentHp || 0}
                   characterColors={
                     char.colors || { backgroundColor: null, borderColor: null }

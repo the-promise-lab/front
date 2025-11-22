@@ -41,7 +41,7 @@ export default function ChangeStatsScreen({
         const name = character.name || '-';
         initialStats[name] = {
           hp: character.currentHp || 0,
-          mentality: character.currentSp || 0,
+          mentality: character.currentMental || 0,
         };
       });
       setPreviousStats(initialStats);
@@ -73,7 +73,8 @@ export default function ChangeStatsScreen({
 
         // 서버에서 내려온 현재 스탯 - 이전 스탯 = 변화량
         const deltaHp = character.currentHp || 0 - previous.hp;
-        const deltaMentality = character.currentSp || 0 - previous.mentality;
+        const deltaMentality =
+          character.currentMental || 0 - previous.mentality;
 
         return {
           name,
@@ -92,7 +93,7 @@ export default function ChangeStatsScreen({
       const name = character.name || '-';
       newPreviousStats[name] = {
         hp: character.currentHp || 0,
-        mentality: character.currentSp || 0,
+        mentality: character.currentMental || 0,
       };
     });
     setPreviousStats(newPreviousStats);
