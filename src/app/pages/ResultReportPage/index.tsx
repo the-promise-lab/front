@@ -1,62 +1,21 @@
-import { useState } from 'react';
-import { useGameFlowStore } from '@processes/game-flow';
 import { useSetBackground } from '@shared/background';
-import { GlassMenuLayout } from '@processes/game-flow/ui/layout/GlassMenuLayout';
-
-type ResultMenuCategory = 'overview' | 'details';
-
-const RESULT_MENU_CATEGORIES = [
-  { id: 'overview', label: '개요' },
-  { id: 'details', label: '상세 정보' },
-] as const;
+import { ResultReportScreen } from '@features/result-report';
+import { useGameFlowStore } from '@processes/game-flow';
+import { useShallow } from 'zustand/react/shallow';
 
 export default function ResultReportPage() {
   useSetBackground({
     image: 'bg-2.png',
   });
-
-  const [selectedCategory, setSelectedCategory] =
-    useState<ResultMenuCategory>('overview');
+  const { goto } = useGameFlowStore(
+    useShallow(state => ({
+      goto: state.goto,
+    }))
+  );
 
   const handleGoToMainMenu = () => {
-    useGameFlowStore.getState().goto('MAIN_MENU');
+    goto('MAIN_MENU');
   };
 
-  const renderContent = () => {
-    switch (selectedCategory) {
-      case 'overview':
-        return (
-          <div className='flex flex-col gap-8 text-white'>
-            <h1 className='text-4xl font-bold'>결과 보고서</h1>
-            <div className='text-xl'>게임 결과 개요가 여기에 표시됩니다.</div>
-            <button
-              onClick={handleGoToMainMenu}
-              className='w-fit rounded bg-white px-6 py-3 text-black transition-colors hover:bg-gray-200'
-            >
-              메인 메뉴로 돌아가기
-            </button>
-          </div>
-        );
-      case 'details':
-        return (
-          <div className='flex flex-col gap-8 text-white'>
-            <h1 className='text-4xl font-bold'>상세 정보</h1>
-            <div className='text-xl'>상세한 게임 결과가 여기에 표시됩니다.</div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <GlassMenuLayout
-      menuItems={RESULT_MENU_CATEGORIES}
-      selectedId={selectedCategory}
-      onSelect={id => setSelectedCategory(id as ResultMenuCategory)}
-      onClose={handleGoToMainMenu}
-    >
-      {renderContent()}
-    </GlassMenuLayout>
-  );
+  return <ResultReportScreen onGoToMainMenu={handleGoToMainMenu} />;
 }

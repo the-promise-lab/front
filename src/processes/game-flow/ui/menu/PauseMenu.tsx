@@ -1,6 +1,6 @@
 import { useCallback, useState, type ReactNode } from 'react';
 import { useGameFlowStore } from '../..';
-import { IconPauseButton } from '@features/event-phase/ui/kit/icon-button';
+import { IconPauseButton } from '@shared/ui/icon-button';
 import { cn } from '@shared/lib/utils';
 import LogoutConfirmModal from '@shared/ui/LogoutConfirmModal';
 import { AnimatePresence } from 'framer-motion';
@@ -8,7 +8,7 @@ import { CharacterInfoView } from './CharacterInfoView';
 import { SettingsView } from './SettingsView';
 import { ResultReportView } from './ResultReportView';
 import { TeamIntroView } from './TeamIntroView';
-import { GlassMenuLayout } from '../layout/GlassMenuLayout';
+import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
 
 type MenuCategory =
   | 'character-info'

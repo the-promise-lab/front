@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { cn } from '@shared/lib/utils';
-import { IconCloseButton } from '@features/event-phase/ui/kit/icon-button';
+import { IconCloseButton } from '@shared/ui/icon-button';
 import type { ReactNode } from 'react';
 
 export interface MenuItem<T extends string = string> {
@@ -29,7 +29,7 @@ export function GlassMenuLayout<T extends string = string>({
     <>
       {/* 블러 배경 오버레이 - 뒷배경이 보이도록 투명하게 */}
       <motion.div
-        className='fixed inset-0 z-[100] bg-black/30 backdrop-blur-lg'
+        className='fixed inset-0 z-100 bg-black/30 backdrop-blur-lg'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -39,7 +39,7 @@ export function GlassMenuLayout<T extends string = string>({
       {/* 팝업 메뉴 - 전체 화면 덮기 */}
       <motion.div
         className={cn(
-          'pointer-events-auto fixed inset-0 z-[101] flex flex-col',
+          'pointer-events-auto fixed inset-0 z-101 flex flex-col',
           className
         )}
         initial={{ opacity: 0 }}
@@ -50,7 +50,7 @@ export function GlassMenuLayout<T extends string = string>({
         {/* 닫기 버튼 - 화면 우측 상단 */}
         {onClose && (
           <motion.div
-            className='absolute top-10 right-10 z-[102]'
+            className='absolute top-10 right-10 z-102'
             initial={{ opacity: 0, scale: 0.8, y: -12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: -12 }}
