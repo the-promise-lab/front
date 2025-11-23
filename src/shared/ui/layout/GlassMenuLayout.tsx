@@ -24,7 +24,8 @@ export function GlassMenuLayout<T extends string = string>({
   onClose,
   children,
   className,
-}: GlassMenuLayoutProps<T>) {
+  headerContent,
+}: GlassMenuLayoutProps<T> & { headerContent?: ReactNode }) {
   return (
     <>
       {/* 블러 배경 오버레이 - 뒷배경이 보이도록 투명하게 */}
@@ -47,33 +48,37 @@ export function GlassMenuLayout<T extends string = string>({
         exit={{ opacity: 0 }}
         onClick={e => e.stopPropagation()}
       >
-        {/* 닫기 버튼 - 화면 우측 상단 */}
-        {onClose && (
-          <motion.div
-            className='absolute top-10 right-10 z-102'
-            initial={{ opacity: 0, scale: 0.8, y: -12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -12 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            <IconCloseButton onClick={onClose} />
-          </motion.div>
-        )}
+        {/* 헤더 영역 (고정 높이) */}
+        <div className='relative flex h-45 w-full shrink-0 items-center px-10'>
+          {/* 헤더 컨텐츠 (좌측) */}
+          <div className='flex-1'>{headerContent}</div>
 
-        {/* 팝업 메뉴 컨텐츠 - 전체 화면, 뒷배경이 보이도록 투명하게 */}
+          {/* 닫기 버튼 (우측) */}
+          {onClose && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            >
+              <IconCloseButton onClick={onClose} />
+            </motion.div>
+          )}
+        </div>
+
+        {/* 메인 컨텐츠 영역 (나머지 높이) */}
         <motion.div
           className={cn(
-            'relative flex h-full w-full',
-            'bg-black/40 backdrop-blur-xl',
-            'overflow-hidden'
+            'relative flex w-full flex-1 overflow-hidden'
+            // 전체 배경 제거 (투명)
           )}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.25, ease: 'easeOut', delay: 0.1 }}
         >
-          {/* 좌측 카테고리 목록 */}
-          <aside className='w-[260px] border-r border-white/10 bg-black/40 px-10 py-16'>
+          {/* 좌측 카테고리 목록 - 배경 제거, 위치 조정 */}
+          <aside className='w-120 px-10 pt-4'>
             <div className='flex flex-col gap-4'>
               {menuItems.map(item => {
                 const isActive = item.id === selectedId;
@@ -99,7 +104,7 @@ export function GlassMenuLayout<T extends string = string>({
 
           {/* 우측 내용 영역 */}
           <main className='flex flex-1 flex-col overflow-y-auto'>
-            <div className='flex-1 p-16'>{children}</div>
+            <div className='flex-1 px-16 pt-4 pb-16'>{children}</div>
           </main>
         </motion.div>
       </motion.div>

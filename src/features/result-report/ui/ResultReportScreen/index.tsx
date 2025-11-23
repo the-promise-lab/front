@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
 import { BackgroundPortal } from '@shared/background-portal';
+import Typography from '@shared/ui/Typography';
+import type { User } from '@shared/auth/model/useAuthStore';
 
 type ResultMenuCategory = 'overview' | 'details';
 
@@ -11,10 +13,12 @@ const RESULT_MENU_CATEGORIES = [
 
 interface ResultReportScreenProps {
   onGoToMainMenu: () => void;
+  user: User | null;
 }
 
 export function ResultReportScreen({
   onGoToMainMenu,
+  user,
 }: ResultReportScreenProps) {
   const [selectedCategory, setSelectedCategory] =
     useState<ResultMenuCategory>('overview');
@@ -53,6 +57,26 @@ export function ResultReportScreen({
         selectedId={selectedCategory}
         onSelect={id => setSelectedCategory(id as ResultMenuCategory)}
         onClose={onGoToMainMenu}
+        headerContent={
+          <div className='flex items-center gap-16'>
+            {/* 임시 유저 정보 (나중에 실제 데이터로 교체) */}
+            <div className='flex w-110 items-center gap-4.5 px-10'>
+              <div className='h-12 w-12 rounded-full bg-white' />
+              <Typography variant='button-b' className='text-white'>
+                {user?.name}
+              </Typography>
+            </div>
+            <div className='flex items-center gap-4'>
+              <div className='h-11.25 w-2 bg-white' />
+              <Typography variant='title' className='text-white'>
+                {
+                  RESULT_MENU_CATEGORIES.find(c => c.id === selectedCategory)
+                    ?.label
+                }
+              </Typography>
+            </div>
+          </div>
+        }
       >
         {renderContent()}
       </GlassMenuLayout>
