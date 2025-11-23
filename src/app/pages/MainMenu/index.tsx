@@ -2,6 +2,7 @@ import {
   useStartNewGame,
   useContinueGame,
   PauseMenu,
+  useGameFlowStore,
 } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
@@ -116,6 +117,14 @@ export default function MainMenu() {
 
       <TmpDesignSystemPreview />
       <TmpSoundPreview />
+
+      {/* Debug Button */}
+      <button
+        onClick={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
+        className='absolute right-4 bottom-4 z-50 rounded bg-red-500 px-2 py-1 text-xs text-white opacity-50 hover:opacity-100'
+      >
+        Debug: Result Report
+      </button>
     </div>
   );
 }
