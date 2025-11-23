@@ -239,7 +239,7 @@ function createPairDetail(set?: CharacterSet): CharacterPairDetail {
 
   return {
     title: set.name,
-    overview: set.description,
+    overview: set.description || '캐릭터 설명이 준비되어 있지 않습니다.',
     characters: [
       {
         id: `${set.id}-primary`,

@@ -2,16 +2,18 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $CreateSlotDto = {
+export const $SubmitGameSessionInventoryDto = {
   properties: {
-    itemId: {
+    bagId: {
       type: 'number',
-      description: `아이템 ID`,
+      description: `가방 ID`,
       isRequired: true,
     },
-    quantity: {
-      type: 'number',
-      description: `수량`,
+    items: {
+      type: 'array',
+      contains: {
+        type: 'GameSessionInventoryItemDto',
+      },
       isRequired: true,
     },
   },

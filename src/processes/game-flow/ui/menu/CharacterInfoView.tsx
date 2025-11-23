@@ -291,7 +291,7 @@ export function CharacterInfoView() {
                 )}
                 {/* 게임 진행 중인 스탯도 표시 */}
                 {(playingCharacter.currentHp !== null ||
-                  playingCharacter.currentSp !== null) && (
+                  playingCharacter.currentMental !== null) && (
                   <div className='flex gap-3'>
                     {playingCharacter.currentHp !== null && (
                       <div className='flex flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3'>
@@ -303,13 +303,13 @@ export function CharacterInfoView() {
                         </span>
                       </div>
                     )}
-                    {playingCharacter.currentSp !== null && (
+                    {playingCharacter.currentMental !== null && (
                       <div className='flex flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3'>
                         <span className='text-xs font-semibold tracking-wide text-white/40 uppercase'>
                           현재 정신력
                         </span>
                         <span className='text-lg font-bold text-white'>
-                          {playingCharacter.currentSp}
+                          {playingCharacter.currentMental}
                         </span>
                       </div>
                     )}

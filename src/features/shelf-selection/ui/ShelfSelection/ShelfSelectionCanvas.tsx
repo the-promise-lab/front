@@ -1,20 +1,17 @@
 import type React from 'react';
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
 import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
-import { toastItemAdded } from '@shared/ui/toast-variants';
 import { drawMarker, preloadMarkerImage } from '../../lib/drawMarker';
-import { IconGlowChevronLeft, IconGlowChevronRight } from './kit/icons';
-import { cn } from '@shared/lib/utils';
-import Typography from '@shared/ui/Typography';
+import GlowNavigationButton from './kit/GlowNavigationButton';
 
 const ITEM_SIZE_PIXEL = 20;
 
 interface ShelfSelectionCanvasProps {
   backgroundImage: string;
   items: ShelfItem[];
+  onClickItem: (item: ShelfItem) => void;
   previousShelfName: string;
   nextShelfName: string;
   onPreviousShelfClick: () => void;
@@ -24,6 +21,7 @@ interface ShelfSelectionCanvasProps {
 export default function ShelfSelectionCanvas({
   backgroundImage,
   items,
+  onClickItem,
   previousShelfName,
   nextShelfName,
   onPreviousShelfClick,
@@ -271,8 +269,6 @@ export default function ShelfSelectionCanvas({
     isDragging,
   });
 
-  // 선택된 아이템을 즉시 스토어에 추가
-  const { selectNewShelfItem } = useShelfSelectionStore();
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       baseHandleClick(e);
@@ -283,16 +279,10 @@ export default function ShelfSelectionCanvas({
 
       const item = detectItemSelection(imageCoords.x, imageCoords.y);
       if (item) {
-        selectNewShelfItem(item);
-        toastItemAdded(item.name);
+        onClickItem(item);
       }
     },
-    [
-      baseHandleClick,
-      getImageCoordinates,
-      detectItemSelection,
-      selectNewShelfItem,
-    ]
+    [baseHandleClick, getImageCoordinates, detectItemSelection, onClickItem]
   );
 
   return (
@@ -311,42 +301,24 @@ export default function ShelfSelectionCanvas({
           {...dragHandlers}
         />
       </div>
-      <div className='absolute top-1/2 left-2 z-10 -translate-y-1/2'>
-        <button
-          className={cn('flex flex-col gap-2.5', { hidden: viewOffsetX !== 0 })}
+      <div className='pointer-events-none absolute top-1/2 left-1/2 z-10 aspect-[16/9] h-[100dvh] w-auto -translate-x-1/2 -translate-y-1/2'>
+        <GlowNavigationButton
+          className='pointer-events-auto'
+          hidden={viewOffsetX !== 0}
           onClick={onPreviousShelfClick}
-        >
-          <IconGlowChevronLeft className='h-12 w-12' />
-          <Typography
-            variant='body-b'
-            style={{
-              textShadow: '0 0 4px var(--color-sky-1, #01ead6)',
-            }}
-          >
-            {previousShelfName}
-          </Typography>
-        </button>
-      </div>
-
-      <div className='absolute top-1/2 right-2 z-10 -translate-y-1/2'>
-        <button
-          className={cn('flex flex-col items-end gap-2.5', {
-            hidden:
-              viewOffsetX !== imageScale.width - canvasSize.width ||
-              imageScale.width === 0,
-          })}
+          direction='left'
+          displayName={previousShelfName}
+        />
+        <GlowNavigationButton
+          className='pointer-events-auto'
+          hidden={
+            viewOffsetX !== imageScale.width - canvasSize.width ||
+            imageScale.width === 0
+          }
           onClick={onNextShelfClick}
-        >
-          <IconGlowChevronRight className='h-12 w-12' />
-          <Typography
-            variant='body-b'
-            style={{
-              textShadow: '0 0 4px var(--color-sky-1, #01ead6)',
-            }}
-          >
-            {nextShelfName}
-          </Typography>
-        </button>
+          direction='right'
+          displayName={nextShelfName}
+        />
       </div>
     </>
   );

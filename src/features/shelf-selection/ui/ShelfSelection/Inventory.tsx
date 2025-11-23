@@ -8,7 +8,7 @@ import type { Bag } from '@entities/game-session';
 export default function Inventory({ bag }: { bag: Bag }) {
   const { selectedShelfItems, removeSelectedItem } = useShelfSelectionStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<SlotItem | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const currentWieght = selectedShelfItems.reduce(
     (acc, item) => acc + item.quantity,
@@ -29,19 +29,32 @@ export default function Inventory({ bag }: { bag: Bag }) {
 
   const handleSlotClick = (item: SlotItem) => {
     if (item.state === 'default') {
-      setItemToDelete(item);
+      setItemToDelete(item.id);
     } else if (item.state === 'delete') {
       setItemToDelete(null);
-      removeSelectedItem(item.id);
+      // slotId에서 실제 itemId와 인덱스를 추출
+      const [itemId] = item.id.split('-');
+      removeSelectedItem(itemId);
     }
   };
 
-  const slotItems: SlotItem[] = selectedShelfItems.map(item => ({
-    id: item.id.toString(),
-    name: item.name,
-    image: '/chicken-breast.png',
-    state: itemToDelete?.id === item.id ? 'delete' : ('default' as const),
-  }));
+  const slotItems: SlotItem[] = selectedShelfItems.flatMap(item => {
+    const itemId = item.id.toString();
+    const quantity = Math.max(1, item.quantity ?? 1);
+
+    return Array.from({ length: quantity }, (_, index) => {
+      const slotId = `${itemId}-${index}`;
+      const slotState =
+        itemToDelete === slotId ? 'delete' : ('default' as const);
+
+      return {
+        id: slotId,
+        name: item.name,
+        image: '/chicken-breast.png',
+        state: slotState,
+      };
+    });
+  });
 
   return (
     <>
@@ -80,7 +93,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
       <InventoryDrawer
         isOpen={isOpen}
         handleClickClose={() => setIsOpen(false)}
-        bagImage={'/bag.png'}
+        bagImage={bag.image}
         bagTitle={bag.name}
         bagDescription={`아이템 적재 가능: ${bagCapacity}개`}
         hasWeightBar

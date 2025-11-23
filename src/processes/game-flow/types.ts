@@ -98,7 +98,7 @@ export interface PlayingCharacter {
   id: number;
   characterId: number;
   currentHp: number;
-  currentSp: number;
+  currentMental: number;
   name: string;
   fullImage: string;
   thumbnailImage: string;

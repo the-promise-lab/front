@@ -447,6 +447,9 @@ body {
 
 .item-added-toast-container {
   pointer-events: none;
+  position: fixed;
+  bottom: 35px;
+  right: 0;
 }
 
 .item-added-toast {

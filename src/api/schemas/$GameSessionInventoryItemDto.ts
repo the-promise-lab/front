@@ -2,24 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $InventoryDto = {
+export const $GameSessionInventoryItemDto = {
   properties: {
-    id: {
+    itemId: {
       type: 'number',
+      description: `아이템 ID`,
       isRequired: true,
     },
-    gameSessionId: {
+    quantity: {
       type: 'number',
-    },
-    bagId: {
-      type: 'number',
-      isRequired: true,
-    },
-    slots: {
-      type: 'array',
-      contains: {
-        type: 'SlotDto',
-      },
+      description: `수량`,
       isRequired: true,
     },
   },

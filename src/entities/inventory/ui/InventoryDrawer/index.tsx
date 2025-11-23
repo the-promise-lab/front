@@ -90,9 +90,9 @@ export default function InventoryDrawer({
 
                 {/* 아이템 그리드 (4x5) */}
                 <div className='flex w-full flex-1 flex-wrap gap-5 overflow-y-auto pr-4 pb-4'>
-                  {items.map(item => (
+                  {items.map((item, index) => (
                     <InventorySlot
-                      key={item.id}
+                      key={`${item.id}-${index}`}
                       itemName={item.name}
                       itemImage={item.image}
                       state={item.state as 'default' | 'selected' | 'delete'}

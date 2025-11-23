@@ -6,11 +6,19 @@ export const $PlayingCharacterSetDto = {
   properties: {
     id: {
       type: 'number',
+      description: `플레이 중인 캐릭터 셋 ID`,
+      isRequired: true,
+    },
+    gameSessionId: {
+      type: 'number',
+      description: `게임 세션 ID`,
       isRequired: true,
     },
     characterGroupId: {
       type: 'number',
+      description: `캐릭터 그룹 ID`,
       isRequired: true,
+      isNullable: true,
     },
     playingCharacter: {
       type: 'array',

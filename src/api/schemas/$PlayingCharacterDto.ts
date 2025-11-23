@@ -14,6 +14,11 @@ export const $PlayingCharacterDto = {
       description: `플레이 중인 캐릭터 셋 ID`,
       isRequired: true,
     },
+    characterId: {
+      type: 'number',
+      description: `캐릭터 ID`,
+      isRequired: true,
+    },
     character: {
       type: 'CharacterDto',
       isRequired: true,
@@ -23,7 +28,7 @@ export const $PlayingCharacterDto = {
       description: `현재 체력`,
       isRequired: true,
     },
-    currentSp: {
+    currentMental: {
       type: 'number',
       description: `현재 정신력`,
       isRequired: true,

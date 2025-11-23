@@ -2,9 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateGameSessionDto = {
-  id: number;
-  userId: number;
-  currentActId: number | null;
-  createdAt: string;
+export type GameSessionInventoryItemDto = {
+  /**
+   * 아이템 ID
+   */
+  itemId: number;
+  /**
+   * 수량
+   */
+  quantity: number;
 };

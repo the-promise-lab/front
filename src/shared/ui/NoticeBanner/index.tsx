@@ -40,7 +40,7 @@ export default function NoticeBanner({
       <div
         className={cn(
           'w-full py-12.5 text-white',
-          'bg-gradient-to-r from-transparent from-5% via-[#303030] via-50% to-transparent to-95%',
+          'bg-gradient-to-r from-transparent from-5% via-[#000000] via-50% to-transparent to-95%',
           'animate-in fade-in-0 zoom-in-95 duration-750'
         )}
       >

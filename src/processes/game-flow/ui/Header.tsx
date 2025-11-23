@@ -4,12 +4,16 @@ import CharacterProfile from '../../../features/event-phase/ui/kit/CharacterProf
 import BubblePortrait from '../../../features/event-phase/ui/kit/CharacterProfile/BubblePortrait';
 import type { PlayingCharacter } from '@entities/game-session';
 import type { ReactNode } from 'react';
+import { AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
   playingCharacters?: PlayingCharacter[];
   className?: string;
   hasCharacterProfiles?: boolean;
-  bubblePortraitText?: string;
+  bubblePortrait?: {
+    speaker: string;
+    text: string;
+  };
   menuSlot?: ReactNode;
 }
 
@@ -17,7 +21,7 @@ export default function Header({
   playingCharacters,
   className,
   hasCharacterProfiles = true,
-  bubblePortraitText,
+  bubblePortrait,
   menuSlot,
 }: HeaderProps) {
   return (
@@ -42,7 +46,7 @@ export default function Header({
                   key={char.id}
                   name={char.name || '-'}
                   image={char.profileImage || ''}
-                  mentality={char.currentSp || 0}
+                  mentality={char.currentMental || 0}
                   hp={char.currentHp || 0}
                   characterColors={
                     char.colors || { backgroundColor: null, borderColor: null }
@@ -53,16 +57,22 @@ export default function Header({
             </>
           )}
         </div>
-        {bubblePortraitText &&
-          playingCharacters &&
-          playingCharacters.length > 0 &&
-          playingCharacters[0].colors && (
+        <AnimatePresence>
+          {bubblePortrait && (
             <BubblePortrait
               className='mx-9 my-2'
-              text={bubblePortraitText}
-              characterColors={playingCharacters[0].colors}
+              text={bubblePortrait.text}
+              characterColors={
+                playingCharacters?.find(
+                  char => char.name === bubblePortrait.speaker
+                )?.colors || {
+                  backgroundColor: null,
+                  borderColor: null,
+                }
+              }
             />
           )}
+        </AnimatePresence>
       </div>
       {menuSlot && (
         <div className='flex h-full items-start gap-6'>{menuSlot}</div>

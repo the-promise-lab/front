@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { memo } from 'react';
-import { useTimer } from '../../model/useTimer';
 import Typography from '@shared/ui/Typography';
 import { cn } from '@shared/lib/utils';
 import NoticeBanner from '@shared/ui/NoticeBanner';
@@ -26,7 +25,6 @@ const TimerDisplay = memo(
   ({ seconds, isImminent }: { seconds: number; isImminent: boolean }) => {
     return (
       <div className='absolute bottom-15 left-1/2 z-10 flex h-15 -translate-x-1/2 items-center gap-1'>
-        {/* 발광 배경 효과 */}
         <div className='absolute top-0 left-1/2 z-[-1] -mt-[50%] h-74 w-81.5 -translate-x-1/2 rounded-full bg-black opacity-50 shadow-[0_0_47.8px_31px_#000]' />
 
         <HourglassIcon
@@ -48,8 +46,17 @@ TimerDisplay.displayName = 'TimerDisplay';
 const SECONDS_GIVEN = 102;
 const SECONDS_MAX_TO_SHOW = 100;
 
-export default function Timer({ onTimeout }: { onTimeout: () => void }) {
-  const { secondsLeft, showModal } = useTimer(SECONDS_GIVEN);
+interface TimerProps {
+  secondsLeft: number;
+  showModal: boolean;
+  onTimeout: () => void;
+}
+
+export default function Timer({
+  secondsLeft,
+  showModal,
+  onTimeout,
+}: TimerProps) {
   const isImminent = secondsLeft < 10;
   const NoticeOn = SECONDS_GIVEN - secondsLeft <= 2;
 

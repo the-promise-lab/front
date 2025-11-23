@@ -13,7 +13,7 @@ export interface ShelfItem {
 }
 
 export interface Shelf {
-  id: string;
+  id: number;
   name: string;
   backgroundImage: string;
   shelfItems: ShelfItem[];

@@ -28,11 +28,13 @@ const MENU_CATEGORIES = [
 interface PauseMenuProps {
   hidden?: boolean;
   renderButton?: (onClick: () => void) => ReactNode;
+  buttonClassName?: string;
 }
 
 export default function PauseMenu({
   hidden = false,
   renderButton,
+  buttonClassName,
 }: PauseMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const open = useCallback(() => {
@@ -82,6 +84,7 @@ export default function PauseMenu({
         <div
           className={cn(
             'absolute top-11 right-11 z-10',
+            buttonClassName,
             hidden ? 'hidden' : ''
           )}
         >
@@ -102,7 +105,7 @@ export default function PauseMenu({
 
             {/* 팝업 메뉴 - 전체 화면 덮기 */}
             <motion.div
-              className='fixed inset-0 z-[101] flex flex-col'
+              className='pointer-events-auto fixed inset-0 z-[101] flex flex-col'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

@@ -5,11 +5,11 @@ import type { Shelf, ShelfItem } from './types';
 const STORAGE_KEY = 'shelf-selection-storage';
 interface ShelfSelectionStore {
   shelves: Shelf[];
-  currentShelfId: string | null;
+  currentShelfId: number | null;
   selectedShelfItems: ShelfItem[];
 
   setShelves: (shelves: Shelf[]) => void;
-  setCurrentShelfId: (shelfId: string | null) => void;
+  setCurrentShelfId: (shelfId: number | null) => void;
   setSelectedShelfItems: (items: ShelfItem[]) => void;
 
   initShelves: (shelves: Shelf[]) => void;
@@ -18,11 +18,12 @@ interface ShelfSelectionStore {
   clearSelectedItems: () => void;
   moveToNextShelf: () => void;
   moveToPreviousShelf: () => void;
+  moveToShelf: (storeSectionId: number) => void;
 
   getCurrentShelf: () => Shelf | null;
   getNextShelf: () => Shelf | null;
   getPreviousShelf: () => Shelf | null;
-  getShelfById: (shelfId: string) => Shelf | null;
+  getShelfById: (shelfId: number) => Shelf | null;
 }
 
 export const useShelfSelectionStore = create<ShelfSelectionStore>()(
@@ -76,11 +77,27 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
 
       removeSelectedItem: itemId => {
         const { selectedShelfItems } = get();
-        set({
-          selectedShelfItems: selectedShelfItems.filter(
-            item => item.id !== itemId
-          ),
-        });
+        const targetItem = selectedShelfItems.find(item => item.id === itemId);
+
+        if (!targetItem) return;
+
+        if (targetItem.quantity > 1) {
+          // 수량이 2개 이상이면 1개 감소
+          set({
+            selectedShelfItems: selectedShelfItems.map(item =>
+              item.id === itemId
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
+            ),
+          });
+        } else {
+          // 수량이 1개면 아이템 제거
+          set({
+            selectedShelfItems: selectedShelfItems.filter(
+              item => item.id !== itemId
+            ),
+          });
+        }
       },
 
       clearSelectedItems: () => {
@@ -133,6 +150,14 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
         const previousIndex =
           (currentIndex - 1 + shelves.length) % shelves.length;
         set({ currentShelfId: shelves[previousIndex].id });
+      },
+
+      moveToShelf: storeSectionId => {
+        const { shelves } = get();
+        const shelf = shelves.find(shelf => shelf.id === storeSectionId);
+        if (shelf) {
+          set({ currentShelfId: shelf.id });
+        }
       },
     }),
     {
