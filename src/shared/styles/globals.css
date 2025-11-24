@@ -48,9 +48,30 @@
 }
 
 @font-face {
-  font-family: 'NanumSquareNeoOTF-Rg';
+  font-family: 'NanumSquare Neo OTF';
+  src: url('/fonts/NanumSquareNeoOTF-Eb.otf') format('opentype');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare Neo OTF';
+  src: url('/fonts/NanumSquareNeoOTF-Bd.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare Neo OTF';
+  src: url('/fonts/NanumSquareNeoOTF-Lt.otf') format('opentype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare Neo OTF';
   src: url('/fonts/NanumSquareNeoOTF-Rg.otf') format('opentype');
-  font-weight: normal;
+  font-weight: 400;
   font-display: swap;
 }
 

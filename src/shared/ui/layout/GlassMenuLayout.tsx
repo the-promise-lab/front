@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 
 export interface MenuItem<T extends string = string> {
   id: T;
-  label: string;
+  label: { kor: string; eng: string };
 }
 
 interface GlassMenuLayoutProps<T extends string = string> {
@@ -95,7 +95,7 @@ export function GlassMenuLayout<T extends string = string>({
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    {item.label}
+                    {item.label.kor}
                   </motion.button>
                 );
               })}

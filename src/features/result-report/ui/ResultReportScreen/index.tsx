@@ -4,11 +4,11 @@ import { BackgroundPortal } from '@shared/background-portal';
 import Typography from '@shared/ui/Typography';
 import type { User } from '@shared/auth/model/useAuthStore';
 
-type ResultMenuCategory = 'overview' | 'details';
+type ResultMenuCategory = 'play-report' | 'ranking';
 
 const RESULT_MENU_CATEGORIES = [
-  { id: 'overview', label: '개요' },
-  { id: 'details', label: '상세 정보' },
+  { id: 'play-report', label: { kor: '최종결과', eng: 'Play Report' } },
+  { id: 'ranking', label: { kor: '랭킹', eng: 'Ranking' } },
 ] as const;
 
 interface ResultReportScreenProps {
@@ -21,11 +21,11 @@ export function ResultReportScreen({
   user,
 }: ResultReportScreenProps) {
   const [selectedCategory, setSelectedCategory] =
-    useState<ResultMenuCategory>('overview');
+    useState<ResultMenuCategory>('play-report');
 
   const renderContent = () => {
     switch (selectedCategory) {
-      case 'overview':
+      case 'play-report':
         return (
           <div className='flex flex-col gap-8 text-white'>
             <h1 className='text-4xl font-bold'>결과 보고서</h1>
@@ -38,7 +38,7 @@ export function ResultReportScreen({
             </button>
           </div>
         );
-      case 'details':
+      case 'ranking':
         return (
           <div className='flex flex-col gap-8 text-white'>
             <h1 className='text-4xl font-bold'>상세 정보</h1>
@@ -66,12 +66,12 @@ export function ResultReportScreen({
                 {user?.name}
               </Typography>
             </div>
-            <div className='flex items-center gap-4'>
-              <div className='h-11.25 w-2 bg-white' />
-              <Typography variant='title' className='text-white'>
+            <div className='inline-flex h-13.25 items-center gap-3'>
+              <div className='h-11.75 w-2 bg-white' />
+              <Typography variant='title' className='leading-normal text-white'>
                 {
                   RESULT_MENU_CATEGORIES.find(c => c.id === selectedCategory)
-                    ?.label
+                    ?.label.eng
                 }
               </Typography>
             </div>
