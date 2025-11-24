@@ -110,9 +110,7 @@ export function GlassMenuLayout<T extends string = string>({
           </aside>
 
           {/* 우측 내용 영역 */}
-          <main className='flex flex-1 flex-col overflow-y-auto'>
-            <div className='flex-1 px-16 pt-4 pb-16'>{children}</div>
-          </main>
+          <main className='relative flex flex-1 flex-col'>{children}</main>
         </motion.div>
       </motion.div>
     </>

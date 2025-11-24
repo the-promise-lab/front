@@ -3,6 +3,7 @@ import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
 import { BackgroundPortal } from '@shared/background-portal';
 import Typography from '@shared/ui/Typography';
 import type { User } from '@shared/auth/model/useAuthStore';
+import { PlayReportContent } from '../PlayReportContent';
 
 type ResultMenuCategory = 'play-report' | 'ranking';
 
@@ -26,18 +27,7 @@ export function ResultReportScreen({
   const renderContent = () => {
     switch (selectedCategory) {
       case 'play-report':
-        return (
-          <div className='flex flex-col gap-8 text-white'>
-            <h1 className='text-4xl font-bold'>결과 보고서</h1>
-            <div className='text-xl'>게임 결과 개요가 여기에 표시됩니다.</div>
-            <button
-              onClick={onGoToMainMenu}
-              className='w-fit rounded bg-white px-6 py-3 text-black transition-colors hover:bg-gray-200'
-            >
-              메인 메뉴로 돌아가기
-            </button>
-          </div>
-        );
+        return <PlayReportContent />;
       case 'ranking':
         return (
           <div className='flex flex-col gap-8 text-white'>
