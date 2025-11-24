@@ -15,6 +15,8 @@ interface GlassMenuLayoutProps<T extends string = string> {
   onClose?: () => void;
   children: ReactNode;
   className?: string;
+  menuHeader?: ReactNode;
+  contentsHeader?: ReactNode;
 }
 
 export function GlassMenuLayout<T extends string = string>({
@@ -24,8 +26,9 @@ export function GlassMenuLayout<T extends string = string>({
   onClose,
   children,
   className,
-  headerContent,
-}: GlassMenuLayoutProps<T> & { headerContent?: ReactNode }) {
+  menuHeader,
+  contentsHeader,
+}: GlassMenuLayoutProps<T>) {
   return (
     <>
       {/* 블러 배경 오버레이 - 뒷배경이 보이도록 투명하게 */}
@@ -48,14 +51,18 @@ export function GlassMenuLayout<T extends string = string>({
         exit={{ opacity: 0 }}
         onClick={e => e.stopPropagation()}
       >
-        {/* 헤더 영역 (고정 높이) */}
-        <div className='relative flex h-45 w-full shrink-0 items-center px-10'>
-          {/* 헤더 컨텐츠 (좌측) */}
-          <div className='flex-1'>{headerContent}</div>
+        {/* 헤더 영역 (고정 높이) - 좌측 메뉴와 우측 컨텐츠와 동일한 레이아웃 구조 */}
+        <div className='relative flex h-45 w-full shrink-0 items-center'>
+          {/* MenuHeader - 좌측 메뉴와 동일한 x 위치 */}
+          <div className='w-120 px-10'>{menuHeader}</div>
+
+          {/* ContentsHeader - 우측 컨텐츠와 동일한 x 위치 */}
+          <div className='flex flex-1 items-center px-16'>{contentsHeader}</div>
 
           {/* 닫기 버튼 (우측) */}
           {onClose && (
             <motion.div
+              className='px-10'
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
