@@ -3,14 +3,19 @@ import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
 import { BackgroundPortal } from '@shared/background-portal';
 import Typography from '@shared/ui/Typography';
 import type { User } from '@shared/auth/model/useAuthStore';
-import { PlayReportContent } from '../PlayReportContent';
-
-type ResultMenuCategory = 'play-report' | 'ranking';
+import { PlayReportContent } from './PlayReportContent';
+import RankingContent from './RankingContent';
+import CollectionContent from './CollectionContent';
+import HistoryContent from './HistoryContent';
 
 const RESULT_MENU_CATEGORIES = [
   { id: 'play-report', label: { kor: '최종결과', eng: 'Play Report' } },
   { id: 'ranking', label: { kor: '랭킹', eng: 'Ranking' } },
+  { id: 'collection', label: { kor: '컬렉션', eng: 'Collection' } },
+  { id: 'history', label: { kor: '히스토리', eng: 'History' } },
 ] as const;
+
+type ResultMenuCategory = (typeof RESULT_MENU_CATEGORIES)[number]['id'];
 
 interface ResultReportScreenProps {
   onGoToMainMenu: () => void;
@@ -29,12 +34,11 @@ export function ResultReportScreen({
       case 'play-report':
         return <PlayReportContent />;
       case 'ranking':
-        return (
-          <div className='flex flex-col gap-8 text-white'>
-            <h1 className='text-4xl font-bold'>상세 정보</h1>
-            <div className='text-xl'>상세한 게임 결과가 여기에 표시됩니다.</div>
-          </div>
-        );
+        return <RankingContent />;
+      case 'collection':
+        return <CollectionContent />;
+      case 'history':
+        return <HistoryContent />;
       default:
         return null;
     }

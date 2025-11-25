@@ -17,10 +17,19 @@ type MenuCategory =
   | 'team-intro';
 
 const MENU_CATEGORIES = [
-  { id: 'character-info' as MenuCategory, label: '캐릭터 정보' },
-  { id: 'settings' as MenuCategory, label: '설정' },
-  { id: 'result-report' as MenuCategory, label: '결과리포트' },
-  { id: 'team-intro' as MenuCategory, label: '프로젝트 팀 소개' },
+  {
+    id: 'character-info' as MenuCategory,
+    label: { kor: '캐릭터 정보', eng: 'Character Info' },
+  },
+  { id: 'settings' as MenuCategory, label: { kor: '설정', eng: 'Settings' } },
+  {
+    id: 'result-report' as MenuCategory,
+    label: { kor: '결과리포트', eng: 'Result Report' },
+  },
+  {
+    id: 'team-intro' as MenuCategory,
+    label: { kor: '프로젝트 팀 소개', eng: 'Project Team Introduction' },
+  },
 ] as const;
 
 interface PauseMenuProps {

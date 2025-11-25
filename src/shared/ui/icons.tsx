@@ -1013,3 +1013,158 @@ export function IconBackpackCircle({ className }: IconProps) {
     </svg>
   );
 }
+
+export function IconDiamond({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 43 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <rect
+        x='21'
+        y='1.41421'
+        width='27.6985'
+        height='27.6985'
+        transform='rotate(45 21 1.41421)'
+        stroke='white'
+        strokeWidth='2'
+      />
+      <rect
+        width='18.2926'
+        height='18.2926'
+        transform='matrix(0.703526 0.710669 -0.703526 0.710669 21 8.00018)'
+        fill='white'
+      />
+    </svg>
+  );
+}
+
+export function IconDiamondPressed({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 43 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <foreignObject x='-4' y='-4' width='50' height='50'>
+        <div
+          style={{
+            backdropFilter: 'blur(2px)',
+            clipPath: 'url(#bgblur_0_504_2838_clip_path)',
+            height: '100%',
+            width: '100%',
+          }}
+        ></div>
+      </foreignObject>
+      <g data-figma-bg-blur-radius='4'>
+        <path
+          d='M40.5856 20.9998L21 40.5854L1.41439 20.9998L21 1.41421L40.5856 20.9998Z'
+          stroke='url(#paint0_radial_504_2838)'
+          strokeWidth='2'
+        />
+        <path
+          d='M40.5856 20.9998L21 40.5854L1.41439 20.9998L21 1.41421L40.5856 20.9998Z'
+          stroke='#FFDB5A'
+          strokeOpacity='0.7'
+          strokeWidth='2'
+        />
+      </g>
+      <foreignObject x='4.13068' y='4.00018' width='33.7386' height='34'>
+        <div
+          style={{
+            backdropFilter: 'blur(2px)',
+            clipPath: 'url(#bgblur_1_504_2838_clip_path)',
+            height: '100%',
+            width: '100%',
+          }}
+        ></div>
+      </foreignObject>
+      <g data-figma-bg-blur-radius='4'>
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          fill='#E8BA15'
+        />
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          fill='url(#paint1_radial_504_2838)'
+          fillOpacity='0.6'
+        />
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          stroke='url(#paint2_radial_504_2838)'
+          strokeWidth='0.5'
+        />
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          stroke='#FFEA5A'
+          strokeOpacity='0.3'
+          strokeWidth='0.5'
+        />
+      </g>
+      <defs>
+        <clipPath id='bgblur_0_504_2838_clip_path' transform='translate(4 4)'>
+          <path d='M40.5856 20.9998L21 40.5854L1.41439 20.9998L21 1.41421L40.5856 20.9998Z' />
+        </clipPath>
+        <clipPath
+          id='bgblur_1_504_2838_clip_path'
+          transform='translate(-4.13068 -4.00018)'
+        >
+          <rect
+            y='0.355335'
+            width='17.7926'
+            height='17.7926'
+            transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          />
+        </clipPath>
+        <radialGradient
+          id='paint0_radial_504_2838'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(35.372 5.67345) rotate(135) scale(13.1007 10.7187)'
+        >
+          <stop stopColor='#FF8A00' />
+          <stop offset='1' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+        <radialGradient
+          id='paint1_radial_504_2838'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(9.14631 -3.04877) rotate(90) scale(21.3414)'
+        >
+          <stop stopColor='#FAFF00' />
+          <stop offset='0.568159' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+        <radialGradient
+          id='paint2_radial_504_2838'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(8.73057 -3.78856) rotate(90) scale(8.06929 6.60215)'
+        >
+          <stop stopColor='#FF8A00' />
+          <stop offset='1' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+      </defs>
+    </svg>
+  );
+}

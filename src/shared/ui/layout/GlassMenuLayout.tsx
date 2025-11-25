@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@shared/lib/utils';
 import { IconCloseButton } from '@shared/ui/icon-button';
 import type { ReactNode } from 'react';
+import Typography from '../Typography';
 
 export interface MenuItem<T extends string = string> {
   id: T;
@@ -54,7 +55,7 @@ export function GlassMenuLayout<T extends string = string>({
         {/* 헤더 영역 (고정 높이) - 좌측 메뉴와 우측 컨텐츠와 동일한 레이아웃 구조 */}
         <div className='relative flex h-45 w-full shrink-0 items-center'>
           {/* MenuHeader - 좌측 메뉴와 동일한 x 위치 */}
-          <div className='w-120 px-10'>{menuHeader}</div>
+          <div className='w-120 px-16'>{menuHeader}</div>
 
           {/* ContentsHeader - 우측 컨텐츠와 동일한 x 위치 */}
           <div className='flex flex-1 items-center px-16'>{contentsHeader}</div>
@@ -94,15 +95,17 @@ export function GlassMenuLayout<T extends string = string>({
                     key={item.id}
                     onClick={() => onSelect(item.id)}
                     className={cn(
-                      'rounded-full px-6 py-3 text-left text-base font-semibold transition-all',
+                      '-ml-10 rounded-full px-21.5 py-9 text-left transition-all',
                       isActive
-                        ? 'border border-white/40 bg-white/10 text-white shadow-[0_0_24px_rgba(255,255,255,0.15)]'
-                        : 'border border-transparent text-white/55 hover:border-white/20 hover:text-white'
+                        ? 'rounded-l-none border border-l-0 border-white/40 bg-white/10 text-white shadow-[0_0_24px_rgba(255,255,255,0.15)]'
+                        : 'rounded-l-none border border-l-0 border-transparent text-white/55 hover:border-white/20 hover:text-white'
                     )}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    {item.label.kor}
+                    <Typography variant='button-b' className='text-white'>
+                      {item.label.kor}
+                    </Typography>
                   </motion.button>
                 );
               })}

@@ -1,12 +1,10 @@
 import Typography from '@shared/ui/Typography';
-import { GlassPanel } from './GlassPanel';
+import { GlassPanel } from '../kit/GlassPanel';
 
 export function PlayReportContent() {
   return (
-    <div className='relative flex h-full w-full flex-col pt-8'>
-      <GlassPanel className='absolute inset-0 h-full w-full' />
-      {/* ContentHeader - 고정 높이 */}
-
+    <div className='relative flex h-full w-full flex-col overflow-y-auto pt-8'>
+      <GlassPanel className='absolute inset-0 h-screen w-full' />
       {/* ScrollableContent - flex-1, overflow-y-auto */}
       <div className='relative z-10 min-h-0 flex-1 overflow-y-auto px-16 pt-4'>
         <div>
@@ -62,13 +60,13 @@ export function PlayReportContent() {
               </Typography>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className='h-95 bg-gray-500/30'>
-        <Typography variant='caption' className='text-white'>
-          생존가방 영역
-        </Typography>
+          <div className='h-95 bg-gray-500/30'>
+            <Typography variant='caption' className='text-white'>
+              생존가방 영역
+            </Typography>
+          </div>
+        </div>
       </div>
     </div>
   );
