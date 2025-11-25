@@ -23,13 +23,13 @@ export default function SinglePortraitScreen({
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
 
-  const leftCharacter = playingCharacters[0];
-  const rightCharacter = playingCharacters[1];
-  const leftCharacterUrl = getObjectUrl(
-    leftCharacter?.profileImage || '/byungcheol.png'
-  );
-  const rightCharacterUrl = getObjectUrl(
-    rightCharacter?.profileImage || '/ham.png'
+  const renderCharacters = playingCharacters.slice(0, 2);
+  const positions =
+    renderCharacters.length === 1
+      ? (['center'] as const)
+      : (['left', 'right'] as const);
+  const characterImages = renderCharacters.map(character =>
+    getObjectUrl(character?.profileImage || '')
   );
 
   const handleNextPortrait = (e: MouseEvent<HTMLDivElement>) => {
@@ -54,30 +54,24 @@ export default function SinglePortraitScreen({
   }, [portraits]);
 
   const currentPortrait = portraits[portraitIndex];
-  const currentSpeaker = currentPortrait?.speaker;
+  const currentSpeaker = currentPortrait?.speaker?.trim();
+  const isSpeaker = (characterName?: string | null) =>
+    !!currentSpeaker && !!characterName && currentSpeaker === characterName;
 
   return (
     <div className='relative h-full w-full'>
-      <PortraitCharacterImage
-        src={rightCharacterUrl || '/ham.png'}
-        alt={rightCharacter?.name || 'right character'}
-        dimmed={
-          portraitStarted &&
-          !!currentSpeaker &&
-          currentSpeaker !== rightCharacter?.name
-        }
-        position='right'
-      />
-      <PortraitCharacterImage
-        src={leftCharacterUrl || '/byungcheol.png'}
-        alt={leftCharacter?.name || 'left character'}
-        dimmed={
-          portraitStarted &&
-          !!currentSpeaker &&
-          currentSpeaker !== leftCharacter?.name
-        }
-        position='left'
-      />
+      {renderCharacters.map((character, index) => (
+        <PortraitCharacterImage
+          key={character?.id ?? index}
+          src={
+            characterImages[index] ||
+            (positions[index] === 'right' ? '/ham.png' : '/byungcheol.png')
+          }
+          alt={character?.name || `character-${index}`}
+          dimmed={!isSpeaker(character?.name)}
+          position={positions[index]}
+        />
+      ))}
       {portraitStarted && currentPortrait && (
         <PortraitBanner
           onClick={handleNextPortrait}
