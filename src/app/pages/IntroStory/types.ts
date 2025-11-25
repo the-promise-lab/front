@@ -1,4 +1,4 @@
-export type IntroEventType = 'Simple' | 'System' | 'Multi';
+export type IntroEventType = 'Simple' | 'System';
 
 export interface IntroEvent {
   EventID: number;

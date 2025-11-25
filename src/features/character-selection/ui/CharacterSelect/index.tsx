@@ -7,6 +7,11 @@ import type { PlayingCharacter } from '@entities/game-session';
 import { useSetBackground } from '@shared/background';
 import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
+import {
+  type CharacterPairDetail,
+  createCharacterSetsFromDetails,
+  getCharacterPairDetailByName,
+} from '../../model/characterPairDetails';
 
 interface CharacterSelectProps {
   onNext: () => void;
@@ -17,175 +22,6 @@ interface CharacterSelectProps {
     groupName: string;
   }) => void;
 }
-
-type CharacterStat = {
-  label: string;
-  value: string;
-};
-
-interface CharacterDetail {
-  id: string;
-  name: string;
-  age: string;
-  stats: CharacterStat[];
-  description: string;
-  traits?: string;
-  image?: string;
-  thumbnail?: string;
-}
-
-interface CharacterPairDetail {
-  title: string;
-  overview?: string;
-  characters: CharacterDetail[];
-}
-
-const CHARACTER_PAIR_DETAILS: Record<string, CharacterPairDetail> = {
-  '김형빈과 이병철': {
-    title: '김형빈과 이병철',
-    // overview:
-    //   '득근과 근손실 사이에서 살아가는 헴과 그를 따르는 병철. 극한 상황에서도 근손실을 막기 위해 고군분투한다.',
-    characters: [
-      {
-        id: 'hem',
-        name: '김형빈',
-        age: '35세',
-        stats: [
-          { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Low' },
-        ],
-        description:
-          '득근에 살고 근손실에 죽는 헬스 미친 자. 가오를 중시하고 매일 데리고 다니는 병철에게 헬스를 부리며 모든 것을 가르치려고 함.',
-        traits:
-          '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
-        image: '/public/image/introPage/char_hb_intro.png',
-        thumbnail: '/public/image/introPage/char_hb_intro.png',
-      },
-      {
-        id: 'bang',
-        name: '이병철',
-        age: '29세',
-        stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'Low' },
-        ],
-        description:
-          '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
-        traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
-        image: '/public/image/introPage/char_bc_intro.png',
-        thumbnail: '/public/image/introPage/char_bc_intro.png',
-      },
-    ],
-  },
-  '정복순&진실이': {
-    title: '정복순 & 진실이',
-    // overview:
-    //   '진실을 밝히기 위해 몸을 사리지 않는 기자 복순과, 냉철한 분석가 진실이의 조합.',
-    characters: [
-      {
-        id: 'boksun',
-        name: '정복순',
-        age: '77세',
-        stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'Very High' },
-        ],
-        description:
-          '한 때 엄청나게 이름을 날리던 만신 무당. 지금은 재야에 은둔해 유기견 진실이와 함께 조용히 살고 있다. 인자한 미소 뒤에 엄청나게 날카로운 동자신을 모시고 있다.',
-        traits: '※특징: 노환으로 몸이 쇠약하고 악몽을 자주 꾼다.',
-        image: '/public/image/introPage/char_bs_intro.png',
-        thumbnail: '/public/image/introPage/char_bs_intro.png',
-      },
-      {
-        id: 'jinsil',
-        name: '진실이',
-        age: '7세, 말티즈(♀︎)',
-        stats: [
-          { label: '체력', value: 'Normal' },
-          { label: '정신력', value: 'Normal' },
-        ],
-        description:
-          '할머니 앞에서는 천사견, 다른 사람 앞에선 까칠 포악 그 자체인 강아지. 하지만 간식 앞에서는 한 마리의 순한 양(?)처럼 변한다.',
-        traits: '※특징: 특별히 아픈 곳은 없지만 기분을 잘 맞춰줘야 한다.',
-        image: '/public/image/introPage/char_js_intro.png',
-        thumbnail: '/public/image/introPage/char_js_intro.png',
-      },
-    ],
-  },
-  '소재옥&문예원': {
-    title: '소재옥 & 문예원',
-    // overview:
-    //   '현장 경험 풍부한 기사 소재옥과 드론 엔지니어 문예원이 만드는 즉석 생존 키트.',
-    characters: [
-      {
-        id: 'sojaeok',
-        name: '소재옥',
-        age: '25세',
-        stats: [
-          { label: '체력', value: 'Normal' },
-          { label: '정신력', value: 'Low' },
-        ],
-        description:
-          '카메라 앞에서는 세상 다정한 스윗함을 보여주지만 실제로는 시청자 수와 반응에 예민하고 강박이 있다. 여자친구와의 일상을 기록하려 유튜브 <소문커플>을 시작했지만 지금은 인플루언서 병에 걸렸다.',
-        traits:
-          '※특징: 조금 긴장하거나 당황하면 과민성대장증후군으로 화장실이 급해진다.',
-        image: '/public/image/introPage/char_jo_intro.png',
-        thumbnail: '/public/image/introPage/char_jo_intro.png',
-      },
-      {
-        id: 'munyewon',
-        name: '문예원',
-        age: '23세',
-        stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'High' },
-        ],
-        description:
-          '유튜브 브이로그에서는 귀엽고 애교 많은 소녀. 하지만 방송을 끄면 누구보다 대담하고 털털하다. 재욱이 자존심을 상하게 만들면 불같이 화를 낸다.',
-        traits:
-          '※특징: 발목을 다친 적이 있어 오래 걷거나 무거운 물건을 들면 통증에 시달린다.',
-        image: '/public/image/introPage/char_yw_intro.png',
-        thumbnail: '/public/image/introPage/char_yw_intro.png',
-      },
-    ],
-  },
-  '방미리&류재호': {
-    title: '방미리 & 류재호',
-    // overview:
-    //   '우연히 마주친 두 사람이 재난 속에서 서로를 의지하게 되는 성장 스토리.',
-    characters: [
-      {
-        id: 'bangmiri',
-        name: '방미리',
-        age: '28세',
-        stats: [
-          { label: '체력', value: 'Normal' },
-          { label: '정신력', value: 'High' },
-        ],
-        description:
-          '대기업 마트 본사에 최연소 팀장으로 승진한 일잘러. MBTI J 끝판왕으로 어디서나 계획하고, 기획하고, 정리하려는 강박을 가지고 있다.',
-        traits: '※특징: 자기 관리 강박증으로 방문 횟수가 많은 편이다.',
-        image: '/public/image/introPage/char_mr_intro.png',
-        thumbnail: '/public/image/introPage/char_mr_intro.png',
-      },
-      {
-        id: 'ryujaeho',
-        name: '류재호',
-        age: '32세',
-        stats: [
-          { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Normal' },
-        ],
-        description:
-          '대한민국 최고 수재만 간다는 대학교, 아이비리그 대학원 출신이자 재벌 3세. 대학원 졸업 후 귀국하자마자 아버지 회사의 마트 본사 본부장이 되었다. 9살 때 당한 큰 사고로 어릴 적에 대한 기억이 없다.',
-        traits:
-          '※특징: 만성 비염 환자로 온도차가 심한 환경에서는 재채기를 하거나 코가 꽉 막힌다.',
-        image: '/public/image/introPage/char_jh_intro.png',
-        thumbnail: '/public/image/introPage/char_jh_intro.png',
-      },
-    ],
-  },
-};
 
 const CHARACTER_TAB_IMAGES: Record<
   string,
@@ -213,32 +49,28 @@ const CHARACTER_TAB_IMAGES: Record<
   },
 };
 
-const LOCAL_CHARACTER_SETS: CharacterSet[] = Object.entries(
-  CHARACTER_PAIR_DETAILS
-).map(([name, detail], index) => ({
-  id: index + 1,
-  name,
-  image: detail.characters[0]?.image || '',
-  description: detail.overview || '',
-  isLocked: index > 0,
-}));
+const LOCAL_CHARACTER_SETS: CharacterSet[] = createCharacterSetsFromDetails();
 
 function createPairDetail(set?: CharacterSet): CharacterPairDetail {
   if (!set) {
     return {
+      groupId: 0,
       title: '캐릭터',
+      nameVariants: [],
       overview: '캐릭터 정보를 불러오지 못했습니다.',
       characters: [],
     };
   }
 
-  const detail = CHARACTER_PAIR_DETAILS[set.name];
+  const detail = getCharacterPairDetailByName(set.name);
   if (detail) {
     return detail;
   }
 
   return {
+    groupId: Number(set.id),
     title: set.name,
+    nameVariants: [set.name],
     overview: set.description || '캐릭터 설명이 준비되어 있지 않습니다.',
     characters: [
       {
@@ -409,7 +241,7 @@ export default function CharacterSelect({
                       </span>
                     )}
                   </div>
-                  {activeCharacter.stats.length > 0 && (
+                  {activeCharacter.stats?.length ? (
                     <div className='flex gap-3'>
                       {activeCharacter.stats.map(stat => (
                         <div
@@ -425,7 +257,7 @@ export default function CharacterSelect({
                         </div>
                       ))}
                     </div>
-                  )}
+                  ) : null}
                 </>
               ) : null}
             </div>

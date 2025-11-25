@@ -9,12 +9,12 @@ import { useSetBackground } from '@shared/background';
 
 interface IntroStoryProps {
   onNext?: () => void;
-  jsonPath?: string; // JSON 파일 경로 (기본값: '/JSON/intro1.json')
+  jsonPath?: string; // JSON 파일 경로 (기본값: '/JSON/intro_first.json')
 }
 
 export default function IntroStory({
   onNext,
-  jsonPath = '/JSON/intro1.json',
+  jsonPath = '/JSON/intro_first.json',
 }: IntroStoryProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [events, setEvents] = useState<IntroEvent[]>([]);
@@ -119,7 +119,6 @@ export default function IntroStory({
 function IntroEventRenderer({ event }: { event: IntroEvent }) {
   switch (event.Event) {
     case 'Simple':
-    case 'Multi':
       return <IntroSimpleScreen event={event} />;
     case 'System':
       return <SystemMessage event={event} />;

@@ -22,8 +22,7 @@ export default function PortraitCharacterImage({
         position === 'center' && 'left-1/2',
         position === 'right' && 'left-[62%]',
         position === 'right-end' && 'left-[75%]',
-        dimmed ? 'scale-110' : 'scale-100',
-        !dimmed && 'brightness-50 grayscale'
+        dimmed ? 'scale-100 brightness-50 grayscale' : 'scale-110'
       )}
       {...props}
     />

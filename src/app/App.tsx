@@ -63,7 +63,7 @@ export default function App() {
     if (step === 'INTRO_STORY') {
       return (
         <IntroStory
-          jsonPath='/JSON/intro1.json'
+          jsonPath='/JSON/intro_first.json'
           onNext={() => {
             useGameFlowStore.getState().goto('BAG_SELECT');
           }}
@@ -76,7 +76,7 @@ export default function App() {
     if (step === 'INTRO_STORY_2') {
       return (
         <IntroStory
-          jsonPath='/JSON/intro2.json'
+          jsonPath='/JSON/intro_second.json'
           onNext={() => {
             useGameFlowStore.getState().goto('PACKING_PHASE');
           }}
@@ -89,7 +89,7 @@ export default function App() {
     if (step === 'INTRO_STORY_3') {
       return (
         <IntroStory
-          jsonPath='/JSON/intro3.json'
+          jsonPath='/JSON/intro_third.json'
           onNext={() => {
             useGameFlowStore.getState().goto('DAY_FLOW');
           }}

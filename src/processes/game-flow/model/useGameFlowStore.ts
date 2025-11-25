@@ -13,6 +13,10 @@ import {
   INITIAL_GAME_FLOW_STATE,
 } from '../types';
 import { getEventDataByDayStep } from '../data/dayFlowData';
+import {
+  enrichPlayingCharacterSet,
+  resolveCharacterGroupName,
+} from '../lib/characterAssets';
 
 export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
   (set, get) => ({
@@ -167,11 +171,24 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
     // 게임 세션 관련 액션들
     loadGameSession: (session: GameSession) => {
-      set({ gameSession: session });
+      set(() => {
+        const enrichedSet = enrichPlayingCharacterSet(
+          session.playingCharacterSet
+        );
+        return {
+          gameSession: {
+            ...session,
+            playingCharacterSet: enrichedSet ?? session.playingCharacterSet,
+          },
+          selectedCharacterGroupName: enrichedSet
+            ? resolveCharacterGroupName(enrichedSet.characterGroupId)
+            : undefined,
+        };
+      });
     },
 
     clearGameSession: () => {
-      set({ gameSession: undefined });
+      set({ gameSession: undefined, selectedCharacterGroupName: undefined });
     },
 
     setIsNewGame: (isNew: boolean) => {
@@ -187,14 +204,21 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           return state;
         }
 
+        const playingCharacterSet = enrichPlayingCharacterSet(params, {
+          groupName,
+        });
+
+        const resolvedGroupName = resolveCharacterGroupName(
+          playingCharacterSet?.characterGroupId,
+          groupName
+        );
+
         return {
           gameSession: {
             ...state.gameSession,
-            playingCharacterSet: {
-              ...params,
-            },
+            playingCharacterSet: playingCharacterSet ?? params,
           },
-          selectedCharacterGroupName: groupName,
+          selectedCharacterGroupName: resolvedGroupName,
         };
       });
     },
