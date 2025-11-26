@@ -1,4 +1,5 @@
 import Typography from '@shared/ui/Typography';
+import type { SlotItem } from '@entities/inventory';
 import CharacterStatsSection from './CharacterStatsSection';
 import GoodBadPointsSection from './GoodBadPointsSection';
 import SurvivalBagSection from './SurvivalBagSection';
@@ -21,6 +22,8 @@ interface PlayReportScrollContentProps {
     bagType: string;
     usability: string;
     itemUsageRate: string;
+    bagImage?: string;
+    items?: SlotItem[];
   };
 }
 
@@ -52,6 +55,8 @@ export default function PlayReportScrollContent({
         bagType={survivalBag.bagType}
         usability={survivalBag.usability}
         itemUsageRate={survivalBag.itemUsageRate}
+        bagImage={survivalBag.bagImage}
+        items={survivalBag.items}
       />
     </div>
   );

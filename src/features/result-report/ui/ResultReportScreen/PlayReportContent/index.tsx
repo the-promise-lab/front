@@ -28,6 +28,40 @@ const mockData = {
     bagType: '여행용 백팩',
     usability: '중간',
     itemUsageRate: '80%',
+    bagImage: '/bag.png',
+    // TODO: 실제 아이템 데이터로 교체
+    items: [
+      {
+        id: 'item-1',
+        name: '생수',
+        image: '/chicken-breast.png',
+        state: 'default' as const,
+      },
+      {
+        id: 'item-2',
+        name: '라면',
+        image: '/chicken-breast.png',
+        state: 'default' as const,
+      },
+      {
+        id: 'item-3',
+        name: '손전등',
+        image: '/chicken-breast.png',
+        state: 'default' as const,
+      },
+      {
+        id: 'item-4',
+        name: '담요',
+        image: '/chicken-breast.png',
+        state: 'default' as const,
+      },
+      {
+        id: 'item-5',
+        name: '구급약',
+        image: '/chicken-breast.png',
+        state: 'default' as const,
+      },
+    ],
   },
 };
 
