@@ -60,17 +60,6 @@ export function ResultReportScreen({
             </Typography>
           </div>
         }
-        contentsHeader={
-          <div className='inline-flex h-13.25 items-center gap-3'>
-            <div className='h-11.75 w-2 bg-white' />
-            <Typography variant='title' className='leading-normal text-white'>
-              {
-                RESULT_MENU_CATEGORIES.find(c => c.id === selectedCategory)
-                  ?.label.eng
-              }
-            </Typography>
-          </div>
-        }
       >
         {renderContent()}
       </GlassMenuLayout>
