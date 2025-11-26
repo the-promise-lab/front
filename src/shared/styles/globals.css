@@ -33,6 +33,13 @@
 
 @font-face {
   font-family: 'Nexon Lv2 Gothic';
+  src: url('/fonts/NEXON Lv2 Gothic OTF Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nexon Lv2 Gothic';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic Bold.woff')
     format('woff');
   font-weight: 700;
