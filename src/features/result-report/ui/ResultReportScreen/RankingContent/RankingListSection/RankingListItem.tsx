@@ -1,10 +1,10 @@
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
 import {
-  IconRankBadgeGold,
-  IconRankBadgeSilver,
-  IconRankBadgeBronze,
-} from '@shared/ui/icons';
+  IconRankBadgeFirst,
+  IconRankBadgeSecond,
+  IconRankBadgeThird,
+} from './icons';
 
 interface RankingListItemProps {
   rank: number;
@@ -33,10 +33,16 @@ function getRankTextColor(rank: number, isCurrentUser: boolean) {
 
 // 순위별 배지 컴포넌트
 function RankBadge({ rank }: { rank: number }) {
-  if (rank === 1) return <IconRankBadgeGold className='size-8' />;
-  if (rank === 2) return <IconRankBadgeSilver className='size-8' />;
-  if (rank === 3) return <IconRankBadgeBronze className='size-8' />;
+  if (rank === 1) return <IconRankBadgeFirst className='absolute inset-0' />;
+  if (rank === 2) return <IconRankBadgeSecond className='absolute inset-0' />;
+  if (rank === 3) return <IconRankBadgeThird className='absolute inset-0' />;
   return null;
+}
+
+function getGradientColor(isCurrentUser: boolean) {
+  if (isCurrentUser)
+    return 'linear-gradient(76deg, rgba(254, 138, 1, 0.80) 7.32%, rgba(254, 138, 1, 0.30) 91.5%)';
+  return 'linear-gradient(77deg, rgba(192, 192, 192, 0.56) 9.55%, rgba(84, 84, 84, 0.00) 90.45%)';
 }
 
 export default function RankingListItem({
@@ -47,15 +53,12 @@ export default function RankingListItem({
 }: RankingListItemProps) {
   const barColor = getRankColor(rank, isCurrentUser);
   const rankTextColor = getRankTextColor(rank, isCurrentUser);
-  const hasBadge = rank >= 1 && rank <= 3;
 
   return (
     <div
-      className='flex h-19 items-center'
-      style={{
-        background:
-          'linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%)',
-      }}
+      className={cn('flex h-19 w-full items-center gap-2', {
+        'mt-auto': isCurrentUser,
+      })}
     >
       {/* 좌측 색상 바 */}
       <div
@@ -63,38 +66,33 @@ export default function RankingListItem({
         style={{ backgroundColor: barColor }}
       />
 
-      {/* 순위 번호 영역 */}
-      <div className='flex w-30 shrink-0 items-center justify-center'>
-        {hasBadge ? (
-          <div className='relative flex items-center justify-center'>
-            <RankBadge rank={rank} />
-            <Typography
-              variant='dialogue-b'
-              className='absolute'
-              style={{ color: rankTextColor }}
-            >
-              {rank}
-            </Typography>
-          </div>
-        ) : (
+      <div
+        className='flex h-full w-full items-center justify-between'
+        style={{
+          background: getGradientColor(isCurrentUser),
+        }}
+      >
+        {/* 순위 번호 영역 */}
+        <div className='relative flex h-full w-30 shrink-0 items-center px-5.5'>
+          <RankBadge rank={rank} />
           <Typography
             variant='dialogue-b'
-            className='text-center'
+            className='relative z-10'
             style={{ color: rankTextColor }}
           >
             {rank}
           </Typography>
-        )}
-      </div>
+        </div>
 
-      {/* 컨텐츠 영역 */}
-      <div className='flex flex-1 items-center justify-between px-16.5 py-5.5'>
-        <Typography variant='body-2-b' className='text-white'>
-          {nickname}
-        </Typography>
-        <Typography variant='caption-2' className='text-right text-white'>
-          {xp.toLocaleString()} xp
-        </Typography>
+        {/* 컨텐츠 영역 */}
+        <div className='flex flex-1 items-center justify-between px-16.5 py-5.5'>
+          <Typography variant='body-2-b' className='text-white'>
+            {nickname}
+          </Typography>
+          <Typography variant='caption-2' className='text-right text-white'>
+            {xp.toLocaleString()} xp
+          </Typography>
+        </div>
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ const mockData = {
     { rank: 4, nickname: '사용자 닉네임123', xp: 710000 },
     { rank: 5, nickname: '사용자 닉네임123', xp: 10000 },
     { rank: 6, nickname: '사용자 닉네임123', xp: 9800 },
-    { rank: 7, nickname: '사용자 닉네임123', xp: 9300 },
     { rank: 241, nickname: '사용자 닉네임123', xp: 384, isCurrentUser: true },
   ],
 };
@@ -38,7 +37,7 @@ export default function RankingContent() {
       </div>
 
       {/* GlassPanel 컨테이너 */}
-      <div className='relative flex-1 px-15 py-16'>
+      <div className='relative flex-1 py-16 pl-15'>
         <GlassPanel className='absolute inset-0' />
 
         {/* GlassPanel 내부 컨텐츠 */}

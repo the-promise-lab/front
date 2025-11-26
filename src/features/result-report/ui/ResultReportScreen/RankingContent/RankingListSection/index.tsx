@@ -27,7 +27,7 @@ export default function RankingListSection({
       </div>
 
       {/* 랭킹 리스트 */}
-      <div className='flex flex-col'>
+      <div className='flex flex-1 flex-col gap-3.5'>
         {rankings.map((user, index) => (
           <RankingListItem
             key={index}
