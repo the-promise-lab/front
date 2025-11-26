@@ -15,6 +15,7 @@ import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
 import CharacterSelectPage from './pages/CharacterSelect';
 import BagSelectPage from './pages/BagSelectPage';
+import OnboardingPage from './pages/OnboardingPage';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
 
 export default function App() {
@@ -78,7 +79,7 @@ export default function App() {
         <IntroStory
           jsonPath='/JSON/intro_second.json'
           onNext={() => {
-            useGameFlowStore.getState().goto('PACKING_PHASE');
+            useGameFlowStore.getState().goto('ONBOARDING');
           }}
         />
       );
@@ -91,10 +92,13 @@ export default function App() {
         <IntroStory
           jsonPath='/JSON/intro_third.json'
           onNext={() => {
-            useGameFlowStore.getState().goto('DAY_FLOW');
+            useGameFlowStore.getState().goto('ONBOARDING');
           }}
         />
       );
+    }
+    if (step === 'ONBOARDING') {
+      return <OnboardingPage />;
     }
     if (step === 'DAY_FLOW') {
       return <EventPhase />;
