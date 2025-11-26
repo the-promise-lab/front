@@ -1190,3 +1190,110 @@ export function IconDiamondPressed({ className }: IconProps) {
     </svg>
   );
 }
+
+// Ranking Badge Icons for 1st, 2nd, 3rd place
+interface RankBadgeProps {
+  className?: string;
+}
+
+export function IconRankBadgeGold({ className }: RankBadgeProps) {
+  return (
+    <svg
+      width='32'
+      height='32'
+      viewBox='0 0 32 32'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      {/* 바깥 다이아몬드 테두리 */}
+      <rect
+        x='16'
+        y='0'
+        width='22.627'
+        height='22.627'
+        transform='rotate(45 16 0)'
+        stroke='#c6881c'
+        strokeWidth='1.6'
+        fill='none'
+      />
+      {/* 안쪽 채워진 다이아몬드 */}
+      <rect
+        x='16'
+        y='6'
+        width='14'
+        height='14'
+        transform='rotate(45 16 6)'
+        fill='#c6881c'
+      />
+    </svg>
+  );
+}
+
+export function IconRankBadgeSilver({ className }: RankBadgeProps) {
+  return (
+    <svg
+      width='32'
+      height='32'
+      viewBox='0 0 32 32'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      {/* 바깥 다이아몬드 테두리 */}
+      <rect
+        x='16'
+        y='0'
+        width='22.627'
+        height='22.627'
+        transform='rotate(45 16 0)'
+        stroke='#30a2aa'
+        strokeWidth='1.6'
+        fill='none'
+      />
+      {/* 안쪽 채워진 다이아몬드 */}
+      <rect
+        x='16'
+        y='6'
+        width='14'
+        height='14'
+        transform='rotate(45 16 6)'
+        fill='#30a2aa'
+      />
+    </svg>
+  );
+}
+
+export function IconRankBadgeBronze({ className }: RankBadgeProps) {
+  return (
+    <svg
+      width='32'
+      height='32'
+      viewBox='0 0 32 32'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      {/* 바깥 다이아몬드 테두리 */}
+      <rect
+        x='16'
+        y='0'
+        width='22.627'
+        height='22.627'
+        transform='rotate(45 16 0)'
+        stroke='#a37344'
+        strokeWidth='1.6'
+        fill='none'
+      />
+      {/* 안쪽 채워진 다이아몬드 */}
+      <rect
+        x='16'
+        y='6'
+        width='14'
+        height='14'
+        transform='rotate(45 16 6)'
+        fill='#a37344'
+      />
+    </svg>
+  );
+}

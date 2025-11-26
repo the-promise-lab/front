@@ -52,7 +52,7 @@ export default function SurvivalBagSection({
               {ownerNames}의 생존 가방
             </Typography>
           </div>
-          <Typography variant='dialogue-m' className='text-[#FFB332]'>
+          <Typography variant='dialogue-m' className='text-secondary-1'>
             {bagType}
           </Typography>
         </div>
@@ -66,7 +66,7 @@ export default function SurvivalBagSection({
                 활용도
               </Typography>
             </div>
-            <Typography variant='body-b' className='text-[#FFB332]'>
+            <Typography variant='body-b' className='text-secondary-1'>
               {usability}
             </Typography>
           </div>
@@ -77,7 +77,7 @@ export default function SurvivalBagSection({
                 아이템 사용률
               </Typography>
             </div>
-            <Typography variant='body-b' className='text-[#FFB332]'>
+            <Typography variant='body-b' className='text-secondary-1'>
               {itemUsageRate}
             </Typography>
           </div>

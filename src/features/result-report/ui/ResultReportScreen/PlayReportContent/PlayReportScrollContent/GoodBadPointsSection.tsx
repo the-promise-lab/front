@@ -28,7 +28,7 @@ function PointSection({
       <div
         className={cn(
           'h-full w-2.25 shrink-0',
-          isPositive ? 'bg-[#4CF69C]' : 'bg-[#FF4E59]'
+          isPositive ? 'bg-green-1' : 'bg-red-1'
         )}
       />
       {/* 그라데이션 배경 영역 */}

@@ -75,12 +75,12 @@ export function PlayReportContent() {
       </div>
 
       {/* GlassPanel 컨테이너 - sticky로 상단 고정, 높이는 화면 전체 */}
-      <div className='sticky top-0 h-dvh px-15'>
+      <div className='sticky top-0 h-dvh px-15 py-8'>
         {/* GlassPanel 배경 */}
         <GlassPanel className='absolute inset-0' />
 
         {/* 2차 스크롤: GlassPanel 내부 스크롤 영역 */}
-        <div className='relative z-10 h-full overflow-y-auto px-10 py-8'>
+        <div className='relative z-10 h-full overflow-y-auto'>
           <PlayReportScrollContent
             endingTitle={mockData.endingTitle}
             points={mockData.points}
