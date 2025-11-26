@@ -1,0 +1,58 @@
+import Typography from '@shared/ui/Typography';
+import CharacterStatsSection from './CharacterStatsSection';
+import GoodBadPointsSection from './GoodBadPointsSection';
+import SurvivalBagSection from './SurvivalBagSection';
+
+interface PlayReportScrollContentProps {
+  endingTitle: string;
+  points: {
+    type: 'positive' | 'negative';
+    label: string;
+    description: string;
+  }[];
+  characters: {
+    name: string;
+    health: number;
+    mental: number;
+    potential: number;
+  }[];
+  survivalBag: {
+    ownerNames: string;
+    bagType: string;
+    usability: string;
+    itemUsageRate: string;
+  };
+}
+
+export default function PlayReportScrollContent({
+  endingTitle,
+  points,
+  characters,
+  survivalBag,
+}: PlayReportScrollContentProps) {
+  return (
+    <div className='flex flex-col gap-6'>
+      {/* 엔딩 타이틀 */}
+      <Typography variant='h2-b' className='text-white'>
+        {endingTitle}
+      </Typography>
+
+      {/* Point 섹션들 */}
+      <GoodBadPointsSection points={points} />
+
+      {/* 캐릭터 영역 */}
+      <CharacterStatsSection characters={characters} />
+
+      {/* 구분선 */}
+      <div className='h-px w-full bg-white/40' />
+
+      {/* 생존 가방 섹션 */}
+      <SurvivalBagSection
+        ownerNames={survivalBag.ownerNames}
+        bagType={survivalBag.bagType}
+        usability={survivalBag.usability}
+        itemUsageRate={survivalBag.itemUsageRate}
+      />
+    </div>
+  );
+}
