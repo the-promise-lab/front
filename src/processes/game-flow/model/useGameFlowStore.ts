@@ -13,10 +13,7 @@ import {
   INITIAL_GAME_FLOW_STATE,
 } from '../types';
 import { getEventDataByDayStep } from '../data/dayFlowData';
-import {
-  enrichPlayingCharacterSet,
-  resolveCharacterGroupName,
-} from '../lib/characterAssets';
+import { resolveCharacterGroupName } from '../lib/characterAssets';
 
 export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
   (set, get) => ({
@@ -171,19 +168,13 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
     // 게임 세션 관련 액션들
     loadGameSession: (session: GameSession) => {
-      set(() => {
-        const enrichedSet = enrichPlayingCharacterSet(
-          session.playingCharacterSet
-        );
-        return {
-          gameSession: {
-            ...session,
-            playingCharacterSet: enrichedSet ?? session.playingCharacterSet,
-          },
-          selectedCharacterGroupName: enrichedSet
-            ? resolveCharacterGroupName(enrichedSet.characterGroupId)
-            : undefined,
-        };
+      set({
+        gameSession: session,
+        selectedCharacterGroupName: session.playingCharacterSet
+          ? resolveCharacterGroupName(
+              session.playingCharacterSet.characterGroupId
+            )
+          : undefined,
       });
     },
 
@@ -204,19 +195,20 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           return state;
         }
 
-        const playingCharacterSet = enrichPlayingCharacterSet(params, {
-          groupName,
-        });
-
         const resolvedGroupName = resolveCharacterGroupName(
-          playingCharacterSet?.characterGroupId,
+          params.characterGroupId,
           groupName
         );
+
+        console.log('[useGameFlowStore] 저장되는 캐릭터 정보:', {
+          playingCharacterSet: params,
+          groupName: resolvedGroupName,
+        });
 
         return {
           gameSession: {
             ...state.gameSession,
-            playingCharacterSet: playingCharacterSet ?? params,
+            playingCharacterSet: params,
           },
           selectedCharacterGroupName: resolvedGroupName,
         };

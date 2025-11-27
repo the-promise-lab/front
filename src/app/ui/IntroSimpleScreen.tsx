@@ -4,7 +4,7 @@ import SinglePortraitScreen from '@features/event-phase/ui/SinglePortraitScreen'
 import type { IntroEvent } from '../pages/IntroStory/types';
 import type { PlayingCharacter } from '@entities/game-session';
 import { useGameFlowStore } from '@processes/game-flow';
-import { CHARACTER_PAIR_DETAILS } from '@features/character-selection/model/characterPairDetails';
+import { CHARACTER_PAIR_DETAILS } from '@shared/character-data';
 
 const CHARACTER_ASSETS = CHARACTER_PAIR_DETAILS.flatMap(detail =>
   detail.characters.map(character => ({

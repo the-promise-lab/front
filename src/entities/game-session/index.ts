@@ -5,6 +5,7 @@ export {
   adaptGameSessionFromApi,
   adaptCreateGameSessionFromApi,
   adaptPlayingCharacterFromApi,
+  adaptPlayingCharacterSetFromApi,
   adaptCharacterSetFromApi,
   adaptBagFromApi,
 } from './model/adapters';

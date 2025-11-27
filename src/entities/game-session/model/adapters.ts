@@ -12,6 +12,10 @@ import type {
   PlayingCharacterSet,
   Bag,
 } from './types';
+import {
+  getCharacterDetailByName,
+  getCharacterPairDetailByGroupId,
+} from '@shared/character-data';
 
 /**
  * GameSessionResponseDto를 도메인 GameSession 타입으로 변환
@@ -58,18 +62,23 @@ export function adaptCreateGameSessionFromApi(
 
 /**
  * 서버 PlayingCharacterSetResponseDto를 클라이언트 PlayingCharacterSet 타입으로 변환
+ * characterPairDetails 정보를 포함하여 이미지/이름을 보강
  *
  * @param apiResponse - 서버 응답 (PlayingCharacterSetResponseDto)
- * @returns 클라이언트 PlayingCharacterSet 타입
+ * @returns 클라이언트 PlayingCharacterSet 타입 (characterPairDetails 정보 포함)
  */
 export function adaptPlayingCharacterSetFromApi(
   apiResponse: PlayingCharacterSetDto
 ): PlayingCharacterSet {
+  const pairDetail = getCharacterPairDetailByGroupId(
+    apiResponse.characterGroupId
+  );
+
   return {
     id: apiResponse.id,
     characterGroupId: apiResponse.characterGroupId,
     playingCharacters: apiResponse.playingCharacter.map(char =>
-      adaptPlayingCharacterFromApi(char)
+      adaptPlayingCharacterFromApi(char, pairDetail)
     ),
   };
 }
@@ -93,20 +102,51 @@ export function adaptCharacterSetFromApi(
 }
 
 /**
- * 서버 PlayingCharacterDto를 클라이언트 Character 타입으로 변환
+ * 서버 PlayingCharacterDto를 클라이언트 PlayingCharacter 타입으로 변환
+ * characterPairDetails 정보를 사용하여 이미지/이름을 보강
  *
  * @param playingCharacter - 서버 응답 (PlayingCharacterDto)
- * @returns 클라이언트 Character 타입 또는 null (메타데이터 없는 경우)
+ * @param pairDetail - 캐릭터 페어 상세 정보 (선택적)
+ * @returns 클라이언트 PlayingCharacter 타입
  */
 export function adaptPlayingCharacterFromApi(
-  playingCharacter: PlayingCharacterDto
+  playingCharacter: PlayingCharacterDto,
+  pairDetail?: {
+    characters: Array<{
+      name: string;
+      aliases?: string[];
+      image?: string;
+      thumbnail?: string;
+    }>;
+  } | null
 ): PlayingCharacter {
+  // characterPairDetails에서 매칭되는 캐릭터 찾기
+  const characterName = playingCharacter.character.name;
+  const detail =
+    pairDetail?.characters.find(char => {
+      const aliases = [char.name, ...(char.aliases ?? [])];
+      return aliases.includes(characterName || '');
+    }) || getCharacterDetailByName(characterName);
+
+  // characterPairDetails에서 이미지/이름 정보 가져오기
+  const resolvedName = detail?.name || characterName || null;
+  const resolvedFullImage =
+    detail?.image ??
+    detail?.thumbnail ??
+    playingCharacter.character.selectImage ??
+    null;
+  const resolvedProfileImage =
+    detail?.thumbnail ??
+    detail?.image ??
+    playingCharacter.character.portraitImage ??
+    null;
+
   return {
     id: playingCharacter.id,
     characterId: playingCharacter.character.id,
-    name: playingCharacter.character.name || null,
-    fullImage: playingCharacter.character.selectImage || null,
-    profileImage: playingCharacter.character.portraitImage || null,
+    name: resolvedName,
+    fullImage: resolvedFullImage,
+    profileImage: resolvedProfileImage,
     currentHp: playingCharacter.currentHp || null,
     currentMental: playingCharacter.currentMental || null,
     colors: {
