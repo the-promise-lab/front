@@ -13,6 +13,8 @@ interface PlayReportScrollContentProps {
   points: PlayReportPoint[];
   characters: PlayReportCharacterStats[];
   survivalBag: PlayReportSurvivalBag;
+  /** 엔딩 타이틀 표시 여부 (기본값: true) */
+  showTitle?: boolean;
 }
 
 export default function PlayReportScrollContent({
@@ -20,13 +22,16 @@ export default function PlayReportScrollContent({
   points,
   characters,
   survivalBag,
+  showTitle = true,
 }: PlayReportScrollContentProps) {
   return (
     <div className='flex flex-col gap-6'>
       {/* 엔딩 타이틀 */}
-      <Typography variant='h2-b' className='text-white'>
-        {endingTitle}
-      </Typography>
+      {showTitle && (
+        <Typography variant='h2-b' className='text-white'>
+          {endingTitle}
+        </Typography>
+      )}
 
       {/* Point 섹션들 */}
       <GoodBadPointsSection points={points} />

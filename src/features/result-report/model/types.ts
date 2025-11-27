@@ -81,3 +81,19 @@ export interface RankingData {
   characters: RankingCharacterResult[];
   rankings: RankingUser[];
 }
+
+// ============================================
+// History 관련 타입
+// ============================================
+
+export interface HistoryItem {
+  id: string;
+  characterName: string;
+  resultType: string;
+  xp: number;
+  date: string;
+  time: string;
+  characterImageUrl?: string;
+  /** 히스토리 상세 조회 시 사용되는 PlayReport 데이터 */
+  playReport: PlayReportData;
+}
