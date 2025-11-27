@@ -33,7 +33,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
     characters: [
       {
         id: 'hem',
-        name: '김형빈',
+        name: '형빈',
         aliases: [
           '헴',
           'Char_hem',
@@ -62,7 +62,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       },
       {
         id: 'bang',
-        name: '이병철',
+        name: '병철',
         aliases: [
           '병철',
           'Char_bang',
@@ -93,7 +93,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
     characters: [
       {
         id: 'boksun',
-        name: '정복순',
+        name: '복순',
         aliases: [
           '복순',
           'char_boksoon',
@@ -147,7 +147,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
     characters: [
       {
         id: 'sojaeok',
-        name: '소재옥',
+        name: '재옥',
         aliases: [
           '재옥',
           'char_zewook',
@@ -173,7 +173,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       },
       {
         id: 'munyewon',
-        name: '문예원',
+        name: '예원',
         aliases: [
           '예원',
           'char_yewon',
@@ -204,7 +204,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
     characters: [
       {
         id: 'bangmiri',
-        name: '방미리',
+        name: '미리',
         aliases: [
           '미리',
           'char_miri',
@@ -227,7 +227,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       },
       {
         id: 'ryujaeho',
-        name: '류재호',
+        name: '재호',
         aliases: [
           '재호',
           'char_jeaho',
