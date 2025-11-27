@@ -112,7 +112,7 @@ export function IconRankBadgeThird({ className }: { className?: string }) {
           gradientUnits='userSpaceOnUse'
         >
           <stop stopColor='#B2865C' stopOpacity='0' />
-          <stop offset='1' stop-color='#B2865C' />
+          <stop offset='1' stopColor='#B2865C' />
         </linearGradient>
         <linearGradient
           id='paint1_linear_2329_7517'

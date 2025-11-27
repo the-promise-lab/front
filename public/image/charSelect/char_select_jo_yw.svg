@@ -10,12 +10,12 @@
 <use xlink:href="#image0_1543_4335" transform="matrix(0.00113379 0 0 0.0018364 0 -0.000621835)"/>
 </pattern>
 <linearGradient id="paint0_linear_1543_4335" x1="11.2005" y1="235" x2="343.509" y2="-13.4322" gradientUnits="userSpaceOnUse">
-<stop stop-color="white" stop-opacity="0.7"/>
-<stop offset="1" stop-color="white" stop-opacity="0"/>
+<stop stopColor="white" stop-opacity="0.7"/>
+<stop offset="1" stopColor="white" stop-opacity="0"/>
 </linearGradient>
 <radialGradient id="paint1_radial_1543_4335" cx="0" cy="0" r="1" gradientTransform="matrix(384.09 -98.61 87.5466 59.8334 225.02 148.5)" gradientUnits="userSpaceOnUse">
-<stop stop-color="white"/>
-<stop offset="1" stop-color="white" stop-opacity="0.4"/>
+<stop stopColor="white"/>
+<stop offset="1" stopColor="white" stop-opacity="0.4"/>
 </radialGradient>
 <clipPath id="clip0_1543_4335">
 <path d="M2 62H407C411.418 62 415 65.5817 415 70V227C415 231.418 411.418 235 407 235H2V62Z" fill="white"/>
