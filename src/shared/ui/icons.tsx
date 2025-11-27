@@ -1190,3 +1190,56 @@ export function IconDiamondPressed({ className }: IconProps) {
     </svg>
   );
 }
+
+export function IconXWhite({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 72 72'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        d='M56.293 19.2002L39.4932 36L56.293 52.7998L52.7998 56.293L36 39.4932L19.2002 56.293L15.707 52.7998L32.5068 36L15.707 19.2002L19.2002 15.707L36 32.5068L52.7998 15.707L56.293 19.2002Z'
+        fill='white'
+        stroke='#434343'
+      />
+    </svg>
+  );
+}
+
+export function IconChevronLeftWhite({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 42 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        d='M26.25 8.75L16.9214 19.6333C16.2473 20.4198 16.2473 21.5802 16.9214 22.3667L26.25 33.25'
+        stroke='white'
+        strokeWidth='2.625'
+        strokeLinecap='round'
+      />
+    </svg>
+  );
+}
+
+export function IconChevronRightWhite({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 42 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        d='M15.75 33.25L25.0786 22.3667C25.7527 21.5802 25.7527 20.4198 25.0786 19.6333L15.75 8.75'
+        stroke='white'
+        strokeWidth='2.625'
+        strokeLinecap='round'
+      />
+    </svg>
+  );
+}
