@@ -8,7 +8,6 @@ interface SurvivalBagSectionProps {
   bagType: string;
   usability: string;
   itemUsageRate: string;
-  // TODO: 실제 API에서 받아올 인벤토리 데이터
   bagImage?: string;
   items?: SlotItem[];
 }

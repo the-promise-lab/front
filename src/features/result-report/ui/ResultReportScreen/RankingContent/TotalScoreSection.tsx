@@ -1,11 +1,8 @@
 import { IconDiamond } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
+import type { RankingMyScore } from '../../../model/types';
 
-interface TotalScoreSectionProps {
-  rank: number;
-  totalUsers: number;
-  xp: number;
-}
+type TotalScoreSectionProps = RankingMyScore;
 
 export default function TotalScoreSection({
   rank,

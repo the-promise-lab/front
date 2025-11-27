@@ -1,15 +1,10 @@
 import { IconDiamond } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
+import type { RankingCharacterResult } from '../../../model/types';
 import CharacterResultCard from './CharacterResultCard';
 
-interface CharacterResult {
-  characterNames: string;
-  result: string;
-  imageUrl?: string;
-}
-
 interface FinalResultSectionProps {
-  characters: CharacterResult[];
+  characters: RankingCharacterResult[];
 }
 
 export default function FinalResultSection({

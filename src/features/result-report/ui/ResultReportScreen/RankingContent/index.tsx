@@ -3,30 +3,10 @@ import { GlassPanel } from '../kit/GlassPanel';
 import TotalScoreSection from './TotalScoreSection';
 import FinalResultSection from './FinalResultSection';
 import RankingListSection from './RankingListSection';
+import { RESULT_RANKING_DATA } from '../../../__mocks__/mockResults';
 
 // TODO: 실제 API에서 데이터 가져오기
-const mockData = {
-  myScore: {
-    rank: 241,
-    totalUsers: 3890,
-    xp: 384,
-  },
-  characters: [
-    { characterNames: '형빈과 병철', result: 'Happy' },
-    { characterNames: '복순과 진실', result: 'Happy' },
-    { characterNames: '재욱과 예원', result: 'Normal' },
-    { characterNames: '미리와 재호', result: 'Bad' },
-  ],
-  rankings: [
-    { rank: 1, nickname: '사용자 닉네임123', xp: 225710000 },
-    { rank: 2, nickname: '사용자 닉네임123', xp: 25710000 },
-    { rank: 3, nickname: '사용자 닉네임123', xp: 5710000 },
-    { rank: 4, nickname: '사용자 닉네임123', xp: 710000 },
-    { rank: 5, nickname: '사용자 닉네임123', xp: 10000 },
-    { rank: 6, nickname: '사용자 닉네임123', xp: 9800 },
-    { rank: 241, nickname: '사용자 닉네임123', xp: 384, isCurrentUser: true },
-  ],
-};
+const mockData = RESULT_RANKING_DATA;
 
 export default function RankingContent() {
   return (

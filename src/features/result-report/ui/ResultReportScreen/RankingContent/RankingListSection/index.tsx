@@ -1,13 +1,7 @@
 import { IconDiamond } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
+import type { RankingUser } from '../../../../model/types';
 import RankingListItem from './RankingListItem';
-
-interface RankingUser {
-  rank: number;
-  nickname: string;
-  xp: number;
-  isCurrentUser?: boolean;
-}
 
 interface RankingListSectionProps {
   rankings: RankingUser[];

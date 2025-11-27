@@ -1,30 +1,18 @@
 import Typography from '@shared/ui/Typography';
-import type { SlotItem } from '@entities/inventory';
+import type {
+  PlayReportPoint,
+  PlayReportCharacterStats,
+  PlayReportSurvivalBag,
+} from '../../../../model/types';
 import CharacterStatsSection from './CharacterStatsSection';
 import GoodBadPointsSection from './GoodBadPointsSection';
 import SurvivalBagSection from './SurvivalBagSection';
 
 interface PlayReportScrollContentProps {
   endingTitle: string;
-  points: {
-    type: 'positive' | 'negative';
-    label: string;
-    description: string;
-  }[];
-  characters: {
-    name: string;
-    health: number;
-    mental: number;
-    potential: number;
-  }[];
-  survivalBag: {
-    ownerNames: string;
-    bagType: string;
-    usability: string;
-    itemUsageRate: string;
-    bagImage?: string;
-    items?: SlotItem[];
-  };
+  points: PlayReportPoint[];
+  characters: PlayReportCharacterStats[];
+  survivalBag: PlayReportSurvivalBag;
 }
 
 export default function PlayReportScrollContent({

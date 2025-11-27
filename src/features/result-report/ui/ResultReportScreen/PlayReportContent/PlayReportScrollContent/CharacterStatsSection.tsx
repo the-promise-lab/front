@@ -1,14 +1,10 @@
 import { cn } from '@shared/lib/utils';
 import { IconHeart, IconLightning, IconPotential } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
+import type { PlayReportCharacterStats } from '../../../../model/types';
 
 interface CharacterStatsSectionProps {
-  characters: {
-    name: string;
-    health: number;
-    mental: number;
-    potential: number;
-  }[];
+  characters: PlayReportCharacterStats[];
 }
 
 function StateCardBackground() {

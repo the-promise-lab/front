@@ -1,10 +1,7 @@
 import Typography from '@shared/ui/Typography';
+import type { RankingCharacterResult } from '../../../model/types';
 
-interface CharacterResultCardProps {
-  characterNames: string;
-  result: string;
-  imageUrl?: string;
-}
+type CharacterResultCardProps = RankingCharacterResult;
 
 export default function CharacterResultCard({
   characterNames,

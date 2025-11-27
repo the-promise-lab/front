@@ -1,13 +1,10 @@
 import { cn } from '@shared/lib/utils';
 import { IconDiamond } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
+import type { PlayReportPoint } from '../../../../model/types';
 
 interface GoodBadPointsSectionProps {
-  points: {
-    type: 'positive' | 'negative';
-    label: string;
-    description: string;
-  }[];
+  points: PlayReportPoint[];
 }
 
 // Point 섹션 컴포넌트

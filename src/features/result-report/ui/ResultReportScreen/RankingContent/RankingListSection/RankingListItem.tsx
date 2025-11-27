@@ -1,17 +1,13 @@
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
+import type { RankingUser } from '../../../../model/types';
 import {
   IconRankBadgeFirst,
   IconRankBadgeSecond,
   IconRankBadgeThird,
 } from './icons';
 
-interface RankingListItemProps {
-  rank: number;
-  nickname: string;
-  xp: number;
-  isCurrentUser?: boolean;
-}
+type RankingListItemProps = RankingUser;
 
 // 순위별 색상 정의 (main-1: #fe8a01)
 function getRankColor(rank: number, isCurrentUser: boolean) {
