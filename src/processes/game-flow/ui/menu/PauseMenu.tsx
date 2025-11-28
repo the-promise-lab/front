@@ -10,6 +10,7 @@ import { ResultReportView } from './ResultReportView';
 import { TeamIntroView } from './TeamIntroView';
 import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
 import { BackgroundPortal } from '@shared/background-portal';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 type MenuCategory =
   | 'character-info'
@@ -100,6 +101,7 @@ export default function PauseMenu({
         </div>
       )}
       <BackgroundPortal>
+        <EdgeGradient hidden={!isOpen} />
         <AnimatePresence>
           {isOpen ? (
             <GlassMenuLayout
@@ -107,6 +109,7 @@ export default function PauseMenu({
               selectedId={selectedCategory}
               onSelect={setSelectedCategory}
               onClose={close}
+              className='mx-auto aspect-video h-dvh'
             >
               <div className='relative mt-45 h-full'>
                 <div className='absolute top-0 left-0 h-[90%] w-0.25 bg-white' />

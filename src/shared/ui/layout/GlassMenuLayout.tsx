@@ -77,14 +77,14 @@ export function GlassMenuLayout<T extends string = string>({
                   key={item.id}
                   onClick={() => onSelect(item.id)}
                   className={cn(
-                    '-ml-10 rounded-full px-21.5 py-9 text-left transition-all',
-                    isActive
-                      ? 'rounded-l-none border border-l-0 border-white/40 bg-white/10 text-white shadow-[0_0_24px_rgba(255,255,255,0.15)]'
-                      : 'rounded-l-none border border-l-0 border-transparent text-white/55 hover:border-white/20 hover:text-white'
+                    'relative -ml-10 rounded-full px-21.5 py-9 text-left transition-all'
                   )}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  {isActive && (
+                    <MenuItemButtonBackground className='absolute top-0 right-0 h-full w-auto' />
+                  )}
                   <Typography variant='button-b' className='text-white'>
                     {item.label.kor}
                   </Typography>
@@ -122,5 +122,90 @@ export function GlassMenuLayout<T extends string = string>({
         </motion.main>
       </motion.div>
     </>
+  );
+}
+
+function MenuItemButtonBackground({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox='0 0 595 111'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <g filter='url(#filter0_d_2493_3913)'>
+        <path
+          d='M0 2H538.5C567.495 2 591 25.5051 591 54.5C591 83.4949 567.495 107 538.5 107H0V2Z'
+          fill='url(#paint0_linear_2493_3913)'
+          fillOpacity='0.8'
+          shapeRendering='crispEdges'
+        />
+        <path
+          d='M538.5 1C568.047 1 592 24.9528 592 54.5C592 84.0472 568.047 108 538.5 108H-1V1H538.5Z'
+          stroke='url(#paint1_radial_2493_3913)'
+          strokeWidth='2'
+          shapeRendering='crispEdges'
+        />
+      </g>
+      <defs>
+        <filter
+          id='filter0_d_2493_3913'
+          x='-2'
+          y='0'
+          width='597'
+          height='111'
+          filterUnits='userSpaceOnUse'
+          colorInterpolationFilters='sRGB'
+        >
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
+          <feColorMatrix
+            in='SourceAlpha'
+            type='matrix'
+            values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
+            result='hardAlpha'
+          />
+          <feOffset dx='1' dy='1' />
+          <feGaussianBlur stdDeviation='0.5' />
+          <feComposite in2='hardAlpha' operator='out' />
+          <feColorMatrix
+            type='matrix'
+            values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
+          />
+          <feBlend
+            mode='normal'
+            in2='BackgroundImageFix'
+            result='effect1_dropShadow_2493_3913'
+          />
+          <feBlend
+            mode='normal'
+            in='SourceGraphic'
+            in2='effect1_dropShadow_2493_3913'
+            result='shape'
+          />
+        </filter>
+        <linearGradient
+          id='paint0_linear_2493_3913'
+          x1='-2.60519e-05'
+          y1='115.663'
+          x2='279.039'
+          y2='-211.541'
+          gradientUnits='userSpaceOnUse'
+        >
+          <stop stopColor='white' stopOpacity='0.3' />
+          <stop offset='1' stopColor='white' stopOpacity='0.15' />
+        </linearGradient>
+        <radialGradient
+          id='paint1_radial_2493_3913'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientTransform='matrix(549.63 -59.85 125.279 36.315 319.14 54.5)'
+          gradientUnits='userSpaceOnUse'
+        >
+          <stop stopColor='white' />
+          <stop offset='1' stopColor='white' stopOpacity='0.4' />
+        </radialGradient>
+      </defs>
+    </svg>
   );
 }
