@@ -6,7 +6,7 @@ import {
   getCharacterDetailByName,
   getCharacterPairDetailByGroupId,
   getCharacterPairDetailByName,
-} from '@shared/character-data';
+} from '@entities/character-data';
 
 export function CharacterInfoView() {
   const playingCharacters = useGameFlowStore(

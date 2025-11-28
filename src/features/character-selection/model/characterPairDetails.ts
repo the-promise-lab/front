@@ -1,5 +1,5 @@
 import type { CharacterSet } from '@entities/game-session';
-import { CHARACTER_PAIR_DETAILS } from '@shared/character-data';
+import { CHARACTER_PAIR_DETAILS } from '@entities/character-data';
 
 // Re-export for backward compatibility
 export {
@@ -10,7 +10,7 @@ export {
   getCharacterPairDetailByGroupId,
   getCharacterDetailByName,
   getCharacterPairDetailByName,
-} from '@shared/character-data';
+} from '@entities/character-data';
 
 // Feature-specific function that uses CharacterSet from entities
 export function createCharacterSetsFromDetails(): CharacterSet[] {

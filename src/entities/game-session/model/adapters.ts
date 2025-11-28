@@ -15,7 +15,7 @@ import type {
 import {
   getCharacterDetailByName,
   getCharacterPairDetailByGroupId,
-} from '@shared/character-data';
+} from '@entities/character-data';
 
 /**
  * GameSessionResponseDto를 도메인 GameSession 타입으로 변환

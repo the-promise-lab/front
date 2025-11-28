@@ -2,7 +2,7 @@ import type { PlayingCharacter } from '@entities/game-session';
 import {
   CHARACTER_PAIR_DETAILS,
   getCharacterPairDetailByGroupId,
-} from '@shared/character-data';
+} from '@entities/character-data';
 
 export function resolveCharacterGroupName(
   groupId?: number | null,
