@@ -19,26 +19,27 @@ export default function SinglePortraitScreen({
   portraits = [],
   playingCharacters,
 }: SinglePortraitScreenProps) {
-  console.log('현재 플레이 중인 캐릭터: ', playingCharacters);
   const [portraitIndex, setPortraitIndex] = useState(0);
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
-  console.log('playingCharacters', playingCharacters);
-  const firstCharacterUrl = getObjectUrl(
-    playingCharacters[0]?.profileImage || 'byungcheol.png'
-  );
-  const secondCharacterUrl = getObjectUrl(
-    playingCharacters[1].profileImage || 'ham.png'
-  );
 
-  // 디버깅: 이미지 URL 확인
-  console.log('First Character URL:', firstCharacterUrl);
-  console.log('Second Character URL:', secondCharacterUrl);
-  console.log('Portraits from JSON:', portraits);
+  const renderCharacters = playingCharacters.slice(0, 2);
+  const positions =
+    renderCharacters.length === 1
+      ? (['center'] as const)
+      : (['left', 'right'] as const);
+  const characterImages = renderCharacters.map(character =>
+    getObjectUrl(character?.profileImage || '')
+  );
 
   const handleNextPortrait = (e: MouseEvent<HTMLDivElement>) => {
+    const hasMorePortraits =
+      portraits.length > 1 && portraitIndex < portraits.length - 1;
+    if (!hasMorePortraits) {
+      return;
+    }
     e.stopPropagation();
-    setPortraitIndex(prev => (prev + 1) % portraits.length);
+    setPortraitIndex(prev => Math.min(prev + 1, portraits.length - 1));
   };
 
   useEffect(() => {
@@ -48,22 +49,30 @@ export default function SinglePortraitScreen({
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    setPortraitIndex(0);
+  }, [portraits]);
+
   const currentPortrait = portraits[portraitIndex];
+  const currentSpeaker = currentPortrait?.speaker?.trim();
+  const isSpeaker = (characterName?: string | null) =>
+    !!currentSpeaker && !!characterName && currentSpeaker === characterName;
+
   return (
     <div className='relative h-full w-full'>
-      <PortraitCharacterImage
-        src={secondCharacterUrl || '/ham.png'}
-        alt='person1'
-        dimmed={portraitStarted && currentPortrait.speaker !== '병철'}
-        position='right'
-      />
-      <PortraitCharacterImage
-        src={firstCharacterUrl || '/byungcheol.png'}
-        alt='person2'
-        dimmed={portraitStarted && currentPortrait.speaker !== '헴'}
-        position='left'
-      />
-      {portraitStarted && (
+      {renderCharacters.map((character, index) => (
+        <PortraitCharacterImage
+          key={character?.id ?? index}
+          src={
+            characterImages[index] ||
+            (positions[index] === 'right' ? '/ham.png' : '/byungcheol.png')
+          }
+          alt={character?.name || `character-${index}`}
+          dimmed={!isSpeaker(character?.name)}
+          position={positions[index]}
+        />
+      ))}
+      {portraitStarted && currentPortrait && (
         <PortraitBanner
           onClick={handleNextPortrait}
           key={`${portraitIndex}-${currentPortrait.speaker}-${currentPortrait.text}`}

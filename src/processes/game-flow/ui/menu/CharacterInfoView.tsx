@@ -2,143 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useGameFlowStore } from '../..';
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
-
-// CHARACTER_PAIR_DETAILS를 CharacterSelect에서 가져오기
-const CHARACTER_PAIR_DETAILS = {
-  '헴과 병철': {
-    title: '헴과 병철',
-    overview:
-      '득근과 근손실 사이에서 살아가는 헴과 그를 따르는 병철. 극한 상황에서도 근손실을 막기 위해 고군분투한다.',
-    characters: [
-      {
-        id: 'hem',
-        name: '헴',
-        age: '35세',
-        stats: [
-          { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Low' },
-        ],
-        description:
-          '득근에 살고 근손실에 죽는 헬스 미친 자. 가오를 중시하고 매일 데리고 다니는 병철에게 헬스를 부리며 모든 것을 가르치려고 함.',
-        traits:
-          '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
-        image: '/public/캐릭터선택창헴.png',
-        thumbnail: '/public/캐릭터선택창헴.png',
-      },
-      {
-        id: 'bang',
-        name: '병철',
-        age: '29세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description:
-          '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
-        traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
-        image: '/public/캐릭터선택창뱅철.png',
-        thumbnail: '/public/캐릭터선택창뱅철.png',
-      },
-    ],
-  },
-  '정복순&진실이': {
-    title: '정복순 & 진실이',
-    overview:
-      '진실을 밝히기 위해 몸을 사리지 않는 기자 복순과, 냉철한 분석가 진실이의 조합.',
-    characters: [
-      {
-        id: 'boksun',
-        name: '정복순',
-        age: '32세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'High' },
-        ],
-        description:
-          '집요한 추적과 강단으로 사건을 끝까지 파고드는 베테랑 기자. 재난 속에서도 진실을 밝혀내려 한다.',
-        image: '',
-        thumbnail: '',
-      },
-      {
-        id: 'jinsil',
-        name: '진실이',
-        age: '27세',
-        stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'High' },
-        ],
-        description:
-          '데이터 분석 전문가. 복순이 놓치는 단서를 찾아내 팀의 생존 확률을 높인다.',
-        image: '',
-        thumbnail: '',
-      },
-    ],
-  },
-  '소재옥&문예원': {
-    title: '소재옥 & 문예원',
-    overview:
-      '현장 경험 풍부한 기사 소재옥과 드론 엔지니어 문예원이 만드는 즉석 생존 키트.',
-    characters: [
-      {
-        id: 'sojaeok',
-        name: '소재옥',
-        age: '41세',
-        stats: [
-          { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description:
-          '무너지는 구조물 속에서도 침착하게 장비를 수리하는 베테랑 기사.',
-        image: '',
-        thumbnail: '',
-      },
-      {
-        id: 'munyewon',
-        name: '문예원',
-        age: '33세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'High' },
-        ],
-        description: '드론과 로봇을 활용해 정찰과 구조를 담당하는 엔지니어.',
-        image: '',
-        thumbnail: '',
-      },
-    ],
-  },
-  '방미리&류재호': {
-    title: '방미리 & 류재호',
-    overview:
-      '우연히 마주친 두 사람이 재난 속에서 서로를 의지하게 되는 성장 스토리.',
-    characters: [
-      {
-        id: 'bangmiri',
-        name: '방미리',
-        age: '28세',
-        stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description: '분위기 메이커지만 위기 상황에서 쉽게 겁먹는 평범한 시민.',
-        image: '',
-        thumbnail: '',
-      },
-      {
-        id: 'ryujaeho',
-        name: '류재호',
-        age: '30세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description:
-          '책임감 강한 회사원. 방미리를 지키기 위해 자신을 단련한다.',
-        image: '',
-        thumbnail: '',
-      },
-    ],
-  },
-} as const;
+import {
+  getCharacterDetailByName,
+  getCharacterPairDetailByGroupId,
+  getCharacterPairDetailByName,
+} from '@entities/character-data';
 
 export function CharacterInfoView() {
   const playingCharacters = useGameFlowStore(
@@ -152,17 +20,16 @@ export function CharacterInfoView() {
     null
   );
 
-  // CHARACTER_PAIR_DETAILS에서 상세 정보 가져오기
+  const characterGroupId = useGameFlowStore(
+    state => state.gameSession?.playingCharacterSet?.characterGroupId
+  );
+
   const pairDetail = useMemo(() => {
-    if (!selectedGroupName) {
-      return null;
-    }
-    const detail =
-      CHARACTER_PAIR_DETAILS[
-        selectedGroupName as keyof typeof CHARACTER_PAIR_DETAILS
-      ];
-    return detail || null;
-  }, [selectedGroupName]);
+    return (
+      getCharacterPairDetailByGroupId(characterGroupId) ||
+      getCharacterPairDetailByName(selectedGroupName)
+    );
+  }, [characterGroupId, selectedGroupName]);
 
   // playingCharacters와 pairDetail.characters를 매칭
   const characterDetails = useMemo(() => {
@@ -172,9 +39,11 @@ export function CharacterInfoView() {
 
     return playingCharacters.map(playingChar => {
       // 이름으로 매칭
-      const detail = pairDetail.characters.find(
-        char => char.name === playingChar.name
-      );
+      const detail =
+        pairDetail.characters.find(char => {
+          const aliases = [char.name, ...(char.aliases ?? [])];
+          return aliases.includes(playingChar.name || '');
+        }) || getCharacterDetailByName(playingChar.name);
       return {
         playingCharacter: playingChar,
         detail: detail || null,

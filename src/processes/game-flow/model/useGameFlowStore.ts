@@ -13,6 +13,7 @@ import {
   INITIAL_GAME_FLOW_STATE,
 } from '../types';
 import { getEventDataByDayStep } from '../data/dayFlowData';
+import { resolveCharacterGroupName } from '../lib/characterAssets';
 
 export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
   (set, get) => ({
@@ -167,11 +168,18 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
     // 게임 세션 관련 액션들
     loadGameSession: (session: GameSession) => {
-      set({ gameSession: session });
+      set({
+        gameSession: session,
+        selectedCharacterGroupName: session.playingCharacterSet
+          ? resolveCharacterGroupName(
+              session.playingCharacterSet.characterGroupId
+            )
+          : undefined,
+      });
     },
 
     clearGameSession: () => {
-      set({ gameSession: undefined });
+      set({ gameSession: undefined, selectedCharacterGroupName: undefined });
     },
 
     setIsNewGame: (isNew: boolean) => {
@@ -187,14 +195,22 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
           return state;
         }
 
+        const resolvedGroupName = resolveCharacterGroupName(
+          params.characterGroupId,
+          groupName
+        );
+
+        console.log('[useGameFlowStore] 저장되는 캐릭터 정보:', {
+          playingCharacterSet: params,
+          groupName: resolvedGroupName,
+        });
+
         return {
           gameSession: {
             ...state.gameSession,
-            playingCharacterSet: {
-              ...params,
-            },
+            playingCharacterSet: params,
           },
-          selectedCharacterGroupName: groupName,
+          selectedCharacterGroupName: resolvedGroupName,
         };
       });
     },

@@ -19,6 +19,7 @@ export type GameStep =
   | 'INTRO_STORY_2' // 인트로 스토리 (두 번째)
   | 'PACKING_PHASE' // 가방 싸기
   | 'INTRO_STORY_3' // 인트로 스토리 (세 번째)
+  | 'ONBOARDING' // 온보딩 화면
   | 'DAY_FLOW' // 시나리오 DAY 플로우
   | 'EVENT_PHASE' // 이벤트 페이즈
   | 'PLAYING'; // 게임 플레이
@@ -151,6 +152,7 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'INTRO_STORY',
   'BAG_SELECT',
   'INTRO_STORY_2',
+  'ONBOARDING',
   'PACKING_PHASE',
   'INTRO_STORY_3',
   'DAY_FLOW',
