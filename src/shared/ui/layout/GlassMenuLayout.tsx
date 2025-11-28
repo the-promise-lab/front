@@ -17,6 +17,7 @@ interface GlassMenuLayoutProps<T extends string = string> {
   children: ReactNode;
   className?: string;
   menuHeader?: ReactNode;
+  menuPanelClassName?: string;
 }
 
 export function GlassMenuLayout<T extends string = string>({
@@ -27,6 +28,7 @@ export function GlassMenuLayout<T extends string = string>({
   children,
   className,
   menuHeader,
+  menuPanelClassName,
 }: GlassMenuLayoutProps<T>) {
   return (
     <>
@@ -51,7 +53,7 @@ export function GlassMenuLayout<T extends string = string>({
         onClick={e => e.stopPropagation()}
       >
         {/* 좌측 영역: 메뉴헤더 + 메뉴 리스트 */}
-        <aside className='flex w-120 shrink-0 flex-col'>
+        <aside className={cn('flex w-120 shrink-0 flex-col')}>
           {/* MenuHeader */}
           <div className='flex h-45 shrink-0 items-center px-16'>
             {menuHeader}
@@ -59,7 +61,10 @@ export function GlassMenuLayout<T extends string = string>({
 
           {/* 메뉴 리스트 */}
           <motion.div
-            className='flex flex-1 flex-col gap-4 px-10 pt-4'
+            className={cn(
+              'flex flex-1 flex-col gap-4 px-10 pt-4',
+              menuPanelClassName
+            )}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
