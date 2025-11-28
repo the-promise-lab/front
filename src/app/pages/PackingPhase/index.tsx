@@ -7,6 +7,7 @@ import {
   useTimedDialogues,
   type TimedDialogue,
 } from '@features/shelf-selection/model/useTimedDialogues';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 const TOTAL_SECONDS = 102;
 
@@ -91,6 +92,7 @@ export default function PackingPhase() {
   if (!bag) return null;
   return (
     <>
+      <EdgeGradient />
       <ShelfSelection
         onBack={back}
         bag={bag}

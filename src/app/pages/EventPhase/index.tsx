@@ -14,6 +14,7 @@ import { CutSceneScreen } from '@features/event-phase/ui/CutSceneScreen';
 import BeforeResultScreen from '@features/event-phase/ui/BeforeResultScreen';
 import { useSetBackground } from '@shared/background';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 // FIXME: 하드코딩된 화면 순서
 type ScreenType =
@@ -49,6 +50,8 @@ const hasCharacterProfileScreens: ScreenType[] = [
 
 const hasCharacterProfile = (currentScreen: ScreenType) =>
   hasCharacterProfileScreens.includes(currentScreen);
+
+const hideEdgeGradientScreens: ScreenType[] = ['SINGLE_PORTRAIT_SCREEN'];
 
 export default function EventPhase() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
@@ -207,6 +210,9 @@ export default function EventPhase() {
       className='relative flex h-full w-full flex-col gap-4'
       onClick={handleNext}
     >
+      {hideEdgeGradientScreens.includes(currentScreen) ? null : (
+        <EdgeGradient />
+      )}
       <Header
         hasCharacterProfiles={hasCharacterProfile(currentScreen)}
         playingCharacters={playingCharacters}

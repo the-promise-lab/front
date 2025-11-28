@@ -1,5 +1,6 @@
 import { BackgroundPortal } from '@shared/background-portal';
 import { AnimatePresence, motion } from 'framer-motion';
+import { cn } from '@shared/lib/utils';
 
 /**
  * 16:9 컨텐츠 영역 바깥을 어둡게 처리하는 컴포넌트
@@ -7,7 +8,13 @@ import { AnimatePresence, motion } from 'framer-motion';
  * - 좌우 끝에서 중앙 방향으로 선형 그라데이션
  * - 16:9 영역보다 조금 안쪽까지 그라데이션이 침범
  */
-export default function EdgeGradient({ hidden = false }: { hidden?: boolean }) {
+export default function EdgeGradient({
+  hidden = false,
+  className,
+}: {
+  hidden?: boolean;
+  className?: string;
+}) {
   if (hidden) return null;
   return (
     <BackgroundPortal>
@@ -17,7 +24,10 @@ export default function EdgeGradient({ hidden = false }: { hidden?: boolean }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
-          className='pointer-events-none fixed inset-0 z-200 flex items-center justify-center'
+          className={cn(
+            'pointer-events-none fixed inset-0 z-200 flex items-center justify-center',
+            className
+          )}
         >
           {/* 좌측 그라데이션 */}
           <div

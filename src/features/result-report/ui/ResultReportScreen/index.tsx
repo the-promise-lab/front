@@ -47,6 +47,7 @@ export function ResultReportScreen({
 
   return (
     <BackgroundPortal>
+      <EdgeGradient />
       <GlassMenuLayout
         menuItems={RESULT_MENU_CATEGORIES}
         selectedId={selectedCategory}
@@ -63,7 +64,6 @@ export function ResultReportScreen({
         }
         className='mx-auto aspect-video h-dvh'
       >
-        <EdgeGradient />
         {renderContent()}
       </GlassMenuLayout>
     </BackgroundPortal>
