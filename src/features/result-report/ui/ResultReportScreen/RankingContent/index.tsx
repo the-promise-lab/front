@@ -18,7 +18,7 @@ export default function RankingContent() {
 
       {/* GlassPanel 컨테이너 */}
       <div className='relative flex-1 py-16 pl-15'>
-        <GlassPanel className='absolute inset-0' />
+        <GlassPanel className='fixed top-45 left-120 ml-[calc(50dvw-50dvh*16/9)] h-dvh w-dvw' />
 
         {/* GlassPanel 내부 컨텐츠 */}
         <div className='relative z-10 flex h-full gap-16'>
