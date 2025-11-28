@@ -93,7 +93,7 @@ export default function App() {
         <IntroStory
           jsonPath='/JSON/intro_third.json'
           onNext={() => {
-            useGameFlowStore.getState().goto('ONBOARDING');
+            useGameFlowStore.getState().goto('DAY_FLOW');
           }}
         />
       );
