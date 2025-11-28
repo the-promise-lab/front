@@ -81,11 +81,14 @@ export default function RankingListItem({
         </div>
 
         {/* 컨텐츠 영역 */}
-        <div className='flex flex-1 items-center justify-between px-16.5 py-5.5'>
-          <Typography variant='body-2-b' className='text-white'>
+        <div className='flex flex-1 items-center justify-between truncate py-5.5'>
+          <Typography variant='body-2-b' className='text-nowrap text-white'>
             {nickname}
           </Typography>
-          <Typography variant='caption-2' className='text-right text-white'>
+          <Typography
+            variant='caption-2'
+            className='text-right text-nowrap text-white'
+          >
             {xp.toLocaleString()} xp
           </Typography>
         </div>

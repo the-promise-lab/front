@@ -23,7 +23,7 @@ export default function RankingContent() {
         {/* GlassPanel 내부 컨텐츠 */}
         <div className='relative z-10 flex h-full gap-16'>
           {/* 좌측: Total Score + Final Result */}
-          <div className='flex w-1/2 flex-col gap-8'>
+          <div className='flex flex-1 flex-col gap-8'>
             <TotalScoreSection
               rank={mockData.myScore.rank}
               totalUsers={mockData.myScore.totalUsers}

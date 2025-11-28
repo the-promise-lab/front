@@ -51,6 +51,7 @@ export default function PlayReportScrollContent({
         bagImage={survivalBag.bagImage}
         items={survivalBag.items}
       />
+      <div className='h-45' />
     </div>
   );
 }

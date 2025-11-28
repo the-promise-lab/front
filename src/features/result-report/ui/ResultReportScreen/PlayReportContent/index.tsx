@@ -9,7 +9,7 @@ const mockData = RESULT_PLAY_REPORT_DATA;
 export function PlayReportContent() {
   return (
     // 1차 스크롤: 외부 스크롤 컨테이너
-    <div className='h-full w-full overflow-y-auto'>
+    <div className='overflow-y-auto. h-full w-full'>
       {/* 타이틀 영역 - 1차 스크롤 시 밀려올라감 */}
       <div className='flex h-45 shrink-0 items-center px-16'>
         <ContentTitle title='Play Report' />
