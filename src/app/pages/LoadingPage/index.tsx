@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useAssetStore, usePreloadAssets } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
+import { useSetBackground } from '@shared/background';
 
 const ASSETS_TO_PRELOAD = [
   'shelter-bg.png',
@@ -19,6 +20,9 @@ export default function LoadingPage() {
   const [timerEnded, setTimerEnded] = useState(false);
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
+
+  // 배경 이미지 설정
+  useSetBackground({ image: '/public/image/mainPage/main_splash_bg.png' });
 
   // 게임 플로우 상태
   const { isNewGame, startDayFlow, next, gameSession, goto } = useGameFlowStore(
@@ -108,20 +112,20 @@ export default function LoadingPage() {
 
   return (
     <div className='relative flex h-full w-full flex-col'>
-      <div className='flex flex-1 items-center justify-center text-center'>
+      <div className='mb-15 flex flex-1 items-end justify-center text-center'>
         {/* 제목 */}
         <div className='text-center'>
           <img
             src='/image/mainPage/game_logo.svg'
-            alt='back to the future'
-            className='mx-auto h-60 w-200'
+            alt='bag to the future'
+            className='mx-auto h-42 w-142'
           />
         </div>
       </div>
 
       {/* 하단 고정 영역 */}
       <div className='flex flex-col items-center justify-center gap-5 pb-20'>
-        <p className='text-sm text-gray-500'>{'Preparing to load data'}</p>
+        <p className='text-sm text-gray-200'>{'Preparing to load data'}</p>
         {/* Progress Bar */}
         <div className='mx-auto w-105'>
           <div className='h-2 overflow-hidden rounded-full'>
