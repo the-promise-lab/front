@@ -34,7 +34,7 @@ export default function InventoryDrawer({
     <BackgroundPortal>
       <AnimatePresence>
         {isOpen && (
-          <div className='fixed inset-0 z-[90]' onClick={handleClickClose}>
+          <div className='fixed inset-0 z-101' onClick={handleClickClose}>
             {/* Drawer 패널 */}
             <motion.div
               initial={{ x: '100%' }}
@@ -42,9 +42,8 @@ export default function InventoryDrawer({
               exit={{ x: '100%' }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className={cn(
-                'fixed top-0 right-0 z-[91]',
+                'fixed top-0 right-0 z-102',
                 'h-full w-240 pl-16',
-
                 'border-[0.75px] border-l border-white/10',
                 'bg-black/20 shadow-[0_0_42.5px_2px_rgba(0,0,0,0.50)] backdrop-blur-[30px]'
               )}

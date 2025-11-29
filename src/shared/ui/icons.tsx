@@ -1013,3 +1013,233 @@ export function IconBackpackCircle({ className }: IconProps) {
     </svg>
   );
 }
+
+export function IconDiamond({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 43 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <rect
+        x='21'
+        y='1.41421'
+        width='27.6985'
+        height='27.6985'
+        transform='rotate(45 21 1.41421)'
+        stroke='white'
+        strokeWidth='2'
+      />
+      <rect
+        width='18.2926'
+        height='18.2926'
+        transform='matrix(0.703526 0.710669 -0.703526 0.710669 21 8.00018)'
+        fill='white'
+      />
+    </svg>
+  );
+}
+
+export function IconPotential({ size = 28, className }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox='0 0 28 28'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        d='M14 2.33334C12.1333 2.33334 10.6667 3.80001 10.6667 5.66668V7.00001C10.6667 7.64168 11.1917 8.16668 11.8333 8.16668H16.1667C16.8083 8.16668 17.3333 7.64168 17.3333 7.00001V5.66668C17.3333 3.80001 15.8667 2.33334 14 2.33334Z'
+        fill='#B39CFF'
+      />
+      <path
+        d='M18.6667 9.33334H9.33333C8.04167 9.33334 7 10.375 7 11.6667V18.6667C7 21.6117 9.38833 24.0833 12.3333 24.5V25.6667H10.5C9.85833 25.6667 9.33333 26.1917 9.33333 26.8333C9.33333 27.475 9.85833 28 10.5 28H17.5C18.1417 28 18.6667 27.475 18.6667 26.8333C18.6667 26.1917 18.1417 25.6667 17.5 25.6667H15.6667V24.5C18.6117 24.0833 21 21.6117 21 18.6667V11.6667C21 10.375 19.9583 9.33334 18.6667 9.33334ZM14 21C12.7083 21 11.6667 19.9583 11.6667 18.6667C11.6667 17.375 12.7083 16.3333 14 16.3333C15.2917 16.3333 16.3333 17.375 16.3333 18.6667C16.3333 19.9583 15.2917 21 14 21Z'
+        fill='#B39CFF'
+      />
+    </svg>
+  );
+}
+
+export function IconDiamondPressed({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 43 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <foreignObject x='-4' y='-4' width='50' height='50'>
+        <div
+          style={{
+            backdropFilter: 'blur(2px)',
+            clipPath: 'url(#bgblur_0_504_2838_clip_path)',
+            height: '100%',
+            width: '100%',
+          }}
+        ></div>
+      </foreignObject>
+      <g data-figma-bg-blur-radius='4'>
+        <path
+          d='M40.5856 20.9998L21 40.5854L1.41439 20.9998L21 1.41421L40.5856 20.9998Z'
+          stroke='url(#paint0_radial_504_2838)'
+          strokeWidth='2'
+        />
+        <path
+          d='M40.5856 20.9998L21 40.5854L1.41439 20.9998L21 1.41421L40.5856 20.9998Z'
+          stroke='#FFDB5A'
+          strokeOpacity='0.7'
+          strokeWidth='2'
+        />
+      </g>
+      <foreignObject x='4.13068' y='4.00018' width='33.7386' height='34'>
+        <div
+          style={{
+            backdropFilter: 'blur(2px)',
+            clipPath: 'url(#bgblur_1_504_2838_clip_path)',
+            height: '100%',
+            width: '100%',
+          }}
+        ></div>
+      </foreignObject>
+      <g data-figma-bg-blur-radius='4'>
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          fill='#E8BA15'
+        />
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          fill='url(#paint1_radial_504_2838)'
+          fillOpacity='0.6'
+        />
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          stroke='url(#paint2_radial_504_2838)'
+          strokeWidth='0.5'
+        />
+        <rect
+          y='0.355335'
+          width='17.7926'
+          height='17.7926'
+          transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          stroke='#FFEA5A'
+          strokeOpacity='0.3'
+          strokeWidth='0.5'
+        />
+      </g>
+      <defs>
+        <clipPath id='bgblur_0_504_2838_clip_path' transform='translate(4 4)'>
+          <path d='M40.5856 20.9998L21 40.5854L1.41439 20.9998L21 1.41421L40.5856 20.9998Z' />
+        </clipPath>
+        <clipPath
+          id='bgblur_1_504_2838_clip_path'
+          transform='translate(-4.13068 -4.00018)'
+        >
+          <rect
+            y='0.355335'
+            width='17.7926'
+            height='17.7926'
+            transform='matrix(0.703526 0.710669 -0.703526 0.710669 21.25 8.10299)'
+          />
+        </clipPath>
+        <radialGradient
+          id='paint0_radial_504_2838'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(35.372 5.67345) rotate(135) scale(13.1007 10.7187)'
+        >
+          <stop stopColor='#FF8A00' />
+          <stop offset='1' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+        <radialGradient
+          id='paint1_radial_504_2838'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(9.14631 -3.04877) rotate(90) scale(21.3414)'
+        >
+          <stop stopColor='#FAFF00' />
+          <stop offset='0.568159' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+        <radialGradient
+          id='paint2_radial_504_2838'
+          cx='0'
+          cy='0'
+          r='1'
+          gradientUnits='userSpaceOnUse'
+          gradientTransform='translate(8.73057 -3.78856) rotate(90) scale(8.06929 6.60215)'
+        >
+          <stop stopColor='#FF8A00' />
+          <stop offset='1' stopColor='white' stopOpacity='0' />
+        </radialGradient>
+      </defs>
+    </svg>
+  );
+}
+
+export function IconXWhite({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 72 72'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        d='M56.293 19.2002L39.4932 36L56.293 52.7998L52.7998 56.293L36 39.4932L19.2002 56.293L15.707 52.7998L32.5068 36L15.707 19.2002L19.2002 15.707L36 32.5068L52.7998 15.707L56.293 19.2002Z'
+        fill='white'
+        stroke='#434343'
+      />
+    </svg>
+  );
+}
+
+export function IconChevronLeftWhite({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 42 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        d='M26.25 8.75L16.9214 19.6333C16.2473 20.4198 16.2473 21.5802 16.9214 22.3667L26.25 33.25'
+        stroke='white'
+        strokeWidth='2.625'
+        strokeLinecap='round'
+      />
+    </svg>
+  );
+}
+
+export function IconChevronRightWhite({ className }: IconProps) {
+  return (
+    <svg
+      viewBox='0 0 42 42'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        d='M15.75 33.25L25.0786 22.3667C25.7527 21.5802 25.7527 20.4198 25.0786 19.6333L15.75 8.75'
+        stroke='white'
+        strokeWidth='2.625'
+        strokeLinecap='round'
+      />
+    </svg>
+  );
+}

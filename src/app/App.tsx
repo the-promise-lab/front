@@ -17,6 +17,7 @@ import CharacterSelectPage from './pages/CharacterSelect';
 import BagSelectPage from './pages/BagSelectPage';
 import OnboardingPage from './pages/OnboardingPage';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
+import ResultReportPage from './pages/ResultReportPage';
 
 export default function App() {
   const { step, resetDayFlow, setAuthenticated } = useGameFlowStore(
@@ -102,6 +103,9 @@ export default function App() {
     }
     if (step === 'DAY_FLOW') {
       return <EventPhase />;
+    }
+    if (step === 'RESULT_REPORT') {
+      return <ResultReportPage />;
     }
     return <LoginPage />;
   };

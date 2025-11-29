@@ -1,4 +1,4 @@
-import { IconCloseButton } from '@features/event-phase/ui/kit/icon-button';
+import { IconCloseButton } from '@shared/ui/icon-button';
 import { BackgroundPortal } from '@shared/background-portal';
 import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';

@@ -170,7 +170,9 @@ export default function EventPhase() {
         return (
           <BeforeResultScreen
             backgroundImage={getObjectUrl('bg-2.png')}
-            onGoToMainMenu={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+            onGoToMainMenu={() =>
+              useGameFlowStore.getState().goto('RESULT_REPORT')
+            }
           />
         );
       case 'SINGLE_PORTRAIT_SCREEN':

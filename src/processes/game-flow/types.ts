@@ -1,6 +1,3 @@
-// src/processes/game-flow/types.ts
-// 게임 플로우 관련 타입 정의
-
 import type {
   GameSession,
   PlayingCharacterSet,
@@ -22,6 +19,7 @@ export type GameStep =
   | 'ONBOARDING' // 온보딩 화면
   | 'DAY_FLOW' // 시나리오 DAY 플로우
   | 'EVENT_PHASE' // 이벤트 페이즈
+  | 'RESULT_REPORT' // 결과 보고서
   | 'PLAYING'; // 게임 플레이
 
 // DAY 플로우 내부 단계
@@ -157,6 +155,7 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'INTRO_STORY_3',
   'DAY_FLOW',
   'EVENT_PHASE',
+  'RESULT_REPORT',
   'PLAYING',
 ] as const;
 
