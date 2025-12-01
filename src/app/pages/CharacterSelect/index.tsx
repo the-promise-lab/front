@@ -3,9 +3,9 @@ import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
 import type { PlayingCharacter } from '@entities/game-session';
 import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
-// import { adaptPlayingCharacterFromApi } from '@entities/game-session';
 import { useState } from 'react';
 import { cn } from '@shared/lib/utils';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 export default function CharacterSelectPage() {
   const { goto, savePlayingCharacters } = useGameFlowStore(
@@ -43,6 +43,7 @@ export default function CharacterSelectPage() {
   };
   return (
     <div className='relative h-full w-full'>
+      <EdgeGradient />
       <CharacterSelect
         onNext={handleNext}
         onBack={() => goto('MAIN_MENU')}

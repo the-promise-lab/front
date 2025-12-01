@@ -410,6 +410,14 @@ body {
   );
 }
 
+.background-glass-rtl {
+  background: linear-gradient(
+    102deg,
+    rgba(255, 255, 255, 0.24) -1.42%,
+    rgba(255, 255, 255, 0.12) 91.38%
+  );
+}
+
 .background-glass-disabled {
   background: linear-gradient(
     175deg,
@@ -424,6 +432,122 @@ body {
     rgba(255, 255, 255, 0.8) -6.76%,
     rgba(255, 255, 255, 0.4) 100%
   );
+}
+
+/* ============================================
+   RTL (Right to Left) Gradient Border
+   오른쪽에서 왼쪽으로 가는 그라데이션 버전
+   ============================================ */
+.gradient-border-rtl {
+  color: #fff;
+  background-color: transparent;
+  position: relative;
+  border-right: 2px solid white;
+
+  @media (max-width: 1024px) {
+    border-right-width: 1px;
+  }
+}
+
+.gradient-border-rtl::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 2px solid transparent;
+  border-left: none;
+  border-right: none;
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 255, 255) 0%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  box-sizing: border-box;
+  top: -2px;
+  right: -2px;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  z-index: -1;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  @media (max-width: 1024px) {
+    border-width: 1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    top: -1px;
+    right: -1px;
+  }
+}
+
+.gradient-border-rtl.active {
+  position: relative;
+  background:
+    radial-gradient(
+      116.67% 116.67% at 50% -16.67%,
+      rgba(250, 255, 0, 0) 0%,
+      rgba(255, 255, 255, 0) 56.82%
+    ),
+    rgba(0, 0, 0, 0.2);
+  border-right: 2px solid #ffc107;
+
+  @media (max-width: 1024px) {
+    border-right-width: 1px;
+  }
+}
+
+.gradient-border-rtl.active::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 2px solid transparent;
+  border-left: none;
+  border-right: none;
+  background-image: linear-gradient(
+    to left,
+    #ffc107 0%,
+    rgba(255, 193, 7, 0.8),
+    rgba(255, 193, 7, 0)
+  );
+  -webkit-mask:
+    linear-gradient(#ffc107 0 0) content-box,
+    linear-gradient(#ffc107 0 0);
+  -webkit-mask-composite: destination-out;
+  z-index: -1;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  box-sizing: border-box;
+  top: -2px;
+  right: -2px;
+
+  @media (max-width: 1024px) {
+    border-width: 1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    top: -1px;
+    right: -1px;
+  }
 }
 
 .bt-glass-stroke {

@@ -3,6 +3,7 @@ import { cn } from '@shared/lib/utils';
 import { IconCloseButton } from '@shared/ui/icon-button';
 import type { ReactNode } from 'react';
 import Typography from '../Typography';
+import { GradientGlassFromEdge } from '../GradientGlassFromEdge';
 
 export interface MenuItem<T extends string = string> {
   id: T;
@@ -17,6 +18,7 @@ interface GlassMenuLayoutProps<T extends string = string> {
   children: ReactNode;
   className?: string;
   menuHeader?: ReactNode;
+  menuPanelClassName?: string;
 }
 
 export function GlassMenuLayout<T extends string = string>({
@@ -27,6 +29,7 @@ export function GlassMenuLayout<T extends string = string>({
   children,
   className,
   menuHeader,
+  menuPanelClassName,
 }: GlassMenuLayoutProps<T>) {
   return (
     <>
@@ -51,7 +54,7 @@ export function GlassMenuLayout<T extends string = string>({
         onClick={e => e.stopPropagation()}
       >
         {/* 좌측 영역: 메뉴헤더 + 메뉴 리스트 */}
-        <aside className='flex w-120 shrink-0 flex-col'>
+        <aside className={cn('flex w-120 shrink-0 flex-col')}>
           {/* MenuHeader */}
           <div className='flex h-45 shrink-0 items-center px-16'>
             {menuHeader}
@@ -59,7 +62,10 @@ export function GlassMenuLayout<T extends string = string>({
 
           {/* 메뉴 리스트 */}
           <motion.div
-            className='flex flex-1 flex-col gap-4 px-10 pt-4'
+            className={cn(
+              'flex flex-1 flex-col gap-4 px-10 pt-4',
+              menuPanelClassName
+            )}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
@@ -72,14 +78,17 @@ export function GlassMenuLayout<T extends string = string>({
                   key={item.id}
                   onClick={() => onSelect(item.id)}
                   className={cn(
-                    '-ml-10 rounded-full px-21.5 py-9 text-left transition-all',
-                    isActive
-                      ? 'rounded-l-none border border-l-0 border-white/40 bg-white/10 text-white shadow-[0_0_24px_rgba(255,255,255,0.15)]'
-                      : 'rounded-l-none border border-l-0 border-transparent text-white/55 hover:border-white/20 hover:text-white'
+                    'relative -ml-10 rounded-full px-21.5 py-9 text-left transition-all'
                   )}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  {isActive && (
+                    <GradientGlassFromEdge
+                      rtl
+                      className='absolute! top-0 right-0'
+                    />
+                  )}
                   <Typography variant='button-b' className='text-white'>
                     {item.label.kor}
                   </Typography>

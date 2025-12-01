@@ -7,6 +7,7 @@ import { PlayReportContent } from './PlayReportContent';
 import RankingContent from './RankingContent';
 import CollectionContent from './CollectionContent';
 import HistoryContent from './HistoryContent';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 const RESULT_MENU_CATEGORIES = [
   { id: 'play-report', label: { kor: '최종결과', eng: 'Play Report' } },
@@ -46,6 +47,7 @@ export function ResultReportScreen({
 
   return (
     <BackgroundPortal>
+      <EdgeGradient />
       <GlassMenuLayout
         menuItems={RESULT_MENU_CATEGORIES}
         selectedId={selectedCategory}
@@ -60,6 +62,7 @@ export function ResultReportScreen({
             </Typography>
           </div>
         }
+        className='mx-auto aspect-video h-dvh'
       >
         {renderContent()}
       </GlassMenuLayout>
