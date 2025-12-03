@@ -72,7 +72,7 @@ export default function PackingPhase() {
     DIALOGUES
   );
 
-  const onComplete = (result: GameSessionDto) => {
+  const saveAndGetInventory = (result: GameSessionDto) => {
     saveInventory({
       items: result.gameSessionInventory.map(inv => ({
         sessionId: inv.sessionId,
@@ -80,6 +80,17 @@ export default function PackingPhase() {
         quantity: inv.quantity,
       })),
     });
+  };
+
+  // 신규 플로우: SCENARIO_FLOW로 직접 이동 (테스트용)
+  const onComplete = (result: GameSessionDto) => {
+    saveAndGetInventory(result);
+    useGameFlowStore.getState().goto('SCENARIO_FLOW');
+  };
+
+  // 레거시 플로우: 기존 next() → INTRO_STORY_3 → DAY_FLOW
+  const onCompleteLegacy = (result: GameSessionDto) => {
+    saveAndGetInventory(result);
     next();
   };
 
@@ -97,6 +108,7 @@ export default function PackingPhase() {
         onBack={back}
         bag={bag}
         onComplete={onComplete}
+        onCompleteLegacy={onCompleteLegacy}
         secondsLeft={secondsLeft}
         showTimeoutModal={showModal}
         renderHeader={() => (

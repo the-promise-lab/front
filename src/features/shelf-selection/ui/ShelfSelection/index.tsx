@@ -20,6 +20,7 @@ interface ShelfSelectionProps {
   onBack: () => void;
   bag: Bag;
   onComplete: (result: GameSessionDto) => void;
+  onCompleteLegacy?: (result: GameSessionDto) => void;
   renderHeader: () => ReactNode;
   secondsLeft: number;
   showTimeoutModal: boolean;
@@ -29,6 +30,7 @@ export default function ShelfSelection({
   onBack,
   bag,
   onComplete,
+  onCompleteLegacy,
   renderHeader,
   secondsLeft,
   showTimeoutModal,
@@ -71,6 +73,20 @@ export default function ShelfSelection({
     );
 
     submitInventory(payload);
+  };
+
+  const handleCompleteLegacy = () => {
+    if (!onCompleteLegacy) return;
+    const payload = adaptShelfItemsToInventoryPayload(
+      selectedShelfItems,
+      bag.id
+    );
+
+    submitInventory(payload, {
+      onSuccess: result => {
+        onCompleteLegacy(result);
+      },
+    });
   };
 
   useEffect(() => {
@@ -143,13 +159,24 @@ export default function ShelfSelection({
             </button>
           </div>
 
-          <button
-            className='pointer-events-auto absolute bottom-0 left-0 h-20 w-40 bg-black/50'
-            onClick={handleComplete}
-            disabled={isPending}
-          >
-            <Typography variant='mini-dialogue'>OK(임시)</Typography>
-          </button>
+          <div className='pointer-events-auto absolute bottom-0 left-0 flex gap-2'>
+            <button
+              className='h-20 w-40 bg-emerald-600/80 hover:bg-emerald-500'
+              onClick={handleComplete}
+              disabled={isPending}
+            >
+              <Typography variant='mini-dialogue'>OK(신규)</Typography>
+            </button>
+            {onCompleteLegacy && (
+              <button
+                className='h-20 w-40 bg-gray-600/80 hover:bg-gray-500'
+                onClick={handleCompleteLegacy}
+                disabled={isPending}
+              >
+                <Typography variant='mini-dialogue'>OK(레거시)</Typography>
+              </button>
+            )}
+          </div>
 
           <Minimap
             storeSections={storeSections}
