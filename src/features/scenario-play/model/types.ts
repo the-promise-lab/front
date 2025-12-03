@@ -22,7 +22,17 @@ export interface ScenarioCharacter {
 export interface ScenarioChoiceOption {
   choiceOptionId: number;
   text: string;
-  itemImage?: string; // 아이템 선택지의 경우 아이템 이미지
+  itemCategoryId?: number | null;
+  itemId?: number | null;
+  itemName?: string | null;
+  itemImage?: string | null;
+  quantity?: number | null;
+  isSelectable?: boolean;
+}
+
+export interface ScenarioChoiceFallback {
+  choiceOptionId: number;
+  text: string;
 }
 
 export interface ScenarioChoiceOutcome {
@@ -33,14 +43,11 @@ export interface ScenarioChoiceOutcome {
 export interface ScenarioChoice {
   title: string;
   description: string;
-  thumbnail: string;
+  thumbnail: string | null;
   type: 'StoryChoice' | 'ItemChoice';
   options: ScenarioChoiceOption[];
-  fallback: {
-    choiceOptionId: number;
-    text: string;
-  };
-  outcomes: Record<string, ScenarioChoiceOutcome>;
+  fallback: ScenarioChoiceFallback | null;
+  outcomes: Record<string, ScenarioChoiceOutcome> | null;
 }
 
 export interface ScenarioEffect {

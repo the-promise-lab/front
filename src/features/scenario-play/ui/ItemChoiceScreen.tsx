@@ -24,7 +24,7 @@ export default function ItemChoiceScreen({
     event.choice?.description ??
     '랜덤 이벤트에 대한 텍스트가 들어갑니다.\n아이템을 선택해주세요.';
   const thumbnail = event.choice?.thumbnail;
-  const options = event.choice?.options ?? [
+  const options = event.choice?.options.slice(0, 3) ?? [
     {
       choiceOptionId: 1,
       text: '선택지 1',
@@ -41,10 +41,11 @@ export default function ItemChoiceScreen({
       itemImage: 'item-image-3.png',
     },
   ];
-  const fallback = event.choice?.fallback ?? {
-    choiceOptionId: 4,
-    text: '그냥 버틴다',
-  };
+  const fallback = event.choice?.options?.[3] ??
+    event.choice?.fallback ?? {
+      choiceOptionId: 4,
+      text: '그냥 버틴다',
+    };
 
   const handleItemSelect = (index: number, option: ScenarioChoiceOption) => {
     setSelectedItemIndex(index);
@@ -69,7 +70,7 @@ export default function ItemChoiceScreen({
           stiffness: 300,
           duration: 0.5,
         }}
-        className='h-157.5 w-225.5 rounded-[2px] border-1 border-white bg-white/15 lg:rounded-[4px] lg:border-2'
+        className='h-157.5 w-225.5 rounded-[2px] border border-white bg-white/15 lg:rounded-[4px] lg:border-2'
       >
         {thumbnail && (
           <img
@@ -93,9 +94,10 @@ export default function ItemChoiceScreen({
               <ItemButton
                 key={option.choiceOptionId}
                 name={option.text}
-                imageUrl={option.itemImage}
+                imageUrl={option.itemImage ?? undefined}
                 pressed={selectedItemIndex === index}
                 onClick={() => handleItemSelect(index, option)}
+                disabled={option.isSelectable === false}
               />
             ))}
           </div>
