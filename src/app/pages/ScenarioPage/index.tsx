@@ -4,7 +4,12 @@ import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
-import { ScenarioController } from '@features/scenario-play';
+import {
+  ScenarioController,
+  SkipButton,
+  useScenarioStore,
+  selectCurrentEvent,
+} from '@features/scenario-play';
 
 export default function ScenarioPage() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
@@ -20,6 +25,17 @@ export default function ScenarioPage() {
       state => state.gameSession?.playingCharacterSet?.playingCharacters
     ) || [];
 
+  const currentEvent = useScenarioStore(selectCurrentEvent);
+  const skipDialogueEvents = useScenarioStore(
+    state => state.skipDialogueEvents
+  );
+
+  const isSimpleEvent = currentEvent?.type === 'Simple';
+
+  const handleSkip = () => {
+    skipDialogueEvents();
+  };
+
   return (
     <div className='relative flex h-full w-full flex-col gap-4'>
       <EdgeGradient />
@@ -32,6 +48,7 @@ export default function ScenarioPage() {
             <PauseMenu buttonClassName='static' />
           </>
         }
+        skipSlot={isSimpleEvent ? <SkipButton onClick={handleSkip} /> : null}
       />
       <div className='flex-1'>
         <ScenarioController

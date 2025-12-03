@@ -167,6 +167,11 @@ export interface ScenarioActions {
   setLoading: (isLoading: boolean) => void;
   setError: (error: Error | null) => void;
   reset: () => void;
+  /**
+   * 남은 대사(Simple) 이벤트를 모두 건너뛰고 다음 비-Simple 이벤트로 이동
+   * @returns 건너뛴 후에도 이벤트가 남아있으면 true, 아니면 false
+   */
+  skipDialogueEvents: () => boolean;
 }
 
 // 편의 타입

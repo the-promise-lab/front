@@ -95,6 +95,37 @@ export const useScenarioStore = create<ScenarioState & ScenarioActions>()(
     reset: () => {
       set(INITIAL_STATE);
     },
+
+    skipDialogueEvents: () => {
+      let hasMore = false;
+      set(state => {
+        const events = state.currentActBundle?.events ?? [];
+        const currentIndex = state.currentEventIndex;
+
+        // 현재 인덱스 이후에서 Simple이 아닌 첫 번째 이벤트 찾기
+        let nextNonSimpleIndex = -1;
+        for (let i = currentIndex; i < events.length; i++) {
+          if (events[i].type !== 'Simple') {
+            nextNonSimpleIndex = i;
+            break;
+          }
+        }
+
+        if (nextNonSimpleIndex !== -1) {
+          // 비-Simple 이벤트로 이동
+          hasMore = true;
+          return { currentEventIndex: nextNonSimpleIndex };
+        } else {
+          // 모든 남은 이벤트가 Simple - 마지막 이벤트로 이동
+          const lastIndex = events.length - 1;
+          if (lastIndex > currentIndex) {
+            return { currentEventIndex: lastIndex };
+          }
+          return state;
+        }
+      });
+      return hasMore;
+    },
   })
 );
 

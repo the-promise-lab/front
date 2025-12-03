@@ -20,3 +20,4 @@ export { default as StoryChoiceScreen } from './ui/StoryChoiceScreen';
 export { default as ItemChoiceScreen } from './ui/ItemChoiceScreen';
 export { default as StatusScreen } from './ui/StatusScreen';
 export { default as SystemScreen } from './ui/SystemScreen';
+export { default as SkipButton } from './ui/kit/SkipButton';

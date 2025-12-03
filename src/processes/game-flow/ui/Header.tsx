@@ -15,6 +15,7 @@ interface HeaderProps {
     text: string;
   };
   menuSlot?: ReactNode;
+  skipSlot?: ReactNode;
 }
 
 export default function Header({
@@ -23,6 +24,7 @@ export default function Header({
   hasCharacterProfiles = true,
   bubblePortrait,
   menuSlot,
+  skipSlot,
 }: HeaderProps) {
   return (
     <div
@@ -74,8 +76,11 @@ export default function Header({
           )}
         </AnimatePresence>
       </div>
-      {menuSlot && (
-        <div className='flex h-full items-start gap-6'>{menuSlot}</div>
+      {(menuSlot || skipSlot) && (
+        <div className='flex h-full flex-col items-end gap-4.75'>
+          {menuSlot && <div className='flex items-start gap-6'>{menuSlot}</div>}
+          {skipSlot}
+        </div>
       )}
     </div>
   );

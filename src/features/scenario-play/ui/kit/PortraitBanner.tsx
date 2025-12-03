@@ -1,6 +1,6 @@
-import TypingText from '@shared/ui/TypingText';
+import TypingText, { type TypingTextRef } from '@shared/ui/TypingText';
 import { cn } from '@shared/lib/utils';
-import type { HTMLAttributes } from 'react';
+import { useRef, type HTMLAttributes, type MouseEvent } from 'react';
 import { IconDown } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
 import { BackgroundPortal } from '@shared/background-portal';
@@ -9,11 +9,25 @@ interface PortraitBannerProps extends HTMLAttributes<HTMLDivElement> {
   portrait: string;
   characterName: string;
 }
+
 export default function PortraitBanner({
   portrait,
   characterName,
+  onClick,
   ...props
 }: PortraitBannerProps) {
+  const typingTextRef = useRef<TypingTextRef>(null);
+
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    // 애니메이션 진행 중이면 skipToEnd 호출
+    if (typingTextRef.current?.isTyping) {
+      typingTextRef.current.skipToEnd();
+      return;
+    }
+    // 애니메이션 완료 상태면 기존 onClick 실행
+    onClick?.(e);
+  };
+
   return (
     <BackgroundPortal>
       <div
@@ -21,6 +35,7 @@ export default function PortraitBanner({
           'absolute right-0 bottom-0 left-0 z-100 flex h-105 w-full flex-col items-center justify-start gap-4.5 pt-10.5 pb-17',
           '[background-image:linear-gradient(180deg,_rgba(1,0,9,0.00)_0%,_rgba(1,0,9,0.60)_58.65%,_rgba(1,0,9,0.80)_100%)]'
         )}
+        onClick={handleClick}
         {...props}
       >
         <Typography variant='dialogue-b' className='text-[#FFE674]'>
@@ -28,7 +43,12 @@ export default function PortraitBanner({
         </Typography>
         <Divider />
         <Typography variant='dialogue-m'>
-          <TypingText texts={portrait.split('\n')} smooth speed={35} />
+          <TypingText
+            ref={typingTextRef}
+            texts={portrait.split('\n')}
+            smooth
+            speed={35}
+          />
         </Typography>
 
         <div className='flex flex-1 items-end'>
