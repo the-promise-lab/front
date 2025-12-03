@@ -9,6 +9,8 @@ import { SettingsView } from './SettingsView';
 import { ResultReportView } from './ResultReportView';
 import { TeamIntroView } from './TeamIntroView';
 import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
+import { BackgroundPortal } from '@shared/background-portal';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 type MenuCategory =
   | 'character-info'
@@ -98,18 +100,25 @@ export default function PauseMenu({
           <IconPauseButton onClick={open} />
         </div>
       )}
-      <AnimatePresence>
-        {isOpen ? (
-          <GlassMenuLayout
-            menuItems={MENU_CATEGORIES}
-            selectedId={selectedCategory}
-            onSelect={setSelectedCategory}
-            onClose={close}
-          >
-            {renderContent()}
-          </GlassMenuLayout>
-        ) : null}
-      </AnimatePresence>
+      <BackgroundPortal>
+        <EdgeGradient hidden={!isOpen} />
+        <AnimatePresence>
+          {isOpen ? (
+            <GlassMenuLayout
+              menuItems={MENU_CATEGORIES}
+              selectedId={selectedCategory}
+              onSelect={setSelectedCategory}
+              onClose={close}
+              className='mx-auto aspect-video h-dvh'
+            >
+              <div className='relative mt-45 h-full'>
+                <div className='absolute top-0 left-0 h-[90%] w-0.25 bg-white' />
+                {renderContent()}
+              </div>
+            </GlassMenuLayout>
+          ) : null}
+        </AnimatePresence>
+      </BackgroundPortal>
 
       {/* 로그아웃 확인 모달 */}
       <LogoutConfirmModal

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useState, useEffect } from 'react';
 import { useGameSound } from '@shared/audio/useGameSound';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
@@ -40,105 +41,130 @@ export function SettingsView({ onLogoutClick }: SettingsViewProps) {
   };
 
   return (
-    <div className='flex h-full w-full flex-col gap-12 text-white'>
+    <div className='mx-auto mt-9.5 flex h-full w-full max-w-190 flex-col gap-14 text-white'>
       {/* 배경음 */}
-      <div className='flex items-center justify-between'>
-        <Typography variant='dialogue-m' className='text-white'>
-          배경음
-        </Typography>
-        <div className='flex items-center gap-2'>
-          <button
-            onClick={() => handleBgmToggle(true)}
-            className={cn(
-              'rounded-l-lg border border-white/20 px-6 py-3 text-sm font-semibold transition-all',
-              !bgmMuted
-                ? 'bg-white/20 text-white'
-                : 'bg-transparent text-white/60 hover:bg-white/5'
-            )}
-          >
-            ON
-          </button>
-          <button
-            onClick={() => handleBgmToggle(false)}
-            className={cn(
-              'rounded-r-lg border border-l-0 border-white/20 px-6 py-3 text-sm font-semibold transition-all',
-              bgmMuted
-                ? 'bg-white/20 text-white'
-                : 'bg-transparent text-white/60 hover:bg-white/5'
-            )}
-          >
-            OFF
-          </button>
-        </div>
-      </div>
+      <SettingRow label='배경음'>
+        <ToggleButton isOn={!bgmMuted} onToggle={handleBgmToggle} />
+      </SettingRow>
 
       {/* 효과음 */}
-      <div className='flex items-center justify-between'>
-        <Typography variant='dialogue-m' className='text-white'>
-          효과음
-        </Typography>
-        <div className='flex items-center gap-2'>
-          <button
-            onClick={() => handleSfxToggle(true)}
-            className={cn(
-              'rounded-l-lg border border-white/20 px-6 py-3 text-sm font-semibold transition-all',
-              !sfxMuted
-                ? 'bg-white/20 text-white'
-                : 'bg-transparent text-white/60 hover:bg-white/5'
-            )}
-          >
-            ON
-          </button>
-          <button
-            onClick={() => handleSfxToggle(false)}
-            className={cn(
-              'rounded-r-lg border border-l-0 border-white/20 px-6 py-3 text-sm font-semibold transition-all',
-              sfxMuted
-                ? 'bg-white/20 text-white'
-                : 'bg-transparent text-white/60 hover:bg-white/5'
-            )}
-          >
-            OFF
-          </button>
-        </div>
-      </div>
+      <SettingRow label='효과음'>
+        <ToggleButton isOn={!sfxMuted} onToggle={handleSfxToggle} />
+      </SettingRow>
 
       {/* 계정 연동 */}
-      <div className='flex flex-col gap-4'>
-        <Typography variant='dialogue-m' className='text-white'>
+      <div className='flex items-start justify-between'>
+        <Typography variant='h4-eb' className='text-white uppercase'>
           계정 연동
         </Typography>
-        <div className='flex items-center gap-3'>
-          <div className='flex h-8 w-8 items-center justify-center rounded border border-black bg-yellow-400'>
-            <svg
-              width='16'
-              height='16'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              className='text-black'
-            >
-              <path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' />
-            </svg>
+
+        <div className='flex w-130 flex-col gap-10'>
+          {/* 카카오 계정 정보 */}
+          <div className='flex items-center gap-5.5 px-2.5'>
+            <div className='flex size-12 items-center justify-center rounded-lg bg-[#fee500]'>
+              <KakaoIcon className='size-6' />
+            </div>
+            <Typography variant='button-b' className='text-white'>
+              {user?.email || user?.name || '계정 정보 없음'}
+            </Typography>
           </div>
-          <Typography variant='dialogue-m' className='text-white'>
-            {user?.email || '계정 정보 없음'}
-          </Typography>
+
+          {/* 로그아웃 버튼 */}
+          <div className='rounded border-[0.4px] border-white/35 p-2.5 lg:border-2'>
+            <button
+              onClick={onLogoutClick}
+              className='flex h-20 w-full items-center justify-center rounded border-[0.4px] border-white bg-white/30 lg:border-2'
+            >
+              <Typography variant='button-b' className='text-white'>
+                로그아웃
+              </Typography>
+            </button>
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* 로그아웃 버튼 */}
-      <div className='mt-auto flex justify-center'>
+interface SettingRowProps {
+  label: string;
+  children: ReactNode;
+}
+
+function SettingRow({ label, children }: SettingRowProps) {
+  return (
+    <div className='flex items-center justify-between'>
+      <Typography variant='h4-eb' className='text-white uppercase'>
+        {label}
+      </Typography>
+      {children}
+    </div>
+  );
+}
+
+interface ToggleButtonProps {
+  isOn: boolean;
+  onToggle: (enabled: boolean) => void;
+}
+
+function ToggleButton({ isOn, onToggle }: ToggleButtonProps) {
+  return (
+    <div className='w-130 rounded border-[0.4px] border-white/35 p-2.5 lg:border-2'>
+      <div className='flex h-20 items-center rounded bg-white/15'>
+        {/* ON 버튼 */}
         <button
-          onClick={onLogoutClick}
-          className='rounded-lg border border-white/20 bg-black/40 px-12 py-4 text-sm font-semibold text-white transition-all hover:bg-white/10'
+          onClick={() => onToggle(true)}
+          className={cn(
+            'flex h-full w-80 items-center justify-center rounded transition-all',
+            isOn
+              ? 'border-[0.4px] border-white bg-white/30 lg:border-2'
+              : 'border-0 bg-transparent'
+          )}
         >
-          <Typography variant='dialogue-m' className='text-white'>
-            로그아웃
+          <Typography
+            variant='button-eb'
+            className={cn('uppercase', isOn ? 'text-white' : 'text-white/50')}
+          >
+            ON
+          </Typography>
+        </button>
+
+        {/* OFF 버튼 */}
+        <button
+          onClick={() => onToggle(false)}
+          className={cn(
+            'flex h-full flex-1 items-center justify-center rounded transition-all',
+            !isOn
+              ? 'border-[0.4px] border-white bg-white/30 lg:border-2'
+              : 'border-0 bg-transparent'
+          )}
+        >
+          <Typography
+            variant='button-eb'
+            className={cn('uppercase', !isOn ? 'text-white' : 'text-white/50')}
+          >
+            OFF
           </Typography>
         </button>
       </div>
     </div>
+  );
+}
+
+function KakaoIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      className={className}
+    >
+      <path
+        fillRule='evenodd'
+        clipRule='evenodd'
+        d='M12 4C7.02944 4 3 7.16426 3 11.0909C3 13.5663 4.55878 15.7412 6.93181 17.0287L6.01591 20.4545C5.94182 20.7273 6.25 20.9545 6.48636 20.8182L10.5545 18.0909C11.0227 18.1364 11.5045 18.1818 12 18.1818C16.9706 18.1818 21 15.0175 21 11.0909C21 7.16426 16.9706 4 12 4Z'
+        fill='black'
+      />
+    </svg>
   );
 }

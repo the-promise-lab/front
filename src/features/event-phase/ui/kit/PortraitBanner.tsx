@@ -3,6 +3,7 @@ import { cn } from '@shared/lib/utils';
 import type { HTMLAttributes } from 'react';
 import { IconDown } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
+import { BackgroundPortal } from '@shared/background-portal';
 
 interface PortraitBannerProps extends HTMLAttributes<HTMLDivElement> {
   portrait: string;
@@ -14,25 +15,27 @@ export default function PortraitBanner({
   ...props
 }: PortraitBannerProps) {
   return (
-    <div
-      className={cn(
-        'absolute right-0 bottom-0 left-0 flex h-105 w-full flex-col items-center justify-start gap-4.5 pt-10.5 pb-17',
-        '[background-image:linear-gradient(180deg,_rgba(1,0,9,0.00)_0%,_rgba(1,0,9,0.60)_58.65%,_rgba(1,0,9,0.80)_100%)]'
-      )}
-      {...props}
-    >
-      <Typography variant='dialogue-b' className='text-[#FFE674]'>
-        {characterName}
-      </Typography>
-      <Divider />
-      <Typography variant='dialogue-m'>
-        <TypingText texts={portrait.split('\n')} smooth speed={65} />
-      </Typography>
+    <BackgroundPortal>
+      <div
+        className={cn(
+          'absolute right-0 bottom-0 left-0 z-100 flex h-105 w-full flex-col items-center justify-start gap-4.5 pt-10.5 pb-17',
+          '[background-image:linear-gradient(180deg,_rgba(1,0,9,0.00)_0%,_rgba(1,0,9,0.60)_58.65%,_rgba(1,0,9,0.80)_100%)]'
+        )}
+        {...props}
+      >
+        <Typography variant='dialogue-b' className='text-[#FFE674]'>
+          {characterName}
+        </Typography>
+        <Divider />
+        <Typography variant='dialogue-m'>
+          <TypingText texts={portrait.split('\n')} smooth speed={65} />
+        </Typography>
 
-      <div className='flex flex-1 items-end'>
-        <IconDown className='h-2.5 w-6.5' />
+        <div className='flex flex-1 items-end'>
+          <IconDown className='h-2.5 w-6.5' />
+        </div>
       </div>
-    </div>
+    </BackgroundPortal>
   );
 }
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { BackgroundPortal } from '@shared/background-portal';
 import { cn } from '@shared/lib/utils';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 const ONBOARDING_IMAGES = Array.from({ length: 8 }, (_, i) => i + 1).map(
   num => `/image/onboarding/${num}.png`
@@ -21,6 +22,7 @@ export default function OnboardingPage() {
 
   return (
     <div className='relative h-full w-full' onClick={handleNext}>
+      <EdgeGradient />
       <BackgroundPortal>
         <div className='fixed inset-0 z-[11] flex items-center justify-center bg-black'>
           <div className='relative flex h-full w-full items-center justify-center'>

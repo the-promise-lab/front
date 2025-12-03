@@ -3,11 +3,8 @@ import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
 import type { PlayingCharacter } from '@entities/game-session';
 import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
-// import { adaptPlayingCharacterFromApi } from '@entities/game-session';
 import { useState } from 'react';
 import { cn } from '@shared/lib/utils';
-import { BackgroundPortal } from '@shared/background-portal';
-
 export default function CharacterSelectPage() {
   const { goto, savePlayingCharacters } = useGameFlowStore(
     useShallow(state => ({
@@ -44,15 +41,12 @@ export default function CharacterSelectPage() {
   };
   return (
     <div className='relative h-full w-full'>
-      <BackgroundPortal>
-        <div className='fixed inset-0 z-[11]'>
-          <CharacterSelect
-            onNext={handleNext}
-            onBack={() => goto('MAIN_MENU')}
-            onSelectSuccess={handleSelectSuccess}
-          />
-        </div>
-      </BackgroundPortal>
+      <CharacterSelect
+        onNext={handleNext}
+        onBack={() => goto('MAIN_MENU')}
+        onSelectSuccess={handleSelectSuccess}
+      />
+
       {/* 테스트용 스킵 버튼 - 우측 상단에 작게 배치 */}
       <button
         onClick={() => setSkip(true)}

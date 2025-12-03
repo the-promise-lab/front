@@ -3,6 +3,7 @@ import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
 import { IconOptionPressedShadow } from '@shared/ui/icons';
+import { GradientGlassFromEdge } from '@shared/ui/GradientGlassFromEdge';
 
 interface ChoiceOptionProps {
   text: string;
@@ -45,15 +46,16 @@ export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
         onClick={handlePress}
         className={cn(
           'relative z-0 flex h-24 w-full cursor-pointer items-center gap-4.5 px-7',
-          'bg-gradient-to-r from-white/10 to-transparent',
-          'backdrop-blur-[43.5px]',
-          'rounded-tl-[56px] rounded-bl-[56px]',
-          'gradient-border transition-all duration-200 ease-in-out',
-          isPressed && 'active scale-[1.05]'
+          'transition-all duration-200 ease-in-out'
+          // isPressed && 'active scale-[1.05]'
         )}
       >
+        <GradientGlassFromEdge
+          className='absolute! top-0 left-0 rounded-l-full'
+          isPressed={isPressed}
+        />
         {isPressed && (
-          <IconOptionPressedShadow className='absolute top-1/2 -left-4 h-[105%] w-[105%] -translate-y-1/2' />
+          <IconOptionPressedShadow className='absolute top-1/2 -left-6 h-[150%] w-auto -translate-y-1/2 scale-105' />
         )}
         {/* 체크박스 아이콘 */}
         <div className='relative z-[1] size-10 shrink-0'>
