@@ -8,6 +8,7 @@ import {
   type TimedDialogue,
 } from '@features/shelf-selection/model/useTimedDialogues';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
+import { useShallow } from 'zustand/react/shallow';
 
 const TOTAL_SECONDS = 102;
 
@@ -58,7 +59,14 @@ const DIALOGUES: TimedDialogue[] = [
 ];
 
 export default function PackingPhase() {
-  const { back, gameSession, saveInventory, next } = useGameFlowStore();
+  const { back, gameSession, saveInventory, next } = useGameFlowStore(
+    useShallow(state => ({
+      back: state.back,
+      gameSession: state.gameSession,
+      saveInventory: state.saveInventory,
+      next: state.next,
+    }))
+  );
 
   const bag = gameSession?.bag;
 
@@ -72,7 +80,7 @@ export default function PackingPhase() {
     DIALOGUES
   );
 
-  const onComplete = (result: GameSessionDto) => {
+  const saveAndGetInventory = (result: GameSessionDto) => {
     saveInventory({
       items: result.gameSessionInventory.map(inv => ({
         sessionId: inv.sessionId,
@@ -80,6 +88,11 @@ export default function PackingPhase() {
         quantity: inv.quantity,
       })),
     });
+  };
+
+  // 완료 시 다음 단계(INTRO_STORY_3)로 이동
+  const onComplete = (result: GameSessionDto) => {
+    saveAndGetInventory(result);
     next();
   };
 

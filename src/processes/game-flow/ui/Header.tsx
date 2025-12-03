@@ -1,7 +1,6 @@
 import { cn } from '@shared/lib/utils';
-import CharacterProfile from '../../../features/event-phase/ui/kit/CharacterProfile';
-// eslint-disable-next-line boundaries/element-types
-import BubblePortrait from '../../../features/event-phase/ui/kit/CharacterProfile/BubblePortrait';
+import CharacterProfile from '@features/scenario-play/ui/kit/CharacterProfile';
+import BubblePortrait from '@features/scenario-play/ui/kit/CharacterProfile/BubblePortrait';
 import type { PlayingCharacter } from '@entities/game-session';
 import type { ReactNode } from 'react';
 import { AnimatePresence } from 'framer-motion';
@@ -15,6 +14,7 @@ interface HeaderProps {
     text: string;
   };
   menuSlot?: ReactNode;
+  skipSlot?: ReactNode;
 }
 
 export default function Header({
@@ -23,6 +23,7 @@ export default function Header({
   hasCharacterProfiles = true,
   bubblePortrait,
   menuSlot,
+  skipSlot,
 }: HeaderProps) {
   return (
     <div
@@ -74,8 +75,11 @@ export default function Header({
           )}
         </AnimatePresence>
       </div>
-      {menuSlot && (
-        <div className='flex h-full items-start gap-6'>{menuSlot}</div>
+      {(menuSlot || skipSlot) && (
+        <div className='flex h-full flex-col items-end gap-4.75'>
+          {menuSlot && <div className='flex items-start gap-6'>{menuSlot}</div>}
+          {skipSlot}
+        </div>
       )}
     </div>
   );

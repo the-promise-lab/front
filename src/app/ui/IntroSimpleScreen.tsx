@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import SinglePortraitScreen from '@features/event-phase/ui/SinglePortraitScreen';
+import PortraitScreen from '@entities/portrait-screen';
 import type { IntroEvent } from '../pages/IntroStory/types';
 import type { PlayingCharacter } from '@entities/game-session';
 import { useGameFlowStore } from '@processes/game-flow';
@@ -145,13 +145,11 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
   const script = event.Script ?? '';
 
   return (
-    <SinglePortraitScreen
-      portraits={[
-        {
-          speaker: speakerName,
-          text: script,
-        },
-      ]}
+    <PortraitScreen
+      portrait={{
+        speaker: speakerName,
+        text: script,
+      }}
       playingCharacters={charactersToUse}
     />
   );
