@@ -22,7 +22,7 @@ export default function PortraitScreen({
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
 
   const renderCharacters = portraitCharacters.slice(0, 2);
-  const positions =
+  const fallbackPositions =
     renderCharacters.length === 1
       ? (['center'] as const)
       : (['left', 'right'] as const);
@@ -48,18 +48,21 @@ export default function PortraitScreen({
 
   return (
     <div className='relative h-full w-full'>
-      {renderCharacters.map((character, index) => (
-        <PortraitCharacterImage
-          key={character?.id ?? index}
-          src={
-            characterImages[index] ||
-            (positions[index] === 'right' ? '/ham.png' : '/byungcheol.png')
-          }
-          alt={character?.name || `character-${index}`}
-          dimmed={!isSpeaker(character?.name)}
-          position={positions[index]}
-        />
-      ))}
+      {renderCharacters.map((character, index) => {
+        const position = character.position ?? fallbackPositions[index];
+        return (
+          <PortraitCharacterImage
+            key={character?.id ?? index}
+            src={
+              characterImages[index] ||
+              (position === 'right' ? '/ham.png' : '/byungcheol.png')
+            }
+            alt={character?.name || `character-${index}`}
+            dimmed={!isSpeaker(character?.name)}
+            position={position}
+          />
+        );
+      })}
       {portraitStarted && portrait.text && (
         <PortraitBanner
           onClick={handleClick}

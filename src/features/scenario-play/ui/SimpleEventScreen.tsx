@@ -21,6 +21,7 @@ export default function SimpleEventScreen({
     name: c.characterDetail?.name ?? null,
     profileImage:
       c.characterDetail?.thumbnail ?? c.characterDetail?.image ?? null,
+    position: (c.position as PortraitCharacter['position']) ?? null,
   }));
 
   return (
