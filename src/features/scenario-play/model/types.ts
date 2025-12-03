@@ -1,3 +1,5 @@
+import type { CharacterDetail } from '@entities/character-data';
+
 export type ScenarioEventType =
   | 'Simple'
   | 'StoryChoice'
@@ -17,6 +19,7 @@ export interface ScenarioCharacter {
   position: string | null;
   emotion: string | null;
   isSpeaker: boolean | null;
+  characterDetail?: CharacterDetail | null;
 }
 
 export interface ScenarioChoiceOption {
