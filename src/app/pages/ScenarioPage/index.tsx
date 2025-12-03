@@ -52,7 +52,6 @@ export default function ScenarioPage() {
       />
       <div className='flex-1'>
         <ScenarioController
-          playingCharacters={playingCharacters}
           onGameEnd={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
           onGameOver={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
         />
