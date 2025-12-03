@@ -3,38 +3,25 @@ import PortraitBanner from './PortraitBanner';
 import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import PortraitCharacterImage from './PortraitCharacterImage';
-import type { PlayingCharacter } from '@entities/game-session';
+import type { PortraitCharacter, PortraitData } from '../../model/types';
 
-const PORTRAIT_START_DELAY = 1000;
-
-export interface PortraitData {
-  speaker: string;
-  text: string;
-}
+const PORTRAIT_START_DELAY_MS = 1000;
 
 interface PortraitScreenProps {
-  /** 현재 표시할 대사 */
   portrait: PortraitData;
-  /** 표시할 캐릭터 목록 (최대 2명) */
-  playingCharacters: PlayingCharacter[];
-  /** 대사 클릭 시 호출되는 콜백 */
+  portraitCharacters: PortraitCharacter[];
   onComplete?: () => void;
 }
 
-/**
- * 범용 초상화 화면 컴포넌트
- * - 캐릭터 이미지와 대사 배너를 표시
- * - 발화자에 따라 캐릭터 하이라이트
- */
 export default function PortraitScreen({
   portrait,
-  playingCharacters,
+  portraitCharacters,
   onComplete,
 }: PortraitScreenProps) {
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
 
-  const renderCharacters = playingCharacters.slice(0, 2);
+  const renderCharacters = portraitCharacters.slice(0, 2);
   const positions =
     renderCharacters.length === 1
       ? (['center'] as const)
@@ -51,7 +38,7 @@ export default function PortraitScreen({
   useEffect(() => {
     const timer = setTimeout(() => {
       setPortraitStarted(true);
-    }, PORTRAIT_START_DELAY);
+    }, PORTRAIT_START_DELAY_MS);
     return () => clearTimeout(timer);
   }, []);
 
@@ -85,6 +72,4 @@ export default function PortraitScreen({
   );
 }
 
-// Re-export sub-components for advanced usage
 export { PortraitBanner, PortraitCharacterImage };
-export type { PortraitData as Portrait };

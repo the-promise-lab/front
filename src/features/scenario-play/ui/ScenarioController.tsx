@@ -10,7 +10,6 @@ import {
   useSubmitChoiceAndLoadNextAct,
 } from '../model/useScenarioApi';
 import type { ScenarioChoiceOption, SubmitChoiceParams } from '../model/types';
-import type { PlayingCharacter } from '@entities/game-session';
 import SimpleEventScreen from './SimpleEventScreen';
 import StoryChoiceScreen from './StoryChoiceScreen';
 import ItemChoiceScreen from './ItemChoiceScreen';
@@ -19,7 +18,6 @@ import SystemScreen from './SystemScreen';
 import DayScreen from './DayScreen';
 
 interface ScenarioControllerProps {
-  playingCharacters?: PlayingCharacter[];
   onGameEnd?: () => void;
   onGameOver?: () => void;
 }
@@ -29,7 +27,6 @@ interface ScenarioControllerProps {
  * 이벤트 타입에 따라 적절한 화면을 렌더링하고, 진행 흐름을 관리
  */
 export function ScenarioController({
-  playingCharacters = [],
   onGameEnd,
   onGameOver,
 }: ScenarioControllerProps) {
@@ -207,7 +204,6 @@ export function ScenarioController({
       return (
         <SimpleEventScreen
           event={currentEvent}
-          playingCharacters={playingCharacters}
           onComplete={handleEventComplete}
         />
       );
