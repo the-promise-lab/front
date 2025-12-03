@@ -18,7 +18,7 @@ import BagSelectPage from './pages/BagSelectPage';
 import OnboardingPage from './pages/OnboardingPage';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
 import ResultReportPage from './pages/ResultReportPage';
-import { ScenarioController } from '@features/scenario-play';
+import ScenarioPage from './pages/ScenarioPage';
 
 export default function App() {
   const { step, resetDayFlow, setAuthenticated } = useGameFlowStore(
@@ -106,12 +106,7 @@ export default function App() {
       return <EventPhase />;
     }
     if (step === 'SCENARIO_FLOW') {
-      return (
-        <ScenarioController
-          onGameEnd={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
-          onGameOver={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
-        />
-      );
+      return <ScenarioPage />;
     }
     if (step === 'RESULT_REPORT') {
       return <ResultReportPage />;

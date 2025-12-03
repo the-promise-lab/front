@@ -22,6 +22,7 @@ export interface ScenarioCharacter {
 export interface ScenarioChoiceOption {
   choiceOptionId: number;
   text: string;
+  itemImage?: string; // 아이템 선택지의 경우 아이템 이미지
 }
 
 export interface ScenarioChoiceOutcome {

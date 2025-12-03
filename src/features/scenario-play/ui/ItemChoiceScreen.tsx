@@ -20,14 +20,34 @@ export default function ItemChoiceScreen({
   );
 
   const title = event.choice?.title ?? '아이템 선택';
-  const description = event.choice?.description ?? event.script ?? '';
-  const options = event.choice?.options ?? [];
-  const fallback = event.choice?.fallback;
+  const description =
+    event.choice?.description ??
+    '랜덤 이벤트에 대한 텍스트가 들어갑니다.\n아이템을 선택해주세요.';
   const thumbnail = event.choice?.thumbnail;
+  const options = event.choice?.options ?? [
+    {
+      choiceOptionId: 1,
+      text: '선택지 1',
+      itemImage: 'item-image-1.png',
+    },
+    {
+      choiceOptionId: 2,
+      text: '선택지 2',
+      itemImage: 'item-image-2.png',
+    },
+    {
+      choiceOptionId: 3,
+      text: '선택지 3',
+      itemImage: 'item-image-3.png',
+    },
+  ];
+  const fallback = event.choice?.fallback ?? {
+    choiceOptionId: 4,
+    text: '그냥 버틴다',
+  };
 
   const handleItemSelect = (index: number, option: ScenarioChoiceOption) => {
     setSelectedItemIndex(index);
-    // 아이템 선택 시 해당 옵션의 itemId와 함께 콜백
     onSelect?.(option, option.choiceOptionId);
   };
 
@@ -45,7 +65,10 @@ export default function ItemChoiceScreen({
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ stiffness: 300, duration: 0.5 }}
+        transition={{
+          stiffness: 300,
+          duration: 0.5,
+        }}
         className='h-157.5 w-225.5 rounded-[2px] border-1 border-white bg-white/15 lg:rounded-[4px] lg:border-2'
       >
         {thumbnail && (
@@ -70,6 +93,7 @@ export default function ItemChoiceScreen({
               <ItemButton
                 key={option.choiceOptionId}
                 name={option.text}
+                imageUrl={option.itemImage}
                 pressed={selectedItemIndex === index}
                 onClick={() => handleItemSelect(index, option)}
               />

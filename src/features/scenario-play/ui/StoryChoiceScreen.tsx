@@ -1,7 +1,7 @@
 import { IconCaution } from '@shared/ui/icons';
+import ChoiceOption from './kit/ChoiceOption';
 import { motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
-import ChoiceOption from './kit/ChoiceOption';
 import type { ScenarioEvent, ScenarioChoiceOption } from '../model/types';
 
 interface StoryChoiceScreenProps {
@@ -13,10 +13,28 @@ export default function StoryChoiceScreen({
   event,
   onSelect,
 }: StoryChoiceScreenProps) {
-  const title = event.choice?.title ?? '이벤트';
-  const description = event.choice?.description ?? event.script ?? '';
-  const options = event.choice?.options ?? [];
+  const title = event.choice?.title ?? '랜덤 이벤트 제목';
+  const description =
+    event.choice?.description ??
+    '랜덤 이벤트에 대한 텍스트가 들어갑니다.\n선택지[1]과 선택지[2]가 있는 화면의 경우,\n엔딩 분기를 위한 스토리형 사건입니다.';
   const thumbnail = event.choice?.thumbnail;
+  const options = event.choice?.options ?? [
+    {
+      choiceOptionId: 1,
+      text: '선택지 1',
+      itemImage: 'item-image-1.png',
+    },
+    {
+      choiceOptionId: 2,
+      text: '선택지 2',
+      itemImage: 'item-image-2.png',
+    },
+    {
+      choiceOptionId: 3,
+      text: '선택지 3',
+      itemImage: 'item-image-3.png',
+    },
+  ];
 
   const handleOptionPress = (option: ScenarioChoiceOption) => {
     onSelect?.(option);
@@ -27,8 +45,11 @@ export default function StoryChoiceScreen({
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ stiffness: 300, duration: 0.5 }}
-        className='h-157.5 w-225.5 rounded-[2px] border-1 border-white bg-white/15 lg:rounded-[4px] lg:border-2'
+        transition={{
+          stiffness: 300,
+          duration: 0.5,
+        }}
+        className='h-157.5 w-225.5 rounded-[2px] border border-white bg-white/15 lg:rounded-[4px] lg:border-2'
       >
         {thumbnail && (
           <img
@@ -49,7 +70,10 @@ export default function StoryChoiceScreen({
         <motion.div
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
-          transition={{ type: 'spring', duration: 0.5 }}
+          transition={{
+            type: 'spring',
+            duration: 0.5,
+          }}
           className='flex flex-col gap-8'
         >
           {options.map(option => (
