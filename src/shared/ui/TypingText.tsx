@@ -38,7 +38,6 @@ export default function TypingText({
   smooth = false,
   variant = 'dialogue-m',
 }: TypingTextProps) {
-  console.log(texts);
   // 각 텍스트를 grapheme 단위로 분리하고, 각 텍스트 끝에 <br />을 위한 구분자 추가
   const units = useMemo(() => {
     const result: (string | typeof NEWLINE_CHAR)[] = [];

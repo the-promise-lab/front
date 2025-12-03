@@ -29,7 +29,7 @@ export default function ScenarioPage() {
         menuSlot={
           <>
             <SideInventory hasWeightBar weight={100} />
-            <PauseMenu />
+            <PauseMenu buttonClassName='static' />
           </>
         }
       />

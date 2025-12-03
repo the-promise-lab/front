@@ -42,7 +42,7 @@ export default function SimpleEventScreen({
     }, PORTRAIT_START_DELAY);
     return () => clearTimeout(timer);
   }, []);
-  console.log(event.characters);
+
   // ScenarioEvent에서 portrait 데이터 추출
   const speaker = event.characters.find(c => c.isSpeaker);
   const currentPortrait = {
