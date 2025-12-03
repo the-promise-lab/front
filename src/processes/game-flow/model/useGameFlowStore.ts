@@ -29,18 +29,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     },
 
     goto: (step: GameStep) => {
-      const currentStep = get().step;
-
-      // DAY_FLOW에서 다른 단계로 이동할 때 DAY_STEP 초기화
-      if (currentStep === 'DAY_FLOW' && step !== 'DAY_FLOW') {
-        set({
-          step,
-          dayStep: 'PLACE_SCREEN',
-          currentDayStepIndex: 0,
-        });
-      } else {
-        set({ step });
-      }
+      set({ step });
     },
 
     next: () => {
@@ -49,17 +38,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
       if (currentIndex >= 0 && currentIndex < GAME_STEP_ORDER.length - 1) {
         const nextStep = GAME_STEP_ORDER[currentIndex + 1];
-
-        // DAY_FLOW에서 다른 단계로 이동할 때 DAY_STEP 초기화
-        if (step === 'DAY_FLOW' && nextStep !== 'DAY_FLOW') {
-          set({
-            step: nextStep,
-            dayStep: 'PLACE_SCREEN',
-            currentDayStepIndex: 0,
-          });
-        } else {
-          set({ step: nextStep });
-        }
+        set({ step: nextStep });
       }
     },
 
@@ -69,17 +48,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
 
       if (currentIndex > 0) {
         const prevStep = GAME_STEP_ORDER[currentIndex - 1];
-
-        // DAY_FLOW에서 다른 단계로 이동할 때 DAY_STEP 초기화
-        if (step === 'DAY_FLOW' && prevStep !== 'DAY_FLOW') {
-          set({
-            step: prevStep,
-            dayStep: 'PLACE_SCREEN',
-            currentDayStepIndex: 0,
-          });
-        } else {
-          set({ step: prevStep });
-        }
+        set({ step: prevStep });
       }
     },
 
@@ -251,15 +220,14 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       });
     },
 
-    // DAY_FLOW 관련 편의 함수들
-    startDayFlow: () => {
+    // SCENARIO_FLOW 시작
+    startScenarioFlow: () => {
       const store = useGameFlowStore.getState();
-      store.goto('DAY_FLOW');
-      store.resetDayFlow();
+      store.goto('SCENARIO_FLOW');
     },
 
-    // SCENARIO_FLOW 시작 (신규 scenario-play 피쳐용)
-    startScenarioFlow: () => {
+    // 레거시 호환용 (deprecated)
+    startDayFlow: () => {
       const store = useGameFlowStore.getState();
       store.goto('SCENARIO_FLOW');
     },
@@ -276,7 +244,7 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     continueGame: () => {
       const store = useGameFlowStore.getState();
       store.setIsNewGame(false); // 이어하기 플래그 설정
-      store.goto('PROGRESS'); // LoadingPage를 거쳐서 DAY_FLOW로
+      store.goto('PROGRESS'); // LoadingPage를 거쳐서 SCENARIO_FLOW로
     },
 
     // 게임 리셋

@@ -1,7 +1,6 @@
 import { cn } from '@shared/lib/utils';
-import CharacterProfile from '../../../features/event-phase/ui/kit/CharacterProfile';
-// eslint-disable-next-line boundaries/element-types
-import BubblePortrait from '../../../features/event-phase/ui/kit/CharacterProfile/BubblePortrait';
+import CharacterProfile from '@features/scenario-play/ui/kit/CharacterProfile';
+import BubblePortrait from '@features/scenario-play/ui/kit/CharacterProfile/BubblePortrait';
 import type { PlayingCharacter } from '@entities/game-session';
 import type { ReactNode } from 'react';
 import { AnimatePresence } from 'framer-motion';

@@ -8,6 +8,7 @@ import {
   type TimedDialogue,
 } from '@features/shelf-selection/model/useTimedDialogues';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
+import { useShallow } from 'zustand/react/shallow';
 
 const TOTAL_SECONDS = 102;
 
@@ -58,7 +59,14 @@ const DIALOGUES: TimedDialogue[] = [
 ];
 
 export default function PackingPhase() {
-  const { back, gameSession, saveInventory, next } = useGameFlowStore();
+  const { back, gameSession, saveInventory, goto } = useGameFlowStore(
+    useShallow(state => ({
+      back: state.back,
+      gameSession: state.gameSession,
+      saveInventory: state.saveInventory,
+      goto: state.goto,
+    }))
+  );
 
   const bag = gameSession?.bag;
 
@@ -82,16 +90,10 @@ export default function PackingPhase() {
     });
   };
 
-  // 신규 플로우: SCENARIO_FLOW로 직접 이동 (테스트용)
+  // 완료 시 SCENARIO_FLOW로 이동
   const onComplete = (result: GameSessionDto) => {
     saveAndGetInventory(result);
-    useGameFlowStore.getState().goto('SCENARIO_FLOW');
-  };
-
-  // 레거시 플로우: 기존 next() → INTRO_STORY_3 → DAY_FLOW
-  const onCompleteLegacy = (result: GameSessionDto) => {
-    saveAndGetInventory(result);
-    next();
+    goto('SCENARIO_FLOW');
   };
 
   useEffect(() => {
@@ -108,7 +110,6 @@ export default function PackingPhase() {
         onBack={back}
         bag={bag}
         onComplete={onComplete}
-        onCompleteLegacy={onCompleteLegacy}
         secondsLeft={secondsLeft}
         showTimeoutModal={showModal}
         renderHeader={() => (

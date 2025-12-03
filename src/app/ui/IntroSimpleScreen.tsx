@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import SinglePortraitScreen from '@features/event-phase/ui/SinglePortraitScreen';
+import SinglePortraitScreen from '@features/scenario-play/ui/SinglePortraitScreen';
 import type { IntroEvent } from '../pages/IntroStory/types';
 import type { PlayingCharacter } from '@entities/game-session';
 import { useGameFlowStore } from '@processes/game-flow';

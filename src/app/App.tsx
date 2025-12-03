@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
 
@@ -11,7 +11,6 @@ import LoginPage from './pages/LoginPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
-import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
 import CharacterSelectPage from './pages/CharacterSelect';
 import BagSelectPage from './pages/BagSelectPage';
@@ -21,10 +20,9 @@ import ResultReportPage from './pages/ResultReportPage';
 import ScenarioPage from './pages/ScenarioPage';
 
 export default function App() {
-  const { step, resetDayFlow, setAuthenticated } = useGameFlowStore(
+  const { step, setAuthenticated } = useGameFlowStore(
     useShallow(state => ({
       step: state.step,
-      resetDayFlow: state.resetDayFlow,
       setAuthenticated: state.setAuthenticated,
     }))
   );
@@ -38,13 +36,6 @@ export default function App() {
   );
 
   useCheckAuthState(handleAuthCheck);
-
-  // DAY_FLOW 진입 시 DAY_STEP 초기화
-  useEffect(() => {
-    if (step === 'DAY_FLOW') {
-      resetDayFlow();
-    }
-  }, [step, resetDayFlow]);
 
   const renderScreen = () => {
     // 디버깅: 현재 step 상태 확인
@@ -94,16 +85,13 @@ export default function App() {
         <IntroStory
           jsonPath='/JSON/intro_third.json'
           onNext={() => {
-            useGameFlowStore.getState().goto('DAY_FLOW');
+            useGameFlowStore.getState().goto('SCENARIO_FLOW');
           }}
         />
       );
     }
     if (step === 'ONBOARDING') {
       return <OnboardingPage />;
-    }
-    if (step === 'DAY_FLOW') {
-      return <EventPhase />;
     }
     if (step === 'SCENARIO_FLOW') {
       return <ScenarioPage />;

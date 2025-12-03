@@ -21,15 +21,16 @@ export default function LoadingPage() {
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
 
   // 게임 플로우 상태
-  const { isNewGame, startDayFlow, next, gameSession, goto } = useGameFlowStore(
-    useShallow(state => ({
-      isNewGame: state.isNewGame,
-      startDayFlow: state.startDayFlow,
-      next: state.next,
-      goto: state.goto,
-      gameSession: state.gameSession,
-    }))
-  );
+  const { isNewGame, startScenarioFlow, next, gameSession, goto } =
+    useGameFlowStore(
+      useShallow(state => ({
+        isNewGame: state.isNewGame,
+        startScenarioFlow: state.startScenarioFlow,
+        next: state.next,
+        goto: state.goto,
+        gameSession: state.gameSession,
+      }))
+    );
 
   const total = ASSETS_TO_PRELOAD.length;
   const loaded = Array.from(assetEntries.values()).filter(
@@ -72,15 +73,15 @@ export default function LoadingPage() {
       console.log('LoadingPage: 이어하기 - INTRO_STORY부터 재개');
       goto('INTRO_STORY');
     } else {
-      console.log('LoadingPage: 이어하기 - DAY_FLOW로 이동');
-      startDayFlow(); // TODO: 실제로 currentActId부터 이어하기 구현.
+      console.log('LoadingPage: 이어하기 - SCENARIO_FLOW로 이동');
+      startScenarioFlow(); // TODO: 실제로 currentActId부터 이어하기 구현.
     }
   }, [
     isNewGame,
     gameSession,
     next,
     goto,
-    startDayFlow,
+    startScenarioFlow,
     allLoaded,
     timerEnded,
     loaded,
