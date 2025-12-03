@@ -17,7 +17,8 @@ export type GameStep =
   | 'PACKING_PHASE' // 가방 싸기
   | 'INTRO_STORY_3' // 인트로 스토리 (세 번째)
   | 'ONBOARDING' // 온보딩 화면
-  | 'DAY_FLOW' // 시나리오 DAY 플로우
+  | 'DAY_FLOW' // 시나리오 DAY 플로우 (레거시, event-phase용)
+  | 'SCENARIO_FLOW' // 시나리오 플로우 (신규, scenario-play용)
   | 'EVENT_PHASE' // 이벤트 페이즈
   | 'RESULT_REPORT' // 결과 보고서
   | 'PLAYING'; // 게임 플레이
@@ -119,7 +120,7 @@ export interface GameFlowActions {
   next: () => void;
   back: () => void;
   reset: () => void;
-  // DAY_FLOW 관련 액션
+  // DAY_FLOW 관련 액션 (레거시)
   gotoDayStep: (dayStep: DayStep) => void;
   nextDayStep: () => void;
   backDayStep: () => void;
@@ -136,6 +137,7 @@ export interface GameFlowActions {
   saveInventory: (inventory: Inventory) => void;
   startNewGame: (newGameSession: GameSession) => void;
   startDayFlow: () => void;
+  startScenarioFlow: () => void; // 신규 시나리오 플로우 시작
   continueGame: () => void;
   resetGame: () => void;
 }
@@ -153,7 +155,8 @@ export const GAME_STEP_ORDER: readonly GameStep[] = [
   'ONBOARDING',
   'PACKING_PHASE',
   'INTRO_STORY_3',
-  'DAY_FLOW',
+  'DAY_FLOW', // 레거시 (event-phase용)
+  'SCENARIO_FLOW', // 신규 (scenario-play용)
   'EVENT_PHASE',
   'RESULT_REPORT',
   'PLAYING',

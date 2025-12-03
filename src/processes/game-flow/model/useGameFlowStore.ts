@@ -258,6 +258,12 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       store.resetDayFlow();
     },
 
+    // SCENARIO_FLOW 시작 (신규 scenario-play 피쳐용)
+    startScenarioFlow: () => {
+      const store = useGameFlowStore.getState();
+      store.goto('SCENARIO_FLOW');
+    },
+
     // 새 게임 시작
     startNewGame: (newGameSession: GameSession) => {
       const store = useGameFlowStore.getState();
