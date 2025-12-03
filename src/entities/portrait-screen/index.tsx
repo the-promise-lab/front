@@ -1,25 +1,36 @@
 import { useEffect, useState, type MouseEvent } from 'react';
-import PortraitBanner from './kit/PortraitBanner';
+import PortraitBanner from './PortraitBanner';
 import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
-import PortraitCharacterImage from './kit/PortraitCharacterImage';
+import PortraitCharacterImage from './PortraitCharacterImage';
 import type { PlayingCharacter } from '@entities/game-session';
 
 const PORTRAIT_START_DELAY = 1000;
 
-interface SinglePortraitScreenProps {
-  portraits?: Array<{
-    speaker: string;
-    text: string;
-  }>;
-  playingCharacters: PlayingCharacter[];
+export interface PortraitData {
+  speaker: string;
+  text: string;
 }
 
-export default function SinglePortraitScreen({
-  portraits = [],
+interface PortraitScreenProps {
+  /** 현재 표시할 대사 */
+  portrait: PortraitData;
+  /** 표시할 캐릭터 목록 (최대 2명) */
+  playingCharacters: PlayingCharacter[];
+  /** 대사 클릭 시 호출되는 콜백 */
+  onComplete?: () => void;
+}
+
+/**
+ * 범용 초상화 화면 컴포넌트
+ * - 캐릭터 이미지와 대사 배너를 표시
+ * - 발화자에 따라 캐릭터 하이라이트
+ */
+export default function PortraitScreen({
+  portrait,
   playingCharacters,
-}: SinglePortraitScreenProps) {
-  const [portraitIndex, setPortraitIndex] = useState(0);
+  onComplete,
+}: PortraitScreenProps) {
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
 
@@ -32,14 +43,9 @@ export default function SinglePortraitScreen({
     getObjectUrl(character?.profileImage || '')
   );
 
-  const handleNextPortrait = (e: MouseEvent<HTMLDivElement>) => {
-    const hasMorePortraits =
-      portraits.length > 1 && portraitIndex < portraits.length - 1;
-    if (!hasMorePortraits) {
-      return;
-    }
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setPortraitIndex(prev => Math.min(prev + 1, portraits.length - 1));
+    onComplete?.();
   };
 
   useEffect(() => {
@@ -49,12 +55,7 @@ export default function SinglePortraitScreen({
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    setPortraitIndex(0);
-  }, [portraits]);
-
-  const currentPortrait = portraits[portraitIndex];
-  const currentSpeaker = currentPortrait?.speaker?.trim();
+  const currentSpeaker = portrait.speaker?.trim();
   const isSpeaker = (characterName?: string | null) =>
     !!currentSpeaker && !!characterName && currentSpeaker === characterName;
 
@@ -72,14 +73,18 @@ export default function SinglePortraitScreen({
           position={positions[index]}
         />
       ))}
-      {portraitStarted && currentPortrait && (
+      {portraitStarted && portrait.text && (
         <PortraitBanner
-          onClick={handleNextPortrait}
-          key={`${portraitIndex}-${currentPortrait.speaker}-${currentPortrait.text}`}
-          portrait={currentPortrait.text}
-          characterName={currentPortrait.speaker}
+          onClick={handleClick}
+          key={`${portrait.speaker}-${portrait.text}`}
+          portrait={portrait.text}
+          characterName={portrait.speaker}
         />
       )}
     </div>
   );
 }
+
+// Re-export sub-components for advanced usage
+export { PortraitBanner, PortraitCharacterImage };
+export type { PortraitData as Portrait };
