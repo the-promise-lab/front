@@ -3,8 +3,10 @@ import type {
   SubmitGameSessionInventoryDto,
   GameSessionInventoryItemDto,
   SetupInfoDto,
+  StoreSectionDto,
 } from '@api';
-import type { Shelf, ShelfItem } from './types';
+import type { Shelf, ShelfItem, MinimapSection } from './types';
+import { MINIMAP_ICON_CONFIG } from './minimapIconConfig';
 
 /**
  * storeSection별 배경 이미지 매핑 (임시 하드코딩)
@@ -83,6 +85,7 @@ export function adaptShelvesFromSetupInfo(setupInfo: SetupInfoDto): Shelf[] {
 
     return {
       id: section.id,
+      code: section.code,
       name: section.displayName,
       backgroundImage:
         section.backgroundImage ||
@@ -90,6 +93,31 @@ export function adaptShelvesFromSetupInfo(setupInfo: SetupInfoDto): Shelf[] {
       shelfItems,
     };
   });
+}
+
+/**
+ * StoreSectionDto[]를 MinimapSection[]으로 변환
+ * 미니맵에 표시할 섹션 정보와 아이콘을 매핑
+ *
+ * @param sections - 백엔드 StoreSectionDto 배열
+ * @returns MinimapSection[] (아이콘이 매핑된 미니맵용 데이터)
+ */
+export function adaptStoreSectionsToMinimapSections(
+  sections: StoreSectionDto[]
+): MinimapSection[] {
+  return sections
+    .map(section => {
+      const config = MINIMAP_ICON_CONFIG[section.code];
+      if (!config) return null;
+
+      return {
+        code: section.code,
+        displayName: section.displayName,
+        icons: config.icons,
+        positionClassName: config.positionClassName,
+      };
+    })
+    .filter((section): section is MinimapSection => section !== null);
 }
 
 /**

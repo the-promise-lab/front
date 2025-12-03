@@ -1,8 +1,11 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useMemo, type ReactNode } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShelfData } from '../../model/useShelfData';
-import { adaptShelfItemsToInventoryPayload } from '../../model/adapters';
+import {
+  adaptShelfItemsToInventoryPayload,
+  adaptStoreSectionsToMinimapSections,
+} from '../../model/adapters';
 import { useSubmitInventory } from '@entities/game-session/model/useSubmitInventory';
 import Typography from '@shared/ui/Typography';
 import { toast } from 'sonner';
@@ -39,13 +42,14 @@ export default function ShelfSelection({
 
   const {
     getCurrentShelf,
+    getCurrentShelfCode,
     getNextShelf,
     getPreviousShelf,
     selectedShelfItems,
     initShelves,
     moveToNextShelf,
     moveToPreviousShelf,
-    moveToShelf,
+    moveToShelfByCode,
     selectNewShelfItem,
   } = useShelfSelectionStore();
   const currentWeight = selectedShelfItems.reduce(
@@ -105,8 +109,15 @@ export default function ShelfSelection({
   };
 
   const currentShelf = getCurrentShelf();
+  const currentShelfCode = getCurrentShelfCode();
   const nextShelf = getNextShelf();
   const previousShelf = getPreviousShelf();
+
+  // storeSections를 MinimapSection[]으로 변환
+  const minimapSections = useMemo(
+    () => adaptStoreSectionsToMinimapSections(storeSections),
+    [storeSections]
+  );
 
   if (error) {
     return (
@@ -179,9 +190,9 @@ export default function ShelfSelection({
           </div>
 
           <Minimap
-            storeSections={storeSections}
-            onSectionClick={moveToShelf}
-            currentShelfId={currentShelf?.id}
+            sections={minimapSections}
+            onSectionClick={moveToShelfByCode}
+            currentShelfCode={currentShelfCode}
           />
           <Inventory bag={bag} />
           <Timer
