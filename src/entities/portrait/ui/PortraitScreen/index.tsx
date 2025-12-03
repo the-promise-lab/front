@@ -4,6 +4,7 @@ import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import PortraitCharacterImage from './PortraitCharacterImage';
 import type { PortraitCharacter, PortraitData } from '../../model/types';
+import { AnimatePresence } from 'framer-motion';
 
 const PORTRAIT_START_DELAY_MS = 1000;
 
@@ -48,29 +49,30 @@ export default function PortraitScreen({
 
   return (
     <div className='relative h-full w-full'>
-      {renderCharacters.map((character, index) => {
-        const position = character.position ?? fallbackPositions[index];
-        return (
-          <PortraitCharacterImage
-            key={character?.id ?? index}
-            src={
-              characterImages[index] ||
-              (position === 'right' ? '/ham.png' : '/byungcheol.png')
-            }
-            alt={character?.name || `character-${index}`}
-            dimmed={!isSpeaker(character?.name)}
-            position={position}
+      <AnimatePresence>
+        {renderCharacters.map((character, index) => {
+          const position = character.position ?? fallbackPositions[index];
+          return (
+            <PortraitCharacterImage
+              key={character?.id ?? index}
+              src={
+                characterImages[index] ||
+                (position === 'right' ? '/ham.png' : '/byungcheol.png')
+              }
+              alt={character?.name || `character-${index}`}
+              dimmed={!isSpeaker(character?.name)}
+              position={position}
+            />
+          );
+        })}
+        {portraitStarted && portrait.text && (
+          <PortraitBanner
+            onClick={handleClick}
+            portrait={portrait.text}
+            characterName={portrait.speaker}
           />
-        );
-      })}
-      {portraitStarted && portrait.text && (
-        <PortraitBanner
-          onClick={handleClick}
-          key={`${portrait.speaker}-${portrait.text}`}
-          portrait={portrait.text}
-          characterName={portrait.speaker}
-        />
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }
