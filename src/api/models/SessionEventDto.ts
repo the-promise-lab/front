@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { resolveSessionChoiceDto } from './resolveSessionChoiceDto';
+import type { SessionChoiceDto } from './SessionChoiceDto';
 import type { SessionEventCharacterDto } from './SessionEventCharacterDto';
 import type { SessionEventEffectDto } from './SessionEventEffectDto';
 import type { SessionEventItemChangeDto } from './SessionEventItemChangeDto';
@@ -52,7 +52,7 @@ export type SessionEventDto = {
   /**
    * 선택지 정보
    */
-  choice?: resolveSessionChoiceDto;
+  choice?: SessionChoiceDto;
   /**
    * 캐릭터 스탯 변화
    */

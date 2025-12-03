@@ -1,7 +1,7 @@
 import {
   type NextActRequestDto,
   type NextActUpdatesDto,
-  type resolveSessionChoiceDto,
+  type SessionChoiceDto,
   NextActResponseDto,
   SessionEventDto,
 } from '@api';
@@ -55,7 +55,7 @@ export function adaptScenarioEvent(dto: SessionEventDto): ScenarioEvent {
     se: dto.se,
     seVolume: dto.seVolume,
     seLoop: dto.seLoop,
-    choice: dto.choice ? (adaptChoice(dto.choice) ?? undefined) : undefined,
+    choice: dto.choice ? adaptChoice(dto.choice) : undefined,
     effects: dto.effects,
     itemChanges: dto.itemChanges,
     sessionEffects: dto.sessionEffects,
@@ -77,51 +77,11 @@ function adaptEventType(type: SessionEventDto.type): ScenarioEventType {
 }
 
 /**
- * choice DTO를 ScenarioChoice 도메인 타입으로 변환
- * @api 레이어 DTO는 건드리지 않고 as unknown을 통해 소극적으로 변환
+ * SessionChoiceDto를 ScenarioChoice 도메인 타입으로 변환
  */
-function adaptChoice(dto: resolveSessionChoiceDto): ScenarioChoice | null {
-  // DTO가 빈 객체인 경우 (codegen 문제로 빈 타입일 때)
-  if (!dto || Object.keys(dto).length === 0) {
-    return null;
-  }
-
-  // as unknown을 통해 실제 서버 응답 구조로 접근
-  const raw = dto as unknown as {
-    title?: string;
-    description?: string;
-    thumbnail?: string | null;
-    type?: 'StoryChoice' | 'ItemChoice';
-    options?: Array<{
-      choiceOptionId: number;
-      text: string;
-      itemCategoryId?: number | null;
-      itemId?: number | null;
-      itemName?: string | null;
-      itemImage?: string | null;
-      quantity?: number | null;
-      isSelectable?: boolean;
-    }>;
-    fallback?: {
-      choiceOptionId: number;
-      text: string;
-    } | null;
-    outcomes?: Record<
-      string,
-      {
-        resultType: string;
-        events: SessionEventDto[];
-      }
-    > | null;
-  };
-
-  // 필수 필드가 없으면 null 반환
-  if (!raw.title || !raw.type || !raw.options) {
-    return null;
-  }
-
+function adaptChoice(dto: SessionChoiceDto): ScenarioChoice {
   // options 변환
-  const options: ScenarioChoiceOption[] = raw.options.map(opt => ({
+  const options: ScenarioChoiceOption[] = dto.options.map(opt => ({
     choiceOptionId: opt.choiceOptionId,
     text: opt.text,
     itemCategoryId: opt.itemCategoryId,
@@ -133,17 +93,17 @@ function adaptChoice(dto: resolveSessionChoiceDto): ScenarioChoice | null {
   }));
 
   // fallback 변환
-  const fallback: ScenarioChoiceFallback | null = raw.fallback
+  const fallback: ScenarioChoiceFallback | null = dto.fallback
     ? {
-        choiceOptionId: raw.fallback.choiceOptionId,
-        text: raw.fallback.text,
+        choiceOptionId: dto.fallback.choiceOptionId,
+        text: dto.fallback.text,
       }
     : null;
 
   // outcomes 변환 (events 내부도 adaptScenarioEvent로 변환)
-  const outcomes: Record<string, ScenarioChoiceOutcome> | null = raw.outcomes
+  const outcomes: Record<string, ScenarioChoiceOutcome> | null = dto.outcomes
     ? Object.fromEntries(
-        Object.entries(raw.outcomes).map(([key, value]) => [
+        Object.entries(dto.outcomes).map(([key, value]) => [
           key,
           {
             resultType: value.resultType,
@@ -154,10 +114,10 @@ function adaptChoice(dto: resolveSessionChoiceDto): ScenarioChoice | null {
     : null;
 
   return {
-    title: raw.title,
-    description: raw.description ?? '',
-    thumbnail: raw.thumbnail ?? null,
-    type: raw.type,
+    title: dto.title,
+    description: dto.description ?? '',
+    thumbnail: dto.thumbnail ?? null,
+    type: dto.type,
     options,
     fallback,
     outcomes,

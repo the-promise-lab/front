@@ -9,10 +9,10 @@ import type { Shelf, ShelfItem, MinimapSection } from './types';
 import { MINIMAP_ICON_CONFIG } from './minimapIconConfig';
 
 /**
- * storeSection별 배경 이미지 매핑 (임시 하드코딩)
- * TODO: 백엔드에서 storeSection에 backgroundImage 포함 시 제거
+ * storeSection별 배경 이미지 Fallback 매핑
+ * 백엔드에서 backgroundImage가 null인 경우 사용
  */
-const STORE_SECTION_BACKGROUND_MAP: Record<string, string> = {
+const STORE_SECTION_BACKGROUND_FALLBACK: Record<string, string> = {
   groupgrocery: '/shelf-food.png',
   groupfood: '/shelf-food.png',
   grouphousehold: '/shelf-household.png',
@@ -21,16 +21,16 @@ const STORE_SECTION_BACKGROUND_MAP: Record<string, string> = {
 };
 
 /**
- * storeSection 이름을 기반으로 배경 이미지 반환
+ * storeSection 이름을 기반으로 fallback 배경 이미지 반환
  *
  * @param storeSectionName - storeSection 이름
  * @returns 배경 이미지 경로
  */
-function getBackgroundImageForSection(storeSectionName: string): string {
+function getFallbackBackgroundImage(storeSectionName: string): string {
   const normalized = storeSectionName.toLowerCase();
   return (
-    STORE_SECTION_BACKGROUND_MAP[normalized] ||
-    STORE_SECTION_BACKGROUND_MAP.default
+    STORE_SECTION_BACKGROUND_FALLBACK[normalized] ||
+    STORE_SECTION_BACKGROUND_FALLBACK.default
   );
 }
 
@@ -89,7 +89,7 @@ export function adaptShelvesFromSetupInfo(setupInfo: SetupInfoDto): Shelf[] {
       name: section.displayName,
       backgroundImage:
         section.backgroundImage ||
-        getBackgroundImageForSection(section.displayName),
+        getFallbackBackgroundImage(section.displayName),
       shelfItems,
     };
   });

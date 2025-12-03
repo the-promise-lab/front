@@ -57,7 +57,7 @@ export const $SessionEventDto = {
       description: `선택지 정보`,
       contains: [
         {
-          type: 'resolveSessionChoiceDto',
+          type: 'SessionChoiceDto',
         },
       ],
     },
