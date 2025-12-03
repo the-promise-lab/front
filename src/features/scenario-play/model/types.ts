@@ -152,6 +152,7 @@ export interface ScenarioState {
     optionId: number;
     itemId?: number;
   } | null;
+  pendingOutcomeResultType: string | null; // 선택된 outcome의 resultType 저장
   isLoading: boolean;
   error: Error | null;
 }
@@ -161,6 +162,7 @@ export interface ScenarioActions {
   nextEvent: () => boolean;
   prevEvent: () => boolean;
   selectChoice: (optionId: number, itemId?: number) => void;
+  appendOutcomeEvents: (events: ScenarioEvent[], resultType: string) => void;
   clearChoice: () => void;
   setLoading: (isLoading: boolean) => void;
   setError: (error: Error | null) => void;

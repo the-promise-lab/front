@@ -10,6 +10,7 @@ const INITIAL_STATE: ScenarioState = {
   currentActBundle: null,
   currentEventIndex: 0,
   pendingChoice: null,
+  pendingOutcomeResultType: null,
   isLoading: false,
   error: null,
 };
@@ -23,6 +24,7 @@ export const useScenarioStore = create<ScenarioState & ScenarioActions>()(
         currentActBundle: bundle,
         currentEventIndex: 0,
         pendingChoice: null,
+        pendingOutcomeResultType: null,
         isLoading: false,
         error: null,
       });
@@ -61,8 +63,25 @@ export const useScenarioStore = create<ScenarioState & ScenarioActions>()(
       });
     },
 
+    appendOutcomeEvents: (events: ScenarioEvent[], resultType: string) => {
+      set(state => {
+        if (!state.currentActBundle) return state;
+
+        // 현재 events에 outcome events를 추가
+        const updatedBundle = {
+          ...state.currentActBundle,
+          events: [...state.currentActBundle.events, ...events],
+        };
+
+        return {
+          currentActBundle: updatedBundle,
+          pendingOutcomeResultType: resultType,
+        };
+      });
+    },
+
     clearChoice: () => {
-      set({ pendingChoice: null });
+      set({ pendingChoice: null, pendingOutcomeResultType: null });
     },
 
     setLoading: (isLoading: boolean) => {
@@ -106,4 +125,8 @@ export const selectCurrentAct = (state: ScenarioState) => {
 
 export const selectStatus = (state: ScenarioState) => {
   return state.currentActBundle?.status ?? null;
+};
+
+export const selectPendingOutcomeResultType = (state: ScenarioState) => {
+  return state.pendingOutcomeResultType;
 };

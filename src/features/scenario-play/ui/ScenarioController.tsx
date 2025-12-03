@@ -3,6 +3,7 @@ import {
   useScenarioStore,
   selectCurrentEvent,
   selectStatus,
+  selectPendingOutcomeResultType,
 } from '../model/useScenarioStore';
 import {
   useLoadCurrentAct,
@@ -15,6 +16,7 @@ import StoryChoiceScreen from './StoryChoiceScreen';
 import ItemChoiceScreen from './ItemChoiceScreen';
 import StatusScreen from './StatusScreen';
 import SystemScreen from './SystemScreen';
+import DayScreen from './DayScreen';
 
 interface ScenarioControllerProps {
   playingCharacters?: PlayingCharacter[];
@@ -37,6 +39,7 @@ export function ScenarioController({
     loadActBundle,
     nextEvent,
     selectChoice,
+    appendOutcomeEvents,
     clearChoice,
     setLoading,
     setError,
@@ -44,6 +47,10 @@ export function ScenarioController({
 
   const currentEvent = useScenarioStore(selectCurrentEvent);
   const status = useScenarioStore(selectStatus);
+  const pendingOutcomeResultType = useScenarioStore(
+    selectPendingOutcomeResultType
+  );
+  const pendingChoice = useScenarioStore(state => state.pendingChoice);
 
   const { mutate: loadCurrentAct } = useLoadCurrentAct({
     onSuccess: bundle => {
@@ -101,36 +108,92 @@ export function ScenarioController({
 
     if (!hasMore) {
       // 마지막 이벤트 완료
-      if (status === 'DAY_END') {
-        // 다음 Day 시작
-        setLoading(true);
-        loadCurrentAct();
+      if (pendingOutcomeResultType) {
+        // outcome 이벤트들 완료 - resultType에 따라 처리
+        switch (pendingOutcomeResultType) {
+          case 'ACT_END':
+            // 다음 Act 요청
+            if (currentActBundle?.act) {
+              const params: SubmitChoiceParams = {
+                lastActId: currentActBundle.act.id,
+                choice: {
+                  optionId: pendingChoice?.optionId ?? 0,
+                  itemId: pendingChoice?.itemId,
+                },
+              };
+              setLoading(true);
+              submitChoice(params);
+            }
+            break;
+          case 'GAME_OVER':
+            onGameOver?.();
+            break;
+          case 'DAY_END':
+            // DayScreen 표시는 아래에서 처리
+            break;
+          default:
+            // 기본적으로 다음 Act 요청
+            if (currentActBundle?.act) {
+              const params: SubmitChoiceParams = {
+                lastActId: currentActBundle.act.id,
+                choice: {
+                  optionId: pendingChoice?.optionId ?? 0,
+                  itemId: pendingChoice?.itemId,
+                },
+              };
+              setLoading(true);
+              submitChoice(params);
+            }
+        }
+      } else if (status === 'DAY_END') {
+        // DayScreen 표시는 아래에서 처리
       }
-      // IN_PROGRESS 상태에서 마지막 이벤트가 Choice 타입이 아닌 경우는
-      // 서버에서 항상 Choice 이벤트로 끝나도록 설계되어야 함
     }
-  }, [nextEvent, status, setLoading, loadCurrentAct]);
+  }, [
+    nextEvent,
+    pendingOutcomeResultType,
+    status,
+    currentActBundle,
+    pendingChoice,
+    setLoading,
+    submitChoice,
+    onGameOver,
+  ]);
 
   // 선택지 선택 핸들러 (StoryChoice, ItemChoice 타입용)
   const handleChoiceSelect = useCallback(
     (option: ScenarioChoiceOption, itemId?: number) => {
       selectChoice(option.choiceOptionId, itemId);
 
-      // 선택 후 바로 다음 Act 요청
-      if (currentActBundle?.act) {
-        const params: SubmitChoiceParams = {
-          lastActId: currentActBundle.act.id,
-          choice: {
-            optionId: option.choiceOptionId,
-            itemId,
-          },
-        };
-        setLoading(true);
-        submitChoice(params);
+      // 선택된 옵션의 outcome 찾기
+      const outcomeKey = option.choiceOptionId.toString();
+      const outcome = currentEvent?.choice?.outcomes?.[outcomeKey];
+
+      if (outcome) {
+        // outcome의 events를 현재 events에 추가하고 다음 이벤트로 이동
+        appendOutcomeEvents(outcome.events, outcome.resultType);
+        nextEvent();
       }
     },
-    [selectChoice, currentActBundle, setLoading, submitChoice]
+    [selectChoice, currentEvent, appendOutcomeEvents, nextEvent]
   );
+
+  // DAY_END 상태이고 events가 비어있으면 DayScreen 표시
+  if (
+    status === 'DAY_END' &&
+    (!currentActBundle?.events || currentActBundle.events.length === 0)
+  ) {
+    const day = currentActBundle?.day;
+    return (
+      <DayScreen
+        dayNumber={day?.number ?? 0}
+        onComplete={() => {
+          setLoading(true);
+          loadCurrentAct();
+        }}
+      />
+    );
+  }
 
   // 첫 로드 시 (아직 데이터가 없을 때)만 null 반환
   // 로딩 중이어도 currentEvent가 있으면 현재 화면 유지
