@@ -9,9 +9,9 @@
 
 // Model exports
 export * from './model/types';
-// export * from './model/adapters';
-// export * from './model/useScenarioApi';
-// export * from './model/useScenarioStore';
+export * from './model/adapters';
+export * from './model/useScenarioApi';
+export * from './model/useScenarioStore';
 
 // UI exports
 // export { ScenarioController } from './ui/ScenarioController';
