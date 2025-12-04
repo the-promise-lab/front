@@ -4,6 +4,8 @@ import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cloneElement, useCallback, useMemo, useState } from 'react';
 import type { MinimapSection } from '../../model/types';
+import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
+import { useShallow } from 'zustand/react/shallow';
 
 const minimapThumbnail = '/image/minimap/minimap_thumbnail.png';
 const minimap1024 = '/image/minimap/minimap@1024.png';
@@ -22,6 +24,11 @@ export default function Minimap({
   currentShelfCode,
 }: MinimapProps) {
   const [opened, setOpened] = useState(false);
+  const { isShelfVisited } = useShelfSelectionStore(
+    useShallow(state => ({
+      isShelfVisited: state.isShelfVisited,
+    }))
+  );
 
   const close = useCallback(() => {
     setOpened(false);
@@ -83,9 +90,9 @@ export default function Minimap({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
-              className='fixed inset-0 z-100 flex items-center justify-center bg-black/30'
+              className='fixed inset-0 z-200 flex items-center justify-center bg-black/30'
             >
-              <div className='relative z-101 h-dvh w-dvw'>
+              <div className='relative z-201 h-dvh w-dvw'>
                 <img
                   src={minimap1920}
                   srcSet={minimapSrcSet}
@@ -99,11 +106,17 @@ export default function Minimap({
                 />
                 {sections.map(section => {
                   const isCurrentShelf = section.code === currentShelfCode;
-                  const activeIcon = isCurrentShelf
-                    ? section.icons.focus
-                    : section.icons.default;
-                  const iconWithClass = cloneElement(activeIcon, {
-                    className: cn('h-full w-full', activeIcon.props.className),
+
+                  const isVisited = isShelfVisited(section.shelfId);
+                  let Icon = section.icons.default;
+                  if (isVisited) {
+                    Icon = section.icons.inactive;
+                  }
+                  if (isCurrentShelf) {
+                    Icon = section.icons.focus;
+                  }
+                  const IconWithClass = cloneElement(Icon, {
+                    className: cn('h-full w-full', Icon.props.className),
                   });
 
                   return (
@@ -117,7 +130,7 @@ export default function Minimap({
                       aria-label={section.displayName}
                       onClick={() => handleSectionClick(section.code)}
                     >
-                      {iconWithClass}
+                      {IconWithClass}
                     </button>
                   );
                 })}

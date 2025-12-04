@@ -111,6 +111,7 @@ export function adaptStoreSectionsToMinimapSections(
       if (!config) return null;
 
       return {
+        shelfId: section.id,
         code: section.code,
         displayName: section.displayName,
         icons: config.icons,
