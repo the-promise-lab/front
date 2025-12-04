@@ -74,7 +74,7 @@ function CharacterEffectRow({
       <div className='flex items-center gap-14'>
         {hpEffect && (
           <StatBlock
-            icon={<IconLightning className='h-7.25 w-7.25' />}
+            icon={<IconLightning className='size-7' />}
             label='체력'
             value={hpEffect.change ?? 0}
             positiveClass='text-[#4cf69c]'
@@ -83,7 +83,7 @@ function CharacterEffectRow({
         )}
         {mentalEffect && (
           <StatBlock
-            icon={<IconHeart className='h-7.25 w-7.25' />}
+            icon={<IconHeart className='size-7' />}
             label='정신력'
             value={mentalEffect.change ?? 0}
             positiveClass='text-[#4cf69c]'

@@ -301,18 +301,18 @@ export function IconCaution({ size = 42, className }: IconProps) {
   );
 }
 
-export function IconLightning({ size = 21, className }: IconProps) {
+export function IconLightning({ size = 28, className }: IconProps) {
   return (
     <svg
       width={size}
-      height={(size * 27) / 21}
-      viewBox='0 0 21 27'
+      height={size}
+      viewBox='0 0 28 28'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       className={className}
     >
       <path
-        d='M1 13.9032L9.26446 1H19.1818L12.9835 9.87097H19.1818L1 26L6.78512 13.9032H1Z'
+        d='M5 14.9032L13.2645 2H23.1818L16.9835 10.871H23.1818L5 27L10.7851 14.9032H5Z'
         fill='#FFF603'
         stroke='#FFF603'
         strokeLinejoin='round'
@@ -321,18 +321,18 @@ export function IconLightning({ size = 21, className }: IconProps) {
   );
 }
 
-export function IconHeart({ size = 20, className }: IconProps) {
+export function IconHeart({ size = 28, className }: IconProps) {
   return (
     <svg
-      xmlns='http://www.w3.org/2000/svg'
       width={size}
       height={size}
-      viewBox='0 0 30 29'
+      viewBox='0 0 28 28'
       fill='none'
+      xmlns='http://www.w3.org/2000/svg'
       className={className}
     >
       <path
-        d='M4.9953 15.9564L12.3885 23.748C13.8081 25.2441 16.1919 25.2441 17.6115 23.748L25.0047 15.9564C27.6651 13.1526 27.6651 8.60678 25.0047 5.80302C22.3443 2.99925 18.0309 2.99925 15.3705 5.80302C15.1691 6.0153 14.8309 6.0153 14.6295 5.80302C11.9691 2.99925 7.6557 2.99925 4.9953 5.80302C2.3349 8.60679 2.3349 13.1526 4.9953 15.9564Z'
+        d='M3.9953 16.2562L11.3885 24.0478C12.8081 25.5439 15.1919 25.5439 16.6115 24.0478L24.0047 16.2562C26.6651 13.4524 26.6651 8.90659 24.0047 6.10282C21.3443 3.29906 17.0309 3.29906 14.3705 6.10283C14.1691 6.3151 13.8309 6.3151 13.6295 6.10283C10.9691 3.29906 6.6557 3.29906 3.9953 6.10282C1.3349 8.90659 1.3349 13.4524 3.9953 16.2562Z'
         fill='#FF4E59'
         stroke='#FF4E59'
         strokeWidth='1.8'
