@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import PortraitScreen from '@entities/portrait-screen';
+import { PortraitScreen, type PortraitCharacter } from '@entities/portrait';
 import type { IntroEvent } from '../pages/IntroStory/types';
-import type { PlayingCharacter } from '@entities/game-session';
 import { useGameFlowStore } from '@processes/game-flow';
 import { CHARACTER_PAIR_DETAILS } from '@entities/character-data';
 
@@ -41,14 +40,14 @@ const CHARACTER_IMAGE_MAP: Record<string, string> = CHARACTER_ASSETS.reduce(
 const DEFAULT_LEFT = 'Char_hem';
 const DEFAULT_RIGHT = 'Char_bang';
 
-const makeCharacterFromId = (
+function makePortraitCharacter(
   id: string | undefined,
   fallbackPosition: 'left' | 'right'
-): PlayingCharacter | null => {
+): PortraitCharacter {
   const fallbackKey =
     fallbackPosition === 'left' ? DEFAULT_LEFT : DEFAULT_RIGHT;
   const resolvedId = id ?? fallbackKey;
-  const normalizedName =
+  const name =
     CHARACTER_NAME_MAP[resolvedId] ??
     CHARACTER_NAME_MAP[fallbackKey] ??
     resolvedId;
@@ -59,24 +58,10 @@ const makeCharacterFromId = (
 
   return {
     id: fallbackPosition === 'left' ? 1 : 2,
-    characterId: fallbackPosition === 'left' ? 1 : 2,
-    name: normalizedName,
-    fullImage: image ?? null,
+    name,
     profileImage: image ?? null,
-    currentHp: null,
-    currentMental: null,
-    colors:
-      fallbackPosition === 'left'
-        ? {
-            backgroundColor: '#5C35A299',
-            borderColor: '#CE96F1',
-          }
-        : {
-            backgroundColor: '#5B707E99',
-            borderColor: '#9FEFD2',
-          },
   };
-};
+}
 
 interface IntroSimpleScreenProps {
   event: IntroEvent;
@@ -92,46 +77,41 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
 
   const hasExplicitCharacters = Boolean(event.CharID1 || event.CharID2);
 
-  const jsonCharacters = useMemo<PlayingCharacter[]>(() => {
-    if (!hasExplicitCharacters) {
-      return [];
-    }
-    const left = makeCharacterFromId(event.CharID1 ?? DEFAULT_LEFT, 'left');
-    const right = makeCharacterFromId(event.CharID2 ?? DEFAULT_RIGHT, 'right');
-    return [left, right].filter((character): character is PlayingCharacter =>
-      Boolean(character)
+  const jsonCharacters = useMemo<PortraitCharacter[]>(() => {
+    if (!hasExplicitCharacters) return [];
+    const left = makePortraitCharacter(event.CharID1 ?? DEFAULT_LEFT, 'left');
+    const right = makePortraitCharacter(
+      event.CharID2 ?? DEFAULT_RIGHT,
+      'right'
     );
+    return [left, right];
   }, [event.CharID1, event.CharID2, hasExplicitCharacters]);
 
-  const charactersToUse: PlayingCharacter[] = (() => {
-    if (jsonCharacters.length === 2) {
-      return jsonCharacters;
-    }
+  const portraitCharacters: PortraitCharacter[] = (() => {
+    if (jsonCharacters.length === 2) return jsonCharacters;
     if (playingCharacters.length >= 2) {
-      return playingCharacters;
+      return playingCharacters.slice(0, 2).map(c => ({
+        id: c.id,
+        name: c.name,
+        profileImage: c.profileImage,
+      }));
     }
-    const defaultLeft = makeCharacterFromId(DEFAULT_LEFT, 'left');
-    const defaultRight = makeCharacterFromId(DEFAULT_RIGHT, 'right');
-    return [defaultLeft, defaultRight].filter(
-      (character): character is PlayingCharacter => Boolean(character)
-    );
+    const defaultLeft = makePortraitCharacter(DEFAULT_LEFT, 'left');
+    const defaultRight = makePortraitCharacter(DEFAULT_RIGHT, 'right');
+    return [defaultLeft, defaultRight];
   })();
 
   const speakerName = useMemo(() => {
-    // boolean 또는 number를 boolean으로 변환
     const isSpeaker1 = Boolean(event.CharSpeakerOX1);
     const isSpeaker2 = Boolean(event.CharSpeakerOX2);
     const isSpeaker3 = Boolean(event.CharSpeakerOX3);
 
-    if (isSpeaker1) {
+    if (isSpeaker1)
       return CHARACTER_NAME_MAP[event.CharID1 ?? ''] ?? event.CharID1 ?? '';
-    }
-    if (isSpeaker2) {
+    if (isSpeaker2)
       return CHARACTER_NAME_MAP[event.CharID2 ?? ''] ?? event.CharID2 ?? '';
-    }
-    if (isSpeaker3) {
+    if (isSpeaker3)
       return CHARACTER_NAME_MAP[event.CharID3 ?? ''] ?? event.CharID3 ?? '';
-    }
     return CHARACTER_NAME_MAP[event.CharID1 ?? ''] ?? event.CharID1 ?? '';
   }, [
     event.CharSpeakerOX1,
@@ -150,7 +130,7 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
         speaker: speakerName,
         text: script,
       }}
-      playingCharacters={charactersToUse}
+      portraitCharacters={portraitCharacters}
     />
   );
 }

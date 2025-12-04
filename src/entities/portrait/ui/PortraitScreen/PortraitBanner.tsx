@@ -19,12 +19,10 @@ export default function PortraitBanner({
   const typingTextRef = useRef<TypingTextRef>(null);
 
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
-    // 애니메이션 진행 중이면 skipToEnd 호출
     if (typingTextRef.current?.isTyping) {
       typingTextRef.current.skipToEnd();
       return;
     }
-    // 애니메이션 완료 상태면 기존 onClick 실행
     onClick?.(e);
   };
 

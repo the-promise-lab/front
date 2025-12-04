@@ -78,6 +78,21 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
 
     const isTyping = count < units.length;
 
+    // texts가 변경되면 count를 리셋하여 타이핑 애니메이션 재시작
+    const prevTextsRef = useRef<string[]>(texts);
+    useEffect(() => {
+      const prevTexts = prevTextsRef.current;
+      const textsChanged =
+        prevTexts.length !== texts.length ||
+        prevTexts.some((t, i) => t !== texts[i]);
+
+      if (textsChanged) {
+        setCount(0);
+        started.current = false;
+        prevTextsRef.current = texts;
+      }
+    }, [texts]);
+
     // 외부에서 ref를 통해 skipToEnd 및 isTyping 접근 가능
     useImperativeHandle(
       ref,

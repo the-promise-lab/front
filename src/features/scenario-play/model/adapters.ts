@@ -5,6 +5,7 @@ import {
   NextActResponseDto,
   SessionEventDto,
 } from '@api';
+import { getCharacterDetailByCode } from '@entities/character-data';
 
 import type {
   ScenarioActBundle,
@@ -47,7 +48,10 @@ export function adaptScenarioEvent(dto: SessionEventDto): ScenarioEvent {
     eventId: dto.eventId,
     type: adaptEventType(dto.type),
     script: dto.script,
-    characters: dto.characters,
+    characters: dto.characters.map(c => ({
+      ...c,
+      characterDetail: getCharacterDetailByCode(c.characterCode),
+    })),
     bgImage: dto.bgImage,
     sceneEffect: dto.sceneEffect,
     bgm: dto.bgm,
