@@ -2,157 +2,24 @@ import { IconCloseButton } from '@shared/ui/icon-button';
 import { BackgroundPortal } from '@shared/background-portal';
 import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  cloneElement,
-  useCallback,
-  useMemo,
-  useState,
-  type ReactElement,
-} from 'react';
-import type { StoreSectionDto } from '@api';
-import {
-  IconMinimapClothesActive,
-  IconMinimapClothesDefault,
-  IconMinimapClothesFocus,
-  IconMinimapClothesInactive,
-  IconMinimapDailyActive,
-  IconMinimapDailyDefault,
-  IconMinimapDailyFocus,
-  IconMinimapDailyInactive,
-  IconMinimapDigitalActive,
-  IconMinimapDigitalDefault,
-  IconMinimapDigitalFocus,
-  IconMinimapDigitalInactive,
-  IconMinimapDrinkDefault,
-  IconMinimapDrinkActive,
-  IconMinimapDrinkFocus,
-  IconMinimapDrinkInactive,
-  IconMinimapFoodActive,
-  IconMinimapFoodDefault,
-  IconMinimapFoodFocus,
-  IconMinimapFoodInactive,
-  IconMinimapNoteActive,
-  IconMinimapNoteDefault,
-  IconMinimapNoteFocus,
-  IconMinimapNoteInactive,
-  IconMinimapPharmacyActive,
-  IconMinimapPharmacyDefault,
-  IconMinimapPharmacyFocus,
-  IconMinimapPharmacyInactive,
-  IconMinimapSaleActive,
-  IconMinimapSaleDefault,
-  IconMinimapSaleFocus,
-  IconMinimapSaleInactive,
-} from './kit/icons';
+import { cloneElement, useCallback, useMemo, useState } from 'react';
+import type { MinimapSection } from '../../model/types';
 
 const minimapThumbnail = '/image/minimap/minimap_thumbnail.png';
 const minimap1024 = '/image/minimap/minimap@1024.png';
 const minimap1920 = '/image/minimap/minimap@1920.png';
 const minimapSrcSet = `${minimap1024} 1024w, ${minimap1920} 1920w`;
 
-type MinimapIconButtonStatus = 'default' | 'active' | 'focus' | 'inactive';
-
-type MinimapIconElement = ReactElement<{ className?: string }>;
-
-interface MinimapIconButtonConfig {
-  icons: Record<MinimapIconButtonStatus, MinimapIconElement>;
-  positionClassName: string;
-  status: MinimapIconButtonStatus;
-}
-
-const minimapIconButtonsById: Record<number, MinimapIconButtonConfig> = {
-  1: {
-    icons: {
-      default: <IconMinimapFoodDefault />,
-      active: <IconMinimapFoodActive />,
-      focus: <IconMinimapFoodFocus />,
-      inactive: <IconMinimapFoodInactive />,
-    },
-    positionClassName: 'top-[38%] left-[34%]',
-    status: 'default',
-  },
-  2: {
-    icons: {
-      default: <IconMinimapDigitalDefault />,
-      active: <IconMinimapDigitalActive />,
-      focus: <IconMinimapDigitalFocus />,
-      inactive: <IconMinimapDigitalInactive />,
-    },
-    positionClassName: 'top-[67%] left-[48%]',
-    status: 'default',
-  },
-  3: {
-    icons: {
-      default: <IconMinimapPharmacyDefault />,
-      active: <IconMinimapPharmacyActive />,
-      focus: <IconMinimapPharmacyFocus />,
-      inactive: <IconMinimapPharmacyInactive />,
-    },
-    positionClassName: 'top-[38%] left-[21%]',
-    status: 'default',
-  },
-  4: {
-    icons: {
-      default: <IconMinimapDailyDefault />,
-      active: <IconMinimapDailyActive />,
-      focus: <IconMinimapDailyFocus />,
-      inactive: <IconMinimapDailyInactive />,
-    },
-    positionClassName: 'top-[38%] left-[49%]',
-    status: 'default',
-  },
-  5: {
-    icons: {
-      default: <IconMinimapClothesDefault />,
-      active: <IconMinimapClothesActive />,
-      focus: <IconMinimapClothesFocus />,
-      inactive: <IconMinimapClothesInactive />,
-    },
-    positionClassName: 'top-[90%] left-[45%]',
-    status: 'default',
-  },
-  6: {
-    icons: {
-      default: <IconMinimapNoteDefault />,
-      active: <IconMinimapNoteActive />,
-      focus: <IconMinimapNoteFocus />,
-      inactive: <IconMinimapNoteInactive />,
-    },
-    positionClassName: 'top-[67%] left-[38%]',
-    status: 'default',
-  },
-  7: {
-    icons: {
-      default: <IconMinimapSaleDefault />,
-      active: <IconMinimapSaleActive />,
-      focus: <IconMinimapSaleFocus />,
-      inactive: <IconMinimapSaleInactive />,
-    },
-    positionClassName: 'top-[38%] left-[64%]',
-    status: 'default',
-  },
-  9: {
-    icons: {
-      default: <IconMinimapDrinkDefault />,
-      active: <IconMinimapDrinkActive />,
-      focus: <IconMinimapDrinkFocus />,
-      inactive: <IconMinimapDrinkInactive />,
-    },
-    positionClassName: 'top-[38%] left-[42%]',
-    status: 'default',
-  },
-};
-
 interface MinimapProps {
-  storeSections: StoreSectionDto[];
-  onSectionClick: (storeSectionId: number) => void;
-  currentShelfId: number | null;
+  sections: MinimapSection[];
+  onSectionClick: (sectionCode: string) => void;
+  currentShelfCode: string | null;
 }
 
 export default function Minimap({
-  storeSections,
+  sections,
   onSectionClick,
-  currentShelfId,
+  currentShelfCode,
 }: MinimapProps) {
   const [opened, setOpened] = useState(false);
 
@@ -165,27 +32,28 @@ export default function Minimap({
   }, []);
 
   const handleSectionClick = useCallback(
-    (storeSectionId: number) => {
-      onSectionClick(storeSectionId);
+    (sectionCode: string) => {
+      onSectionClick(sectionCode);
       close();
     },
     [onSectionClick, close]
   );
 
-  const currentStoreSectionIcon = useMemo(() => {
-    const icon = cloneElement(
-      minimapIconButtonsById[currentShelfId || 0].icons['focus'],
-      {
-        className: cn(
-          'h-45 w-auto absolute bottom-[48%] left-1/2 -translate-x-1/2 translate-y-1/2',
-          minimapIconButtonsById[currentShelfId || 0].icons['focus'].props
-            .className
-        ),
-      }
-    );
+  const currentSection = useMemo(
+    () => sections.find(s => s.code === currentShelfCode),
+    [sections, currentShelfCode]
+  );
 
-    return icon;
-  }, [currentShelfId]);
+  const currentStoreSectionIcon = useMemo(() => {
+    if (!currentSection) return null;
+
+    return cloneElement(currentSection.icons.focus, {
+      className: cn(
+        'h-45 w-auto absolute bottom-[48%] left-1/2 -translate-x-1/2 translate-y-1/2',
+        currentSection.icons.focus.props.className
+      ),
+    });
+  }, [currentSection]);
 
   return (
     <>
@@ -217,10 +85,7 @@ export default function Minimap({
               transition={{ duration: 0.2, ease: 'easeInOut' }}
               className='fixed inset-0 z-100 flex items-center justify-center bg-black/30'
             >
-              <div
-                className='relative z-[101] h-[100dvh] w-[100dvw]'
-                style={{}}
-              >
+              <div className='relative z-101 h-dvh w-dvw'>
                 <img
                   src={minimap1920}
                   srcSet={minimapSrcSet}
@@ -232,27 +97,25 @@ export default function Minimap({
                   onClick={close}
                   className='absolute top-11 right-11'
                 />
-                {storeSections.map(section => {
-                  const config = minimapIconButtonsById[section.id];
-                  if (!config) return null;
-
-                  const isCurrentShelf = section.id === currentShelfId;
-                  const status = isCurrentShelf ? 'focus' : config.status;
-                  const activeIcon = config.icons[status];
+                {sections.map(section => {
+                  const isCurrentShelf = section.code === currentShelfCode;
+                  const activeIcon = isCurrentShelf
+                    ? section.icons.focus
+                    : section.icons.default;
                   const iconWithClass = cloneElement(activeIcon, {
                     className: cn('h-full w-full', activeIcon.props.className),
                   });
 
                   return (
                     <button
-                      key={section.id}
+                      key={section.code}
                       className={cn(
                         'absolute h-35 w-auto -translate-x-1/2 -translate-y-1/2',
-                        config.positionClassName
+                        section.positionClassName
                       )}
                       title={section.displayName}
                       aria-label={section.displayName}
-                      onClick={() => handleSectionClick(section.id)}
+                      onClick={() => handleSectionClick(section.code)}
                     >
                       {iconWithClass}
                     </button>

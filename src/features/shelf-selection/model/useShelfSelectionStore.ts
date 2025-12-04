@@ -19,8 +19,10 @@ interface ShelfSelectionStore {
   moveToNextShelf: () => void;
   moveToPreviousShelf: () => void;
   moveToShelf: (storeSectionId: number) => void;
+  moveToShelfByCode: (sectionCode: string) => void;
 
   getCurrentShelf: () => Shelf | null;
+  getCurrentShelfCode: () => string | null;
   getNextShelf: () => Shelf | null;
   getPreviousShelf: () => Shelf | null;
   getShelfById: (shelfId: number) => Shelf | null;
@@ -110,6 +112,13 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
         return shelves.find(shelf => shelf.id === currentShelfId) || null;
       },
 
+      getCurrentShelfCode: () => {
+        const { shelves, currentShelfId } = get();
+        if (!currentShelfId) return null;
+        const shelf = shelves.find(shelf => shelf.id === currentShelfId);
+        return shelf?.code || null;
+      },
+
       getNextShelf: () => {
         const { shelves, currentShelfId } = get();
         const currentIndex = shelves.findIndex(
@@ -155,6 +164,14 @@ export const useShelfSelectionStore = create<ShelfSelectionStore>()(
       moveToShelf: storeSectionId => {
         const { shelves } = get();
         const shelf = shelves.find(shelf => shelf.id === storeSectionId);
+        if (shelf) {
+          set({ currentShelfId: shelf.id });
+        }
+      },
+
+      moveToShelfByCode: sectionCode => {
+        const { shelves } = get();
+        const shelf = shelves.find(shelf => shelf.code === sectionCode);
         if (shelf) {
           set({ currentShelfId: shelf.id });
         }

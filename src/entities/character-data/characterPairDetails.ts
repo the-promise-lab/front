@@ -23,6 +23,8 @@ export interface CharacterPairDetail {
   characters: CharacterDetail[];
 }
 
+export const CHARACTER_DETAILS: CharacterDetail[] = [];
+
 export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
   {
     groupId: 1,
@@ -287,4 +289,10 @@ export function getCharacterDetailByName(
 ): CharacterDetail | null {
   if (!name) return null;
   return characterByName.get(name) ?? null;
+}
+
+export function getCharacterDetailByCode(
+  code?: string | null
+): CharacterDetail | null {
+  return getCharacterDetailByName(code);
 }
