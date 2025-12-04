@@ -12,6 +12,7 @@ import {
   createCharacterSetsFromDetails,
   getCharacterPairDetailByName,
 } from '../../model/characterPairDetails';
+import { BackgroundPortal } from '@shared/background-portal';
 
 interface CharacterSelectProps {
   onNext: () => void;
@@ -50,6 +51,32 @@ const CHARACTER_TAB_IMAGES: Record<
 };
 
 const LOCAL_CHARACTER_SETS: CharacterSet[] = createCharacterSetsFromDetails();
+
+/**
+ * 캐릭터 ID를 스탯 이미지 경로로 변환
+ */
+function getCharacterStatImagePath(
+  characterId: string | undefined
+): string | null {
+  if (!characterId) return null;
+
+  // 캐릭터 ID를 스탯 이미지 이니셜로 매핑
+  const idToInitial: Record<string, string> = {
+    hem: 'hb',
+    bang: 'bc',
+    boksun: 'bs',
+    jinsil: 'js',
+    sojaeok: 'jo',
+    munyewon: 'yw',
+    bangmiri: 'mr',
+    ryujaeho: 'jh',
+  };
+
+  const initial = idToInitial[characterId.toLowerCase()];
+  if (!initial) return null;
+
+  return `/image/charSelect/char_${initial}_stat.svg`;
+}
 
 function createPairDetail(set?: CharacterSet): CharacterPairDetail {
   if (!set) {
@@ -149,8 +176,18 @@ export default function CharacterSelect({
   }
 
   return (
-    <div className='flex h-full w-full text-white'>
-      <aside className='w-[220px] py-6'>
+    <div className='grid h-full w-full grid-cols-[220px_1fr_410px] text-white'>
+      <BackgroundPortal>
+        <div className='absolute top-11 right-0 z-201'>
+          <img
+            src='/image/charSelect/char_select_page_header.svg'
+            alt='캐릭터 선택'
+            className='h-[19px] w-[277px]'
+          />
+        </div>
+      </BackgroundPortal>
+      {/* 좌측: 캐릭터 셋 선택 */}
+      <aside className='flex h-full flex-col py-6'>
         <div className='flex w-full flex-col justify-items-start gap-1'>
           {characterSets.map((set, index) => {
             const isActive = index === currentIndex;
@@ -190,135 +227,132 @@ export default function CharacterSelect({
         </div>
       </aside>
 
-      <main className='flex flex-1 flex-col'>
-        <div className='flex flex-1 gap-16 px-16'>
-          <div className='relative flex flex-1 items-center justify-center px-20'>
-            {activeCharacter?.image ? (
-              <img
-                src={activeCharacter.image}
-                alt={activeCharacter.name}
-                className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
-              />
-            ) : (
-              <div className='flex h-[140px] w-[140px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
-                이미지 준비 중
-              </div>
-            )}
-            <div className='pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-10'>
-              <GlassButton
-                onClick={handleSelectComplete}
-                disabled={currentSet?.isLocked || isSelecting}
-                className={cn(
-                  'pointer-events-auto px-14 py-6 text-white transition-all',
-                  currentSet?.isLocked ? 'opacity-70' : ''
-                )}
-              >
-                <Typography variant='h4-b'>
-                  {isSelecting
-                    ? '선택 중...'
-                    : currentSet?.isLocked
-                      ? '공개 예정'
-                      : '선택 완료'}
-                </Typography>
-              </GlassButton>
-            </div>
+      {/* 가운데: 캐릭터 이미지 */}
+      <main className='relative flex items-center justify-center'>
+        {activeCharacter?.image ? (
+          <img
+            src={activeCharacter.image}
+            alt={activeCharacter.name}
+            className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+          />
+        ) : (
+          <div className='flex h-[140px] w-[140px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
+            이미지 준비 중
           </div>
-
-          <div className='flex w-[410] flex-col gap-8'>
-            <div className='flex flex-col gap-3'>
-              <span className='text-sm font-semibold text-white/40'>
-                {/* {pairDetail.title} */}
-              </span>
-              {activeCharacter ? (
-                <>
-                  <div className='flex items-baseline gap-3'>
-                    <span className='text-lg font-extrabold tracking-tight'>
-                      {activeCharacter.name}
-                    </span>
-                    {activeCharacter.age && (
-                      <span className='text-lg text-white/60'>
-                        {activeCharacter.age}
-                      </span>
-                    )}
-                  </div>
-                  {activeCharacter.stats?.length ? (
-                    <div className='flex gap-3'>
-                      {activeCharacter.stats.map(stat => (
-                        <div
-                          key={`${activeCharacter.id}-${stat.label}`}
-                          className='flex flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3'
-                        >
-                          <span className='text-xs font-semibold tracking-wide text-white/40 uppercase'>
-                            {stat.label}
-                          </span>
-                          <span className='text-lg font-bold text-white'>
-                            {stat.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </>
-              ) : null}
-            </div>
-
-            {pairDetail.overview && (
-              <p className='text-sm leading-relaxed whitespace-pre-line text-white/70'>
-                {pairDetail.overview}
-              </p>
+        )}
+        <div className='pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-10'>
+          <GlassButton
+            onClick={handleSelectComplete}
+            disabled={currentSet?.isLocked || isSelecting}
+            className={cn(
+              'pointer-events-auto px-14 py-6 text-white transition-all',
+              currentSet?.isLocked ? 'opacity-70' : ''
             )}
+          >
+            <Typography variant='h4-b'>
+              {isSelecting
+                ? '선택 중...'
+                : currentSet?.isLocked
+                  ? '공개 예정'
+                  : '선택 완료'}
+            </Typography>
+          </GlassButton>
+        </div>
+      </main>
 
-            {activeCharacter?.description && (
-              <p className='text-[10px] leading-relaxed whitespace-pre-line text-white/80'>
-                {activeCharacter.description}
-              </p>
-            )}
-
-            {activeCharacter?.traits && (
-              <p className='text-[10px] whitespace-pre-line text-white/50'>
-                {activeCharacter.traits}
-              </p>
-            )}
-
-            <div className='flex w-full items-start justify-between'>
-              <div>
-                <div className='text-xs font-semibold tracking-[0.3em] text-white/40 uppercase'>
-                  플레이어 페어
-                </div>
-                <div className='mt-3 flex gap-3'>
-                  {pairDetail.characters.map(character => {
-                    const isActive = character.id === activeCharacter?.id;
-                    return (
-                      <button
-                        key={character.id}
-                        onClick={() => setActiveCharacterId(character.id)}
-                        className={cn(
-                          'relative h-20 w-20 overflow-hidden rounded-2xl border transition-all',
-                          isActive
-                            ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
-                            : 'border-white/15 hover:border-white/30'
-                        )}
-                      >
-                        {character.thumbnail ? (
-                          <img
-                            src={character.thumbnail}
-                            alt={character.name}
-                            className='h-full w-full object-cover'
-                          />
-                        ) : (
-                          <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
-                            ?
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+      {/* 우측: 캐릭터 정보 */}
+      <aside className='flex h-full flex-col gap-8 overflow-y-auto py-6 pr-16'>
+        <div className='flex flex-col gap-3'>
+          <span className='text-sm font-semibold text-white/40'>
+            {/* {pairDetail.title} */}
+          </span>
+          {activeCharacter ? (
+            <>
+              <div className='flex items-baseline gap-3'>
+                <span className='text-lg font-extrabold tracking-tight'>
+                  {activeCharacter.name}
+                </span>
+                {activeCharacter.age && (
+                  <span className='text-lg text-white/60'>
+                    {activeCharacter.age}
+                  </span>
+                )}
               </div>
+              {activeCharacter?.id ? (
+                <div className='mt-4'>
+                  {(() => {
+                    const statImagePath = getCharacterStatImagePath(
+                      activeCharacter.id
+                    );
+                    return statImagePath ? (
+                      <img
+                        src={statImagePath}
+                        alt={`${activeCharacter.name} 스탯`}
+                        className='h-33 w-83 object-contain'
+                      />
+                    ) : null;
+                  })()}
+                </div>
+              ) : null}
+            </>
+          ) : null}
+        </div>
+
+        {pairDetail.overview && (
+          <p className='text-sm leading-relaxed whitespace-pre-line text-white/70'>
+            {pairDetail.overview}
+          </p>
+        )}
+
+        {activeCharacter?.description && (
+          <p className='text-[10px] leading-relaxed whitespace-pre-line text-white/80'>
+            {activeCharacter.description}
+          </p>
+        )}
+
+        {activeCharacter?.traits && (
+          <p className='text-[10px] whitespace-pre-line text-white/50'>
+            {activeCharacter.traits}
+          </p>
+        )}
+
+        <div className='flex w-full items-start justify-between'>
+          <div>
+            <div className='text-xs font-semibold tracking-[0.3em] text-white/40 uppercase'>
+              플레이어 페어
+            </div>
+            <div className='mt-3 flex gap-3'>
+              {pairDetail.characters.map(character => {
+                const isActive = character.id === activeCharacter?.id;
+                return (
+                  <button
+                    key={character.id}
+                    onClick={() => setActiveCharacterId(character.id)}
+                    className={cn(
+                      'relative h-20 w-20 overflow-hidden rounded-2xl border transition-all',
+                      isActive
+                        ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
+                        : 'border-white/15 hover:border-white/30'
+                    )}
+                  >
+                    {character.thumbnail ? (
+                      <img
+                        src={character.thumbnail}
+                        alt={character.name}
+                        className='h-full w-full object-cover'
+                      />
+                    ) : (
+                      <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
+                        ?
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
-      </main>
+      </aside>
     </div>
   );
 }

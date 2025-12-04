@@ -114,7 +114,13 @@ export default function App() {
     <AppProviders>
       <RootLayout>
         {renderScreen()}
-        <PauseMenu hidden={step === 'LOGIN' || step === 'PROGRESS'} />
+        <PauseMenu
+          hidden={
+            step === 'LOGIN' ||
+            step === 'PROGRESS' ||
+            step === 'CHARACTER_SELECT'
+          }
+        />
       </RootLayout>
     </AppProviders>
   );

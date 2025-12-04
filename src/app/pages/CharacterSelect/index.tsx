@@ -3,8 +3,8 @@ import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
 import type { PlayingCharacter } from '@entities/game-session';
 import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
-import { useState } from 'react';
-import { cn } from '@shared/lib/utils';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
+
 export default function CharacterSelectPage() {
   const { goto, savePlayingCharacters } = useGameFlowStore(
     useShallow(state => ({
@@ -12,7 +12,6 @@ export default function CharacterSelectPage() {
       savePlayingCharacters: state.savePlayingCharacters,
     }))
   );
-  const [skip, setSkip] = useState(false);
 
   const handleSelectSuccess = (result: {
     response: SelectCharacterSetResultDto;
@@ -30,34 +29,25 @@ export default function CharacterSelectPage() {
   };
 
   const handleNext = () => {
-    console.log(
-      `Goto ${skip ? 'BAG_SELECT' : 'INTRO_STORY'} from CHARACTER_SELECT`
-    );
-    if (skip) {
-      goto('BAG_SELECT');
-    } else {
-      goto('INTRO_STORY');
-    }
+    goto('INTRO_STORY');
   };
+
   return (
     <div className='relative h-full w-full'>
+      <EdgeGradient />
+      {/* 헤더 이미지 - 일시정지 버튼 위치에 배치 */}
+      <div className='absolute top-11 right-11 z-10'>
+        <img
+          src='/image/charSelect/char_select_page_header.svg'
+          alt='캐릭터 선택'
+          className='h-[19px] w-[277px]'
+        />
+      </div>
       <CharacterSelect
         onNext={handleNext}
         onBack={() => goto('MAIN_MENU')}
         onSelectSuccess={handleSelectSuccess}
       />
-
-      {/* 테스트용 스킵 버튼 - 우측 상단에 작게 배치 */}
-      <button
-        onClick={() => setSkip(true)}
-        className={cn(
-          'absolute top-4 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-gray-500 text-xs font-bold text-white shadow-lg transition-colors hover:bg-yellow-400',
-          { 'bg-yellow-500/80': skip }
-        )}
-        title='가방 선택으로 스킵 (테스트용)'
-      >
-        ⏭
-      </button>
     </div>
   );
 }
