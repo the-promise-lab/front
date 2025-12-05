@@ -38,7 +38,7 @@ export default function EdgeGradient({
             }}
           />
 
-          <div className='aspect-14/9 h-full bg-transparent' />
+          <div className='aspect-[15.5/9] h-full bg-transparent' />
 
           {/* 우측 그라데이션 */}
           <div
