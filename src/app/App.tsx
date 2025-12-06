@@ -110,7 +110,8 @@ export default function App() {
           hidden={
             step === 'LOGIN' ||
             step === 'PROGRESS' ||
-            step === 'CHARACTER_SELECT'
+            step === 'CHARACTER_SELECT' ||
+            step === 'SCENARIO_FLOW'
           }
         />
       </RootLayout>

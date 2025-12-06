@@ -41,6 +41,7 @@ export interface MinimapIconSet {
  * 미니맵에 표시될 섹션 정보 (adapter를 통해 변환된 도메인 타입)
  */
 export interface MinimapSection {
+  shelfId: number;
   code: string;
   displayName: string;
   icons: MinimapIconSet;

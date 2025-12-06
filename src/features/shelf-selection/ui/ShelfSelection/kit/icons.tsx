@@ -177,9 +177,9 @@ export function IconMinimapClothesActive({ className }: MinimapIconProps) {
           width='120.118'
           height='98.4914'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -212,9 +212,9 @@ export function IconMinimapClothesActive({ className }: MinimapIconProps) {
           width='104.011'
           height='32.414'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -273,9 +273,9 @@ export function IconMinimapClothesDefault({ className }: MinimapIconProps) {
           width='100.318'
           height='78.6914'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -308,9 +308,9 @@ export function IconMinimapClothesDefault({ className }: MinimapIconProps) {
           width='104.011'
           height='32.414'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -350,31 +350,27 @@ export function IconMinimapClothesFocus({ className }: MinimapIconProps) {
       className={className}
     >
       <g filter='url(#filter0_d_2103_8463)'>
-        <path
-          d='M33.2183 11.8H11.8V33.2182'
-          stroke='#FFE674'
-          stroke-width='5'
-        />
+        <path d='M33.2183 11.8H11.8V33.2182' stroke='#FFE674' strokeWidth='5' />
       </g>
       <g filter='url(#filter1_d_2103_8463)'>
         <path
           d='M113.255 124.218L134.673 124.218L134.673 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter2_d_2103_8463)'>
         <path
           d='M134.673 33.2182L134.673 11.8L113.255 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter3_d_2103_8463)'>
         <path
           d='M11.8 102.8L11.8 124.218L33.2183 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8463)'>
@@ -397,9 +393,9 @@ export function IconMinimapClothesFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -432,9 +428,9 @@ export function IconMinimapClothesFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -467,9 +463,9 @@ export function IconMinimapClothesFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -502,9 +498,9 @@ export function IconMinimapClothesFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -537,9 +533,9 @@ export function IconMinimapClothesFocus({ className }: MinimapIconProps) {
           width='100.318'
           height='78.6914'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -572,9 +568,9 @@ export function IconMinimapClothesFocus({ className }: MinimapIconProps) {
           width='104.011'
           height='32.4141'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -633,9 +629,9 @@ export function IconMinimapClothesInactive({ className }: MinimapIconProps) {
           width='100.318'
           height='78.6914'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -668,9 +664,9 @@ export function IconMinimapClothesInactive({ className }: MinimapIconProps) {
           width='103.881'
           height='32.284'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -731,9 +727,9 @@ export function IconMinimapDailyActive({ className }: MinimapIconProps) {
           width='104.063'
           height='32.674'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -766,9 +762,9 @@ export function IconMinimapDailyActive({ className }: MinimapIconProps) {
           width='83.9445'
           height='118.333'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -801,9 +797,9 @@ export function IconMinimapDailyActive({ className }: MinimapIconProps) {
           width='64.1445'
           height='98.5332'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -864,9 +860,9 @@ export function IconMinimapDailyDefault({ className }: MinimapIconProps) {
           width='104.063'
           height='32.674'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -899,9 +895,9 @@ export function IconMinimapDailyDefault({ className }: MinimapIconProps) {
           width='64.1445'
           height='98.5332'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -934,9 +930,9 @@ export function IconMinimapDailyDefault({ className }: MinimapIconProps) {
           width='64.1445'
           height='98.5332'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -988,31 +984,27 @@ export function IconMinimapDailyFocus({ className }: MinimapIconProps) {
         />
       </g>
       <g filter='url(#filter2_d_2103_8401)'>
-        <path
-          d='M33.2183 11.8H11.8V33.2182'
-          stroke='#FFE674'
-          stroke-width='5'
-        />
+        <path d='M33.2183 11.8H11.8V33.2182' stroke='#FFE674' strokeWidth='5' />
       </g>
       <g filter='url(#filter3_d_2103_8401)'>
         <path
           d='M113.255 124.218L134.673 124.218L134.673 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8401)'>
         <path
           d='M134.673 33.2182L134.673 11.8L113.255 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter5_d_2103_8401)'>
         <path
           d='M11.8 102.8L11.8 124.218L33.2183 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <defs>
@@ -1023,9 +1015,9 @@ export function IconMinimapDailyFocus({ className }: MinimapIconProps) {
           width='104.063'
           height='32.6741'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1058,9 +1050,9 @@ export function IconMinimapDailyFocus({ className }: MinimapIconProps) {
           width='64.1445'
           height='98.5332'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1093,9 +1085,9 @@ export function IconMinimapDailyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1128,9 +1120,9 @@ export function IconMinimapDailyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1163,9 +1155,9 @@ export function IconMinimapDailyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1198,9 +1190,9 @@ export function IconMinimapDailyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1261,9 +1253,9 @@ export function IconMinimapDailyInactive({ className }: MinimapIconProps) {
           width='103.881'
           height='32.5699'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1296,9 +1288,9 @@ export function IconMinimapDailyInactive({ className }: MinimapIconProps) {
           width='64.1445'
           height='98.5332'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1331,9 +1323,9 @@ export function IconMinimapDailyInactive({ className }: MinimapIconProps) {
           width='64.1445'
           height='98.5332'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1394,9 +1386,9 @@ export function IconMinimapDigitalActive({ className }: MinimapIconProps) {
           width='109.708'
           height='32.1281'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1429,9 +1421,9 @@ export function IconMinimapDigitalActive({ className }: MinimapIconProps) {
           width='112.67'
           height='111.656'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1464,9 +1456,9 @@ export function IconMinimapDigitalActive({ className }: MinimapIconProps) {
           width='92.8701'
           height='91.8564'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1525,9 +1517,9 @@ export function IconMinimapDigitalDefault({ className }: MinimapIconProps) {
           width='109.708'
           height='32.128'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1560,9 +1552,9 @@ export function IconMinimapDigitalDefault({ className }: MinimapIconProps) {
           width='92.8701'
           height='91.8564'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1602,31 +1594,27 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
       className={className}
     >
       <g filter='url(#filter0_d_2103_8449)'>
-        <path
-          d='M33.2183 11.8H11.8V33.2182'
-          stroke='#FFE674'
-          stroke-width='5'
-        />
+        <path d='M33.2183 11.8H11.8V33.2182' stroke='#FFE674' strokeWidth='5' />
       </g>
       <g filter='url(#filter1_d_2103_8449)'>
         <path
           d='M113.255 124.218L134.673 124.218L134.673 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter2_d_2103_8449)'>
         <path
           d='M134.673 33.2182L134.673 11.8L113.255 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter3_d_2103_8449)'>
         <path
           d='M11.8 102.8L11.8 124.218L33.2183 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8449)'>
@@ -1651,9 +1639,9 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1686,9 +1674,9 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1721,9 +1709,9 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1756,9 +1744,9 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1791,9 +1779,9 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
           width='109.708'
           height='32.1281'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1826,9 +1814,9 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
           width='92.8701'
           height='91.8564'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1861,9 +1849,9 @@ export function IconMinimapDigitalFocus({ className }: MinimapIconProps) {
           width='92.8701'
           height='91.8564'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1924,9 +1912,9 @@ export function IconMinimapDigitalInactive({ className }: MinimapIconProps) {
           width='109.345'
           height='31.998'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1959,9 +1947,9 @@ export function IconMinimapDigitalInactive({ className }: MinimapIconProps) {
           width='92.8701'
           height='91.8564'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -1994,9 +1982,9 @@ export function IconMinimapDigitalInactive({ className }: MinimapIconProps) {
           width='92.8701'
           height='91.8564'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2055,9 +2043,9 @@ export function IconMinimapDrinkActive({ className }: MinimapIconProps) {
           width='55.0663'
           height='31.868'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2090,9 +2078,9 @@ export function IconMinimapDrinkActive({ className }: MinimapIconProps) {
           width='67.2883'
           height='122.471'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2151,9 +2139,9 @@ export function IconMinimapDrinkDefault({ className }: MinimapIconProps) {
           width='55.0663'
           height='31.868'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2186,9 +2174,9 @@ export function IconMinimapDrinkDefault({ className }: MinimapIconProps) {
           width='47.4883'
           height='102.671'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2240,31 +2228,27 @@ export function IconMinimapDrinkFocus({ className }: MinimapIconProps) {
         />
       </g>
       <g filter='url(#filter2_d_2103_8389)'>
-        <path
-          d='M33.2183 11.8H11.8V33.2182'
-          stroke='#FFE674'
-          stroke-width='5'
-        />
+        <path d='M33.2183 11.8H11.8V33.2182' stroke='#FFE674' strokeWidth='5' />
       </g>
       <g filter='url(#filter3_d_2103_8389)'>
         <path
           d='M113.255 124.218L134.673 124.218L134.673 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8389)'>
         <path
           d='M134.673 33.2182L134.673 11.8L113.255 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter5_d_2103_8389)'>
         <path
           d='M11.8 102.8L11.8 124.218L33.2183 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <defs>
@@ -2275,9 +2259,9 @@ export function IconMinimapDrinkFocus({ className }: MinimapIconProps) {
           width='55.0663'
           height='31.868'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2310,9 +2294,9 @@ export function IconMinimapDrinkFocus({ className }: MinimapIconProps) {
           width='47.4883'
           height='102.671'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2345,9 +2329,9 @@ export function IconMinimapDrinkFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2380,9 +2364,9 @@ export function IconMinimapDrinkFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2415,9 +2399,9 @@ export function IconMinimapDrinkFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2450,9 +2434,9 @@ export function IconMinimapDrinkFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2511,9 +2495,9 @@ export function IconMinimapDrinkInactive({ className }: MinimapIconProps) {
           width='54.8583'
           height='31.66'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2546,9 +2530,9 @@ export function IconMinimapDrinkInactive({ className }: MinimapIconProps) {
           width='47.4883'
           height='102.671'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2607,9 +2591,9 @@ export function IconMinimapFoodActive({ className }: MinimapIconProps) {
           width='54.8323'
           height='32.388'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2642,9 +2626,9 @@ export function IconMinimapFoodActive({ className }: MinimapIconProps) {
           width='97.6018'
           height='93.5354'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2703,9 +2687,9 @@ export function IconMinimapFoodDefault({ className }: MinimapIconProps) {
           width='54.8323'
           height='32.388'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2738,9 +2722,9 @@ export function IconMinimapFoodDefault({ className }: MinimapIconProps) {
           width='77.8018'
           height='73.7354'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2792,31 +2776,27 @@ export function IconMinimapFoodFocus({ className }: MinimapIconProps) {
         />
       </g>
       <g filter='url(#filter2_d_2103_8378)'>
-        <path
-          d='M33.2183 11.8H11.8V33.2182'
-          stroke='#FFE674'
-          stroke-width='5'
-        />
+        <path d='M33.2183 11.8H11.8V33.2182' stroke='#FFE674' strokeWidth='5' />
       </g>
       <g filter='url(#filter3_d_2103_8378)'>
         <path
           d='M113.255 124.218L134.673 124.218L134.673 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8378)'>
         <path
           d='M134.673 33.2182L134.673 11.8L113.255 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter5_d_2103_8378)'>
         <path
           d='M11.8 102.8L11.8 124.218L33.2183 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <defs>
@@ -2827,9 +2807,9 @@ export function IconMinimapFoodFocus({ className }: MinimapIconProps) {
           width='54.8323'
           height='32.3881'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2862,9 +2842,9 @@ export function IconMinimapFoodFocus({ className }: MinimapIconProps) {
           width='77.8018'
           height='73.7354'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2897,9 +2877,9 @@ export function IconMinimapFoodFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2932,9 +2912,9 @@ export function IconMinimapFoodFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -2967,9 +2947,9 @@ export function IconMinimapFoodFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3002,9 +2982,9 @@ export function IconMinimapFoodFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3063,9 +3043,9 @@ export function IconMinimapFoodInactive({ className }: MinimapIconProps) {
           width='54.5983'
           height='32.206'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3098,9 +3078,9 @@ export function IconMinimapFoodInactive({ className }: MinimapIconProps) {
           width='77.8018'
           height='73.7354'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3159,9 +3139,9 @@ export function IconMinimapNoteActive({ className }: MinimapIconProps) {
           width='115.96'
           height='35.3'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3194,9 +3174,9 @@ export function IconMinimapNoteActive({ className }: MinimapIconProps) {
           width='98.1135'
           height='110.022'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3255,9 +3235,9 @@ export function IconMinimapNoteDefault({ className }: MinimapIconProps) {
           width='115.96'
           height='35.3'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3290,9 +3270,9 @@ export function IconMinimapNoteDefault({ className }: MinimapIconProps) {
           width='78.3135'
           height='90.2217'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3332,31 +3312,27 @@ export function IconMinimapNoteFocus({ className }: MinimapIconProps) {
       className={className}
     >
       <g filter='url(#filter0_d_2103_8430)'>
-        <path
-          d='M33.2183 11.8H11.8V33.2182'
-          stroke='#FFE674'
-          stroke-width='5'
-        />
+        <path d='M33.2183 11.8H11.8V33.2182' stroke='#FFE674' strokeWidth='5' />
       </g>
       <g filter='url(#filter1_d_2103_8430)'>
         <path
           d='M113.255 124.218L134.673 124.218L134.673 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter2_d_2103_8430)'>
         <path
           d='M134.673 33.2182L134.673 11.8L113.255 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter3_d_2103_8430)'>
         <path
           d='M11.8 102.8L11.8 124.218L33.2183 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8430)'>
@@ -3379,9 +3355,9 @@ export function IconMinimapNoteFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3414,9 +3390,9 @@ export function IconMinimapNoteFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3449,9 +3425,9 @@ export function IconMinimapNoteFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3484,9 +3460,9 @@ export function IconMinimapNoteFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3519,9 +3495,9 @@ export function IconMinimapNoteFocus({ className }: MinimapIconProps) {
           width='115.96'
           height='35.3'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3554,9 +3530,9 @@ export function IconMinimapNoteFocus({ className }: MinimapIconProps) {
           width='78.3135'
           height='90.2217'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3615,9 +3591,9 @@ export function IconMinimapNoteInactive({ className }: MinimapIconProps) {
           width='115.117'
           height='35.144'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3650,9 +3626,9 @@ export function IconMinimapNoteInactive({ className }: MinimapIconProps) {
           width='78.3135'
           height='90.2217'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3711,9 +3687,9 @@ export function IconMinimapPharmacyActive({ className }: MinimapIconProps) {
           width='54.8843'
           height='32.388'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3746,9 +3722,9 @@ export function IconMinimapPharmacyActive({ className }: MinimapIconProps) {
           width='119.388'
           height='108.999'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3807,9 +3783,9 @@ export function IconMinimapPharmacyDefault({ className }: MinimapIconProps) {
           width='54.8843'
           height='32.388'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3842,9 +3818,9 @@ export function IconMinimapPharmacyDefault({ className }: MinimapIconProps) {
           width='99.5879'
           height='89.1992'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3896,31 +3872,27 @@ export function IconMinimapPharmacyFocus({ className }: MinimapIconProps) {
         />
       </g>
       <g filter='url(#filter2_d_2103_8366)'>
-        <path
-          d='M33.2182 11.8H11.8V33.2182'
-          stroke='#FFE674'
-          stroke-width='5'
-        />
+        <path d='M33.2182 11.8H11.8V33.2182' stroke='#FFE674' strokeWidth='5' />
       </g>
       <g filter='url(#filter3_d_2103_8366)'>
         <path
           d='M113.255 124.218L134.673 124.218L134.673 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8366)'>
         <path
           d='M134.673 33.2182L134.673 11.8L113.255 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter5_d_2103_8366)'>
         <path
           d='M11.8 102.8L11.8 124.218L33.2182 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <defs>
@@ -3931,9 +3903,9 @@ export function IconMinimapPharmacyFocus({ className }: MinimapIconProps) {
           width='54.8843'
           height='32.3881'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -3966,9 +3938,9 @@ export function IconMinimapPharmacyFocus({ className }: MinimapIconProps) {
           width='99.5879'
           height='89.1992'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4001,9 +3973,9 @@ export function IconMinimapPharmacyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4036,9 +4008,9 @@ export function IconMinimapPharmacyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4071,9 +4043,9 @@ export function IconMinimapPharmacyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4106,9 +4078,9 @@ export function IconMinimapPharmacyFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4167,9 +4139,9 @@ export function IconMinimapPharmacyInactive({ className }: MinimapIconProps) {
           width='54.5463'
           height='32.232'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4202,9 +4174,9 @@ export function IconMinimapPharmacyInactive({ className }: MinimapIconProps) {
           width='99.5879'
           height='89.1992'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4263,9 +4235,9 @@ export function IconMinimapSaleActive({ className }: MinimapIconProps) {
           width='162.998'
           height='32.388'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4298,9 +4270,9 @@ export function IconMinimapSaleActive({ className }: MinimapIconProps) {
           width='125.667'
           height='125.635'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4359,9 +4331,9 @@ export function IconMinimapSaleDefault({ className }: MinimapIconProps) {
           width='162.998'
           height='32.388'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4394,9 +4366,9 @@ export function IconMinimapSaleDefault({ className }: MinimapIconProps) {
           width='105.867'
           height='105.835'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4439,28 +4411,28 @@ export function IconMinimapSaleFocus({ className }: MinimapIconProps) {
         <path
           d='M45.5602 11.8H24.142V33.2182'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter1_d_2103_8414)'>
         <path
           d='M125.597 124.218L147.015 124.218L147.015 102.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter2_d_2103_8414)'>
         <path
           d='M147.015 33.2182L147.015 11.8L125.597 11.8'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter3_d_2103_8414)'>
         <path
           d='M24.142 102.8L24.142 124.218L45.5602 124.218'
           stroke='#FFE674'
-          stroke-width='5'
+          strokeWidth='5'
         />
       </g>
       <g filter='url(#filter4_d_2103_8414)'>
@@ -4483,9 +4455,9 @@ export function IconMinimapSaleFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4518,9 +4490,9 @@ export function IconMinimapSaleFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4553,9 +4525,9 @@ export function IconMinimapSaleFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4588,9 +4560,9 @@ export function IconMinimapSaleFocus({ className }: MinimapIconProps) {
           width='42.5182'
           height='42.5182'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4623,9 +4595,9 @@ export function IconMinimapSaleFocus({ className }: MinimapIconProps) {
           width='162.998'
           height='32.3881'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4658,9 +4630,9 @@ export function IconMinimapSaleFocus({ className }: MinimapIconProps) {
           width='105.867'
           height='105.835'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4719,9 +4691,9 @@ export function IconMinimapSaleInactive({ className }: MinimapIconProps) {
           width='162.246'
           height='32.232'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
@@ -4754,9 +4726,9 @@ export function IconMinimapSaleInactive({ className }: MinimapIconProps) {
           width='105.867'
           height='105.835'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'

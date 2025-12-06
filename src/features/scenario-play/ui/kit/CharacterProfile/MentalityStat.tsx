@@ -13,8 +13,8 @@ export default function MentalityStat({
 }: MentalityStatProps) {
   return (
     <div className={cn('flex items-center gap-0.5', className)}>
-      <div className='h-5 w-4 shrink-0'>
-        <IconLightning className='h-full w-full' />
+      <div className='size-7 shrink-0'>
+        <IconLightning className='size-full' />
       </div>
       <Typography variant='subtitle-2-m' className='text-white'>
         {value}

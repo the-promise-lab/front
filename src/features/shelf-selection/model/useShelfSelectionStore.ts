@@ -1,12 +1,11 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import type { Shelf, ShelfItem } from './types';
 
-const STORAGE_KEY = 'shelf-selection-storage';
 interface ShelfSelectionStore {
   shelves: Shelf[];
   currentShelfId: number | null;
   selectedShelfItems: ShelfItem[];
+  visitedShelfIds: number[];
 
   setShelves: (shelves: Shelf[]) => void;
   setCurrentShelfId: (shelfId: number | null) => void;
@@ -26,171 +25,191 @@ interface ShelfSelectionStore {
   getNextShelf: () => Shelf | null;
   getPreviousShelf: () => Shelf | null;
   getShelfById: (shelfId: number) => Shelf | null;
+
+  isShelfVisited: (shelfId: number) => boolean;
+  getVisitedShelves: () => number[];
+  clearVisitedShelves: () => void;
 }
 
 export const useShelfSelectionStore = create<ShelfSelectionStore>()(
-  persist(
-    (set, get) => ({
-      shelves: [],
-      currentShelfId: null,
-      selectedShelfItems: [],
+  (set, get) => ({
+    shelves: [],
+    currentShelfId: null,
+    selectedShelfItems: [],
+    visitedShelfIds: [],
 
-      setShelves: shelves => set({ shelves }),
-      setCurrentShelfId: shelfId => set({ currentShelfId: shelfId }),
-      setSelectedShelfItems: items => set({ selectedShelfItems: items }),
+    setShelves: shelves => set({ shelves }),
+    setCurrentShelfId: shelfId => set({ currentShelfId: shelfId }),
+    setSelectedShelfItems: items => set({ selectedShelfItems: items }),
 
-      initShelves: shelves => {
+    initShelves: shelves => {
+      const initialShelfId = shelves.length > 0 ? shelves[0].id : null;
+      set({
+        shelves,
+        currentShelfId: initialShelfId,
+        selectedShelfItems: [],
+        visitedShelfIds: initialShelfId !== null ? [initialShelfId] : [],
+      });
+    },
+
+    selectNewShelfItem: item => {
+      const { selectedShelfItems } = get();
+
+      const hasStock = item.quantity > 0;
+      if (!hasStock) {
+        return;
+      }
+
+      const alreadySelectedItem = selectedShelfItems.find(
+        selectedItem => selectedItem.id === item.id
+      );
+
+      if (alreadySelectedItem) {
         set({
-          shelves,
-          currentShelfId: shelves.length > 0 ? shelves[0].id : null,
-          selectedShelfItems: [],
+          selectedShelfItems: selectedShelfItems.map(selectedItem =>
+            selectedItem.id === item.id
+              ? { ...selectedItem, quantity: selectedItem.quantity + 1 }
+              : selectedItem
+          ),
         });
-      },
+      } else {
+        set({
+          selectedShelfItems: [...selectedShelfItems, { ...item, quantity: 1 }],
+        });
+      }
+    },
 
-      selectNewShelfItem: item => {
-        const { selectedShelfItems } = get();
+    removeSelectedItem: itemId => {
+      const { selectedShelfItems } = get();
+      const targetItem = selectedShelfItems.find(item => item.id === itemId);
 
-        const hasStock = item.quantity > 0;
-        if (!hasStock) {
-          return;
-        }
+      if (!targetItem) return;
 
-        const alreadySelectedItem = selectedShelfItems.find(
-          selectedItem => selectedItem.id === item.id
-        );
+      if (targetItem.quantity > 1) {
+        set({
+          selectedShelfItems: selectedShelfItems.map(item =>
+            item.id === itemId ? { ...item, quantity: item.quantity - 1 } : item
+          ),
+        });
+      } else {
+        set({
+          selectedShelfItems: selectedShelfItems.filter(
+            item => item.id !== itemId
+          ),
+        });
+      }
+    },
 
-        if (alreadySelectedItem) {
-          set({
-            selectedShelfItems: selectedShelfItems.map(selectedItem =>
-              selectedItem.id === item.id
-                ? { ...selectedItem, quantity: selectedItem.quantity + 1 }
-                : selectedItem
-            ),
-          });
-        } else {
-          set({
-            selectedShelfItems: [
-              ...selectedShelfItems,
-              { ...item, quantity: 1 },
-            ],
-          });
-        }
-      },
+    clearSelectedItems: () => {
+      set({ selectedShelfItems: [] });
+    },
 
-      removeSelectedItem: itemId => {
-        const { selectedShelfItems } = get();
-        const targetItem = selectedShelfItems.find(item => item.id === itemId);
+    getCurrentShelf: () => {
+      const { shelves, currentShelfId } = get();
+      if (!currentShelfId) return null;
+      return shelves.find(shelf => shelf.id === currentShelfId) || null;
+    },
 
-        if (!targetItem) return;
+    getCurrentShelfCode: () => {
+      const { shelves, currentShelfId } = get();
+      if (!currentShelfId) return null;
+      const shelf = shelves.find(shelf => shelf.id === currentShelfId);
+      return shelf?.code || null;
+    },
 
-        if (targetItem.quantity > 1) {
-          // 수량이 2개 이상이면 1개 감소
-          set({
-            selectedShelfItems: selectedShelfItems.map(item =>
-              item.id === itemId
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-            ),
-          });
-        } else {
-          // 수량이 1개면 아이템 제거
-          set({
-            selectedShelfItems: selectedShelfItems.filter(
-              item => item.id !== itemId
-            ),
-          });
-        }
-      },
+    getNextShelf: () => {
+      const { shelves, currentShelfId } = get();
+      const currentIndex = shelves.findIndex(
+        shelf => shelf.id === currentShelfId
+      );
+      return shelves[(currentIndex + 1) % shelves.length] || null;
+    },
 
-      clearSelectedItems: () => {
-        set({ selectedShelfItems: [] });
-      },
+    getPreviousShelf: () => {
+      const { shelves, currentShelfId } = get();
+      const currentIndex = shelves.findIndex(
+        shelf => shelf.id === currentShelfId
+      );
+      return (
+        shelves[(currentIndex - 1 + shelves.length) % shelves.length] || null
+      );
+    },
 
-      getCurrentShelf: () => {
-        const { shelves, currentShelfId } = get();
-        if (!currentShelfId) return null;
-        return shelves.find(shelf => shelf.id === currentShelfId) || null;
-      },
+    getShelfById: shelfId => {
+      const { shelves } = get();
+      return shelves.find(shelf => shelf.id === shelfId) || null;
+    },
 
-      getCurrentShelfCode: () => {
-        const { shelves, currentShelfId } = get();
-        if (!currentShelfId) return null;
-        const shelf = shelves.find(shelf => shelf.id === currentShelfId);
-        return shelf?.code || null;
-      },
+    moveToNextShelf: () => {
+      const { shelves, currentShelfId, visitedShelfIds } = get();
+      const currentIndex = shelves.findIndex(
+        shelf => shelf.id === currentShelfId
+      );
+      const nextIndex = (currentIndex + 1) % shelves.length;
+      const nextShelfId = shelves[nextIndex].id;
 
-      getNextShelf: () => {
-        const { shelves, currentShelfId } = get();
-        const currentIndex = shelves.findIndex(
-          shelf => shelf.id === currentShelfId
-        );
-        return shelves[(currentIndex + 1) % shelves.length] || null;
-      },
+      set({
+        currentShelfId: nextShelfId,
+        visitedShelfIds: visitedShelfIds.includes(nextShelfId)
+          ? visitedShelfIds
+          : [...visitedShelfIds, nextShelfId],
+      });
+    },
 
-      getPreviousShelf: () => {
-        const { shelves, currentShelfId } = get();
-        const currentIndex = shelves.findIndex(
-          shelf => shelf.id === currentShelfId
-        );
-        return (
-          shelves[(currentIndex - 1 + shelves.length) % shelves.length] || null
-        );
-      },
+    moveToPreviousShelf: () => {
+      const { shelves, currentShelfId, visitedShelfIds } = get();
+      const currentIndex = shelves.findIndex(
+        shelf => shelf.id === currentShelfId
+      );
+      const previousIndex =
+        (currentIndex - 1 + shelves.length) % shelves.length;
+      const previousShelfId = shelves[previousIndex].id;
 
-      getShelfById: shelfId => {
-        const { shelves } = get();
-        return shelves.find(shelf => shelf.id === shelfId) || null;
-      },
+      set({
+        currentShelfId: previousShelfId,
+        visitedShelfIds: visitedShelfIds.includes(previousShelfId)
+          ? visitedShelfIds
+          : [...visitedShelfIds, previousShelfId],
+      });
+    },
 
-      moveToNextShelf: () => {
-        const { shelves, currentShelfId } = get();
-        const currentIndex = shelves.findIndex(
-          shelf => shelf.id === currentShelfId
-        );
-        const nextIndex = (currentIndex + 1) % shelves.length;
-        set({ currentShelfId: shelves[nextIndex].id });
-      },
+    moveToShelf: storeSectionId => {
+      const { shelves, visitedShelfIds } = get();
+      const shelf = shelves.find(shelf => shelf.id === storeSectionId);
+      if (shelf) {
+        set({
+          currentShelfId: shelf.id,
+          visitedShelfIds: visitedShelfIds.includes(shelf.id)
+            ? visitedShelfIds
+            : [...visitedShelfIds, shelf.id],
+        });
+      }
+    },
 
-      moveToPreviousShelf: () => {
-        const { shelves, currentShelfId } = get();
-        const currentIndex = shelves.findIndex(
-          shelf => shelf.id === currentShelfId
-        );
-        const previousIndex =
-          (currentIndex - 1 + shelves.length) % shelves.length;
-        set({ currentShelfId: shelves[previousIndex].id });
-      },
+    moveToShelfByCode: sectionCode => {
+      const { shelves, visitedShelfIds } = get();
+      const shelf = shelves.find(shelf => shelf.code === sectionCode);
+      if (shelf) {
+        set({
+          currentShelfId: shelf.id,
+          visitedShelfIds: visitedShelfIds.includes(shelf.id)
+            ? visitedShelfIds
+            : [...visitedShelfIds, shelf.id],
+        });
+      }
+    },
 
-      moveToShelf: storeSectionId => {
-        const { shelves } = get();
-        const shelf = shelves.find(shelf => shelf.id === storeSectionId);
-        if (shelf) {
-          set({ currentShelfId: shelf.id });
-        }
-      },
+    isShelfVisited: shelfId => {
+      const { visitedShelfIds } = get();
+      return visitedShelfIds.includes(shelfId);
+    },
 
-      moveToShelfByCode: sectionCode => {
-        const { shelves } = get();
-        const shelf = shelves.find(shelf => shelf.code === sectionCode);
-        if (shelf) {
-          set({ currentShelfId: shelf.id });
-        }
-      },
-    }),
-    {
-      name: STORAGE_KEY,
-      storage: {
-        getItem: name => {
-          const value = sessionStorage.getItem(name);
-          return value ? JSON.parse(value) : null;
-        },
-        setItem: (name, value) => {
-          sessionStorage.setItem(name, JSON.stringify(value));
-        },
-        removeItem: name => {
-          sessionStorage.removeItem(name);
-        },
-      },
-    }
-  )
+    getVisitedShelves: () => {
+      return get().visitedShelfIds;
+    },
+
+    clearVisitedShelves: () => {
+      set({ visitedShelfIds: [] });
+    },
+  })
 );
