@@ -58,7 +58,7 @@ export default function App() {
     if (step === 'INTRO_STORY') {
       return (
         <IntroStory
-          jsonPath='/JSON/intro_first.json'
+          introMode={1}
           onNext={() => {
             useGameFlowStore.getState().goto('BAG_SELECT');
           }}
@@ -71,7 +71,7 @@ export default function App() {
     if (step === 'INTRO_STORY_2') {
       return (
         <IntroStory
-          jsonPath='/JSON/intro_second.json'
+          introMode={2}
           onNext={() => {
             useGameFlowStore.getState().goto('ONBOARDING');
           }}
@@ -84,7 +84,7 @@ export default function App() {
     if (step === 'INTRO_STORY_3') {
       return (
         <IntroStory
-          jsonPath='/JSON/intro_third.json'
+          introMode={3}
           onNext={() => {
             useGameFlowStore.getState().goto('SCENARIO_FLOW');
           }}

@@ -4,59 +4,38 @@ import { useShallow } from 'zustand/react/shallow';
 import NoticeBanner from '@shared/ui/NoticeBanner';
 import Typography from '@shared/ui/Typography';
 import IntroSimpleScreen from '../../ui/IntroSimpleScreen';
-import type { IntroEvent } from './types';
 import { useSetBackground } from '@shared/background';
+import { useIntroEvents, type IntroEvent } from '@features/intro';
 
 interface IntroStoryProps {
   onNext?: () => void;
-  jsonPath?: string; // JSON 파일 경로 (기본값: '/JSON/intro_first.json')
+  introMode: number;
 }
 
-export default function IntroStory({
-  onNext,
-  jsonPath = '/JSON/intro_first.json',
-}: IntroStoryProps) {
+export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
-  const [events, setEvents] = useState<IntroEvent[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isSkipped, setIsSkipped] = useState(false);
+  const {
+    data,
+    isPending,
+    isError,
+    error,
+  } = useIntroEvents({ introMode });
+
+  const events: IntroEvent[] = data?.events ?? [];
 
   useEffect(() => {
-    let isMounted = true;
-    const loadEvents = async () => {
-      try {
-        const response = await fetch(jsonPath);
-        if (!response.ok) {
-          throw new Error(`${jsonPath} fetch failed (${response.status})`);
-        }
-        const data: IntroEvent[] = await response.json();
-        if (isMounted) {
-          setEvents(data);
-          setIsLoading(false);
-        }
-      } catch (err) {
-        console.error(err);
-        if (isMounted) {
-          setError('인트로 데이터를 불러오지 못했습니다.');
-          setIsLoading(false);
-        }
-      }
-    };
-
-    loadEvents();
-    return () => {
-      isMounted = false;
-    };
-  }, [jsonPath]);
+    setCurrentIndex(0);
+    setIsSkipped(false);
+  }, [events.length, introMode]);
 
   const currentEvent = events[currentIndex];
 
   const backgroundImage = useMemo(() => {
     if (!currentEvent?.BGImage) return null;
     const asset = getObjectUrl(currentEvent.BGImage);
-    return asset || null;
+    return asset || currentEvent.BGImage || null;
   }, [currentEvent?.BGImage, getObjectUrl]);
   useSetBackground({
     image: backgroundImage || '/shelter-bg.png',
@@ -78,7 +57,7 @@ export default function IntroStory({
     onNext?.();
   };
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className='flex h-full w-full items-center justify-center text-white'>
         <Typography variant='dialogue-b'>인트로를 불러오는 중…</Typography>
@@ -86,11 +65,17 @@ export default function IntroStory({
     );
   }
 
-  if (error || !currentEvent) {
+  if (isError || !currentEvent) {
+    const errorMessage =
+      isError && error instanceof Error
+        ? error.message
+        : isError
+          ? '인트로 데이터를 불러오지 못했습니다.'
+          : '표시할 이벤트가 없습니다.';
     return (
       <div className='flex h-full w-full items-center justify-center text-white'>
         <Typography variant='dialogue-b'>
-          {error || '표시할 이벤트가 없습니다.'}
+          {errorMessage}
         </Typography>
       </div>
     );

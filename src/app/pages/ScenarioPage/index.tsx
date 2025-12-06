@@ -119,7 +119,7 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
       <div className='relative h-full w-full'>
         <EdgeGradient />
         <IntroStory
-          jsonPath='/JSON/intro_third.json'
+          introMode={3}
           onNext={handleIntro3Complete}
         />
       </div>
