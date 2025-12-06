@@ -30,10 +30,6 @@ export default function ScenarioPage() {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const backgroundImage = getObjectUrl('shelter-bg.png');
 
-  useSetBackground({
-    image: backgroundImage,
-  });
-
   // 플레이 중인 캐릭터 정보 가져오기
   const playingCharacters =
     useGameFlowStore(
@@ -44,6 +40,9 @@ export default function ScenarioPage() {
   const skipDialogueEvents = useScenarioStore(
     state => state.skipDialogueEvents
   );
+  useSetBackground({
+    image: currentEvent?.bgImage ?? backgroundImage,
+  });
 
   const isSimpleEvent = currentEvent?.type === 'Simple';
 

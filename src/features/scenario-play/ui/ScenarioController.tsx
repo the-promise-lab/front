@@ -16,6 +16,9 @@ import ItemChoiceScreen from './ItemChoiceScreen';
 import StatusScreen from './StatusScreen';
 import SystemScreen from './SystemScreen';
 import DayScreen from './DayScreen';
+import { useSetBackground } from '@shared/background/model/useSetBackground';
+import { useAssetStore } from '@shared/preload-assets';
+import { useShallow } from 'zustand/react/shallow';
 
 interface ScenarioControllerProps {
   onGameEnd?: () => void;
@@ -41,8 +44,19 @@ export function ScenarioController({
     setLoading,
     setError,
   } = useScenarioStore();
-
+  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
+  const backgroundImage = getObjectUrl('shelter-bg.png');
   const currentEvent = useScenarioStore(selectCurrentEvent);
+  const { setBackgroundImage } = useSetBackground({
+    image: currentEvent?.bgImage ?? backgroundImage,
+  });
+
+  useEffect(() => {
+    if (currentEvent?.bgImage) {
+      setBackgroundImage(currentEvent.bgImage);
+    }
+  }, [currentEvent, setBackgroundImage]);
+
   const status = useScenarioStore(selectStatus);
   const pendingOutcomeResultType = useScenarioStore(
     selectPendingOutcomeResultType

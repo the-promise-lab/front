@@ -39,7 +39,6 @@ export function usePreloadAssets(urls: string[], opts: Options = {}) {
             try {
               setLoading(url);
               const res = await fetch(url, {
-                cache: 'force-cache',
                 signal: sig,
                 ...requestInit,
               });

@@ -148,7 +148,24 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     continueGame: () => {
       const store = useGameFlowStore.getState();
       store.setIsNewGame(false); // 이어하기 플래그 설정
-      store.goto('PROGRESS'); // LoadingPage를 거쳐서 SCENARIO_FLOW로
+      const gameSession = store.gameSession;
+      const goto = store.goto;
+      const startScenarioFlow = store.startScenarioFlow;
+      if (!gameSession) {
+        console.warn(
+          'LoadingPage: 게임 세션이 정상적으로 생성되지 않음 - ERROR'
+        );
+        goto('MAIN_MENU'); // TODO: 적절한 에러 처리 로직 구현.
+      } else if (!gameSession.playingCharacterSet) {
+        console.log('LoadingPage: 이어하기 - CHARACTER_SELECT로 이동');
+        goto('CHARACTER_SELECT');
+      } else if (!gameSession.currentActId) {
+        console.log('LoadingPage: 이어하기 - INTRO_STORY부터 재개');
+        goto('INTRO_STORY');
+      } else {
+        console.log('LoadingPage: 이어하기 - SCENARIO_FLOW로 이동');
+        startScenarioFlow();
+      }
     },
 
     // 게임 리셋
