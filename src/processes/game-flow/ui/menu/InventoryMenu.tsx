@@ -23,22 +23,12 @@ export default function InventoryMenu({
   items = [],
 }: InventoryMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-
-  // Mock 데이터: 20개 슬롯 (4x5 그리드)
-  const mockItems: SlotItem[] =
-    items.length > 0
-      ? items
-      : Array.from({ length: 20 }, (_, i) => ({
-          id: `item-${i}`,
-          name: `아이템 ${i + 1}`,
-          image: '/bag.png', // Mock 이미지
-          state:
-            i === 2 ? 'delete' : i === 3 ? 'selected' : ('default' as const),
-        }));
+  const [activeItemId, setActiveItemId] = useState<string | undefined>(
+    undefined
+  );
 
   const handleSlotClick = (item: SlotItem) => {
-    console.log('Slot clicked:', item);
-    // TODO: 슬롯 클릭 처리 로직
+    setActiveItemId(item.id);
   };
 
   const handleOpen = (e: MouseEvent<HTMLButtonElement>) => {
@@ -49,6 +39,11 @@ export default function InventoryMenu({
     e.stopPropagation();
     setIsOpen(false);
   };
+
+  const slotItems: SlotItem[] = items.map(item => ({
+    ...item,
+    state: activeItemId === item.id ? 'selected' : 'default',
+  }));
 
   return (
     <>
@@ -78,7 +73,7 @@ export default function InventoryMenu({
         bagDescription={bagDescription}
         hasWeightBar={hasWeightBar}
         weight={weight}
-        items={mockItems}
+        items={slotItems}
         handleSlotClick={handleSlotClick}
       />
     </>

@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useAssetStore } from '@shared/preload-assets';
-import { SideInventory, useGameFlowStore, Header } from '@processes/game-flow';
+import {
+  SideInventory,
+  useGameFlowStore,
+  Header,
+  playingCharacterSetSelector,
+  inventorySelector,
+  selectedBagSelector,
+} from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
@@ -17,6 +24,7 @@ import {
 } from '@features/scenario-play';
 import IntroStory from '../IntroStory';
 import BeforeResultScreen from '@features/scenario-play/ui/BeforeResultScreen';
+import type { SlotItem } from '@entities/inventory';
 
 type IntroPhase = 'place' | 'caution' | 'intro3' | 'scenario' | 'ending';
 
@@ -29,14 +37,15 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
   const [introPhase, setIntroPhase] = useState<IntroPhase>(
     isNewGame ? 'place' : 'scenario'
   );
+
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const backgroundImage = getObjectUrl('shelter-bg.png');
 
   // 플레이 중인 캐릭터 정보 가져오기
   const playingCharacters =
-    useGameFlowStore(
-      state => state.gameSession?.playingCharacterSet?.playingCharacters
-    ) || [];
+    useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
+  const inventory = useGameFlowStore(inventorySelector);
+  const selectedBag = useGameFlowStore(selectedBagSelector);
 
   const currentEvent = useScenarioStore(selectCurrentEvent);
   const skipDialogueEvents = useScenarioStore(
@@ -66,6 +75,16 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
   const handleIntro3Complete = () => {
     setIntroPhase('scenario');
   };
+
+  const items: SlotItem[] | undefined =
+    inventory?.items.map(item => ({
+      id: item.item.id.toString(),
+      name: item.item.name ?? '',
+      image: item.item.image ?? '',
+      state: 'default' as const,
+    })) ?? undefined;
+
+  console.log(inventory);
 
   // PlaceScreen 단계
   if (introPhase === 'place') {
@@ -127,7 +146,13 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
         playingCharacters={playingCharacters}
         menuSlot={
           <>
-            <SideInventory hasWeightBar weight={100} />
+            <SideInventory
+              hasWeightBar={false}
+              items={items}
+              bagImage={selectedBag?.image ?? ''}
+              bagTitle={selectedBag?.name ?? ''}
+              bagDescription={selectedBag?.description ?? ''}
+            />
             <PauseMenu buttonClassName='static' />
           </>
         }
