@@ -19,8 +19,7 @@ export default function SimpleEventScreen({
   const portraitCharacters: PortraitCharacter[] = event.characters.map(c => ({
     id: c.characterCode,
     name: c.characterDetail?.name ?? null,
-    profileImage:
-      c.characterDetail?.thumbnail ?? c.characterDetail?.image ?? null,
+    profileImage: c.imageUrl ?? c.characterDetail?.image ?? null,
     position: (c.position as PortraitCharacter['position']) ?? null,
   }));
 
