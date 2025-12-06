@@ -24,9 +24,10 @@ const CAUTION_TEXTS = [
   '결과는 되돌릴 수 없으니, 신중히 결정하세요.',
 ];
 
-export default function ScenarioPage() {
-  const [introPhase, setIntroPhase] = useState<IntroPhase>('place');
-
+export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
+  const [introPhase, setIntroPhase] = useState<IntroPhase>(
+    isNewGame ? 'place' : 'scenario'
+  );
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const backgroundImage = getObjectUrl('shelter-bg.png');
 

@@ -20,10 +20,11 @@ import ResultReportPage from './pages/ResultReportPage';
 import ScenarioPage from './pages/ScenarioPage';
 
 export default function App() {
-  const { step, setAuthenticated } = useGameFlowStore(
+  const { step, setAuthenticated, isNewGame } = useGameFlowStore(
     useShallow(state => ({
       step: state.step,
       setAuthenticated: state.setAuthenticated,
+      isNewGame: state.isNewGame,
     }))
   );
 
@@ -94,7 +95,7 @@ export default function App() {
       return <OnboardingPage />;
     }
     if (step === 'SCENARIO_FLOW') {
-      return <ScenarioPage />;
+      return <ScenarioPage isNewGame={isNewGame} />;
     }
     if (step === 'RESULT_REPORT') {
       return <ResultReportPage />;

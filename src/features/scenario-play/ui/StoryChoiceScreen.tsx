@@ -3,6 +3,7 @@ import ChoiceOption from './kit/ChoiceOption';
 import { motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
 import type { ScenarioEvent, ScenarioChoiceOption } from '../model/types';
+import { useState } from 'react';
 
 interface StoryChoiceScreenProps {
   event: ScenarioEvent;
@@ -13,6 +14,7 @@ export default function StoryChoiceScreen({
   event,
   onSelect,
 }: StoryChoiceScreenProps) {
+  const [pressedOptionId, setPressedOptionId] = useState<number | null>(null);
   const title = event.choice?.title ?? '랜덤 이벤트 제목';
   const description =
     event.choice?.description ??
@@ -37,6 +39,10 @@ export default function StoryChoiceScreen({
   ];
 
   const handleOptionPress = (option: ScenarioChoiceOption) => {
+    setPressedOptionId(option.choiceOptionId);
+  };
+
+  const handleOptionProceed = (option: ScenarioChoiceOption) => {
     onSelect?.(option);
   };
 
@@ -80,7 +86,9 @@ export default function StoryChoiceScreen({
             <ChoiceOption
               key={option.choiceOptionId}
               text={option.text}
+              isPressed={pressedOptionId === option.choiceOptionId}
               onPress={() => handleOptionPress(option)}
+              onProceed={() => handleOptionProceed(option)}
             />
           ))}
         </motion.div>

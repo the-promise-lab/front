@@ -43,6 +43,7 @@ export function ScenarioController({
     clearChoice,
     setLoading,
     setError,
+    reset,
   } = useScenarioStore();
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const backgroundImage = getObjectUrl('shelter-bg.png');
@@ -90,9 +91,10 @@ export function ScenarioController({
   useEffect(() => {
     if (!currentActBundle && !isLoading) {
       setLoading(true);
+      reset();
       loadCurrentAct();
     }
-  }, [currentActBundle, isLoading, loadCurrentAct, setLoading]);
+  }, [currentActBundle, isLoading, loadCurrentAct, setLoading, reset]);
 
   // status에 따른 분기 처리
   useEffect(() => {
