@@ -20,12 +20,16 @@ export default function OnboardingPage() {
     }
   };
 
+  const handleSkip = () => {
+    goto('PACKING_PHASE');
+  };
+
   return (
     <div className='relative h-full w-full' onClick={handleNext}>
       <EdgeGradient />
       <BackgroundPortal>
-        <div className='fixed inset-0 z-[11] flex items-center justify-center bg-black'>
-          <div className='relative flex h-full w-full items-center justify-center'>
+        <div className='fixed inset-0 z-11 flex items-center justify-center bg-black'>
+          <div className='relative mx-auto flex aspect-video h-full items-center justify-center'>
             {ONBOARDING_IMAGES.map((imagePath, index) => (
               <img
                 key={imagePath}
@@ -37,6 +41,10 @@ export default function OnboardingPage() {
                 )}
               />
             ))}
+            <button
+              className='absolute bottom-0 left-0 z-12 h-40 w-108 bg-transparent'
+              onClick={handleSkip}
+            ></button>
           </div>
         </div>
       </BackgroundPortal>
