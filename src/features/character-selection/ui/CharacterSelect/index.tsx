@@ -204,7 +204,7 @@ export default function CharacterSelect({
   }
 
   return (
-    <div className='grid h-full w-full grid-cols-[270px_1fr_360px] text-white'>
+    <div className='pointer-events-auto flex h-dvh w-dvw translate-0 text-white'>
       <BackgroundPortal>
         <div className='absolute top-8 right-0 z-201 h-[35px] w-[350px]'>
           <img
@@ -215,8 +215,8 @@ export default function CharacterSelect({
         </div>
       </BackgroundPortal>
       {/* 좌측: 캐릭터 셋 선택 */}
-      <aside className='flex h-full flex-col'>
-        <div className='flex w-full flex-col justify-items-start gap-1'>
+      <aside className='flex h-full min-w-180 flex-col'>
+        <div className='mt-8 flex w-full flex-col justify-items-start gap-1'>
           {characterSets.map((set, index) => {
             const isActive = index === currentIndex;
             const tabAssets = CHARACTER_TAB_IMAGES[set.name];
@@ -256,7 +256,7 @@ export default function CharacterSelect({
       </aside>
 
       {/* 가운데: 캐릭터 이미지 */}
-      <main className='relative flex items-center justify-center'>
+      <main className='relative flex flex-1 items-center justify-center'>
         {activeCharacter?.image ? (
           <img
             src={activeCharacter.image}
@@ -289,7 +289,7 @@ export default function CharacterSelect({
       </main>
 
       {/* 우측: 캐릭터 정보 */}
-      <aside className='flex h-full flex-col justify-center gap-4 overflow-y-auto px-40'>
+      <aside className='flex h-full min-w-90 flex-col justify-center gap-4 overflow-y-auto px-40'>
         <div className='flex flex-col gap-3'>
           <span className='text-sm font-semibold text-white/40'>
             {/* {pairDetail.title} */}
