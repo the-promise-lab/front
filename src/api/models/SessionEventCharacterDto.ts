@@ -16,6 +16,10 @@ export type SessionEventCharacterDto = {
    */
   emotion: string | null;
   /**
+   * Emotion image URL
+   */
+  imageUrl: string | null;
+  /**
    * Speaks in this line
    */
   isSpeaker: boolean | null;

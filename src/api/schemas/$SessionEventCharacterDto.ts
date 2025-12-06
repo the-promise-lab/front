@@ -21,6 +21,12 @@ export const $SessionEventCharacterDto = {
       isRequired: true,
       isNullable: true,
     },
+    imageUrl: {
+      type: 'string',
+      description: `Emotion image URL`,
+      isRequired: true,
+      isNullable: true,
+    },
     isSpeaker: {
       type: 'boolean',
       description: `Speaks in this line`,

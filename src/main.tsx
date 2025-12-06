@@ -1,10 +1,7 @@
-import { OpenAPI } from '@api/core/OpenAPI';
-/* OpenAPI 전역설정 */
-OpenAPI.BASE = import.meta.env.VITE_API_BASE_URL;
-OpenAPI.WITH_CREDENTIALS = true;
-OpenAPI.CREDENTIALS = 'include';
-// OpenAPI.TOKEN = async () => localStorage.getItem('access_token') ?? '';
-OpenAPI.HEADERS = async () => ({ 'X-Client': 'web' });
+import { setupApiClient } from '@shared/auth/lib/setup';
+
+// API 클라이언트 초기화 (BASE URL, TOKEN, CREDENTIALS 설정)
+setupApiClient();
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

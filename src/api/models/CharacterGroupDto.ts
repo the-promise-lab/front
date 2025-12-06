@@ -20,9 +20,9 @@ export type CharacterGroupDto = {
    */
   groupSelectImage: string;
   /**
-   * 사망 엔딩 ID
+   * 서든데스 엔딩 인덱스
    */
-  deathEndActId: number | null;
+  deathEndingIndex: number | null;
   /**
    * 프롤로그 ID
    */
