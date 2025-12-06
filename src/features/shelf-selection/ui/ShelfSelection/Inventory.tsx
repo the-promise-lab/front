@@ -50,7 +50,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
       return {
         id: slotId,
         name: item.name,
-        image: '/chicken-breast.png',
+        image: item.image ?? '/chicken-breast.png',
         state: slotState,
       };
     });

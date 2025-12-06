@@ -8,6 +8,7 @@ import type { ReactElement, SVGProps } from 'react';
 export interface ShelfItem {
   id: string;
   name: string;
+  image: string | null;
   x: number;
   y: number;
   quantity: number;
