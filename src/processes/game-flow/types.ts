@@ -8,8 +8,8 @@ import type {
 export type GameStep =
   | 'LOGIN' // 로그인 페이지
   | 'LOGIN_PROGRESS' // 로그인 진행 중
-  | 'MAIN_MENU' // 메인 메뉴
   | 'PROGRESS' // 게임 준비 진행 중
+  | 'MAIN_MENU' // 메인 메뉴
   | 'INTRO_STORY' // 인트로 스토리 (첫 번째)
   | 'CHARACTER_SELECT' // 캐릭터 선택
   | 'BAG_SELECT' // 가방 선택
@@ -77,8 +77,8 @@ export interface GameFlowActions {
 export const GAME_STEP_ORDER: readonly GameStep[] = [
   'LOGIN',
   'LOGIN_PROGRESS',
-  'MAIN_MENU',
   'PROGRESS',
+  'MAIN_MENU',
   'CHARACTER_SELECT',
   'INTRO_STORY',
   'BAG_SELECT',

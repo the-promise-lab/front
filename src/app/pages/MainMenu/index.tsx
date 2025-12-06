@@ -6,13 +6,9 @@ import {
 } from '@processes/game-flow';
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
-import { useSetBackground } from '@shared/background';
+import { BackgroundPortal } from '@shared/background-portal';
 
 export default function MainMenu() {
-  useSetBackground({
-    color: '#fff',
-    className: 'bg-gradient-to-br from-blue-50 to-indigo-100',
-  });
   // 새 게임 시작
   const {
     createNewGameSession,
@@ -28,16 +24,27 @@ export default function MainMenu() {
   } = useContinueGame();
 
   return (
-    <div className='relative h-screen w-screen overflow-hidden'>
+    <div className='relative h-full w-full overflow-hidden'>
+      <BackgroundPortal>
+        <video
+          src='/image/mainPage/splash_main.mp4'
+          autoPlay
+          loop
+          muted
+          playsInline
+          className='fixed inset-0 -z-10 h-full w-full object-cover'
+        />
+        <div className='fixed inset-0 -z-9 bg-black/40' />
+      </BackgroundPortal>
       {/* 중앙 메인 컨텐츠 */}
-      <div className='flex flex-col items-center justify-center'>
-        <div className='py-30 text-center'>
+      <div className='flex h-full flex-col items-center justify-end pb-30'>
+        {/* <div className='py-30 text-center'>
           <img
             src='/image/mainPage/game_logo.svg'
             alt='back to the future'
             className='mx-auto h-62 w-400'
           />
-        </div>
+        </div> */}
 
         {/* 게임 시작 버튼들 */}
         <div className='flex flex-col items-center justify-center gap-2'>

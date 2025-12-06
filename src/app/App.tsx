@@ -45,11 +45,11 @@ export default function App() {
     if (step === 'LOGIN') {
       return <LoginPage />;
     }
-    if (step === 'MAIN_MENU') {
-      return <MainMenu />;
-    }
     if (step === 'PROGRESS') {
       return <LoadingPage />;
+    }
+    if (step === 'MAIN_MENU') {
+      return <MainMenu />;
     }
     if (step === 'CHARACTER_SELECT') {
       return <CharacterSelectPage />;
@@ -108,7 +108,10 @@ export default function App() {
         {renderScreen()}
         <PauseMenu
           hidden={
-            step === 'LOGIN' || step === 'PROGRESS' || step === 'SCENARIO_FLOW'
+            step === 'LOGIN' ||
+            step === 'PROGRESS' ||
+            step === 'CHARACTER_SELECT' ||
+            step === 'SCENARIO_FLOW'
           }
         />
       </RootLayout>

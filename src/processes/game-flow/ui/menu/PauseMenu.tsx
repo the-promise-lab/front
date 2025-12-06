@@ -111,9 +111,19 @@ export default function PauseMenu({
               onClose={close}
               className='mx-auto aspect-video h-dvh'
             >
-              <div className='relative mt-45 h-full'>
-                <div className='absolute top-0 left-0 h-[90%] w-0.25 bg-white' />
-                {renderContent()}
+              <div className='relative h-full w-full'>
+                <div className='absolute top-30 left-0 h-[70%] w-0.25 bg-white' />
+                <div
+                  className={cn(
+                    'h-full',
+                    selectedCategory === 'team-intro' ||
+                      selectedCategory === 'character-info'
+                      ? 'mt-10 pl-30'
+                      : 'mt-45'
+                  )}
+                >
+                  {renderContent()}
+                </div>
               </div>
             </GlassMenuLayout>
           ) : null}
