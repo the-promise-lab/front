@@ -18,7 +18,7 @@ const DIALOGUES: TimedDialogue[] = [
     triggerTime: 5,
     condition: 'elapsed',
     text: '뱅철아, 정신 똑디 차리라! 필요한 것만 후딱 챙기자!',
-    speaker: '헴',
+    speaker: '형빈',
     duration: 3000,
   },
   {
@@ -32,7 +32,7 @@ const DIALOGUES: TimedDialogue[] = [
     triggerTime: 50,
     condition: 'remaining',
     text: '거만 보지 말고 저쪽 코너도 얼른 훑어봐라!',
-    speaker: '헴',
+    speaker: '형빈',
     duration: 3000,
   },
   {
@@ -46,7 +46,7 @@ const DIALOGUES: TimedDialogue[] = [
     triggerTime: 15,
     condition: 'remaining',
     text: '아, 뱅철아! 또 흔들린다! 마지막이다!',
-    speaker: '헴',
+    speaker: '형빈',
     duration: 3000,
   },
   {

@@ -117,6 +117,10 @@ export function adaptPlayingCharacterFromApi(
       aliases?: string[];
       image?: string;
       thumbnail?: string;
+      colors?: {
+        backgroundColor: string;
+        borderColor: string;
+      };
     }>;
   } | null
 ): PlayingCharacter {
@@ -141,6 +145,8 @@ export function adaptPlayingCharacterFromApi(
     playingCharacter.character.portraitImage ??
     null;
 
+  const resolvedColors = detail?.colors || null;
+
   return {
     id: playingCharacter.id,
     characterId: playingCharacter.character.id,
@@ -150,8 +156,14 @@ export function adaptPlayingCharacterFromApi(
     currentHp: playingCharacter.currentHp || null,
     currentMental: playingCharacter.currentMental || null,
     colors: {
-      backgroundColor: playingCharacter.character.bgColor || null,
-      borderColor: playingCharacter.character.borderColor || null,
+      backgroundColor:
+        resolvedColors?.backgroundColor ||
+        playingCharacter.character.bgColor ||
+        null,
+      borderColor:
+        resolvedColors?.borderColor ||
+        playingCharacter.character.borderColor ||
+        null,
     },
   };
 }
