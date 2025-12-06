@@ -42,6 +42,7 @@ export default function PortraitBanner({
         <Divider />
         <Typography variant='dialogue-m'>
           <TypingText
+            key={portrait}
             ref={typingTextRef}
             texts={portrait.split('\n')}
             smooth
