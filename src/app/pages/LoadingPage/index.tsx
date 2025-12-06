@@ -25,6 +25,14 @@ const ASSETS_TO_PRELOAD = [
   'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/shocked.png',
   'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/sick.png',
   'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/tired.png',
+
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bs/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/js/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/jw/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/jh/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/mr/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/sa/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/yw/default.png',
 ];
 
 export default function LoadingPage() {
