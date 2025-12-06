@@ -35,14 +35,6 @@ export default function CharacterSelectPage() {
   return (
     <div className='relative h-full w-full'>
       <EdgeGradient />
-      {/* 헤더 이미지 - 일시정지 버튼 위치에 배치 */}
-      <div className='absolute top-11 right-11 z-10'>
-        <img
-          src='/image/charSelect/char_select_page_header.svg'
-          alt='캐릭터 선택'
-          className='h-[19px] w-[277px]'
-        />
-      </div>
       <CharacterSelect
         onNext={handleNext}
         onBack={() => goto('MAIN_MENU')}

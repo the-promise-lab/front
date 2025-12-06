@@ -78,6 +78,34 @@ function getCharacterStatImagePath(
   return `/image/charSelect/char_${initial}_stat.svg`;
 }
 
+/**
+ * 캐릭터 ID를 페어 이미지 경로로 변환
+ */
+function getCharacterPairImagePath(
+  characterId: string | undefined,
+  isActive: boolean
+): string | null {
+  if (!characterId) return null;
+
+  // 캐릭터 ID를 이미지 이니셜로 매핑
+  const idToInitial: Record<string, string> = {
+    hem: 'hb',
+    bang: 'bc',
+    boksun: 'bs',
+    jinsil: 'js',
+    sojaeok: 'jo',
+    munyewon: 'yw',
+    bangmiri: 'mr',
+    ryujaeho: 'jh',
+  };
+
+  const initial = idToInitial[characterId.toLowerCase()];
+  if (!initial) return null;
+
+  const type = isActive ? 'active' : 'default';
+  return `/image/charSelect/pair_${type}_${initial}.svg`;
+}
+
 function createPairDetail(set?: CharacterSet): CharacterPairDetail {
   if (!set) {
     return {
@@ -176,13 +204,13 @@ export default function CharacterSelect({
   }
 
   return (
-    <div className='grid h-full w-full grid-cols-[220px_1fr_410px] text-white'>
+    <div className='grid h-full w-full grid-cols-[270px_1fr_360px] text-white'>
       <BackgroundPortal>
         <div className='absolute top-11 right-0 z-201'>
           <img
             src='/image/charSelect/char_select_page_header.svg'
             alt='캐릭터 선택'
-            className='h-[19px] w-[277px]'
+            className='h-[22px] w-[277px]'
           />
         </div>
       </BackgroundPortal>
@@ -240,7 +268,7 @@ export default function CharacterSelect({
             이미지 준비 중
           </div>
         )}
-        <div className='pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-10'>
+        <div className='pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-20'>
           <GlassButton
             onClick={handleSelectComplete}
             disabled={currentSet?.isLocked || isSelecting}
@@ -261,7 +289,7 @@ export default function CharacterSelect({
       </main>
 
       {/* 우측: 캐릭터 정보 */}
-      <aside className='flex h-full flex-col gap-8 overflow-y-auto py-6 pr-16'>
+      <aside className='flex h-full flex-col justify-center gap-8 overflow-y-auto pr-40 pl-40'>
         <div className='flex flex-col gap-3'>
           <span className='text-sm font-semibold text-white/40'>
             {/* {pairDetail.title} */}
@@ -318,26 +346,29 @@ export default function CharacterSelect({
 
         <div className='flex w-full items-start justify-between'>
           <div>
-            <div className='text-xs font-semibold tracking-[0.3em] text-white/40 uppercase'>
-              플레이어 페어
-            </div>
+            <div className='text-xs font-semibold uppercase'>플레이어 페어</div>
             <div className='mt-3 flex gap-3'>
               {pairDetail.characters.map(character => {
                 const isActive = character.id === activeCharacter?.id;
+                const pairImage = getCharacterPairImagePath(
+                  character.id,
+                  isActive
+                );
+
                 return (
                   <button
                     key={character.id}
                     onClick={() => setActiveCharacterId(character.id)}
                     className={cn(
-                      'relative h-20 w-20 overflow-hidden rounded-2xl border transition-all',
+                      'h-37p relative w-37 overflow-hidden border transition-all',
                       isActive
                         ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
                         : 'border-white/15 hover:border-white/30'
                     )}
                   >
-                    {character.thumbnail ? (
+                    {pairImage ? (
                       <img
-                        src={character.thumbnail}
+                        src={pairImage}
                         alt={character.name}
                         className='h-full w-full object-cover'
                       />
