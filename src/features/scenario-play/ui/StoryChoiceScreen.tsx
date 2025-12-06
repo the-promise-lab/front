@@ -20,7 +20,7 @@ export default function StoryChoiceScreen({
     event.choice?.description ??
     '랜덤 이벤트에 대한 텍스트가 들어갑니다.\n선택지[1]과 선택지[2]가 있는 화면의 경우,\n엔딩 분기를 위한 스토리형 사건입니다.';
   const thumbnail = event.choice?.thumbnail;
-  const options = event.choice?.options ?? [
+  const options = event.choice?.options?.slice(0, 3) ?? [
     {
       choiceOptionId: 1,
       text: '선택지 1',

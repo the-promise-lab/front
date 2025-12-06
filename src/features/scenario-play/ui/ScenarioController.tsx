@@ -23,6 +23,7 @@ import { useShallow } from 'zustand/react/shallow';
 interface ScenarioControllerProps {
   onGameEnd?: () => void;
   onGameOver?: () => void;
+  onSuddenDeath?: () => void;
 }
 
 /**
@@ -32,6 +33,7 @@ interface ScenarioControllerProps {
 export function ScenarioController({
   onGameEnd,
   onGameOver,
+  onSuddenDeath,
 }: ScenarioControllerProps) {
   const {
     currentActBundle,
@@ -105,15 +107,17 @@ export function ScenarioController({
         onGameEnd?.();
         break;
       case 'GAME_OVER':
-      case 'SUDDEN_DEATH':
         onGameOver?.();
+        break;
+      case 'SUDDEN_DEATH':
+        onSuddenDeath?.();
         break;
       case 'DAY_END':
         // DAY_END 후 다음 Day의 첫 번째 Act를 불러오기
         // 현재 Act의 모든 이벤트가 처리된 후에 자동으로 호출됨
         break;
     }
-  }, [status, onGameEnd, onGameOver]);
+  }, [status, onGameEnd, onGameOver, onSuddenDeath]);
 
   // 이벤트 완료 핸들러 (Simple, Status, System 타입용)
   const handleEventComplete = useCallback(() => {

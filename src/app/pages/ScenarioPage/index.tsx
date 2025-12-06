@@ -16,8 +16,9 @@ import {
   selectCurrentEvent,
 } from '@features/scenario-play';
 import IntroStory from '../IntroStory';
+import BeforeResultScreen from '@features/scenario-play/ui/BeforeResultScreen';
 
-type IntroPhase = 'place' | 'caution' | 'intro3' | 'scenario';
+type IntroPhase = 'place' | 'caution' | 'intro3' | 'scenario' | 'ending';
 
 const CAUTION_TEXTS = [
   '상황마다 주어지는 기회는 단 한 번뿐입니다. 이제 모든 것은 당신의 선택에 달려 있습니다.',
@@ -106,6 +107,17 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
     );
   }
 
+  if (introPhase === 'ending') {
+    return (
+      <BeforeResultScreen
+        onGoToResultReport={() =>
+          useGameFlowStore.getState().goto('RESULT_REPORT')
+        }
+        backgroundImage={currentEvent?.bgImage ?? backgroundImage}
+      />
+    );
+  }
+
   // 시나리오 진행 단계
   return (
     <div className='relative flex h-full w-full flex-col gap-4'>
@@ -123,8 +135,9 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
       />
       <div className='flex-1'>
         <ScenarioController
-          onGameEnd={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
-          onGameOver={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
+          onGameEnd={() => setIntroPhase('ending')}
+          onGameOver={() => setIntroPhase('ending')}
+          onSuddenDeath={() => useGameFlowStore.getState().goto('MAIN_MENU')}
         />
       </div>
     </div>

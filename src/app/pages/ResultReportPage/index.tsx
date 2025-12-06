@@ -3,8 +3,10 @@ import { ResultReportScreen } from '@features/result-report';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
+import { useEffect, useState } from 'react';
 
 export default function ResultReportPage() {
+  const [resultScreenLoaded, setResultScreenLoaded] = useState(false);
   useSetBackground({
     image: 'bg-2.png',
   });
@@ -23,5 +25,12 @@ export default function ResultReportPage() {
     goto('MAIN_MENU');
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setResultScreenLoaded(true);
+    }, 1000);
+  }, []);
+
+  if (!resultScreenLoaded) return null;
   return <ResultReportScreen onGoToMainMenu={handleGoToMainMenu} user={user} />;
 }
