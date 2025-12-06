@@ -1,15 +1,99 @@
+import { useEffect, useState } from 'react';
 import { config } from '@config/env';
 import { useSetBackground } from '@shared/background';
+import { AuthService } from '@api';
+import { useAuthStore } from '@shared/auth/model/useAuthStore';
+import { useGameFlowStore } from '@processes/game-flow';
+import { isAxiosError } from 'axios';
+
+const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize';
 
 export default function LoginPage() {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuthStore();
+  const { goto } = useGameFlowStore();
+
   useSetBackground({
     color: '#000',
   });
+
+  // URL에서 code 파라미터 감지 및 토큰 교환
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (!code) return;
+
+    const exchangeCodeForToken = async () => {
+      setIsProcessing(true);
+      setError(null);
+
+      try {
+        // URL 정리 (code 파라미터 제거)
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+
+        // 환경변수에 설정된 redirect_uri 사용, 없으면 현재 origin 사용
+        const redirectUri = window.location.origin;
+
+        // 백엔드 API로 code 전송하여 accessToken 받기
+        const tokenResponse =
+          await AuthService.authControllerExchangeCodeForToken({
+            code,
+            redirectUri,
+          });
+
+        // 토큰을 먼저 저장 (이후 API 요청에 토큰이 포함됨)
+        login(
+          { id: '', name: '', provider: 'kakao' },
+          tokenResponse.accessToken
+        );
+
+        // 프로필 정보 가져오기
+        const profileResponse = await AuthService.authControllerGetProfile();
+
+        // 로그인 상태 업데이트 (프로필 정보 포함)
+        login(profileResponse, tokenResponse.accessToken);
+
+        // 메인 메뉴로 이동
+        goto('MAIN_MENU');
+      } catch (err) {
+        console.error('카카오 로그인 실패:', err);
+        if (isAxiosError(err)) {
+          setError(err.response?.data.message ?? err.message);
+        } else {
+          setError('카카오 로그인에 실패했습니다. 다시 시도해주세요.');
+        }
+        setIsProcessing(false);
+      }
+    };
+
+    exchangeCodeForToken();
+  }, [login, goto]);
+
   const handleKakaoLogin = () => {
-    // 서버의 카카오 로그인 엔드포인트로 리다이렉트 (redirect URI 포함)
+    // 카카오 인증 URL로 직접 리디렉션
+    // 환경변수에 설정된 redirect_uri 사용, 없으면 현재 origin 사용
     const redirectUri = encodeURIComponent(window.location.origin);
-    window.location.href = `${config.API_BASE_URL}/api/auth/kakao?redirect_uri=${redirectUri}`;
+    const kakaoAuthUrl = `${KAKAO_AUTH_URL}?client_id=${config.KAKAO_REST_API_KEY}&redirect_uri=${redirectUri}&response_type=code`;
+    window.location.href = kakaoAuthUrl;
   };
+
+  // 토큰 교환 중일 때 로딩 표시
+  if (isProcessing) {
+    return (
+      <div className='flex h-full w-full items-center justify-center text-white'>
+        <div className='flex flex-col items-center gap-4'>
+          <div className='h-8 w-8 animate-spin rounded-full border-2 border-white border-t-transparent' />
+          <p>로그인 처리 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex h-full w-full items-center justify-center text-white'>
@@ -55,6 +139,7 @@ export default function LoginPage() {
             </svg>
             카카오톡 로그인
           </button>
+          {error && <p className='mt-2 text-sm text-red-400'>{error}</p>}
         </div>
       </div>
     </div>

@@ -24,9 +24,9 @@ export const $CharacterGroupDto = {
       description: `캐릭터 그룹 선택 이미지`,
       isRequired: true,
     },
-    deathEndActId: {
+    deathEndingIndex: {
       type: 'number',
-      description: `사망 엔딩 ID`,
+      description: `서든데스 엔딩 인덱스`,
       isRequired: true,
       isNullable: true,
     },
