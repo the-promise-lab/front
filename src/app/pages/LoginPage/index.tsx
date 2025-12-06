@@ -5,14 +5,17 @@ import { AuthService } from '@api';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { useGameFlowStore } from '@processes/game-flow';
 import { isAxiosError } from 'axios';
+import { useShallow } from 'zustand/react/shallow';
 
 const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize';
 
 export default function LoginPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { login } = useAuthStore();
-  const { goto } = useGameFlowStore();
+  const { login } = useAuthStore(useShallow(state => ({ login: state.login })));
+  const { goto } = useGameFlowStore(
+    useShallow(state => ({ goto: state.goto }))
+  );
 
   useSetBackground({
     color: '#000',

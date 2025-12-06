@@ -19,6 +19,7 @@ export interface ScenarioCharacter {
   position: string | null;
   emotion: string | null;
   isSpeaker: boolean | null;
+  imageUrl: string | null;
   characterDetail?: CharacterDetail | null;
 }
 

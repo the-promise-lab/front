@@ -20,10 +20,20 @@ export const useCheckAuthState = (
     if (isLoggingOut || (lastLogoutTime && Date.now() - lastLogoutTime < 500)) {
       return;
     }
+
     const checkAuthStatus = async () => {
+      const currentToken = useAuthStore.getState().accessToken;
+
+      // 유효한 토큰이 없으면 인증 실패 처리
+      if (!currentToken) {
+        onAuthCheckRef.current(false);
+        return;
+      }
+
       try {
         const response = await AuthService.authControllerGetProfile();
-        login(response, 'cookie-based-token');
+        // 기존 토큰 유지하면서 프로필만 업데이트
+        login(response, currentToken);
         onAuthCheckRef.current(true);
       } catch (error) {
         if (error instanceof ApiError) {
@@ -31,6 +41,8 @@ export const useCheckAuthState = (
         } else {
           console.error('로그인 상태 확인 실패:', error);
         }
+        // 401 등 에러 시 토큰 무효화
+        logout();
         onAuthCheckRef.current(false);
       }
     };
