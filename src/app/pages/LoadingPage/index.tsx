@@ -13,6 +13,18 @@ const ASSETS_TO_PRELOAD = [
   'shelf-food.png',
   'byungcheol.png',
   'ham.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/angry.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/happy.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/shocked.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/sick.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/tired.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/angry.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/happy.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/shocked.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/sick.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/tired.png',
 ];
 
 export default function LoadingPage() {

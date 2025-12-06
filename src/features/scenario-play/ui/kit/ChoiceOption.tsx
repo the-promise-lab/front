@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useRef, type MouseEvent } from 'react';
 import { cn } from '@shared/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
@@ -7,27 +7,31 @@ import { IconDiamond, IconDiamondPressed } from '@shared/ui/icons';
 
 interface ChoiceOptionProps {
   text: string;
-  onPress?: (isPressed: boolean) => void;
+  onProceed?: () => void;
+  isPressed: boolean;
+  onPress: () => void;
 }
 
 const TIMEOUT_DURATION = 2000;
 
-export default function ChoiceOption({ text, onPress }: ChoiceOptionProps) {
-  const [isPressed, setIsPressed] = useState(false);
+export default function ChoiceOption({
+  text,
+  onProceed,
+  isPressed,
+  onPress,
+}: ChoiceOptionProps) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handlePress = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    const newPressedState = !isPressed;
-    setIsPressed(newPressedState);
+    onPress();
 
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
     timeoutRef.current = setTimeout(() => {
-      setIsPressed(false);
-      onPress?.(newPressedState);
+      onProceed?.();
     }, TIMEOUT_DURATION);
   };
 

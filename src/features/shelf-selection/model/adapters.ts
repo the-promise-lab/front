@@ -62,6 +62,7 @@ function adaptShelfItemFromItemDto(
   return {
     id: String(item.id),
     name: item.name,
+    image: item.image,
     x,
     y,
     // TODO: 백엔드에서 재고(quantity) 제공 시 수정

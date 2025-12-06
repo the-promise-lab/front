@@ -13,6 +13,10 @@ export interface CharacterDetail {
   traits?: string;
   image?: string;
   thumbnail?: string;
+  colors?: {
+    backgroundColor: string;
+    borderColor: string;
+  };
 }
 
 export interface CharacterPairDetail {
@@ -59,6 +63,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
         image: '/image/introPage/char_hb_intro.svg',
         thumbnail: '/image/introPage/char_hb_intro.svg',
+        colors: {
+          backgroundColor: '#593B8F',
+          borderColor: '#CC92FB',
+        },
       },
       {
         id: 'bang',
@@ -83,6 +91,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
         image: '/image/introPage/char_bc_intro.svg',
         thumbnail: '/image/introPage/char_bc_intro.svg',
+        colors: {
+          backgroundColor: '#5B707E',
+          borderColor: '#9FEFD2',
+        },
       },
     ],
   },
@@ -114,6 +126,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits: '※특징: 노환으로 몸이 쇠약하고 악몽을 자주 꾼다.',
         image: '/image/introPage/char_bs_intro.svg',
         thumbnail: '/image/introPage/char_bs_intro.svg',
+        colors: {
+          backgroundColor: '#593B8F',
+          borderColor: '#CC92FB',
+        },
       },
       {
         id: 'jinsil',
@@ -137,6 +153,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits: '※특징: 특별히 아픈 곳은 없지만 기분을 잘 맞춰줘야 한다.',
         image: '/image/introPage/char_js_intro.svg',
         thumbnail: '/image/introPage/char_js_intro.svg',
+        colors: {
+          backgroundColor: '#5B707E',
+          borderColor: '#9FEFD2',
+        },
       },
     ],
   },
@@ -170,6 +190,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '※특징: 조금 긴장하거나 당황하면 과민성대장증후군으로 화장실이 급해진다.',
         image: '/image/introPage/char_jo_intro.svg',
         thumbnail: '/image/introPage/char_jo_intro.svg',
+        colors: {
+          backgroundColor: '#593B8F',
+          borderColor: '#CC92FB',
+        },
       },
       {
         id: 'munyewon',
@@ -194,6 +218,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '※특징: 발목을 다친 적이 있어 오래 걷거나 무거운 물건을 들면 통증에 시달린다.',
         image: '/image/introPage/char_yw_intro.svg',
         thumbnail: '/image/introPage/char_yw_intro.svg',
+        colors: {
+          backgroundColor: '#5B707E',
+          borderColor: '#9FEFD2',
+        },
       },
     ],
   },
@@ -224,6 +252,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits: '※특징: 자기 관리 강박증으로 방문 횟수가 많은 편이다.',
         image: '/image/introPage/char_mr_intro.svg',
         thumbnail: '/image/introPage/char_mr_intro.svg',
+        colors: {
+          backgroundColor: '#593B8F',
+          borderColor: '#CC92FB',
+        },
       },
       {
         id: 'ryujaeho',
@@ -248,6 +280,10 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '※특징: 만성 비염 환자로 온도차가 심한 환경에서는 재채기를 하거나 코가 꽉 막힌다.',
         image: '/image/introPage/char_jh_intro.svg',
         thumbnail: '/image/introPage/char_jh_intro.svg',
+        colors: {
+          backgroundColor: '#5B707E',
+          borderColor: '#9FEFD2',
+        },
       },
     ],
   },

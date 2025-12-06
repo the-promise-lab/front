@@ -10,13 +10,6 @@ export default defineConfig({
     port: 3000, // 원하는 포트 번호로 변경
     open: true,
     host: true,
-    proxy: {
-      '/cdn-proxy': {
-        target: 'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com',
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/cdn-proxy/, ''),
-      },
-    },
   },
   build: {
     outDir: 'dist',

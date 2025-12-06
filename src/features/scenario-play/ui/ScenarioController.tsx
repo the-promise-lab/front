@@ -16,10 +16,14 @@ import ItemChoiceScreen from './ItemChoiceScreen';
 import StatusScreen from './StatusScreen';
 import SystemScreen from './SystemScreen';
 import DayScreen from './DayScreen';
+import { useSetBackground } from '@shared/background/model/useSetBackground';
+import { useAssetStore } from '@shared/preload-assets';
+import { useShallow } from 'zustand/react/shallow';
 
 interface ScenarioControllerProps {
   onGameEnd?: () => void;
   onGameOver?: () => void;
+  onSuddenDeath?: () => void;
 }
 
 /**
@@ -29,6 +33,7 @@ interface ScenarioControllerProps {
 export function ScenarioController({
   onGameEnd,
   onGameOver,
+  onSuddenDeath,
 }: ScenarioControllerProps) {
   const {
     currentActBundle,
@@ -40,9 +45,21 @@ export function ScenarioController({
     clearChoice,
     setLoading,
     setError,
+    reset,
   } = useScenarioStore();
-
+  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
+  const backgroundImage = getObjectUrl('shelter-bg.png');
   const currentEvent = useScenarioStore(selectCurrentEvent);
+  const { setBackgroundImage } = useSetBackground({
+    image: currentEvent?.bgImage ?? backgroundImage,
+  });
+
+  useEffect(() => {
+    if (currentEvent?.bgImage) {
+      setBackgroundImage(currentEvent.bgImage);
+    }
+  }, [currentEvent, setBackgroundImage]);
+
   const status = useScenarioStore(selectStatus);
   const pendingOutcomeResultType = useScenarioStore(
     selectPendingOutcomeResultType
@@ -76,9 +93,10 @@ export function ScenarioController({
   useEffect(() => {
     if (!currentActBundle && !isLoading) {
       setLoading(true);
+      reset();
       loadCurrentAct();
     }
-  }, [currentActBundle, isLoading, loadCurrentAct, setLoading]);
+  }, [currentActBundle, isLoading, loadCurrentAct, setLoading, reset]);
 
   // status에 따른 분기 처리
   useEffect(() => {
@@ -89,15 +107,17 @@ export function ScenarioController({
         onGameEnd?.();
         break;
       case 'GAME_OVER':
-      case 'SUDDEN_DEATH':
         onGameOver?.();
+        break;
+      case 'SUDDEN_DEATH':
+        onSuddenDeath?.();
         break;
       case 'DAY_END':
         // DAY_END 후 다음 Day의 첫 번째 Act를 불러오기
         // 현재 Act의 모든 이벤트가 처리된 후에 자동으로 호출됨
         break;
     }
-  }, [status, onGameEnd, onGameOver]);
+  }, [status, onGameEnd, onGameOver, onSuddenDeath]);
 
   // 이벤트 완료 핸들러 (Simple, Status, System 타입용)
   const handleEventComplete = useCallback(() => {

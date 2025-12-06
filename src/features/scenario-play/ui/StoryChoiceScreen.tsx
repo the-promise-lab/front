@@ -3,6 +3,7 @@ import ChoiceOption from './kit/ChoiceOption';
 import { motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
 import type { ScenarioEvent, ScenarioChoiceOption } from '../model/types';
+import { useState } from 'react';
 
 interface StoryChoiceScreenProps {
   event: ScenarioEvent;
@@ -13,12 +14,13 @@ export default function StoryChoiceScreen({
   event,
   onSelect,
 }: StoryChoiceScreenProps) {
+  const [pressedOptionId, setPressedOptionId] = useState<number | null>(null);
   const title = event.choice?.title ?? '랜덤 이벤트 제목';
   const description =
     event.choice?.description ??
     '랜덤 이벤트에 대한 텍스트가 들어갑니다.\n선택지[1]과 선택지[2]가 있는 화면의 경우,\n엔딩 분기를 위한 스토리형 사건입니다.';
   const thumbnail = event.choice?.thumbnail;
-  const options = event.choice?.options ?? [
+  const options = event.choice?.options?.slice(0, 3) ?? [
     {
       choiceOptionId: 1,
       text: '선택지 1',
@@ -37,6 +39,10 @@ export default function StoryChoiceScreen({
   ];
 
   const handleOptionPress = (option: ScenarioChoiceOption) => {
+    setPressedOptionId(option.choiceOptionId);
+  };
+
+  const handleOptionProceed = (option: ScenarioChoiceOption) => {
     onSelect?.(option);
   };
 
@@ -80,7 +86,9 @@ export default function StoryChoiceScreen({
             <ChoiceOption
               key={option.choiceOptionId}
               text={option.text}
+              isPressed={pressedOptionId === option.choiceOptionId}
               onPress={() => handleOptionPress(option)}
+              onProceed={() => handleOptionProceed(option)}
             />
           ))}
         </motion.div>

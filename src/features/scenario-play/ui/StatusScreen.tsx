@@ -63,7 +63,7 @@ function CharacterEffectRow({
   characterCode,
   effects,
 }: CharacterEffectRowProps) {
-  const hpEffect = effects.find(e => e.effectType === 'hp');
+  const hpEffect = effects.find(e => e.effectType === 'health');
   const mentalEffect = effects.find(e => e.effectType === 'mental');
 
   return (
@@ -74,7 +74,7 @@ function CharacterEffectRow({
       <div className='flex items-center gap-14'>
         {hpEffect && (
           <StatBlock
-            icon={<IconLightning className='size-7' />}
+            icon={<IconHeart className='size-7' />}
             label='체력'
             value={hpEffect.change ?? 0}
             positiveClass='text-[#4cf69c]'
@@ -83,7 +83,7 @@ function CharacterEffectRow({
         )}
         {mentalEffect && (
           <StatBlock
-            icon={<IconHeart className='size-7' />}
+            icon={<IconLightning className='size-7' />}
             label='정신력'
             value={mentalEffect.change ?? 0}
             positiveClass='text-[#4cf69c]'
@@ -110,7 +110,8 @@ function StatBlock({
   positiveClass,
   negativeClass,
 }: StatBlockProps) {
-  const colorClass = value >= 0 ? positiveClass : negativeClass;
+  const colorClass =
+    value > 0 ? positiveClass : value < 0 ? negativeClass : 'text-white';
 
   return (
     <div className='flex flex-col items-center gap-3 font-[NexonLv2Gothic]'>
@@ -121,7 +122,7 @@ function StatBlock({
         </Typography>
       </div>
       <Typography variant='h2-b' className={cn(colorClass)}>
-        {value >= 0 ? '+' : '-'}
+        {value > 0 ? '+' : value < 0 ? '-' : ''}
         <Counter
           value={Math.abs(value)}
           springOptions={{ damping: 100, stiffness: 200 }}

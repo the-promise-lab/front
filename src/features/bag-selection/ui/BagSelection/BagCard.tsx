@@ -1,6 +1,8 @@
 import Typography from '@shared/ui/Typography';
 import type { Bag } from '@entities/game-session';
 import { cn } from '@shared/lib/utils';
+import { useAssetStore } from '@shared/preload-assets';
+import { useShallow } from 'zustand/react/shallow';
 
 interface BagCardProps {
   bag: Bag;
@@ -9,6 +11,7 @@ interface BagCardProps {
 }
 
 export default function BagCard({ bag, isSelected, onClick }: BagCardProps) {
+  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   return (
     <div
       onClick={onClick}
@@ -31,7 +34,7 @@ export default function BagCard({ bag, isSelected, onClick }: BagCardProps) {
       <div className='flex h-72.5 w-full items-center justify-center'>
         <div className='h-full w-65'>
           <img
-            src={bag.image}
+            src={getObjectUrl(bag.image)}
             alt={bag.name}
             className='h-full w-full object-cover'
           />
