@@ -59,12 +59,12 @@ const DIALOGUES: TimedDialogue[] = [
 ];
 
 export default function PackingPhase() {
-  const { back, gameSession, saveInventory, next } = useGameFlowStore(
+  const { back, gameSession, saveInventory, goto } = useGameFlowStore(
     useShallow(state => ({
       back: state.back,
       gameSession: state.gameSession,
       saveInventory: state.saveInventory,
-      next: state.next,
+      goto: state.goto,
     }))
   );
 
@@ -90,10 +90,10 @@ export default function PackingPhase() {
     });
   };
 
-  // 완료 시 다음 단계(INTRO_STORY_3)로 이동
+  // 완료 시 SCENARIO_FLOW로 직접 이동 (PlaceScreen → Caution → IntroStory3 → ScenarioController)
   const onComplete = (result: GameSessionDto) => {
     saveAndGetInventory(result);
-    next();
+    goto('SCENARIO_FLOW');
   };
 
   useEffect(() => {
