@@ -6,6 +6,13 @@ import Typography from '@shared/ui/Typography';
 import IntroSimpleScreen from '../../ui/IntroSimpleScreen';
 import { useSetBackground } from '@shared/background';
 import { useIntroEvents, type IntroEvent } from '@features/intro';
+import { SkipButton } from '@features/scenario-play';
+import {
+  Header,
+  PauseMenu,
+  playingCharacterSetSelector,
+  useGameFlowStore,
+} from '@processes/game-flow';
 
 interface IntroStoryProps {
   onNext?: () => void;
@@ -16,6 +23,8 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
+  const playingCharacters =
+    useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
   const {
     data,
     isPending,
@@ -83,20 +92,24 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
 
   return (
     <div className='relative flex h-full w-full flex-col' onClick={handleNext}>
+      <Header
+        hasCharacterProfiles
+        playingCharacters={playingCharacters}
+        menuSlot={<PauseMenu buttonClassName='static' />}
+        skipSlot={
+          !isSkipped ? (
+            <SkipButton
+              onClick={e => {
+                e.stopPropagation();
+                handleSkip();
+              }}
+            />
+          ) : null
+        }
+      />
       <div className='flex-1'>
         <IntroEventRenderer event={currentEvent} />
       </div>
-      {!isSkipped && (
-        <button
-          onClick={e => {
-            e.stopPropagation();
-            handleSkip();
-          }}
-          className='absolute top-6 right-6 rounded-full border border-white/30 bg-black/40 px-5 py-2 text-sm font-semibold text-white/80 transition hover:border-white/60 hover:text-white'
-        >
-          Skip
-        </button>
-      )}
     </div>
   );
 }
