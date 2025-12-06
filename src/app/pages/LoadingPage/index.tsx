@@ -22,19 +22,15 @@ export default function LoadingPage() {
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
 
   // 배경 이미지 설정
-  useSetBackground({ image: '/public/image/mainPage/main_splash_bg.png' });
+  useSetBackground({ image: '/image/mainPage/main_splash_bg.png' });
 
   // 게임 플로우 상태
-  const { isNewGame, startScenarioFlow, next, gameSession, goto } =
-    useGameFlowStore(
-      useShallow(state => ({
-        isNewGame: state.isNewGame,
-        startScenarioFlow: state.startScenarioFlow,
-        next: state.next,
-        goto: state.goto,
-        gameSession: state.gameSession,
-      }))
-    );
+  const { isNewGame, goto } = useGameFlowStore(
+    useShallow(state => ({
+      isNewGame: state.isNewGame,
+      goto: state.goto,
+    }))
+  );
 
   const total = ASSETS_TO_PRELOAD.length;
   const loaded = Array.from(assetEntries.values()).filter(
@@ -62,35 +58,16 @@ export default function LoadingPage() {
       loaded,
       total,
       isNewGame,
-      gameSession,
     });
     if (isNewGame) {
       console.log('LoadingPage: 새 게임 - CHARACTER_SELECT로 이동');
-      next(); // CHARACTER_SELECT로
-    } else if (!gameSession) {
-      console.warn('LoadingPage: 게임 세션이 정상적으로 생성되지 않음 - ERROR');
-      goto('MAIN_MENU'); // TODO: 적절한 에러 처리 로직 구현.
-    } else if (!gameSession.playingCharacterSet) {
-      console.log('LoadingPage: 이어하기 - CHARACTER_SELECT로 이동');
       goto('CHARACTER_SELECT');
-    } else if (!gameSession.currentActId) {
-      console.log('LoadingPage: 이어하기 - INTRO_STORY부터 재개');
-      goto('INTRO_STORY');
     } else {
-      console.log('LoadingPage: 이어하기 - SCENARIO_FLOW로 이동');
-      startScenarioFlow(); // TODO: 실제로 currentActId부터 이어하기 구현.
+      // 그 외의 경우(초기 진입, 이어하기 등) 메인 메뉴로 이동
+      console.log('LoadingPage: 메인 메뉴로 이동');
+      goto('MAIN_MENU');
     }
-  }, [
-    isNewGame,
-    gameSession,
-    next,
-    goto,
-    startScenarioFlow,
-    allLoaded,
-    timerEnded,
-    loaded,
-    total,
-  ]);
+  }, [isNewGame, goto, allLoaded, timerEnded, loaded, total]);
 
   useEffect(() => {
     // 로딩 완료 조건: 에셋 로딩 + 타이머

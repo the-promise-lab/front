@@ -34,16 +34,17 @@ export default function MainMenu() {
           playsInline
           className='fixed inset-0 -z-10 h-full w-full object-cover'
         />
+        <div className='fixed inset-0 -z-9 bg-black/40' />
       </BackgroundPortal>
       {/* 중앙 메인 컨텐츠 */}
-      <div className='flex flex-col items-center justify-center'>
-        <div className='py-30 text-center'>
+      <div className='flex h-full flex-col items-center justify-end pb-30'>
+        {/* <div className='py-30 text-center'>
           <img
             src='/image/mainPage/game_logo.svg'
             alt='back to the future'
             className='mx-auto h-62 w-400'
           />
-        </div>
+        </div> */}
 
         {/* 게임 시작 버튼들 */}
         <div className='flex flex-col items-center justify-center gap-2'>

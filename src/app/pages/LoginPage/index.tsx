@@ -59,8 +59,8 @@ export default function LoginPage() {
         // 로그인 상태 업데이트 (프로필 정보 포함)
         login(profileResponse, tokenResponse.accessToken);
 
-        // 메인 메뉴로 이동
-        goto('MAIN_MENU');
+        // 로딩 페이지로 이동 (그 후 메인 메뉴로 자동 전환됨)
+        goto('PROGRESS');
       } catch (err) {
         console.error('카카오 로그인 실패:', err);
         if (isAxiosError(err)) {
