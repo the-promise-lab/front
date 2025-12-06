@@ -15,9 +15,7 @@ export default function ItemChoiceScreen({
   event,
   onSelect,
 }: ItemChoiceScreenProps) {
-  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
-    null
-  );
+  const [pressedOptionId, setPressedOptionId] = useState<number | null>(null);
 
   const title = event.choice?.title ?? '아이템 선택';
   const description =
@@ -47,18 +45,23 @@ export default function ItemChoiceScreen({
       text: '그냥 버틴다',
     };
 
-  const handleItemSelect = (index: number, option: ScenarioChoiceOption) => {
-    setSelectedItemIndex(index);
+  const handleItemPress = (option: ScenarioChoiceOption) => {
+    setPressedOptionId(option.choiceOptionId);
+  };
+
+  const handleItemProceed = (option: ScenarioChoiceOption) => {
     onSelect?.(option, option.choiceOptionId);
   };
 
   const handleFallbackPress = () => {
-    if (fallback) {
-      onSelect?.({
-        choiceOptionId: fallback.choiceOptionId,
-        text: fallback.text,
-      });
-    }
+    setPressedOptionId(fallback.choiceOptionId);
+  };
+
+  const handleFallbackProceed = () => {
+    onSelect?.({
+      choiceOptionId: fallback.choiceOptionId,
+      text: fallback.text,
+    });
   };
 
   return (
@@ -90,19 +93,25 @@ export default function ItemChoiceScreen({
         </div>
         <div className='flex flex-col gap-6'>
           <div className='flex gap-2'>
-            {options.map((option, index) => (
+            {options.map(option => (
               <ItemButton
                 key={option.choiceOptionId}
                 name={option.text}
                 imageUrl={option.itemImage ?? undefined}
-                pressed={selectedItemIndex === index}
-                onClick={() => handleItemSelect(index, option)}
+                isPressed={pressedOptionId === option.choiceOptionId}
+                onPress={() => handleItemPress(option)}
+                onProceed={() => handleItemProceed(option)}
                 disabled={option.isSelectable === false}
               />
             ))}
           </div>
           {fallback && (
-            <ChoiceOption text={fallback.text} onPress={handleFallbackPress} />
+            <ChoiceOption
+              text={fallback.text}
+              isPressed={pressedOptionId === fallback.choiceOptionId}
+              onPress={handleFallbackPress}
+              onProceed={handleFallbackProceed}
+            />
           )}
         </div>
       </div>
