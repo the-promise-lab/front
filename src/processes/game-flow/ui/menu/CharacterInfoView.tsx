@@ -8,6 +8,60 @@ import {
   getCharacterPairDetailByName,
 } from '@entities/character-data';
 
+/**
+ * 캐릭터 ID를 스탯 이미지 경로로 변환
+ */
+function getCharacterStatImagePath(
+  characterId: string | undefined
+): string | null {
+  if (!characterId) return null;
+
+  // 캐릭터 ID를 스탯 이미지 이니셜로 매핑
+  const idToInitial: Record<string, string> = {
+    hem: 'hb',
+    bang: 'bc',
+    boksun: 'bs',
+    jinsil: 'js',
+    sojaeok: 'jo',
+    munyewon: 'yw',
+    bangmiri: 'mr',
+    ryujaeho: 'jh',
+  };
+
+  const initial = idToInitial[characterId.toLowerCase()];
+  if (!initial) return null;
+
+  return `/image/charSelect/char_${initial}_stat.svg`;
+}
+
+/**
+ * 캐릭터 ID를 페어 이미지 경로로 변환
+ */
+function getCharacterPairImagePath(
+  characterId: string | undefined,
+  isActive: boolean
+): string | null {
+  if (!characterId) return null;
+
+  // 캐릭터 ID를 이미지 이니셜로 매핑
+  const idToInitial: Record<string, string> = {
+    hem: 'hb',
+    bang: 'bc',
+    boksun: 'bs',
+    jinsil: 'js',
+    sojaeok: 'jo',
+    munyewon: 'yw',
+    bangmiri: 'mr',
+    ryujaeho: 'jh',
+  };
+
+  const initial = idToInitial[characterId.toLowerCase()];
+  if (!initial) return null;
+
+  const type = isActive ? 'active' : 'default';
+  return `/image/charSelect/pair_${type}_${initial}.svg`;
+}
+
 export function CharacterInfoView() {
   const playingCharacters = useGameFlowStore(
     state => state.gameSession?.playingCharacterSet?.playingCharacters
@@ -57,7 +111,7 @@ export function CharacterInfoView() {
     }
     return (
       characterDetails.find(
-        item => item.playingCharacter.id.toString() === activeCharacterId
+        item => item.detail?.id === activeCharacterId // detail.id로 매칭 변경
       ) ||
       characterDetails[0] ||
       null
@@ -65,10 +119,14 @@ export function CharacterInfoView() {
   }, [activeCharacterId, characterDetails]);
 
   useEffect(() => {
-    if (characterDetails.length > 0) {
-      setActiveCharacterId(characterDetails[0].playingCharacter.id.toString());
+    if (characterDetails.length > 0 && !activeCharacterId) {
+      // 초기값 설정: detail.id 사용
+      const firstDetail = characterDetails[0].detail;
+      if (firstDetail) {
+        setActiveCharacterId(firstDetail.id);
+      }
     }
-  }, [characterDetails]);
+  }, [characterDetails, activeCharacterId]);
 
   if (!playingCharacters || playingCharacters.length === 0) {
     return (
@@ -91,171 +149,125 @@ export function CharacterInfoView() {
   }
 
   const { playingCharacter, detail } = activeCharacterDetail;
-  const currentPair = characterDetails;
+  const activeCharacter = detail; // CharacterSelect와 변수명 통일
 
   return (
-    <div className='flex h-full w-full flex-col text-white'>
-      <header className='mb-8 flex items-center justify-between'>
-        <div className='text-sm text-white/40'>
-          {playingCharacters.length > 0
-            ? `${playingCharacters.length} PLAYERS`
-            : '준비중'}
-        </div>
-      </header>
-
-      <div className='flex flex-1 items-center gap-16'>
-        {/* 중앙 캐릭터 이미지 */}
-        <div className='flex flex-1 items-center justify-center'>
-          {detail?.image ? (
-            <img
-              src={detail.image}
-              alt={detail.name || 'Character'}
-              className='max-h-[540px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
-            />
-          ) : playingCharacter.fullImage ? (
-            <img
-              src={playingCharacter.fullImage}
-              alt={playingCharacter.name || 'Character'}
-              className='max-h-[540px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
-            />
-          ) : (
-            <div className='flex h-[200px] w-[200px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
-              이미지 준비 중
-            </div>
-          )}
-        </div>
-
-        {/* 우측 캐릭터 정보 */}
-        <div className='flex w-[420px] flex-col gap-8'>
-          <div className='flex flex-col gap-3'>
-            {detail ? (
-              <>
-                <div className='flex items-baseline gap-3'>
-                  <Typography
-                    variant='h3-b'
-                    className='text-xl font-extrabold tracking-tight text-white'
-                  >
-                    {detail.name}
-                  </Typography>
-                  {detail.age && (
-                    <span className='text-lg text-white/60'>{detail.age}</span>
-                  )}
-                </div>
-                {detail.stats && detail.stats.length > 0 && (
-                  <div className='flex gap-3'>
-                    {detail.stats.map(stat => (
-                      <div
-                        key={`${detail.id}-${stat.label}`}
-                        className='flex flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3'
-                      >
-                        <span className='text-xs font-semibold tracking-wide text-white/40 uppercase'>
-                          {stat.label}
-                        </span>
-                        <span className='text-lg font-bold text-white'>
-                          {stat.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {/* 게임 진행 중인 스탯도 표시 */}
-                {(playingCharacter.currentHp !== null ||
-                  playingCharacter.currentMental !== null) && (
-                  <div className='flex gap-3'>
-                    {playingCharacter.currentHp !== null && (
-                      <div className='flex flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3'>
-                        <span className='text-xs font-semibold tracking-wide text-white/40 uppercase'>
-                          현재 체력
-                        </span>
-                        <span className='text-lg font-bold text-white'>
-                          {playingCharacter.currentHp}
-                        </span>
-                      </div>
-                    )}
-                    {playingCharacter.currentMental !== null && (
-                      <div className='flex flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3'>
-                        <span className='text-xs font-semibold tracking-wide text-white/40 uppercase'>
-                          현재 정신력
-                        </span>
-                        <span className='text-lg font-bold text-white'>
-                          {playingCharacter.currentMental}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {pairDetail.overview && (
-                  <p className='text-sm leading-relaxed whitespace-pre-line text-white/70'>
-                    {pairDetail.overview}
-                  </p>
-                )}
-                {detail.description && (
-                  <p className='text-sm leading-relaxed whitespace-pre-line text-white/80'>
-                    {detail.description}
-                  </p>
-                )}
-                {'traits' in detail && detail.traits && (
-                  <p className='text-xs whitespace-pre-line text-white/50'>
-                    {detail.traits}
-                  </p>
-                )}
-              </>
-            ) : null}
+    <div className='flex h-full w-full text-white'>
+      {/* 중앙 캐릭터 이미지 */}
+      <main className='relative flex flex-1 items-center justify-center'>
+        {activeCharacter?.image ? (
+          <img
+            src={activeCharacter.image}
+            alt={activeCharacter.name}
+            className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+          />
+        ) : playingCharacter.fullImage ? (
+          <img
+            src={playingCharacter.fullImage}
+            alt={playingCharacter.name || 'Character'}
+            className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+          />
+        ) : (
+          <div className='flex h-[140px] w-[140px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
+            이미지 준비 중
           </div>
+        )}
+      </main>
 
-          {/* 하단 캐릭터 썸네일 */}
-          {currentPair && currentPair.length > 1 && (
-            <div className='flex h-full w-full items-end justify-between'>
-              <div>
-                <div className='text-xs font-semibold tracking-[0.3em] text-white/40 uppercase'>
-                  플레이어 페어
-                </div>
-                <div className='mt-3 flex gap-3'>
-                  {currentPair.map(item => {
-                    const isActive =
-                      item.playingCharacter.id === playingCharacter.id;
-                    const thumbnail =
-                      item.detail?.thumbnail ||
-                      item.playingCharacter.profileImage;
-                    return (
-                      <button
-                        key={item.playingCharacter.id}
-                        onClick={() =>
-                          setActiveCharacterId(
-                            item.playingCharacter.id.toString()
-                          )
-                        }
-                        className={cn(
-                          'relative h-20 w-20 overflow-hidden rounded-2xl border transition-all',
-                          isActive
-                            ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
-                            : 'border-white/15 hover:border-white/30'
-                        )}
-                      >
-                        {thumbnail ? (
-                          <img
-                            src={thumbnail}
-                            alt={
-                              item.detail?.name ||
-                              item.playingCharacter.name ||
-                              'Character'
-                            }
-                            className='h-full w-full object-cover'
-                          />
-                        ) : (
-                          <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
-                            ?
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+      {/* 우측: 캐릭터 정보 (CharacterSelect 스타일 적용) */}
+      <aside className='flex h-full w-[360px] flex-col justify-center gap-4 overflow-y-auto px-40'>
+        <div className='flex flex-col gap-3'>
+          <span className='text-sm font-semibold text-white/40'>
+            {/* {pairDetail.title} */}
+          </span>
+          {activeCharacter ? (
+            <>
+              <div className='flex items-baseline gap-3'>
+                <span className='text-[16px] font-extrabold tracking-tight'>
+                  | {activeCharacter.name}
+                </span>
+                {activeCharacter.age && (
+                  <span className='text-[12px] font-bold text-white/60'>
+                    {activeCharacter.age}
+                  </span>
+                )}
               </div>
-            </div>
-          )}
+              {activeCharacter.id ? (
+                <div className='mt-4'>
+                  {(() => {
+                    const statImagePath = getCharacterStatImagePath(
+                      activeCharacter.id
+                    );
+                    return statImagePath ? (
+                      <img
+                        src={statImagePath}
+                        alt={`${activeCharacter.name} 스탯`}
+                        className='h-33 w-83 object-contain'
+                      />
+                    ) : null;
+                  })()}
+                </div>
+              ) : null}
+            </>
+          ) : null}
         </div>
-      </div>
+
+        {pairDetail.overview && (
+          <p className='text-sm leading-relaxed whitespace-pre-line'>
+            {pairDetail.overview}
+          </p>
+        )}
+
+        <p className='h-[60px] text-[9px] leading-relaxed whitespace-pre-line'>
+          {activeCharacter?.description}
+        </p>
+
+        <p className='h-[40px] text-[9px] whitespace-pre-line'>
+          {activeCharacter?.traits}
+        </p>
+
+        <div className='flex w-full items-start justify-between'>
+          <div>
+            <div className='text-[10px] font-semibold uppercase'>
+              플레이어 페어
+            </div>
+            <div className='mt-3 flex gap-3'>
+              {pairDetail.characters.map(character => {
+                const isActive = character.id === activeCharacter?.id;
+                const pairImage = getCharacterPairImagePath(
+                  character.id,
+                  isActive
+                );
+
+                return (
+                  <button
+                    key={character.id}
+                    onClick={() => setActiveCharacterId(character.id)}
+                    className={cn(
+                      'h-37p relative w-37 overflow-hidden border transition-all',
+                      isActive
+                        ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
+                        : 'border-white/15 hover:border-white/30'
+                    )}
+                  >
+                    {pairImage ? (
+                      <img
+                        src={pairImage}
+                        alt={character.name}
+                        className='h-full w-full object-cover'
+                      />
+                    ) : (
+                      <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
+                        ?
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
   );
 }
