@@ -109,7 +109,7 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
     if (event.CharID2 || event.CharImageUrl2) {
       chars.push(
         makePortraitCharacter(
-          event.CharID2 ?? DEFAULT_RIGHT,
+      event.CharID2 ?? DEFAULT_RIGHT,
           'right',
           event.CharImageUrl2,
           toPortraitPosition(event.CharPosition2, 'right')
