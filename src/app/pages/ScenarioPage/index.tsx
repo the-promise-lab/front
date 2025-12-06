@@ -1,17 +1,32 @@
+import { useState } from 'react';
 import { useAssetStore } from '@shared/preload-assets';
 import { SideInventory, useGameFlowStore, Header } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
+import NoticeBanner from '@shared/ui/NoticeBanner';
+import Typography from '@shared/ui/Typography';
+import TypingText from '@shared/ui/TypingText';
 import {
   ScenarioController,
   SkipButton,
+  PlaceScreen,
   useScenarioStore,
   selectCurrentEvent,
 } from '@features/scenario-play';
+import IntroStory from '../IntroStory';
+
+type IntroPhase = 'place' | 'caution' | 'intro3' | 'scenario';
+
+const CAUTION_TEXTS = [
+  '상황마다 주어지는 기회는 단 한 번뿐입니다. 이제 모든 것은 당신의 선택에 달려 있습니다.',
+  '결과는 되돌릴 수 없으니, 신중히 결정하세요.',
+];
 
 export default function ScenarioPage() {
+  const [introPhase, setIntroPhase] = useState<IntroPhase>('place');
+
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const backgroundImage = getObjectUrl('shelter-bg.png');
 
@@ -36,6 +51,62 @@ export default function ScenarioPage() {
     skipDialogueEvents();
   };
 
+  // PlaceScreen 완료 시 Caution 단계로 이동
+  const handlePlaceComplete = () => {
+    setIntroPhase('caution');
+  };
+
+  // Caution 클릭 시 intro3 단계로 이동
+  const handleCautionClick = () => {
+    setIntroPhase('intro3');
+  };
+
+  // IntroStory3 완료 시 시나리오 시작
+  const handleIntro3Complete = () => {
+    setIntroPhase('scenario');
+  };
+
+  // PlaceScreen 단계
+  if (introPhase === 'place') {
+    return (
+      <div className='relative h-full w-full'>
+        <EdgeGradient />
+        <PlaceScreen onComplete={handlePlaceComplete} />
+      </div>
+    );
+  }
+
+  // Caution 단계
+  if (introPhase === 'caution') {
+    return (
+      <div
+        className='relative h-full w-full cursor-pointer'
+        onClick={handleCautionClick}
+      >
+        <EdgeGradient />
+        <NoticeBanner withCaution>
+          <Typography variant='dialogue-2'>
+            <TypingText texts={CAUTION_TEXTS} smooth />
+          </Typography>
+        </NoticeBanner>
+      </div>
+    );
+  }
+
+  // IntroStory3 단계
+  if (introPhase === 'intro3') {
+    return (
+      <div className='relative h-full w-full'>
+        <EdgeGradient />
+        <IntroStory
+          jsonPath='/JSON/intro_third.json'
+          onNext={handleIntro3Complete}
+        />
+      </div>
+    );
+  }
+
+  // 시나리오 진행 단계
   return (
     <div className='relative flex h-full w-full flex-col gap-4'>
       <EdgeGradient />

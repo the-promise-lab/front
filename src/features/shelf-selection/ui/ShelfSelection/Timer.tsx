@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import Typography from '@shared/ui/Typography';
 import { cn } from '@shared/lib/utils';
 import NoticeBanner from '@shared/ui/NoticeBanner';
@@ -60,6 +60,13 @@ export default function Timer({
   const isImminent = secondsLeft < 10;
   const NoticeOn = SECONDS_GIVEN - secondsLeft <= 2;
 
+  // showModal이 true가 되면 자동으로 다음 단계로 이동
+  useEffect(() => {
+    if (showModal) {
+      onTimeout();
+    }
+  }, [showModal, onTimeout]);
+
   return (
     <>
       <TimerDisplay
@@ -91,40 +98,6 @@ export default function Timer({
               </NoticeBanner>
             </motion.div>
           </BackgroundPortal>
-        )}
-      </AnimatePresence>
-
-      {/* 모달 */}
-      <AnimatePresence>
-        {showModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'
-            onClick={e => e.stopPropagation()}
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className='rounded-lg bg-white p-8 shadow-xl'
-              onClick={e => e.stopPropagation()}
-            >
-              <h2 className='mb-6 text-center text-2xl font-bold text-gray-800'>
-                가방싸기 종료!
-              </h2>
-              <button
-                onClick={e => {
-                  e.stopPropagation();
-                  onTimeout();
-                }}
-                className='w-full rounded-lg bg-blue-500 px-6 py-3 text-[13px] font-medium text-white transition-colors hover:bg-blue-600'
-              >
-                확인
-              </button>
-            </motion.div>
-          </motion.div>
         )}
       </AnimatePresence>
     </>
