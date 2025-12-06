@@ -206,16 +206,16 @@ export default function CharacterSelect({
   return (
     <div className='grid h-full w-full grid-cols-[270px_1fr_360px] text-white'>
       <BackgroundPortal>
-        <div className='absolute top-11 right-0 z-201'>
+        <div className='absolute top-8 right-0 z-201 h-[35px] w-[350px]'>
           <img
             src='/image/charSelect/char_select_page_header.svg'
             alt='캐릭터 선택'
-            className='h-[22px] w-[277px]'
+            className='h-full w-full object-fill'
           />
         </div>
       </BackgroundPortal>
       {/* 좌측: 캐릭터 셋 선택 */}
-      <aside className='flex h-full flex-col py-6'>
+      <aside className='flex h-full flex-col'>
         <div className='flex w-full flex-col justify-items-start gap-1'>
           {characterSets.map((set, index) => {
             const isActive = index === currentIndex;
@@ -273,11 +273,11 @@ export default function CharacterSelect({
             onClick={handleSelectComplete}
             disabled={currentSet?.isLocked || isSelecting}
             className={cn(
-              'pointer-events-auto px-14 py-6 text-white transition-all',
+              'pointer-events-auto h-[30px] w-[145px] text-white transition-all',
               currentSet?.isLocked ? 'opacity-70' : ''
             )}
           >
-            <Typography variant='h4-b'>
+            <Typography variant='h4-b' className='text-sm'>
               {isSelecting
                 ? '선택 중...'
                 : currentSet?.isLocked
@@ -289,7 +289,7 @@ export default function CharacterSelect({
       </main>
 
       {/* 우측: 캐릭터 정보 */}
-      <aside className='flex h-full flex-col justify-center gap-8 overflow-y-auto pr-40 pl-40'>
+      <aside className='flex h-full flex-col justify-center gap-4 overflow-y-auto px-40'>
         <div className='flex flex-col gap-3'>
           <span className='text-sm font-semibold text-white/40'>
             {/* {pairDetail.title} */}
@@ -297,11 +297,11 @@ export default function CharacterSelect({
           {activeCharacter ? (
             <>
               <div className='flex items-baseline gap-3'>
-                <span className='text-lg font-extrabold tracking-tight'>
-                  {activeCharacter.name}
+                <span className='text-[16px] font-extrabold tracking-tight'>
+                  | {activeCharacter.name}
                 </span>
                 {activeCharacter.age && (
-                  <span className='text-lg text-white/60'>
+                  <span className='text-[12px] font-bold text-white/60'>
                     {activeCharacter.age}
                   </span>
                 )}
@@ -327,26 +327,24 @@ export default function CharacterSelect({
         </div>
 
         {pairDetail.overview && (
-          <p className='text-sm leading-relaxed whitespace-pre-line text-white/70'>
+          <p className='text-sm leading-relaxed whitespace-pre-line'>
             {pairDetail.overview}
           </p>
         )}
 
-        {activeCharacter?.description && (
-          <p className='text-[10px] leading-relaxed whitespace-pre-line text-white/80'>
-            {activeCharacter.description}
-          </p>
-        )}
+        <p className='h-[60px] text-[9px] leading-relaxed whitespace-pre-line'>
+          {activeCharacter?.description}
+        </p>
 
-        {activeCharacter?.traits && (
-          <p className='text-[10px] whitespace-pre-line text-white/50'>
-            {activeCharacter.traits}
-          </p>
-        )}
+        <p className='h-[40px] text-[9px] whitespace-pre-line'>
+          {activeCharacter?.traits}
+        </p>
 
         <div className='flex w-full items-start justify-between'>
           <div>
-            <div className='text-xs font-semibold uppercase'>플레이어 페어</div>
+            <div className='text-[10px] font-semibold uppercase'>
+              플레이어 페어
+            </div>
             <div className='mt-3 flex gap-3'>
               {pairDetail.characters.map(character => {
                 const isActive = character.id === activeCharacter?.id;

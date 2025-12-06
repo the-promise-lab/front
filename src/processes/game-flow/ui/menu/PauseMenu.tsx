@@ -111,7 +111,12 @@ export default function PauseMenu({
               onClose={close}
               className='mx-auto aspect-video h-dvh'
             >
-              <div className='relative mt-45 h-full'>
+              <div
+                className={cn(
+                  'relative h-full',
+                  selectedCategory === 'team-intro' ? 'mt-0' : 'mt-45'
+                )}
+              >
                 <div className='absolute top-0 left-0 h-[90%] w-0.25 bg-white' />
                 {renderContent()}
               </div>
