@@ -5,3 +5,9 @@ export const SOUND_URLS = {
 
 export type SoundKey = keyof typeof SOUND_URLS;
 
+export const CLICK_SOUND_VARIANTS = {
+  default: SOUND_URLS.buttonClick,
+} as const;
+
+export type ClickSoundVariant = keyof typeof CLICK_SOUND_VARIANTS;
+

@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
-import { SOUND_URLS } from './constants';
+import { CLICK_SOUND_VARIANTS, type ClickSoundVariant } from './constants';
 import { useGameSound } from './useGameSound';
 
 interface UseButtonClickSfxOptions {
-  url?: string;
+  variant?: ClickSoundVariant;
   volume?: number;
 }
 
 export function useButtonClickSfx(options: UseButtonClickSfxOptions = {}) {
   const { play } = useGameSound();
-  const { url = SOUND_URLS.buttonClick, volume = 1 } = options;
+  const { variant = 'default', volume = 1 } = options;
+  const url = CLICK_SOUND_VARIANTS[variant] ?? CLICK_SOUND_VARIANTS.default;
 
   return useCallback(() => {
     void play({
