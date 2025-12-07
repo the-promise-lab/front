@@ -27,7 +27,7 @@ export default function GlassButton({
         viewBox='0 0 580 120'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
-        preserveAspectRatio='none'
+        // preserveAspectRatio='none'
       >
         <rect
           x='1'
