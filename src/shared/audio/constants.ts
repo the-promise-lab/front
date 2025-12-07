@@ -10,4 +10,3 @@ export const CLICK_SOUND_VARIANTS = {
 } as const;
 
 export type ClickSoundVariant = keyof typeof CLICK_SOUND_VARIANTS;
-

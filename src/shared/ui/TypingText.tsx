@@ -86,12 +86,13 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
     const started = useRef(false);
     const cursorControls = useAnimationControls();
     const soundHandleRef = useRef<PlayHandle | null>(null);
+    const soundPendingRef = useRef(false);
     const { play } = useGameSound();
     const {
       enabled: typingSoundEnabled = true,
       url: typingSoundUrl = SOUND_URLS.typing,
       volume: typingSoundVolume = 1,
-      fadeOutMs: typingSoundFadeOutMs = 120,
+      fadeOutMs: typingSoundFadeOutMs = 100,
     } = soundProps ?? {};
 
     const isTyping = count < units.length;
@@ -131,63 +132,56 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
       [units.length, isTyping, typingSoundFadeOutMs]
     );
 
-    // 애니메이션 완료 시 onComplete 콜백 호출
-    useEffect(() => {
-      if (count >= units.length && units.length > 0 && onComplete) {
-        onComplete();
-      }
-    }, [count, units.length, onComplete]);
-
     const stopTypingSound = useCallback(() => {
+      soundPendingRef.current = false;
       if (soundHandleRef.current) {
         soundHandleRef.current.stop(typingSoundFadeOutMs);
         soundHandleRef.current = null;
       }
     }, [typingSoundFadeOutMs]);
 
-    useEffect(() => {
-      if (!typingSoundEnabled) {
-        stopTypingSound();
-        return;
-      }
-      if (!isPlaying || !isTyping) {
-        stopTypingSound();
-        return;
-      }
-      if (soundHandleRef.current) return;
-
-      let cancelled = false;
-      play({
+    const startTypingSound = useCallback(() => {
+      if (!typingSoundEnabled || !isTyping || !isPlaying) return;
+      if (soundHandleRef.current || soundPendingRef.current) return;
+      soundPendingRef.current = true;
+      void play({
         url: typingSoundUrl,
         channel: 'sfx',
         loop: true,
         volume: typingSoundVolume,
       })
         .then(handle => {
-          if (cancelled || !typingSoundEnabled || !isPlaying || !isTyping) {
-            handle.stop(typingSoundFadeOutMs);
-            return;
-          }
           soundHandleRef.current = handle;
         })
         .catch(error => {
           console.error('typing sound play failed', error);
+        })
+        .finally(() => {
+          soundPendingRef.current = false;
         });
-
-      return () => {
-        cancelled = true;
-        stopTypingSound();
-      };
     }, [
       isPlaying,
       isTyping,
       play,
-      stopTypingSound,
       typingSoundEnabled,
-      typingSoundFadeOutMs,
       typingSoundUrl,
       typingSoundVolume,
     ]);
+
+    // 애니메이션 완료 시 onComplete 콜백 호출 및 사운드 정지
+    useEffect(() => {
+      if (count >= units.length && units.length > 0) {
+        stopTypingSound();
+        if (onComplete) onComplete();
+      }
+    }, [count, units.length, onComplete, stopTypingSound]);
+
+    useEffect(() => {
+      return () => {
+        stopTypingSound();
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // 보일 때만 재생
     useEffect(() => {
@@ -210,7 +204,12 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
       if (!isPlaying || units.length === 0) {
         if (timer.current) window.clearTimeout(timer.current);
         timer.current = null;
+        stopTypingSound();
         return;
+      }
+
+      if (typingSoundEnabled && isTyping) {
+        startTypingSound();
       }
 
       const tick = () => {
