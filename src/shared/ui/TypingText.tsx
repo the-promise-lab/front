@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -7,6 +8,8 @@ import {
   useState,
 } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
+import { useGameSound, SOUND_URLS } from '@shared/audio';
+import type { PlayHandle } from '@shared/audio';
 import type { TypographyVariant } from './Typography';
 import Typography from './Typography';
 
@@ -27,6 +30,12 @@ interface TypingTextProps {
   smooth?: boolean;
   variant?: TypographyVariant;
   onComplete?: () => void;
+  soundProps?: {
+    enabled?: boolean;
+    url?: string;
+    volume?: number;
+    fadeOutMs?: number;
+  };
 }
 
 function splitGraphemes(text: string, locale = 'ko') {
@@ -53,6 +62,7 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
       smooth = false,
       variant = 'dialogue-m',
       onComplete,
+      soundProps,
     },
     ref
   ) => {
@@ -75,6 +85,14 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
     const timer = useRef<number | null>(null);
     const started = useRef(false);
     const cursorControls = useAnimationControls();
+    const soundHandleRef = useRef<PlayHandle | null>(null);
+    const { play } = useGameSound();
+    const {
+      enabled: typingSoundEnabled = true,
+      url: typingSoundUrl = SOUND_URLS.typing,
+      volume: typingSoundVolume = 1,
+      fadeOutMs: typingSoundFadeOutMs = 120,
+    } = soundProps ?? {};
 
     const isTyping = count < units.length;
 
@@ -103,10 +121,14 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
             timer.current = null;
           }
           setCount(units.length);
+          if (soundHandleRef.current) {
+            soundHandleRef.current.stop(typingSoundFadeOutMs);
+            soundHandleRef.current = null;
+          }
         },
         isTyping,
       }),
-      [units.length, isTyping]
+      [units.length, isTyping, typingSoundFadeOutMs]
     );
 
     // 애니메이션 완료 시 onComplete 콜백 호출
@@ -115,6 +137,57 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
         onComplete();
       }
     }, [count, units.length, onComplete]);
+
+    const stopTypingSound = useCallback(() => {
+      if (soundHandleRef.current) {
+        soundHandleRef.current.stop(typingSoundFadeOutMs);
+        soundHandleRef.current = null;
+      }
+    }, [typingSoundFadeOutMs]);
+
+    useEffect(() => {
+      if (!typingSoundEnabled) {
+        stopTypingSound();
+        return;
+      }
+      if (!isPlaying || !isTyping) {
+        stopTypingSound();
+        return;
+      }
+      if (soundHandleRef.current) return;
+
+      let cancelled = false;
+      play({
+        url: typingSoundUrl,
+        channel: 'sfx',
+        loop: true,
+        volume: typingSoundVolume,
+      })
+        .then(handle => {
+          if (cancelled || !typingSoundEnabled || !isPlaying || !isTyping) {
+            handle.stop(typingSoundFadeOutMs);
+            return;
+          }
+          soundHandleRef.current = handle;
+        })
+        .catch(error => {
+          console.error('typing sound play failed', error);
+        });
+
+      return () => {
+        cancelled = true;
+        stopTypingSound();
+      };
+    }, [
+      isPlaying,
+      isTyping,
+      play,
+      stopTypingSound,
+      typingSoundEnabled,
+      typingSoundFadeOutMs,
+      typingSoundUrl,
+      typingSoundVolume,
+    ]);
 
     // 보일 때만 재생
     useEffect(() => {
