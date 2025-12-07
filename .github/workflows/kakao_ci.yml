@@ -68,7 +68,7 @@ jobs:
 
       # Create .env file from secret for build time env vars
       - name: Create .env file
-        run: echo "${{ secrets.KAKAO_ENV_FILE }}" > .env.local
+        run: echo "${{ secrets.KAKAO_ENV_FILE }}" > .env
 
       - name: Run build
         run: npm run build
