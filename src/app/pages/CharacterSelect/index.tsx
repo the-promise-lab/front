@@ -33,13 +33,13 @@ export default function CharacterSelectPage() {
   };
 
   return (
-    <div className='relative h-full w-full'>
+    <>
       <EdgeGradient />
       <CharacterSelect
         onNext={handleNext}
         onBack={() => goto('MAIN_MENU')}
         onSelectSuccess={handleSelectSuccess}
       />
-    </div>
+    </>
   );
 }
