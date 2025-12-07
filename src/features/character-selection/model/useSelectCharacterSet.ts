@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GameService } from '@api/services/GameService';
 import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
-import { adaptPlayingCharacterFromApi } from '@entities/game-session';
-import type { PlayingCharacter } from '@entities/game-session';
+import {
+  adaptPlayingCharacterSetFromApi,
+  type PlayingCharacter,
+} from '@entities/game-session';
 
 interface SelectCharacterParams {
   characterGroupId: number;
@@ -12,6 +14,7 @@ interface SelectCharacterParams {
 interface SelectCharacterResult {
   response: SelectCharacterSetResultDto;
   playingCharacters: PlayingCharacter[]; // 변환된 캐릭터 정보 (메타데이터 포함)
+  groupName: string; // 선택된 캐릭터 그룹 이름
 }
 
 interface UseSelectCharacterSetOptions {
@@ -57,30 +60,34 @@ export function useSelectCharacterSet(options?: UseSelectCharacterSetOptions) {
       });
       return { response, groupName: params.groupName };
     },
-    onSuccess: ({ response }) => {
-      // 서버 응답 + 메타데이터 결합
-      const characters = response.playingCharacter
-        .map(adaptPlayingCharacterFromApi)
-        .filter((char): char is NonNullable<typeof char> => char !== null);
+    onSuccess: ({ response, groupName }) => {
+      // adapter를 통해 서버 응답을 도메인 타입으로 변환 (characterPairDetails 정보 포함)
+      const playingCharacterSet = adaptPlayingCharacterSetFromApi(response);
 
-      if (characters.length === 0) {
-        console.error(
-          '[useSelectCharacterSet] 변환된 캐릭터가 없습니다. characterMappings를 확인하세요.'
-        );
+      if (
+        !playingCharacterSet ||
+        playingCharacterSet.playingCharacters.length === 0
+      ) {
+        console.error('[useSelectCharacterSet] 변환된 캐릭터가 없습니다.');
         return;
       }
 
       console.log('[useSelectCharacterSet] 캐릭터 선택 성공:', {
         characterSetId: response.id,
         characterGroupId: response.characterGroupId,
-        playingCharacters: characters,
+        groupName,
+        playingCharacters: playingCharacterSet.playingCharacters,
       });
 
       // 관련 쿼리 무효화
       queryClient.invalidateQueries({ queryKey: ['gameSession'] });
 
       // 사용자 정의 콜백 실행 (저장 로직은 호출하는 쪽에서 처리)
-      options?.onSuccess?.({ response, playingCharacters: characters });
+      options?.onSuccess?.({
+        response,
+        playingCharacters: playingCharacterSet.playingCharacters,
+        groupName,
+      });
     },
     onError: (error: Error) => {
       console.error('[useSelectCharacterSet] 캐릭터 선택 실패:', error);

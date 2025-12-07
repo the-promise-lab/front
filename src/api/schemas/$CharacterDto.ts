@@ -6,48 +6,57 @@ export const $CharacterDto = {
   properties: {
     id: {
       type: 'number',
+      description: `캐릭터 ID`,
       isRequired: true,
-      format: 'int64',
+    },
+    code: {
+      type: 'string',
+      description: `캐릭터 코드`,
+      isRequired: true,
     },
     name: {
       type: 'string',
+      description: `캐릭터 이름`,
       isNullable: true,
     },
     age: {
       type: 'number',
+      description: `캐릭터 나이`,
       isNullable: true,
     },
     description: {
       type: 'string',
+      description: `캐릭터 설명`,
       isNullable: true,
     },
     selectImage: {
       type: 'string',
+      description: `캐릭터 선택 이미지`,
       isNullable: true,
     },
-    potraitImage: {
+    portraitImage: {
       type: 'string',
+      description: `캐릭터 포트레잇 이미지`,
       isNullable: true,
     },
     defaultHp: {
       type: 'number',
+      description: `기본 체력`,
       isNullable: true,
     },
-    defaultSp: {
+    defaultMental: {
       type: 'number',
+      description: `기본 정신력`,
       isNullable: true,
-    },
-    characterGroupId: {
-      type: 'number',
-      isNullable: true,
-      format: 'int64',
     },
     bgColor: {
       type: 'string',
+      description: `배경 색상`,
       isNullable: true,
     },
     borderColor: {
       type: 'string',
+      description: `테두리 색상`,
       isNullable: true,
     },
   },

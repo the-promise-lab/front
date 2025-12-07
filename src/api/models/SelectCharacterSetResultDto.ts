@@ -15,6 +15,9 @@ export type SelectCharacterSetResultDto = {
   /**
    * 캐릭터 그룹 ID
    */
-  characterGroupId: number;
+  characterGroupId: number | null;
+  /**
+   * 플레이 중인 캐릭터 목록
+   */
   playingCharacter: Array<PlayingCharacterDto>;
 };

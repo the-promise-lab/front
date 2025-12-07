@@ -16,7 +16,7 @@
 }
 
 @font-face {
-  font-family: 'Nexon Lv2 Gothic:Light';
+  font-family: 'Nexon Lv2 Gothic';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic Light.woff')
     format('woff');
   font-weight: 300;
@@ -24,7 +24,7 @@
 }
 
 @font-face {
-  font-family: 'Nexon Lv2 Gothic:Regular';
+  font-family: 'Nexon Lv2 Gothic';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic.woff')
     format('woff');
   font-weight: normal;
@@ -32,7 +32,14 @@
 }
 
 @font-face {
-  font-family: 'Nexon Lv2 Gothic:Bold';
+  font-family: 'Nexon Lv2 Gothic';
+  src: url('/fonts/NEXON Lv2 Gothic OTF Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nexon Lv2 Gothic';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic Bold.woff')
     format('woff');
   font-weight: 700;
@@ -40,9 +47,38 @@
 }
 
 @font-face {
-  font-family: 'NanumSquareNeoOTF-Rg';
-  src: url('/fonts/NanumSquareNeoOTF-Rg.otf') format('opentype');
+  font-family: 'NEXON Lv1 Gothic Low OTF';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic Low OTF.woff')
+    format('woff');
   font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare Neo OTF';
+  src: url('/fonts/NanumSquareNeoOTF-Eb.otf') format('opentype');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare Neo OTF';
+  src: url('/fonts/NanumSquareNeoOTF-Bd.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare Neo OTF';
+  src: url('/fonts/NanumSquareNeoOTF-Lt.otf') format('opentype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare Neo OTF';
+  src: url('/fonts/NanumSquareNeoOTF-Rg.otf') format('opentype');
+  font-weight: 400;
   font-display: swap;
 }
 
@@ -94,16 +130,6 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
   display: flex;
@@ -135,22 +161,10 @@ body {
   }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
 @theme inline {
+  --font-nexon-lv2-gothic: 'NEXON Lv2 Gothic', sans-serif;
+  --font-nexon-lv1-gothic-low-otf: 'NEXON Lv1 Gothic Low OTF', sans-serif;
+  --font-nanumsquare-neo-otf: 'NanumSquare Neo OTF', sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -186,6 +200,16 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-caution-1: #fed046;
+  --color-red-1: #ff4e59;
+  --color-green-1: #4cf69c;
+  --color-yellow-1: #ffe674;
+  --color-purple-1: #8d70ee;
+  --color-sky-1: #01ead6;
+  --color-main-1: #fe8a01;
+  --color-secondary-1: #ffb332;
+  --color-w-1: #ffffff;
 }
 
 .dark {
@@ -233,8 +257,9 @@ body {
 
   @media (max-width: 1024px) {
     html {
-      /* font-size: 8px; */
-      --spacing: 0.125rem;
+      /* default: 0.25rem */
+      /* 1024px 미만에서는 픽셀 스케일 0.4배까지 축소 */
+      --spacing: 0.1rem;
     }
   }
 }
@@ -360,6 +385,14 @@ body {
   );
 }
 
+.background-glass-rtl {
+  background: linear-gradient(
+    102deg,
+    rgba(255, 255, 255, 0.24) -1.42%,
+    rgba(255, 255, 255, 0.12) 91.38%
+  );
+}
+
 .background-glass-disabled {
   background: linear-gradient(
     175deg,
@@ -374,6 +407,122 @@ body {
     rgba(255, 255, 255, 0.8) -6.76%,
     rgba(255, 255, 255, 0.4) 100%
   );
+}
+
+/* ============================================
+   RTL (Right to Left) Gradient Border
+   오른쪽에서 왼쪽으로 가는 그라데이션 버전
+   ============================================ */
+.gradient-border-rtl {
+  color: #fff;
+  background-color: transparent;
+  position: relative;
+  border-right: 2px solid white;
+
+  @media (max-width: 1024px) {
+    border-right-width: 1px;
+  }
+}
+
+.gradient-border-rtl::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 2px solid transparent;
+  border-left: none;
+  border-right: none;
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 255, 255) 0%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0)
+  );
+  box-sizing: border-box;
+  top: -2px;
+  right: -2px;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  z-index: -1;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  @media (max-width: 1024px) {
+    border-width: 1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    top: -1px;
+    right: -1px;
+  }
+}
+
+.gradient-border-rtl.active {
+  position: relative;
+  background:
+    radial-gradient(
+      116.67% 116.67% at 50% -16.67%,
+      rgba(250, 255, 0, 0) 0%,
+      rgba(255, 255, 255, 0) 56.82%
+    ),
+    rgba(0, 0, 0, 0.2);
+  border-right: 2px solid #ffc107;
+
+  @media (max-width: 1024px) {
+    border-right-width: 1px;
+  }
+}
+
+.gradient-border-rtl.active::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 2px solid transparent;
+  border-left: none;
+  border-right: none;
+  background-image: linear-gradient(
+    to left,
+    #ffc107 0%,
+    rgba(255, 193, 7, 0.8),
+    rgba(255, 193, 7, 0)
+  );
+  -webkit-mask:
+    linear-gradient(#ffc107 0 0) content-box,
+    linear-gradient(#ffc107 0 0);
+  -webkit-mask-composite: destination-out;
+  z-index: -1;
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+
+  box-sizing: border-box;
+  top: -2px;
+  right: -2px;
+
+  @media (max-width: 1024px) {
+    border-width: 1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    top: -1px;
+    right: -1px;
+  }
 }
 
 .bt-glass-stroke {
@@ -398,4 +547,41 @@ body {
   @media (max-width: 1024px) {
     border-width: 1px;
   }
+}
+
+/* 아이템 담기 Toast 전용 애니메이션 */
+@keyframes itemAddedSlideIn {
+  0% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes itemAddedFadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.item-added-toast-container {
+  pointer-events: none;
+  position: fixed;
+  bottom: 35px;
+  right: 0;
+}
+
+.item-added-toast {
+  animation:
+    itemAddedSlideIn 240ms ease-out forwards,
+    itemAddedFadeOut 220ms ease-in forwards 1780ms;
+  will-change: transform, opacity;
 }

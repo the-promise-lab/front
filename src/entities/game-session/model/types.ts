@@ -3,6 +3,8 @@
  * API 응답과 독립적인 비즈니스 로직용 타입
  */
 
+import type { ItemDto } from '@api';
+
 export interface Character {
   id: number;
   name: string;
@@ -18,7 +20,7 @@ export interface CharacterSet {
   id: number;
   name: string;
   image: string;
-  description: string;
+  description: string | null;
   isLocked?: boolean;
 }
 
@@ -26,7 +28,7 @@ export interface PlayingCharacter {
   id: number;
   characterId: number;
   currentHp: number | null;
-  currentSp: number | null;
+  currentMental: number | null;
   name: string | null;
   fullImage: string | null;
   profileImage: string | null;
@@ -38,20 +40,28 @@ export interface PlayingCharacter {
 
 export interface PlayingCharacterSet {
   id: number;
-  characterGroupId: number;
+  characterGroupId: number | null;
   playingCharacters: Array<PlayingCharacter>;
 }
 
-export interface InventorySlot {
-  id: number;
-  itemId: number;
+export type Item = ItemDto;
+
+export interface InventoryItem {
+  sessionId: number;
+  item: ItemDto;
   quantity: number;
 }
 
 export interface Inventory {
+  items: Array<InventoryItem>;
+}
+
+export interface Bag {
   id: number;
-  bagId: number;
-  slots: Array<InventorySlot>;
+  name: string;
+  description: string;
+  image: string;
+  capacity: number;
 }
 
 export interface GameSession {
@@ -59,5 +69,6 @@ export interface GameSession {
   userId: number;
   currentActId: number | null;
   playingCharacterSet: PlayingCharacterSet | null;
-  inventories: Array<Inventory>;
+  inventory: Inventory | null;
+  bag: Bag | null;
 }

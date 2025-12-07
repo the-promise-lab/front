@@ -1,111 +1,186 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, type ReactNode } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
-import SelectedItemsPanel from './SelectedItemsPanel';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
-import { mockShelves } from '../../__mocks__';
+import { useShelfData } from '../../model/useShelfData';
+import {
+  adaptShelfItemsToInventoryPayload,
+  adaptStoreSectionsToMinimapSections,
+} from '../../model/adapters';
+import { useSubmitInventory } from '@entities/game-session/model/useSubmitInventory';
+import Typography from '@shared/ui/Typography';
+import { toast } from 'sonner';
+import Minimap from './Minimap';
+import Inventory from './Inventory';
+import type { Bag } from '@entities/game-session';
+import Timer from './Timer';
+import { BackgroundPortal } from '@shared/background-portal';
+import type { GameSessionDto } from '@api';
+import { useCapacityWarning } from '../../model/useCapacityWarning';
+import type { ShelfItem } from '../../model/types';
+import { toastItemAdded } from '@shared/ui/toast-variants';
 
 interface ShelfSelectionProps {
   onBack: () => void;
+  bag: Bag;
+  onComplete: (result: GameSessionDto) => void;
+  renderHeader: () => ReactNode;
+  secondsLeft: number;
+  showTimeoutModal: boolean;
 }
 
-export default function ShelfSelection({ onBack }: ShelfSelectionProps) {
+export default function ShelfSelection({
+  onBack,
+  bag,
+  onComplete,
+  renderHeader,
+  secondsLeft,
+  showTimeoutModal,
+}: ShelfSelectionProps) {
+  const { showWarning, CapacityWarningBanner } = useCapacityWarning();
+
   const {
     getCurrentShelf,
+    getCurrentShelfCode,
+    getNextShelf,
+    getPreviousShelf,
     selectedShelfItems,
     initShelves,
     moveToNextShelf,
     moveToPreviousShelf,
+    moveToShelfByCode,
+    selectNewShelfItem,
   } = useShelfSelectionStore();
+  const currentWeight = selectedShelfItems.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
+  const canPutInMoreItems = currentWeight < bag.capacity;
+
+  const { shelves, storeSections, isLoading, error } = useShelfData();
+  const { mutate: submitInventory, isPending } = useSubmitInventory({
+    onSuccess: result => {
+      onComplete(result);
+    },
+    onError: err => {
+      toast.error('인벤토리 제출에 실패했습니다', {
+        description: err.message,
+      });
+    },
+  });
+
+  const handleComplete = () => {
+    const payload = adaptShelfItemsToInventoryPayload(
+      selectedShelfItems,
+      bag.id
+    );
+
+    submitInventory(payload);
+  };
 
   useEffect(() => {
-    initShelves(mockShelves);
-  }, [initShelves]);
+    if (shelves.length > 0) {
+      initShelves(shelves);
+    }
+  }, [shelves, initShelves]);
+
+  const onClickItem = (item: ShelfItem) => {
+    if (canPutInMoreItems) {
+      selectNewShelfItem(item);
+      toastItemAdded(item.name);
+    } else {
+      showWarning();
+    }
+  };
 
   const currentShelf = getCurrentShelf();
+  const currentShelfCode = getCurrentShelfCode();
+  const nextShelf = getNextShelf();
+  const previousShelf = getPreviousShelf();
 
-  if (!currentShelf) {
+  // storeSections를 MinimapSection[]으로 변환
+  const minimapSections = useMemo(
+    () => adaptStoreSectionsToMinimapSections(storeSections),
+    [storeSections]
+  );
+
+  if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className='flex min-h-screen items-center justify-center'>
+        <div className='text-red-500'>
+          데이터를 불러오는데 실패했습니다: {error.message}
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !currentShelf) {
+    return (
+      <div className='flex min-h-screen items-center justify-center'>
         <div>데이터를 로딩 중...</div>
       </div>
     );
   }
   return (
-    <div>
-      {/* 뒤로가기 버튼 */}
-      <div className="fixed top-4 left-4 z-10">
-        <button
-          className="bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95"
-          onClick={onBack}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="text-gray-700"
-          >
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
+    <BackgroundPortal>
+      <div className='fixed inset-0 z-10 h-full w-full'>
+        <ShelfSelectionCanvas
+          backgroundImage={'/long-shelf-example.png'} // TODO: 리소스 나오고 백엔드에 CDN URL 들어가면 변경
+          // backgroundImage={currentShelf.backgroundImage}
+          items={currentShelf.shelfItems}
+          onClickItem={onClickItem}
+          previousShelfName={previousShelf?.name || ''}
+          nextShelfName={nextShelf?.name || ''}
+          onPreviousShelfClick={moveToPreviousShelf}
+          onNextShelfClick={moveToNextShelf}
+        />
+
+        <div className='pointer-events-none fixed left-1/2 z-10 aspect-[16/9] h-[100dvh] w-auto -translate-x-1/2 touch-pan-y overflow-x-visible'>
+          {/* 뒤로가기 버튼 */}
+          <div className='pointer-events-auto absolute top-4 left-4 z-10'>
+            <button
+              className='bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95'
+              onClick={onBack}
+            >
+              <svg
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth='2'
+                className='text-gray-700'
+              >
+                <polyline points='15 18 9 12 15 6' />
+              </svg>
+            </button>
+          </div>
+
+          <div className='pointer-events-auto absolute bottom-0 left-0 flex gap-2'>
+            <button
+              className='h-20 w-40 bg-emerald-600/80 hover:bg-emerald-500'
+              onClick={handleComplete}
+              disabled={isPending}
+            >
+              <Typography variant='mini-dialogue'>완료</Typography>
+            </button>
+          </div>
+
+          <Minimap
+            sections={minimapSections}
+            onSectionClick={moveToShelfByCode}
+            currentShelfCode={currentShelfCode}
+          />
+          <Inventory bag={bag} />
+          <Timer
+            secondsLeft={secondsLeft}
+            showModal={showTimeoutModal}
+            onTimeout={handleComplete}
+          />
+
+          {renderHeader()}
+          {CapacityWarningBanner}
+        </div>
       </div>
-
-      <div className="fixed top-1/2 left-2 z-10 -translate-y-1/2">
-        <button
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
-          onClick={() => moveToPreviousShelf()}
-        >
-          <PreviousIcon />
-        </button>
-      </div>
-
-      <div className="fixed top-1/2 right-2 z-10 -translate-y-1/2">
-        <button
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-transparent text-sm"
-          onClick={() => moveToNextShelf()}
-        >
-          <NextIcon />
-        </button>
-      </div>
-
-      <SelectedItemsPanel selectedItems={selectedShelfItems} />
-
-      <ShelfSelectionCanvas
-        backgroundImage={currentShelf.backgroundImage}
-        items={currentShelf.shelfItems}
-      />
-    </div>
+    </BackgroundPortal>
   );
 }
-
-const PreviousIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="15 18 9 12 15 6" />
-  </svg>
-);
-
-const NextIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="9 6 15 12 9 18" />
-  </svg>
-);

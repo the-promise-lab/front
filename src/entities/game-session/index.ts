@@ -1,10 +1,13 @@
 export { useGameSession } from './model/useGameSession';
 export { useCreateGameSession } from './model/useCreateGameSession';
+export { useBagItemInfo } from './model/useBagItemInfo';
 export {
   adaptGameSessionFromApi,
   adaptCreateGameSessionFromApi,
   adaptPlayingCharacterFromApi,
+  adaptPlayingCharacterSetFromApi,
   adaptCharacterSetFromApi,
+  adaptBagFromApi,
 } from './model/adapters';
 export type {
   GameSession,
@@ -13,5 +16,6 @@ export type {
   PlayingCharacter,
   PlayingCharacterSet,
   Inventory,
-  InventorySlot,
+  InventoryItem,
+  Bag,
 } from './model/types';

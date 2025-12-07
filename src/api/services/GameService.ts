@@ -3,14 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CharacterGroupDto } from '../models/CharacterGroupDto';
-import type { CreateGameSessionDto } from '../models/CreateGameSessionDto';
-import type { EventDto } from '../models/EventDto';
 import type { GameSessionDto } from '../models/GameSessionDto';
 import type { SelectCharacterSetDto } from '../models/SelectCharacterSetDto';
 import type { SelectCharacterSetResultDto } from '../models/SelectCharacterSetResultDto';
 import type { SetupInfoDto } from '../models/SetupInfoDto';
-import type { SubmitInventoryDto } from '../models/SubmitInventoryDto';
-import type { SubmitInventoryResultDto } from '../models/SubmitInventoryResultDto';
+import type { SubmitGameSessionInventoryDto } from '../models/SubmitGameSessionInventoryDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -31,29 +28,13 @@ export class GameService {
   }
   /**
    * 게임 세션 생성
-   * @returns CreateGameSessionDto 게임 세션 생성 성공
+   * @returns GameSessionDto 게임 세션 생성 성공
    * @throws ApiError
    */
-  public static gameControllerCreateGameSession(): CancelablePromise<CreateGameSessionDto> {
+  public static gameControllerCreateGameSession(): CancelablePromise<GameSessionDto> {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/api/game/session',
-    });
-  }
-  /**
-   * 선택한 캐릭터 그룹의 프롤로그 이벤트 목록 조회
-   * @returns EventDto 프롤로그 이벤트 목록 조회 성공
-   * @throws ApiError
-   */
-  public static gameControllerGetPrologEvents(): CancelablePromise<
-    Array<EventDto>
-  > {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/api/game/session/prolog',
-      errors: {
-        404: `리소스를 찾을 수 없습니다.`,
-      },
     });
   }
   /**
@@ -102,12 +83,12 @@ export class GameService {
   /**
    * 인벤토리 제출
    * @param requestBody
-   * @returns SubmitInventoryResultDto 인벤토리 제출 성공
+   * @returns GameSessionDto 인벤토리 제출 성공
    * @throws ApiError
    */
-  public static gameControllerSubmitInventory(
-    requestBody: SubmitInventoryDto
-  ): CancelablePromise<SubmitInventoryResultDto> {
+  public static gameControllerSubmitGameSessionInventory(
+    requestBody: SubmitGameSessionInventoryDto
+  ): CancelablePromise<GameSessionDto> {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/api/game/session/inventory',

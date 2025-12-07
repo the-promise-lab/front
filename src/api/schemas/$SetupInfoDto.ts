@@ -11,10 +11,10 @@ export const $SetupInfoDto = {
       },
       isRequired: true,
     },
-    items: {
+    storeSections: {
       type: 'array',
       contains: {
-        type: 'ItemDto',
+        type: 'StoreSectionDto',
       },
       isRequired: true,
     },

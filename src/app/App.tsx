@@ -1,45 +1,56 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
-import { useGameFlowStore, PauseMenu } from '@processes/game-flow';
+
+import { useGameFlowStore } from '@processes/game-flow';
+import { useShallow } from 'zustand/react/shallow';
+import { useCheckAuthState } from '@shared/auth/model/useLoginStatus';
 
 // 페이지 컴포넌트들
-import AuthCheck from './pages/AuthCheck';
-import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
 import LoadingPage from './pages/LoadingPage';
 import MainMenu from './pages/MainMenu';
 import PackingPhase from './pages/PackingPhase';
-import EventPhase from './pages/EventPhase';
 import IntroStory from './pages/IntroStory';
-import { BagSelectionScreen } from '@features/event-phase';
 import CharacterSelectPage from './pages/CharacterSelect';
+import BagSelectPage from './pages/BagSelectPage';
+import OnboardingPage from './pages/OnboardingPage';
+import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
+import ResultReportPage from './pages/ResultReportPage';
+import ScenarioPage from './pages/ScenarioPage';
 
 export default function App() {
-  const { step, next, resetDayFlow } = useGameFlowStore();
+  const { step, setAuthenticated, isNewGame } = useGameFlowStore(
+    useShallow(state => ({
+      step: state.step,
+      setAuthenticated: state.setAuthenticated,
+      isNewGame: state.isNewGame,
+    }))
+  );
 
-  // DAY_FLOW 진입 시 DAY_STEP 초기화
-  useEffect(() => {
-    if (step === 'DAY_FLOW') {
-      resetDayFlow();
-    }
-  }, [step, resetDayFlow]);
+  // 인증 상태 확인 - useCallback으로 메모이제이션하여 무한 렌더링 방지
+  const handleAuthCheck = useCallback(
+    (isLoggedIn: boolean) => {
+      setAuthenticated(isLoggedIn);
+    },
+    [setAuthenticated]
+  );
+
+  useCheckAuthState(handleAuthCheck);
 
   const renderScreen = () => {
     // 디버깅: 현재 step 상태 확인
     console.log('App.tsx - Current step:', step);
 
     // GameFlow 구현 - 단계별 컴포넌트 분기 처리
-    if (step === 'AUTH_CHECK') {
-      return <AuthCheck />;
-    }
     if (step === 'LOGIN') {
-      return <LandingPage />;
-    }
-    if (step === 'MAIN_MENU') {
-      return <MainMenu />;
+      return <LoginPage />;
     }
     if (step === 'PROGRESS') {
       return <LoadingPage />;
+    }
+    if (step === 'MAIN_MENU') {
+      return <MainMenu />;
     }
     if (step === 'CHARACTER_SELECT') {
       return <CharacterSelectPage />;
@@ -47,6 +58,7 @@ export default function App() {
     if (step === 'INTRO_STORY') {
       return (
         <IntroStory
+          jsonPath='/JSON/intro_first.json'
           onNext={() => {
             useGameFlowStore.getState().goto('BAG_SELECT');
           }}
@@ -54,13 +66,14 @@ export default function App() {
       );
     }
     if (step === 'BAG_SELECT') {
+      return <BagSelectPage />;
+    }
+    if (step === 'INTRO_STORY_2') {
       return (
-        <BagSelectionScreen
-          onComplete={selectedBagId => {
-            console.log('Selected bag:', selectedBagId);
-
-            // TODO: 선택된 가방을 전역 상태에 저장
-            next();
+        <IntroStory
+          jsonPath='/JSON/intro_second.json'
+          onNext={() => {
+            useGameFlowStore.getState().goto('ONBOARDING');
           }}
         />
       );
@@ -68,22 +81,40 @@ export default function App() {
     if (step === 'PACKING_PHASE') {
       return <PackingPhase />;
     }
-    if (step === 'DAY_FLOW') {
-      return <EventPhase />;
+    if (step === 'INTRO_STORY_3') {
+      return (
+        <IntroStory
+          jsonPath='/JSON/intro_third.json'
+          onNext={() => {
+            useGameFlowStore.getState().goto('SCENARIO_FLOW');
+          }}
+        />
+      );
     }
-    return <LandingPage />;
+    if (step === 'ONBOARDING') {
+      return <OnboardingPage />;
+    }
+    if (step === 'SCENARIO_FLOW') {
+      return <ScenarioPage isNewGame={isNewGame} />;
+    }
+    if (step === 'RESULT_REPORT') {
+      return <ResultReportPage />;
+    }
+    return <LoginPage />;
   };
 
   return (
     <AppProviders>
       <RootLayout>
-        <div className='fixed inset-0 z-10 touch-pan-y overflow-hidden'>
-          {renderScreen()}
-        </div>
-        {/* 일시정지 메뉴 - 전역 팝업 */}
-        <div className='fixed top-11 right-11 z-10'>
-          <PauseMenu />
-        </div>
+        {renderScreen()}
+        <PauseMenu
+          hidden={
+            step === 'LOGIN' ||
+            step === 'PROGRESS' ||
+            step === 'CHARACTER_SELECT' ||
+            step === 'SCENARIO_FLOW'
+          }
+        />
       </RootLayout>
     </AppProviders>
   );

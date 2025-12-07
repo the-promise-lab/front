@@ -1,129 +1,134 @@
-import { useState } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { useGameFlowStore } from '../..';
-import { useAuthStore } from '@shared/auth/model/useAuthStore';
-import {
-  IconCloseButton,
-  IconPauseButton,
-} from '@features/event-phase/ui/kit/icon-button';
-import Typography from '@shared/ui/Typography';
+import { IconPauseButton } from '@shared/ui/icon-button';
 import { cn } from '@shared/lib/utils';
 import LogoutConfirmModal from '@shared/ui/LogoutConfirmModal';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import { CharacterInfoView } from './CharacterInfoView';
+import { SettingsView } from './SettingsView';
+import { ResultReportView } from './ResultReportView';
+import { TeamIntroView } from './TeamIntroView';
+import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
+import { BackgroundPortal } from '@shared/background-portal';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
-const MENU_ITEMS = [
-  { id: 'character-info', label: '캐릭터 정보' },
-  { id: 'progress', label: '진행도' },
-  { id: 'sound', label: '사운드' },
-  { id: 'result-report', label: '결과리포트' },
-  { id: 'logout', label: '로그아웃' },
+type MenuCategory =
+  | 'character-info'
+  | 'settings'
+  | 'result-report'
+  | 'team-intro';
+
+const MENU_CATEGORIES = [
+  {
+    id: 'character-info' as MenuCategory,
+    label: { kor: '캐릭터 정보', eng: 'Character Info' },
+  },
+  { id: 'settings' as MenuCategory, label: { kor: '설정', eng: 'Settings' } },
+  {
+    id: 'result-report' as MenuCategory,
+    label: { kor: '결과리포트', eng: 'Result Report' },
+  },
+  {
+    id: 'team-intro' as MenuCategory,
+    label: { kor: '프로젝트 팀 소개', eng: 'Project Team Introduction' },
+  },
 ] as const;
 
-export default function PauseMenu() {
+interface PauseMenuProps {
+  hidden?: boolean;
+  renderButton?: (onClick: () => void) => ReactNode;
+  buttonClassName?: string;
+}
+
+export default function PauseMenu({
+  hidden = false,
+  renderButton,
+  buttonClassName,
+}: PauseMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const { logout } = useAuthStore();
-
-  const handleMenuItemClick = (itemId: string) => {
-    console.log('Menu item clicked:', itemId);
-    // TODO: 각 메뉴 항목별 처리 로직 추가
-    switch (itemId) {
-      case 'logout':
-        // 로그아웃 확인 모달 열기
-        setIsLogoutModalOpen(true);
-        break;
-      default:
-        // 다른 메뉴 항목들은 추후 구현
-        break;
-    }
-  };
-
-  const onClose = () => {
+  const open = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const close = useCallback(() => {
     setIsOpen(false);
-  };
+  }, []);
+  const [selectedCategory, setSelectedCategory] =
+    useState<MenuCategory>('character-info');
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const handleLogoutConfirm = async () => {
-    // 메인 메뉴와 동일한 로그아웃 처리
-    await logout();
+    const { useAuthStore } = await import('@shared/auth/model/useAuthStore');
+    await useAuthStore.getState().logout();
     useGameFlowStore.getState().goto('LOGIN');
     setIsLogoutModalOpen(false);
-    onClose();
+    close();
   };
 
   const handleLogoutCancel = () => {
     setIsLogoutModalOpen(false);
   };
 
+  const renderContent = () => {
+    switch (selectedCategory) {
+      case 'character-info':
+        return <CharacterInfoView />;
+      case 'settings':
+        return (
+          <SettingsView onLogoutClick={() => setIsLogoutModalOpen(true)} />
+        );
+      case 'result-report':
+        return <ResultReportView />;
+      case 'team-intro':
+        return <TeamIntroView />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
-      <IconPauseButton onClick={() => setIsOpen(true)} />
-      <AnimatePresence>
-        {isOpen ? (
-          <>
-            {/* 블러 배경 오버레이 */}
-            <motion.div
-              className='fixed inset-0 z-[100] bg-black/60 backdrop-blur-md'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={onClose}
-            />
-
-            {/* 닫기 버튼 - 화면 우측 상단 */}
-            <motion.div
-              className='fixed top-10 right-10 z-[102]'
-              initial={{ opacity: 0, scale: 0.8, y: -12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: -12 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
+      {renderButton ? (
+        renderButton(open)
+      ) : (
+        <div
+          className={cn(
+            'absolute top-11 right-11 z-10',
+            buttonClassName,
+            hidden ? 'hidden' : ''
+          )}
+        >
+          <IconPauseButton onClick={open} />
+        </div>
+      )}
+      <BackgroundPortal>
+        <EdgeGradient hidden={!isOpen} />
+        <AnimatePresence>
+          {isOpen ? (
+            <GlassMenuLayout
+              menuItems={MENU_CATEGORIES}
+              selectedId={selectedCategory}
+              onSelect={setSelectedCategory}
+              onClose={close}
+              className='mx-auto aspect-video h-dvh'
             >
-              <IconCloseButton onClick={onClose} />
-            </motion.div>
-
-            {/* 팝업 메뉴 */}
-            <motion.div
-              className='fixed inset-0 z-[101] flex items-center justify-center'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <motion.div
-                className={cn(
-                  'relative w-[520px] max-w-[90vw]',
-                  'rounded-3xl bg-black/70 p-10 shadow-2xl shadow-black/40 backdrop-blur'
-                )}
-                initial={{ y: 36, opacity: 0, scale: 0.95 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                exit={{ y: 36, opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-                onClick={e => e.stopPropagation()}
-              >
-                <div className='flex flex-col gap-4'>
-                  {MENU_ITEMS.map(item => (
-                    <motion.button
-                      key={item.id}
-                      onClick={() => handleMenuItemClick(item.id)}
-                      className={cn(
-                        'relative w-full',
-                        'border border-white/10 bg-black/60',
-                        'rounded-xl px-10 py-8',
-                        'text-left',
-                        'transition-all duration-200',
-                        'hover:border-white/20 hover:bg-black/80'
-                      )}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Typography variant='dialogue-b' className='text-white'>
-                        {item.label}
-                      </Typography>
-                    </motion.button>
-                  ))}
+              <div className='relative h-full w-full'>
+                <div className='absolute top-30 left-0 h-[70%] w-0.25 bg-white' />
+                <div
+                  className={cn(
+                    'h-full',
+                    selectedCategory === 'team-intro' ||
+                      selectedCategory === 'character-info'
+                      ? 'mt-10 pl-30'
+                      : 'mt-45'
+                  )}
+                >
+                  {renderContent()}
                 </div>
-              </motion.div>
-            </motion.div>
-          </>
-        ) : null}
-      </AnimatePresence>
+              </div>
+            </GlassMenuLayout>
+          ) : null}
+        </AnimatePresence>
+      </BackgroundPortal>
 
       {/* 로그아웃 확인 모달 */}
       <LogoutConfirmModal

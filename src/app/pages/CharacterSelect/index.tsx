@@ -1,8 +1,9 @@
 import { useGameFlowStore } from '@processes/game-flow/model/useGameFlowStore';
 import { CharacterSelect } from '@features/character-selection';
 import { useShallow } from 'zustand/react/shallow';
+import type { PlayingCharacter } from '@entities/game-session';
 import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSetResultDto';
-import { adaptPlayingCharacterFromApi } from '@entities/game-session';
+import EdgeGradient from '@shared/ui/layout/EdgeGradient';
 
 export default function CharacterSelectPage() {
   const { goto, savePlayingCharacters } = useGameFlowStore(
@@ -12,26 +13,33 @@ export default function CharacterSelectPage() {
     }))
   );
 
-  const handleSelectSuccess = (response: SelectCharacterSetResultDto) => {
-    const playingCharacters = response.playingCharacter
-      .map(adaptPlayingCharacterFromApi)
-      .filter((char): char is NonNullable<typeof char> => char !== null);
+  const handleSelectSuccess = (result: {
+    response: SelectCharacterSetResultDto;
+    playingCharacters: PlayingCharacter[];
+    groupName: string;
+  }) => {
+    savePlayingCharacters(
+      {
+        id: result.response.id,
+        characterGroupId: result.response.characterGroupId,
+        playingCharacters: result.playingCharacters,
+      },
+      result.groupName
+    );
+  };
 
-    savePlayingCharacters({
-      id: response.id,
-      characterGroupId: response.characterGroupId,
-      playingCharacters,
-    });
+  const handleNext = () => {
+    goto('INTRO_STORY');
   };
 
   return (
-    <CharacterSelect
-      onNext={() => {
-        console.log('Calling next() from CHARACTER_SELECT');
-        goto('INTRO_STORY');
-      }}
-      onBack={() => goto('MAIN_MENU')}
-      onSelectSuccess={handleSelectSuccess}
-    />
+    <div className='relative h-full w-full'>
+      <EdgeGradient />
+      <CharacterSelect
+        onNext={handleNext}
+        onBack={() => goto('MAIN_MENU')}
+        onSelectSuccess={handleSelectSuccess}
+      />
+    </div>
   );
 }

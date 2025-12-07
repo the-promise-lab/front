@@ -1,18 +1,38 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
-import { useAssetStore } from '@shared/model/assetStore';
-import { usePreloadAssets } from '@shared/model/usePreloadAssets';
+import { useAssetStore, usePreloadAssets } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
+import { useSetBackground } from '@shared/background';
 
 const ASSETS_TO_PRELOAD = [
   'shelter-bg.png',
   'chicken-breast.png',
   'long-shelf-example.png',
-  'shelf-example.png',
+  'shelf-household.png',
   'shelf-clothing.png',
   'shelf-food.png',
   'byungcheol.png',
   'ham.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/angry.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/happy.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/shocked.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/sick.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/tired.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/angry.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/happy.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/shocked.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/sick.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/tired.png',
+
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bs/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/js/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/jw/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/jh/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/mr/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/sa/default.png',
+  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/yw/default.png',
 ];
 
 export default function LoadingPage() {
@@ -21,14 +41,14 @@ export default function LoadingPage() {
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
 
+  // 배경 이미지 설정
+  useSetBackground({ image: '/image/mainPage/main_splash_bg.png' });
+
   // 게임 플로우 상태
-  const { isNewGame, startDayFlow, next, gameSession, goto } = useGameFlowStore(
+  const { isNewGame, goto } = useGameFlowStore(
     useShallow(state => ({
       isNewGame: state.isNewGame,
-      startDayFlow: state.startDayFlow,
-      next: state.next,
       goto: state.goto,
-      gameSession: state.gameSession,
     }))
   );
 
@@ -58,35 +78,16 @@ export default function LoadingPage() {
       loaded,
       total,
       isNewGame,
-      gameSession,
     });
     if (isNewGame) {
       console.log('LoadingPage: 새 게임 - CHARACTER_SELECT로 이동');
-      next(); // CHARACTER_SELECT로
-    } else if (!gameSession) {
-      console.warn('LoadingPage: 게임 세션이 정상적으로 생성되지 않음 - ERROR');
-      goto('MAIN_MENU'); // TODO: 적절한 에러 처리 로직 구현.
-    } else if (!gameSession.playingCharacterSet) {
-      console.log('LoadingPage: 이어하기 - CHARACTER_SELECT로 이동');
       goto('CHARACTER_SELECT');
-    } else if (!gameSession.currentActId) {
-      console.log('LoadingPage: 이어하기 - INTRO_STORY부터 재개');
-      goto('INTRO_STORY');
     } else {
-      console.log('LoadingPage: 이어하기 - DAY_FLOW로 이동');
-      startDayFlow(); // TODO: 실제로 currentActId부터 이어하기 구현.
+      // 그 외의 경우(초기 진입, 이어하기 등) 메인 메뉴로 이동
+      console.log('LoadingPage: 메인 메뉴로 이동');
+      goto('MAIN_MENU');
     }
-  }, [
-    isNewGame,
-    gameSession,
-    next,
-    goto,
-    startDayFlow,
-    allLoaded,
-    timerEnded,
-    loaded,
-    total,
-  ]);
+  }, [isNewGame, goto, allLoaded, timerEnded, loaded, total]);
 
   useEffect(() => {
     // 로딩 완료 조건: 에셋 로딩 + 타이머
@@ -108,25 +109,26 @@ export default function LoadingPage() {
   }, [onComplete]);
 
   return (
-    <div className='flex h-screen w-screen items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100'>
-      <div className='text-center'>
-        {/* 로딩 애니메이션 */}
-        <div className='mb-8'>
-          <div className='mx-auto mb-4 h-20 w-20'>
-            {/* <div className="animate-spin rounded-full h-20 w-20 border-4 border-yellow-200 border-t-yellow-500"></div> */}
-          </div>
-        </div>
-
+    <div className='relative flex h-full w-full flex-col'>
+      <div className='mb-15 flex flex-1 items-end justify-center text-center'>
         {/* 제목 */}
-        <h2 className='mb-10 text-2xl font-bold text-gray-800'>
-          게임을 준비하고 있습니다.
-        </h2>
+        <div className='text-center'>
+          <img
+            src='/image/mainPage/game_logo.svg'
+            alt='bag to the future'
+            className='mx-auto h-42 w-142'
+          />
+        </div>
+      </div>
 
+      {/* 하단 고정 영역 */}
+      <div className='flex flex-col items-center justify-center gap-5 pb-20'>
+        <p className='text-sm text-gray-200'>{'Preparing to load data'}</p>
         {/* Progress Bar */}
-        <div className='mx-auto w-64'>
-          <div className='h-2 overflow-hidden rounded-full bg-gray-200'>
+        <div className='mx-auto w-105'>
+          <div className='h-2 overflow-hidden rounded-full'>
             <div
-              className='h-full animate-pulse rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500'
+              className='h-full animate-pulse rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500'
               style={{
                 animation: 'progress 3s linear forwards',
                 width: `${(loaded / total) * 100}%`,
@@ -134,11 +136,9 @@ export default function LoadingPage() {
             />
           </div>
         </div>
-
-        {/* 진행률 텍스트 */}
-        <p className='mt-4 text-sm text-gray-500'>
+        {/* <p className='text-sm text-gray-500'>
           {'TIP: 소리를 키고 진행해주세요.'}
-        </p>
+        </p> */}
       </div>
 
       <style>{`

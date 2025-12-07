@@ -45,6 +45,25 @@ export default {
       aspectRatio: {
         'mobile-landscape': '896/414', // 2.16:1 비율
       },
+      fontFamily: {
+        'nexon-lv2-gothic': 'var(--font-nexon-lv2-gothic)',
+        'nexon-lv1-gothic-low-otf': 'var(--font-nexon-lv1-gothic-low-otf)',
+        'nanumsquare-neo-otf': 'var(--font-nanumsquare-neo-otf)',
+      },
+      colors: {
+        'caution-1': 'var(--color-caution-1)',
+        'red-1': 'var(--color-red-1)',
+        'green-1': 'var(--color-green-1)',
+        'yellow-1': 'var(--color-yellow-1)',
+        'purple-1': 'var(--color-purple-1)',
+        'sky-1': 'var(--color-sky-1)',
+        'main-1': 'var(--color-main-1)',
+        'secondary-1': 'var(--color-secondary-1)',
+        'w-1': 'var(--color-w-1)',
+      },
+      textShadow: {
+        neon: '0 0 4px var(--color-sky-1, #01ead6)',
+      },
     },
   },
   plugins: [scrollbar],

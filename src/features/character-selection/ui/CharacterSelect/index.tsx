@@ -3,198 +3,130 @@ import type { SelectCharacterSetResultDto } from '@api/models/SelectCharacterSet
 import { useEffect, useMemo, useState } from 'react';
 import { cn } from '@shared/lib/utils';
 import type { CharacterSet } from '@entities/game-session';
+import type { PlayingCharacter } from '@entities/game-session';
+import { useSetBackground } from '@shared/background';
+import GlassButton from '@shared/ui/GlassButton';
+import Typography from '@shared/ui/Typography';
+import {
+  type CharacterPairDetail,
+  createCharacterSetsFromDetails,
+  getCharacterPairDetailByName,
+} from '../../model/characterPairDetails';
+import { BackgroundPortal } from '@shared/background-portal';
 
 interface CharacterSelectProps {
   onNext: () => void;
   onBack: () => void;
-  onSelectSuccess?: (response: SelectCharacterSetResultDto) => void;
+  onSelectSuccess?: (result: {
+    response: SelectCharacterSetResultDto;
+    playingCharacters: PlayingCharacter[];
+    groupName: string;
+  }) => void;
 }
 
-type CharacterStat = {
-  label: string;
-  value: string;
-};
-
-interface CharacterDetail {
-  id: string;
-  name: string;
-  age: string;
-  stats: CharacterStat[];
-  description: string;
-  traits?: string;
-  image?: string;
-  thumbnail?: string;
-}
-
-interface CharacterPairDetail {
-  title: string;
-  overview?: string;
-  characters: CharacterDetail[];
-}
-
-const CHARACTER_PAIR_DETAILS: Record<string, CharacterPairDetail> = {
-  '헴과 병철': {
-    title: '헴과 병철',
-    overview:
-      '득근과 근손실 사이에서 살아가는 헴과 그를 따르는 병철. 극한 상황에서도 근손실을 막기 위해 고군분투한다.',
-    characters: [
-      {
-        id: 'hem',
-        name: '헴',
-        age: '35세',
-        stats: [
-          { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Low' },
-        ],
-        description:
-          '득근에 살고 근손실에 죽는 헬스 미친 자. 가오를 중시하고 매일 데리고 다니는 병철에게 헬스를 부리며 모든 것을 가르치려고 함.',
-        traits:
-          '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
-        image: '/public/캐릭터선택창헴.png',
-        thumbnail: '/public/캐릭터선택창헴.png',
-      },
-      {
-        id: 'bang',
-        name: '병철',
-        age: '29세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description:
-          '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
-        traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
-        image: '/public/캐릭터선택창뱅철.png',
-        thumbnail: '/public/캐릭터선택창뱅철.png',
-      },
-    ],
+const CHARACTER_TAB_IMAGES: Record<
+  string,
+  { defaultSrc: string; selectedSrc: string; alt: string }
+> = {
+  '김형빈과 이병철': {
+    defaultSrc: '/image/charSelect/char_select_hb_bc.svg',
+    selectedSrc: '/image/charSelect/char_selected_hb_bc.svg',
+    alt: '김형빈과 이병철 선택 탭',
   },
   '정복순&진실이': {
-    title: '정복순 & 진실이',
-    overview:
-      '진실을 밝히기 위해 몸을 사리지 않는 기자 복순과, 냉철한 분석가 진실이의 조합.',
-    characters: [
-      {
-        id: 'boksun',
-        name: '정복순',
-        age: '32세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'High' },
-        ],
-        description:
-          '집요한 추적과 강단으로 사건을 끝까지 파고드는 베테랑 기자. 재난 속에서도 진실을 밝혀내려 한다.',
-        image: '',
-        thumbnail: '',
-      },
-      {
-        id: 'jinsil',
-        name: '진실이',
-        age: '27세',
-        stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'High' },
-        ],
-        description:
-          '데이터 분석 전문가. 복순이 놓치는 단서를 찾아내 팀의 생존 확률을 높인다.',
-        image: '',
-        thumbnail: '',
-      },
-    ],
+    defaultSrc: '/image/charSelect/char_select_bs_js.svg',
+    selectedSrc: '/image/charSelect/char_selected_bs_js.svg',
+    alt: '정복순과 진실이 선택 탭',
   },
   '소재옥&문예원': {
-    title: '소재옥 & 문예원',
-    overview:
-      '현장 경험 풍부한 기사 소재옥과 드론 엔지니어 문예원이 만드는 즉석 생존 키트.',
-    characters: [
-      {
-        id: 'sojaeok',
-        name: '소재옥',
-        age: '41세',
-        stats: [
-          { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description:
-          '무너지는 구조물 속에서도 침착하게 장비를 수리하는 베테랑 기사.',
-        image: '',
-        thumbnail: '',
-      },
-      {
-        id: 'munyewon',
-        name: '문예원',
-        age: '33세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'High' },
-        ],
-        description: '드론과 로봇을 활용해 정찰과 구조를 담당하는 엔지니어.',
-        image: '',
-        thumbnail: '',
-      },
-    ],
+    defaultSrc: '/image/charSelect/char_select_jo_yw.svg',
+    selectedSrc: '/image/charSelect/char_selected_jo_yw.svg',
+    alt: '소재옥과 문예원 선택 탭',
   },
   '방미리&류재호': {
-    title: '방미리 & 류재호',
-    overview:
-      '우연히 마주친 두 사람이 재난 속에서 서로를 의지하게 되는 성장 스토리.',
-    characters: [
-      {
-        id: 'bangmiri',
-        name: '방미리',
-        age: '28세',
-        stats: [
-          { label: '체력', value: 'Low' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description: '분위기 메이커지만 위기 상황에서 쉽게 겁먹는 평범한 시민.',
-        image: '',
-        thumbnail: '',
-      },
-      {
-        id: 'ryujaeho',
-        name: '류재호',
-        age: '30세',
-        stats: [
-          { label: '체력', value: 'Mid' },
-          { label: '정신력', value: 'Mid' },
-        ],
-        description:
-          '책임감 강한 회사원. 방미리를 지키기 위해 자신을 단련한다.',
-        image: '',
-        thumbnail: '',
-      },
-    ],
+    defaultSrc: '/image/charSelect/char_select_mr_jh.svg',
+    selectedSrc: '/image/charSelect/char_selected_mr_jh.svg',
+    alt: '방미리와 류재호 선택 탭',
   },
 };
 
-const LOCAL_CHARACTER_SETS: CharacterSet[] = Object.entries(
-  CHARACTER_PAIR_DETAILS
-).map(([name, detail], index) => ({
-  id: index + 1,
-  name,
-  image: detail.characters[0]?.image || '',
-  description: detail.overview || '',
-  isLocked: index > 0,
-}));
+const LOCAL_CHARACTER_SETS: CharacterSet[] = createCharacterSetsFromDetails();
+
+/**
+ * 캐릭터 ID를 스탯 이미지 경로로 변환
+ */
+function getCharacterStatImagePath(
+  characterId: string | undefined
+): string | null {
+  if (!characterId) return null;
+
+  // 캐릭터 ID를 스탯 이미지 이니셜로 매핑
+  const idToInitial: Record<string, string> = {
+    hem: 'hb',
+    bang: 'bc',
+    boksun: 'bs',
+    jinsil: 'js',
+    sojaeok: 'jo',
+    munyewon: 'yw',
+    bangmiri: 'mr',
+    ryujaeho: 'jh',
+  };
+
+  const initial = idToInitial[characterId.toLowerCase()];
+  if (!initial) return null;
+
+  return `/image/charSelect/char_${initial}_stat.svg`;
+}
+
+/**
+ * 캐릭터 ID를 페어 이미지 경로로 변환
+ */
+function getCharacterPairImagePath(
+  characterId: string | undefined,
+  isActive: boolean
+): string | null {
+  if (!characterId) return null;
+
+  // 캐릭터 ID를 이미지 이니셜로 매핑
+  const idToInitial: Record<string, string> = {
+    hem: 'hb',
+    bang: 'bc',
+    boksun: 'bs',
+    jinsil: 'js',
+    sojaeok: 'jo',
+    munyewon: 'yw',
+    bangmiri: 'mr',
+    ryujaeho: 'jh',
+  };
+
+  const initial = idToInitial[characterId.toLowerCase()];
+  if (!initial) return null;
+
+  const type = isActive ? 'active' : 'default';
+  return `/image/charSelect/pair_${type}_${initial}.svg`;
+}
 
 function createPairDetail(set?: CharacterSet): CharacterPairDetail {
   if (!set) {
     return {
+      groupId: 0,
       title: '캐릭터',
+      nameVariants: [],
       overview: '캐릭터 정보를 불러오지 못했습니다.',
       characters: [],
     };
   }
 
-  const detail = CHARACTER_PAIR_DETAILS[set.name];
+  const detail = getCharacterPairDetailByName(set.name);
   if (detail) {
     return detail;
   }
 
   return {
+    groupId: Number(set.id),
     title: set.name,
-    overview: set.description,
+    nameVariants: [set.name],
+    overview: set.description || '캐릭터 설명이 준비되어 있지 않습니다.',
     characters: [
       {
         id: `${set.id}-primary`,
@@ -212,20 +144,24 @@ function createPairDetail(set?: CharacterSet): CharacterPairDetail {
 
 export default function CharacterSelect({
   onNext,
-  onBack,
+  onBack: _onBack,
   onSelectSuccess,
 }: CharacterSelectProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
     null
   );
+  useSetBackground({
+    image: '/shelter-bg.png',
+    className: 'backdrop-blur-[100px]',
+  });
 
   const characterSets = LOCAL_CHARACTER_SETS;
 
   const { mutate: selectCharacter, isPending: isSelecting } =
     useSelectCharacterSet({
-      onSuccess: ({ response }) => {
-        onSelectSuccess?.(response);
+      onSuccess: result => {
+        onSelectSuccess?.(result);
         onNext();
       },
       onError: (error: Error) => {
@@ -268,176 +204,184 @@ export default function CharacterSelect({
   }
 
   return (
-    <div className='flex h-screen w-screen bg-[#0c0f15] text-white'>
-      <aside className='w-[260px] border-r border-white/10 px-10 py-16'>
-        <div className='flex flex-col gap-4'>
-          <div className='w-full justify-start'>
-            <button
-              onClick={onBack}
-              className='rounded-full px-4 py-2 text-sm font-semibold text-white/70 transition hover:bg-white/10 hover:text-white'
-            >
-              ←
-            </button>
-          </div>
-          <div className='flex flex-col gap-8'>
-            {characterSets.map((set, index) => {
-              const isActive = index === currentIndex;
-              return (
-                <button
-                  key={set.id}
-                  onClick={() => setCurrentIndex(index)}
-                  className={cn(
-                    'rounded-full px-6 py-3 text-left text-base font-semibold transition-all',
-                    isActive
-                      ? 'border border-white/40 bg-white/10 text-white shadow-[0_0_24px_rgba(255,255,255,0.15)]'
-                      : 'border border-transparent text-white/55 hover:border-white/20 hover:text-white'
-                  )}
-                >
-                  {set.name}
-                </button>
-              );
-            })}
-          </div>
+    <div className='grid h-full w-full grid-cols-[270px_1fr_360px] text-white'>
+      <BackgroundPortal>
+        <div className='absolute top-8 right-0 z-201 h-[35px] w-[350px]'>
+          <img
+            src='/image/charSelect/char_select_page_header.svg'
+            alt='캐릭터 선택'
+            className='h-full w-full object-fill'
+          />
+        </div>
+      </BackgroundPortal>
+      {/* 좌측: 캐릭터 셋 선택 */}
+      <aside className='flex h-full flex-col'>
+        <div className='flex w-full flex-col justify-items-start gap-1'>
+          {characterSets.map((set, index) => {
+            const isActive = index === currentIndex;
+            const tabAssets = CHARACTER_TAB_IMAGES[set.name];
+            const fallbackSrc = isActive
+              ? (tabAssets?.selectedSrc ?? tabAssets?.defaultSrc)
+              : tabAssets?.defaultSrc;
+            return (
+              <button
+                key={set.id}
+                onClick={() => setCurrentIndex(index)}
+                className={cn(
+                  'group relative rounded-3xl border border-transparent py-1 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
+                  isActive ? 'ring-0' : 'hover:border-white/15'
+                )}
+              >
+                {fallbackSrc ? (
+                  <div className='flex w-full justify-start'>
+                    <img
+                      src={fallbackSrc}
+                      alt={tabAssets?.alt ?? set.name}
+                      className={cn(
+                        'h-[80px] object-contain transition-transform duration-200 ease-out',
+                        isActive ? 'scale-[1.1]' : 'scale-100'
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <span className='block px-6 py-3 text-left text-base font-semibold text-white'>
+                    {set.name}
+                  </span>
+                )}
+                <span className='sr-only'>{set.name}</span>
+              </button>
+            );
+          })}
         </div>
       </aside>
 
-      <main className='flex flex-1 flex-col'>
-        <header className='flex items-center justify-between px-12 py-8'>
-          <div className='text-sm text-white/40'>
-            {pairDetail.characters.length > 0
-              ? `${pairDetail.characters.length} PLAYERS`
-              : '준비중'}
+      {/* 가운데: 캐릭터 이미지 */}
+      <main className='relative flex items-center justify-center'>
+        {activeCharacter?.image ? (
+          <img
+            src={activeCharacter.image}
+            alt={activeCharacter.name}
+            className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+          />
+        ) : (
+          <div className='flex h-[140px] w-[140px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
+            이미지 준비 중
           </div>
-        </header>
+        )}
+        <div className='pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-20'>
+          <GlassButton
+            onClick={handleSelectComplete}
+            disabled={currentSet?.isLocked || isSelecting}
+            className={cn(
+              'pointer-events-auto h-[30px] w-[145px] text-white transition-all',
+              currentSet?.isLocked ? 'opacity-70' : ''
+            )}
+          >
+            <Typography variant='h4-b' className='text-sm'>
+              {isSelecting
+                ? '선택 중...'
+                : currentSet?.isLocked
+                  ? '공개 예정'
+                  : '선택 완료'}
+            </Typography>
+          </GlassButton>
+        </div>
+      </main>
 
-        <div className='flex flex-1 items-center gap-16 px-16 pb-12'>
-          <div className='flex flex-1 items-center justify-center'>
-            {activeCharacter?.image ? (
-              <img
-                src={activeCharacter.image}
-                alt={activeCharacter.name}
-                className='max-h-[540px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
-              />
-            ) : (
-              <div className='flex h-[200px] w-[200px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
-                이미지 준비 중
+      {/* 우측: 캐릭터 정보 */}
+      <aside className='flex h-full flex-col justify-center gap-4 overflow-y-auto px-40'>
+        <div className='flex flex-col gap-3'>
+          <span className='text-sm font-semibold text-white/40'>
+            {/* {pairDetail.title} */}
+          </span>
+          {activeCharacter ? (
+            <>
+              <div className='flex items-baseline gap-3'>
+                <span className='text-[16px] font-extrabold tracking-tight'>
+                  | {activeCharacter.name}
+                </span>
+                {activeCharacter.age && (
+                  <span className='text-[12px] font-bold text-white/60'>
+                    {activeCharacter.age}
+                  </span>
+                )}
               </div>
-            )}
-          </div>
-
-          <div className='flex w-[420px] flex-col gap-8'>
-            <div className='flex flex-col gap-3'>
-              <span className='text-sm font-semibold text-white/40'>
-                {pairDetail.title}
-              </span>
-              {activeCharacter ? (
-                <>
-                  <div className='flex items-baseline gap-3'>
-                    <span className='text-xl font-extrabold tracking-tight'>
-                      {activeCharacter.name}
-                    </span>
-                    {activeCharacter.age && (
-                      <span className='text-lg text-white/60'>
-                        {activeCharacter.age}
-                      </span>
-                    )}
-                  </div>
-                  {activeCharacter.stats.length > 0 && (
-                    <div className='flex gap-3'>
-                      {activeCharacter.stats.map(stat => (
-                        <div
-                          key={`${activeCharacter.id}-${stat.label}`}
-                          className='flex flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3'
-                        >
-                          <span className='text-xs font-semibold tracking-wide text-white/40 uppercase'>
-                            {stat.label}
-                          </span>
-                          <span className='text-lg font-bold text-white'>
-                            {stat.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : null}
-            </div>
-
-            {pairDetail.overview && (
-              <p className='text-sm leading-relaxed whitespace-pre-line text-white/70'>
-                {pairDetail.overview}
-              </p>
-            )}
-
-            {activeCharacter?.description && (
-              <p className='text-sm leading-relaxed whitespace-pre-line text-white/80'>
-                {activeCharacter.description}
-              </p>
-            )}
-
-            {activeCharacter?.traits && (
-              <p className='text-xs whitespace-pre-line text-white/50'>
-                {activeCharacter.traits}
-              </p>
-            )}
-
-            <div className='flex h-full w-full items-end justify-between'>
-              <div>
-                <div className='text-xs font-semibold tracking-[0.3em] text-white/40 uppercase'>
-                  플레이어 페어
-                </div>
-                <div className='mt-3 flex gap-3'>
-                  {pairDetail.characters.map(character => {
-                    const isActive = character.id === activeCharacter?.id;
-                    return (
-                      <button
-                        key={character.id}
-                        onClick={() => setActiveCharacterId(character.id)}
-                        className={cn(
-                          'relative h-20 w-20 overflow-hidden rounded-2xl border transition-all',
-                          isActive
-                            ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
-                            : 'border-white/15 hover:border-white/30'
-                        )}
-                      >
-                        {character.thumbnail ? (
-                          <img
-                            src={character.thumbnail}
-                            alt={character.name}
-                            className='h-full w-full object-cover'
-                          />
-                        ) : (
-                          <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
-                            ?
-                          </div>
-                        )}
-                      </button>
+              {activeCharacter?.id ? (
+                <div className='mt-4'>
+                  {(() => {
+                    const statImagePath = getCharacterStatImagePath(
+                      activeCharacter.id
                     );
-                  })}
+                    return statImagePath ? (
+                      <img
+                        src={statImagePath}
+                        alt={`${activeCharacter.name} 스탯`}
+                        className='h-33 w-83 object-contain'
+                      />
+                    ) : null;
+                  })()}
                 </div>
-              </div>
-              <div className='flex items-center justify-center gap-6 pb-12'>
-                <button
-                  onClick={handleSelectComplete}
-                  disabled={currentSet?.isLocked || isSelecting}
-                  className={cn(
-                    'rounded-full px-16 py-4 text-base font-semibold transition-all',
-                    currentSet?.isLocked
-                      ? 'cursor-not-allowed border border-white/10 bg-white/5 text-white/40'
-                      : 'bg-gradient-to-r from-[#ff956c] to-[#ff6363] text-white shadow-[0_12px_30px_rgba(255,99,99,0.35)] hover:shadow-[0_20px_50px_rgba(255,99,99,0.45)] active:scale-95'
-                  )}
-                >
-                  {isSelecting
-                    ? '선택 중...'
-                    : currentSet?.isLocked
-                      ? '공개 예정'
-                      : '선택 완료'}
-                </button>
-              </div>
+              ) : null}
+            </>
+          ) : null}
+        </div>
+
+        {pairDetail.overview && (
+          <p className='text-sm leading-relaxed whitespace-pre-line'>
+            {pairDetail.overview}
+          </p>
+        )}
+
+        <p className='h-[60px] text-[9px] leading-relaxed whitespace-pre-line'>
+          {activeCharacter?.description}
+        </p>
+
+        <p className='h-[40px] text-[9px] whitespace-pre-line'>
+          {activeCharacter?.traits}
+        </p>
+
+        <div className='flex w-full items-start justify-between'>
+          <div>
+            <div className='text-[10px] font-semibold uppercase'>
+              플레이어 페어
+            </div>
+            <div className='mt-3 flex gap-3'>
+              {pairDetail.characters.map(character => {
+                const isActive = character.id === activeCharacter?.id;
+                const pairImage = getCharacterPairImagePath(
+                  character.id,
+                  isActive
+                );
+
+                return (
+                  <button
+                    key={character.id}
+                    onClick={() => setActiveCharacterId(character.id)}
+                    className={cn(
+                      'h-37p relative w-37 overflow-hidden border transition-all',
+                      isActive
+                        ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
+                        : 'border-white/15 hover:border-white/30'
+                    )}
+                  >
+                    {pairImage ? (
+                      <img
+                        src={pairImage}
+                        alt={character.name}
+                        className='h-full w-full object-cover'
+                      />
+                    ) : (
+                      <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
+                        ?
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
-      </main>
+      </aside>
     </div>
   );
 }
