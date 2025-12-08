@@ -27,7 +27,7 @@ export default function MainMenu() {
     <div className='relative h-full w-full overflow-hidden'>
       <BackgroundPortal>
         <video
-          src='/image/mainPage/splash_main.mp4'
+          src='/video/splash_main.mp4'
           autoPlay
           loop
           muted

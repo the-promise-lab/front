@@ -150,7 +150,7 @@ export default function LoginPage() {
             'absolute top-1/2 left-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 object-cover transition-opacity duration-700',
             phase === 'splash' ? 'opacity-100' : 'opacity-0'
           )}
-          src='/image/mainPage/splash_main.mp4'
+          src='/video/splash_login.mp4'
           autoPlay={phase === 'splash'}
           loop
           preload='auto'
@@ -211,7 +211,7 @@ export default function LoginPage() {
                     height='18'
                     viewBox='0 0 24 24'
                     fill='currentColor'
-                    font-family='Apple SD Gothic Neo'
+                    fontFamily='Apple SD Gothic Neo'
                   >
                     <path d='M12 2C6.477 2 2 5.731 2 10.286c0 2.858 1.818 5.377 4.545 6.952L5.91 21.09c-.13.41.278.758.643.548l5.12-2.78C11.834 18.924 11.916 18.929 12 18.929c5.523 0 10-3.731 10-8.643C22 5.731 17.523 2 12 2z' />
                   </svg>
