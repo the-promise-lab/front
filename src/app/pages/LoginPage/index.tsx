@@ -17,6 +17,7 @@ export default function LoginPage() {
   const [phase, setPhase] = useState<VideoPhase>('intro');
   const [showLogin, setShowLogin] = useState(false);
   const [hasShownEarlyModal, setHasShownEarlyModal] = useState(false);
+  const introVideoRef = useRef<HTMLVideoElement | null>(null);
   const splashVideoRef = useRef<HTMLVideoElement | null>(null);
   const { login } = useAuthStore(useShallow(state => ({ login: state.login })));
   const { goto } = useGameFlowStore(
@@ -98,8 +99,6 @@ export default function LoginPage() {
 
   const handleSplashEnded = () => {
     setShowLogin(true);
-    const video = splashVideoRef.current;
-    video?.play().catch(() => {});
   };
 
   useEffect(() => {
@@ -124,6 +123,13 @@ export default function LoginPage() {
     }
   };
 
+  // 로그인 모달이 노출되면 영상들을 정지
+  useEffect(() => {
+    if (!showLogin) return;
+    introVideoRef.current?.pause();
+    splashVideoRef.current?.pause();
+  }, [showLogin]);
+
   return (
     <div className='relative h-full w-full overflow-hidden text-white'>
       <div
@@ -135,6 +141,7 @@ export default function LoginPage() {
         {phase === 'intro' && (
           <video
             key='intro-video'
+            ref={introVideoRef}
             className='absolute top-1/2 left-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 object-cover'
             src='/video/intro.mp4'
             autoPlay
@@ -168,7 +175,7 @@ export default function LoginPage() {
             className='flex flex-col items-center justify-center rounded-[12px] border-[2px] border-white/40 px-45 py-25 text-center backdrop-blur-md'
             style={{
               background:
-                'var(--bt_glass, linear-gradient(78deg, rgba(255, 255, 255, 0.24) -1.42%, rgba(255, 255, 255, 0.12) 91.38%))',
+                'var(--bt-glass, linear-gradient(78deg, rgba(255, 255, 255, 0.24) -1.42%, rgba(255, 255, 255, 0.12) 91.38%))',
             }}
           >
             {isProcessing ? (
