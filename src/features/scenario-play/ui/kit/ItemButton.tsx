@@ -1,6 +1,7 @@
 import { useEffect, useRef, type MouseEvent } from 'react';
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
+import { useButtonClickSfx } from '@shared/audio';
 
 interface ItemButtonProps {
   name: string;
@@ -24,11 +25,13 @@ export default function ItemButton({
   className,
 }: ItemButtonProps) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const playItemButtonClick = useButtonClickSfx({ variant: 'default' });
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (disabled) return;
 
+    playItemButtonClick();
     onPress();
 
     if (timeoutRef.current) {

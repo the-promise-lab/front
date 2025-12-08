@@ -3,6 +3,7 @@ import { useGameFlowStore } from '@processes/game-flow';
 import { useAssetStore, usePreloadAssets } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
+import { useGameSound, SOUND_URLS } from '@shared/audio';
 
 const ASSETS_TO_PRELOAD = [
   'shelter-bg.png',
@@ -33,6 +34,8 @@ const ASSETS_TO_PRELOAD = [
   'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/mr/default.png',
   'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/sa/default.png',
   'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/yw/default.png',
+  SOUND_URLS.buttonClick,
+  SOUND_URLS.typing,
 ];
 
 export default function LoadingPage() {
@@ -40,6 +43,10 @@ export default function LoadingPage() {
   const [timerEnded, setTimerEnded] = useState(false);
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   usePreloadAssets(ASSETS_TO_PRELOAD, {});
+  const { preload } = useGameSound();
+  useEffect(() => {
+    void preload([SOUND_URLS.buttonClick, SOUND_URLS.typing]);
+  }, [preload]);
 
   // 배경 이미지 설정
   useSetBackground({ image: '/image/mainPage/main_splash_bg.png' });

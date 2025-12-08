@@ -2,6 +2,7 @@ import { useState, type MouseEvent } from 'react';
 import { cn } from '@shared/lib/utils';
 import { IconBackpack } from '@shared/ui/icons';
 import { InventoryDrawer, type SlotItem } from '@entities/inventory';
+import { useButtonClickSfx } from '@shared/audio';
 
 interface InventoryMenuProps {
   className?: string;
@@ -26,6 +27,7 @@ export default function InventoryMenu({
   const [activeItemId, setActiveItemId] = useState<string | undefined>(
     undefined
   );
+  const playPopupClick = useButtonClickSfx({ variant: 'popup' });
 
   const handleSlotClick = (item: SlotItem) => {
     setActiveItemId(item.id);
@@ -33,10 +35,12 @@ export default function InventoryMenu({
 
   const handleOpen = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    playPopupClick();
     setIsOpen(true);
   };
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    playPopupClick();
     setIsOpen(false);
   };
 

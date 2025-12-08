@@ -4,6 +4,7 @@ import { IconCloseButton } from '@shared/ui/icon-button';
 import type { ReactNode } from 'react';
 import Typography from '../Typography';
 import { GradientGlassFromEdge } from '../GradientGlassFromEdge';
+import { useButtonClickSfx } from '@shared/audio';
 
 export interface MenuItem<T extends string = string> {
   id: T;
@@ -31,6 +32,7 @@ export function GlassMenuLayout<T extends string = string>({
   menuHeader,
   menuPanelClassName,
 }: GlassMenuLayoutProps<T>) {
+  const playButtonClick = useButtonClickSfx();
   return (
     <>
       {/* 블러 배경 오버레이 - 뒷배경이 보이도록 투명하게 */}
@@ -76,7 +78,10 @@ export function GlassMenuLayout<T extends string = string>({
               return (
                 <motion.button
                   key={item.id}
-                  onClick={() => onSelect(item.id)}
+                  onClick={() => {
+                    playButtonClick();
+                    onSelect(item.id);
+                  }}
                   className={cn(
                     'relative -ml-10 rounded-full px-21.5 py-9 text-left transition-all'
                   )}

@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import AppProviders from './providers/AppProviders';
 import RootLayout from './layout/RootLayout';
+import BgmLayout from './layout/BgmLayout';
 
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
@@ -105,17 +106,20 @@ export default function App() {
 
   return (
     <AppProviders>
-      <RootLayout>
-        {renderScreen()}
-        <PauseMenu
-          hidden={
-            step === 'LOGIN' ||
-            step === 'PROGRESS' ||
-            step === 'CHARACTER_SELECT' ||
-            step === 'SCENARIO_FLOW'
-          }
-        />
-      </RootLayout>
+      <BgmLayout>
+        <RootLayout>
+          {renderScreen()}
+          <PauseMenu
+            hidden={
+              step === 'LOGIN' ||
+              step === 'PROGRESS' ||
+              step === 'CHARACTER_SELECT' ||
+              step === 'SCENARIO_FLOW' ||
+              step === 'BAG_SELECT'
+            }
+          />
+        </RootLayout>
+      </BgmLayout>
     </AppProviders>
   );
 }

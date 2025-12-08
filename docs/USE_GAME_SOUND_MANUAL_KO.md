@@ -95,3 +95,21 @@ export function BattleScene() {
 - `ChannelName` 유니온을 확장하고 생성자에서 채널 초기화를 추가하면 더 많은 채널을 만들 수 있습니다.
 - React 상태와의 선언적 연동이 필요하다면, 명령형 API 위에 도메인 특화 훅을 구성해 보세요.
 - 사용자 설정(볼륨 슬라이더, 음소거 토글)을 별도 컨텍스트로 노출하고 내부적으로는 이 헬퍼들을 호출하도록 구성할 수 있습니다.
+
+## 버튼 클릭 효과음 사용법
+
+- 기본 훅: `useButtonClickSfx({ variant = 'default', volume = 1 })` – `variant`는 `CLICK_SOUND_VARIANTS`의 키를 사용합니다.
+- 공통 버튼(`GlassButton`)에는 기본 적용되어 있으므로 별도 코드 없이 클릭 시 효과음이 재생됩니다.
+- 커스텀 버튼에서 사용 예:
+
+```tsx
+import { useButtonClickSfx } from '@shared/audio';
+
+function ConfirmButton() {
+  const playClick = useButtonClickSfx({ variant: 'default', volume: 0.8 });
+  return <button onClick={playClick}>Confirm</button>;
+}
+```
+
+- 새로운 사운드를 쓰고 싶다면 `CLICK_SOUND_VARIANTS`에 키와 URL을 추가한 뒤 `variant`로 선택하면 됩니다.
+- 전역 “효과음 음소거/볼륨” 설정은 `sfx` 채널을 통해 자동으로 적용됩니다.

@@ -13,6 +13,7 @@ import {
   playingCharacterSetSelector,
   useGameFlowStore,
 } from '@processes/game-flow';
+import { useIntroAmbienceSound } from '@features/intro/model/useIntroAmbienceSound';
 
 interface IntroStoryProps {
   onNext?: () => void;
@@ -25,12 +26,9 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   const [isSkipped, setIsSkipped] = useState(false);
   const playingCharacters =
     useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
-  const {
-    data,
-    isPending,
-    isError,
-    error,
-  } = useIntroEvents({ introMode });
+  const { data, isPending, isError, error } = useIntroEvents({ introMode });
+
+  useIntroAmbienceSound(introMode);
 
   const events: IntroEvent[] = data?.events ?? [];
 
@@ -83,9 +81,7 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
           : '표시할 이벤트가 없습니다.';
     return (
       <div className='flex h-full w-full items-center justify-center text-white'>
-        <Typography variant='dialogue-b'>
-          {errorMessage}
-        </Typography>
+        <Typography variant='dialogue-b'>{errorMessage}</Typography>
       </div>
     );
   }

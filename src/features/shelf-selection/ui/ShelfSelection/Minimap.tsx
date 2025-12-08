@@ -6,6 +6,7 @@ import { cloneElement, useCallback, useMemo, useState } from 'react';
 import type { MinimapSection } from '../../model/types';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShallow } from 'zustand/react/shallow';
+import { useButtonClickSfx } from '@shared/audio';
 
 const minimapThumbnail = '/image/minimap/minimap_thumbnail.png';
 const minimap1024 = '/image/minimap/minimap@1024.png';
@@ -24,6 +25,7 @@ export default function Minimap({
   currentShelfCode,
 }: MinimapProps) {
   const [opened, setOpened] = useState(false);
+  const playPopupClick = useButtonClickSfx({ variant: 'popup' });
   const { isShelfVisited } = useShelfSelectionStore(
     useShallow(state => ({
       isShelfVisited: state.isShelfVisited,
@@ -31,12 +33,14 @@ export default function Minimap({
   );
 
   const close = useCallback(() => {
+    playPopupClick();
     setOpened(false);
-  }, []);
+  }, [playPopupClick]);
 
   const open = useCallback(() => {
+    playPopupClick();
     setOpened(true);
-  }, []);
+  }, [playPopupClick]);
 
   const handleSectionClick = useCallback(
     (sectionCode: string) => {

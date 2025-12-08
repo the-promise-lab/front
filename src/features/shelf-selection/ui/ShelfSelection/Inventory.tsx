@@ -4,11 +4,19 @@ import { IconBackpackCircle } from '@shared/ui/icons';
 import { useState } from 'react';
 import { cn } from '@shared/lib/utils';
 import type { Bag } from '@entities/game-session';
+import { useButtonClickSfx } from '@shared/audio';
 
 export default function Inventory({ bag }: { bag: Bag }) {
   const { selectedShelfItems, removeSelectedItem } = useShelfSelectionStore();
   const [isOpen, setIsOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+
+  const playPopupClick = useButtonClickSfx({ variant: 'popup' });
+
+  const handleClickOpen = () => {
+    playPopupClick();
+    setIsOpen(true);
+  };
 
   const currentWieght = selectedShelfItems.reduce(
     (acc, item) => acc + item.quantity,
@@ -60,7 +68,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
     <>
       <button
         className='pointer-events-auto absolute right-11 bottom-11 z-[10] h-36 w-36'
-        onClick={() => setIsOpen(true)}
+        onClick={handleClickOpen}
       >
         <div className='relative h-full w-full'>
           {/* 기존 백팩 아이콘 (배경 원 포함) */}
