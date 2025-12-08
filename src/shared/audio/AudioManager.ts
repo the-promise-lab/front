@@ -424,6 +424,7 @@ export class AudioManager {
   ) {
     if (prevUrl) {
       const prevSet = this.mediaPlaybacks.get(prevUrl);
+      console.log('prevSet', prevSet);
       prevSet?.forEach(entry => {
         this.stopMediaPlayback(entry, durationMs);
       });

@@ -13,6 +13,7 @@ import {
   playingCharacterSetSelector,
   useGameFlowStore,
 } from '@processes/game-flow';
+import { useIntroAmbienceSound } from '@features/intro/model/useIntroAmbienceSound';
 
 interface IntroStoryProps {
   onNext?: () => void;
@@ -26,6 +27,8 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   const playingCharacters =
     useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
   const { data, isPending, isError, error } = useIntroEvents({ introMode });
+
+  useIntroAmbienceSound(introMode);
 
   const events: IntroEvent[] = data?.events ?? [];
 

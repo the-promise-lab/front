@@ -95,3 +95,21 @@ The `play` helper forwards directly to the underlying `AudioManager.play` API, s
 - Add more channels by extending the `ChannelName` union and updating the channel initialization in `AudioManager`.
 - Wrap the imperative API with your own domain-specific hooks if you need declarative playback tied to React state.
 - Consider surfacing player-facing settings (volume sliders, mute toggles) via context providers that call these helpers under the hood.
+
+## Button click SFX
+
+- Hook: `useButtonClickSfx({ variant = 'default', volume = 1 })` – `variant` uses keys from `CLICK_SOUND_VARIANTS`.
+- Common buttons (e.g., `GlassButton`) already play the default click sound; no extra code needed.
+- Custom button example:
+
+```tsx
+import { useButtonClickSfx } from '@shared/audio';
+
+function ConfirmButton() {
+  const playClick = useButtonClickSfx({ variant: 'default', volume: 0.8 });
+  return <button onClick={playClick}>Confirm</button>;
+}
+```
+
+- To add a new sound, add a key/URL to `CLICK_SOUND_VARIANTS` and pass the variant.
+- Global “SFX mute/volume” is handled via the `sfx` channel automatically.

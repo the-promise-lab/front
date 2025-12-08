@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { useState, useEffect } from 'react';
 import { useGameSound } from '@shared/audio/useGameSound';
+import { useButtonClickSfx, useSoundSettingsStore } from '@shared/audio';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import Typography from '@shared/ui/Typography';
 import { cn } from '@shared/lib/utils';
@@ -12,44 +12,34 @@ interface SettingsViewProps {
 export function SettingsView({ onLogoutClick }: SettingsViewProps) {
   const { mute } = useGameSound();
   const { user } = useAuthStore();
-  const [bgmMuted, setBgmMuted] = useState(false);
-  const [sfxMuted, setSfxMuted] = useState(false);
-
-  useEffect(() => {
-    // 초기 상태는 AudioManager에서 가져올 수 없으므로 로컬 스토리지에서 복원
-    const savedBgmMuted = localStorage.getItem('bgmMuted') === 'true';
-    const savedSfxMuted = localStorage.getItem('sfxMuted') === 'true';
-    setBgmMuted(savedBgmMuted);
-    setSfxMuted(savedSfxMuted);
-
-    // AudioManager에 적용
-    mute('bgm', savedBgmMuted);
-    mute('sfx', savedSfxMuted);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { isBgmMuted, isSfxMuted, setBgmMuted, setSfxMuted } =
+    useSoundSettingsStore();
+  const playToggleSwitch = useButtonClickSfx({ variant: 'toggle' });
 
   const handleBgmToggle = (enabled: boolean) => {
-    setBgmMuted(!enabled);
-    mute('bgm', !enabled);
-    localStorage.setItem('bgmMuted', (!enabled).toString());
+    playToggleSwitch();
+    const shouldMute = !enabled;
+    setBgmMuted(shouldMute);
+    mute('bgm', shouldMute);
   };
 
   const handleSfxToggle = (enabled: boolean) => {
-    setSfxMuted(!enabled);
-    mute('sfx', !enabled);
-    localStorage.setItem('sfxMuted', (!enabled).toString());
+    playToggleSwitch();
+    const shouldMute = !enabled;
+    setSfxMuted(shouldMute);
+    mute('sfx', shouldMute);
   };
 
   return (
     <div className='mx-auto mt-9.5 flex h-full w-full max-w-190 flex-col gap-14 text-white'>
       {/* 배경음 */}
       <SettingRow label='배경음'>
-        <ToggleButton isOn={!bgmMuted} onToggle={handleBgmToggle} />
+        <ToggleButton isOn={!isBgmMuted} onToggle={handleBgmToggle} />
       </SettingRow>
 
       {/* 효과음 */}
       <SettingRow label='효과음'>
-        <ToggleButton isOn={!sfxMuted} onToggle={handleSfxToggle} />
+        <ToggleButton isOn={!isSfxMuted} onToggle={handleSfxToggle} />
       </SettingRow>
 
       {/* 계정 연동 */}
