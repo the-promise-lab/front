@@ -112,7 +112,8 @@ export default function App() {
             step === 'LOGIN' ||
             step === 'PROGRESS' ||
             step === 'CHARACTER_SELECT' ||
-            step === 'SCENARIO_FLOW'
+            step === 'SCENARIO_FLOW' ||
+            step === 'BAG_SELECT'
           }
         />
       </RootLayout>

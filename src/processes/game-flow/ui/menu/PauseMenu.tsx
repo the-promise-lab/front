@@ -11,7 +11,7 @@ import { TeamIntroView } from './TeamIntroView';
 import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
 import { BackgroundPortal } from '@shared/background-portal';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
-import { useGameSound, SOUND_URLS } from '@shared/audio';
+import { useButtonClickSfx } from '@shared/audio';
 
 type MenuCategory =
   | 'character-info'
@@ -49,21 +49,18 @@ export default function PauseMenu({
   buttonClassName,
 }: PauseMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { play } = useGameSound();
+  const playPopupClick = useButtonClickSfx({ variant: 'popup' });
+
   const open = useCallback(() => {
-    void play({
-      url: SOUND_URLS.popupClick,
-      channel: 'sfx',
-    }).catch(error => console.error('pause menu open sfx failed', error));
+    playPopupClick();
     setIsOpen(true);
-  }, [play]);
+  }, [playPopupClick]);
+
   const close = useCallback(() => {
-    void play({
-      url: SOUND_URLS.popupClick,
-      channel: 'sfx',
-    }).catch(error => console.error('pause menu close sfx failed', error));
+    playPopupClick();
     setIsOpen(false);
-  }, [play]);
+  }, [playPopupClick]);
+
   const handleClickOpen = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();

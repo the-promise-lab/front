@@ -6,7 +6,7 @@ import { cloneElement, useCallback, useMemo, useState } from 'react';
 import type { MinimapSection } from '../../model/types';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShallow } from 'zustand/react/shallow';
-import { useGameSound, SOUND_URLS } from '@shared/audio';
+import { useButtonClickSfx } from '@shared/audio';
 
 const minimapThumbnail = '/image/minimap/minimap_thumbnail.png';
 const minimap1024 = '/image/minimap/minimap@1024.png';
@@ -25,7 +25,7 @@ export default function Minimap({
   currentShelfCode,
 }: MinimapProps) {
   const [opened, setOpened] = useState(false);
-  const { play } = useGameSound();
+  const playPopupClick = useButtonClickSfx({ variant: 'popup' });
   const { isShelfVisited } = useShelfSelectionStore(
     useShallow(state => ({
       isShelfVisited: state.isShelfVisited,
@@ -33,20 +33,14 @@ export default function Minimap({
   );
 
   const close = useCallback(() => {
-    void play({
-      url: SOUND_URLS.popupClick,
-      channel: 'sfx',
-    }).catch(error => console.error('minimap close sfx failed', error));
+    playPopupClick();
     setOpened(false);
-  }, [play]);
+  }, [playPopupClick]);
 
   const open = useCallback(() => {
-    void play({
-      url: SOUND_URLS.popupClick,
-      channel: 'sfx',
-    }).catch(error => console.error('minimap open sfx failed', error));
+    playPopupClick();
     setOpened(true);
-  }, [play]);
+  }, [playPopupClick]);
 
   const handleSectionClick = useCallback(
     (sectionCode: string) => {

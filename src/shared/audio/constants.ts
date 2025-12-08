@@ -10,6 +10,8 @@ export type SoundKey = keyof typeof SOUND_URLS;
 
 export const CLICK_SOUND_VARIANTS = {
   default: SOUND_URLS.buttonClick,
+  popup: SOUND_URLS.popupClick,
+  toggle: SOUND_URLS.toggleSwitch,
 } as const;
 
 export type ClickSoundVariant = keyof typeof CLICK_SOUND_VARIANTS;
