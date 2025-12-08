@@ -1,17 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { config } from '@config/env';
 import { useSetBackground } from '@shared/background';
+import { cn } from '@shared/lib/utils';
 import { AuthService } from '@api';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { useGameFlowStore } from '@processes/game-flow';
 import { isAxiosError } from 'axios';
 import { useShallow } from 'zustand/react/shallow';
+import Typography from '@shared/ui/Typography';
 
 const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize';
+type VideoPhase = 'intro' | 'splash';
 
 export default function LoginPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [phase, setPhase] = useState<VideoPhase>('intro');
+  const [showLogin, setShowLogin] = useState(false);
+  const [hasShownEarlyModal, setHasShownEarlyModal] = useState(false);
+  const introVideoRef = useRef<HTMLVideoElement | null>(null);
+  const splashVideoRef = useRef<HTMLVideoElement | null>(null);
   const { login } = useAuthStore(useShallow(state => ({ login: state.login })));
   const { goto } = useGameFlowStore(
     useShallow(state => ({ goto: state.goto }))
@@ -86,64 +94,144 @@ export default function LoginPage() {
     window.location.href = kakaoAuthUrl;
   };
 
-  // 토큰 교환 중일 때 로딩 표시
-  if (isProcessing) {
-    return (
-      <div className='flex h-full w-full items-center justify-center text-white'>
-        <div className='flex flex-col items-center gap-4'>
-          <div className='h-8 w-8 animate-spin rounded-full border-2 border-white border-t-transparent' />
-          <p>로그인 처리 중...</p>
-        </div>
-      </div>
-    );
-  }
+  const handleIntroEnded = () => {
+    setPhase('splash');
+  };
+
+  const handleSplashEnded = () => {
+    setShowLogin(true);
+  };
+
+  useEffect(() => {
+    if (phase === 'splash') {
+      const video = splashVideoRef.current;
+      if (video) {
+        setShowLogin(false);
+        setHasShownEarlyModal(false);
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+    }
+  }, [phase]);
+
+  const handleSplashTimeUpdate = () => {
+    if (hasShownEarlyModal) return;
+    const video = splashVideoRef.current;
+    if (!video || !Number.isFinite(video.duration)) return;
+    if (video.duration - video.currentTime <= 2) {
+      setHasShownEarlyModal(true);
+      setShowLogin(true);
+    }
+  };
+
+  // 로그인 모달이 노출되면 영상들을 정지
+  useEffect(() => {
+    if (!showLogin) return;
+    introVideoRef.current?.pause();
+    splashVideoRef.current?.pause();
+  }, [showLogin]);
 
   return (
-    <div className='flex h-full w-full items-center justify-center text-white'>
+    <div className='relative h-full w-full overflow-hidden text-white'>
       <div
-        className='flex flex-col items-center justify-center rounded-[12px] border-[2px] border-white/40 px-45 py-25 text-center backdrop-blur-md'
-        style={{
-          // height: '240px',
-          background:
-            'linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.15) 100%)',
-        }}
+        className={cn(
+          'absolute inset-0 overflow-hidden transition-all duration-700',
+          showLogin && 'scale-105 blur-[8px]'
+        )}
       >
-        <div className='flex flex-col items-center justify-center gap-15'>
-          <div>
-            <p
-              className='text-[22px] text-white uppercase'
-              style={{
-                fontFamily: 'NanumSquare Neo OTF, sans-serif',
-                fontWeight: 600,
-                lineHeight: '100%',
-                letterSpacing: '0em',
-              }}
-            >
-              환영합니다!
-            </p>
-            <p
-              className='mt-4 text-[16px] text-white/85'
-              style={{
-                fontFamily: 'NanumSquare Neo OTF, sans-serif',
-                fontWeight: 400,
-                lineHeight: '138%',
-                letterSpacing: '-0.01em',
-              }}
-            >
-              로그인하여 플레이를 시작하세요.
-            </p>
-          </div>
-          <button
-            onClick={handleKakaoLogin}
-            className='flex touch-manipulation items-center justify-center gap-3 rounded-sm bg-[#FEE500] px-60 py-6 font-medium text-gray-800 transition-all hover:bg-yellow-500 active:bg-yellow-600'
+        {phase === 'intro' && (
+          <video
+            key='intro-video'
+            ref={introVideoRef}
+            className='absolute top-1/2 left-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 object-cover'
+            src='/video/intro.mp4'
+            autoPlay
+            muted
+            playsInline
+            onEnded={handleIntroEnded}
+          />
+        )}
+        <video
+          key='splash-video'
+          ref={splashVideoRef}
+          className={cn(
+            'absolute top-1/2 left-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 object-cover transition-opacity duration-700',
+            phase === 'splash' ? 'opacity-100' : 'opacity-0'
+          )}
+          src='/video/splash_login.mp4'
+          autoPlay={phase === 'splash'}
+          loop
+          preload='auto'
+          muted
+          playsInline
+          onEnded={handleSplashEnded}
+          onTimeUpdate={handleSplashTimeUpdate}
+        />
+        <div
+          className={cn(
+            'absolute inset-0',
+            (showLogin || isProcessing) && 'bg-black/35'
+          )}
+        />
+      </div>
+
+      <div className='relative z-10 flex h-full w-full items-center justify-center'>
+        {(showLogin || isProcessing) && (
+          <div
+            className='flex flex-col items-center justify-center rounded-[12px] border-[2px] border-white/40 px-25 py-10 text-center backdrop-blur-md'
+            style={{
+              background:
+                'var(--bt-glass, linear-gradient(78deg, rgba(255, 255, 255, 0.24) -1.42%, rgba(255, 255, 255, 0.12) 91.38%))',
+            }}
           >
-            <svg width='18' height='18' viewBox='0 0 24 24' fill='currentColor'>
-              <path d='M12 2C6.477 2 2 5.731 2 10.286c0 2.858 1.818 5.377 4.545 6.952L5.91 21.09c-.13.41.278.758.643.548l5.12-2.78C11.834 18.924 11.916 18.929 12 18.929c5.523 0 10-3.731 10-8.643C22 5.731 17.523 2 12 2z' />
-            </svg>
-            카카오톡 로그인
-          </button>
-          {error && <p className='mt-2 text-sm text-red-400'>{error}</p>}
-        </div>
+            {isProcessing ? (
+              <div className='flex flex-col items-center gap-4'>
+                <div className='h-8 w-8 animate-spin rounded-full border-2 border-white border-t-transparent' />
+                <p>로그인 처리 중...</p>
+              </div>
+            ) : (
+              <div className='flex flex-col items-center justify-center gap-15'>
+                <div>
+                  <Typography variant='h4-b' className='text-center text-white'>
+                    환영합니다!
+                  </Typography>
+                  <Typography
+                    variant='body'
+                    className='mt-4 text-center text-white'
+                  >
+                    로그인하여 플레이를 시작하세요.
+                  </Typography>
+                </div>
+                <button
+                  onClick={handleKakaoLogin}
+                  className='flex touch-manipulation items-center justify-center gap-3 rounded-sm bg-[#FEE500] px-40 py-6 font-medium text-gray-800 transition-all hover:bg-yellow-500 active:bg-yellow-600'
+                >
+                  <svg
+                    width='18'
+                    height='18'
+                    viewBox='0 0 24 24'
+                    fill='currentColor'
+                    fontFamily='Apple SD Gothic Neo'
+                  >
+                    <path d='M12 2C6.477 2 2 5.731 2 10.286c0 2.858 1.818 5.377 4.545 6.952L5.91 21.09c-.13.41.278.758.643.548l5.12-2.78C11.834 18.924 11.916 18.929 12 18.929c5.523 0 10-3.731 10-8.643C22 5.731 17.523 2 12 2z' />
+                  </svg>
+                  <span
+                    style={{
+                      color: 'var(--kakao-text, rgba(0, 0, 0, 0.85))',
+                      fontFamily: '"Apple SD Gothic Neo", sans-serif',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      lineHeight: '150%',
+                    }}
+                  >
+                    카카오톡 로그인
+                  </span>
+                </button>
+                {error && <p className='mt-2 text-sm text-red-400'>{error}</p>}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
