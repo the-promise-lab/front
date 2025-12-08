@@ -9,6 +9,7 @@ import {
 import { useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { SOUND_URLS, type PlayHandle, useGameSound } from '@shared/audio';
+import { useSoundSettingsStore } from '@shared/audio/useSoundSettingsStore';
 
 interface BgmLayoutProps {
   children: ReactNode;
@@ -21,7 +22,8 @@ export default function BgmLayout({ children }: BgmLayoutProps) {
     }))
   );
 
-  const { crossfadeBgm, context } = useGameSound();
+  const { isBgmMuted, isSfxMuted } = useSoundSettingsStore();
+  const { crossfadeBgm, context, mute } = useGameSound();
   const [audioReady, setAudioReady] = useState(
     typeof window === 'undefined' ? false : context.state === 'running'
   );
@@ -42,6 +44,13 @@ export default function BgmLayout({ children }: BgmLayoutProps) {
         : SOUND_URLS.mainBgm2,
     [MAIN_BGM_1_STEPS]
   );
+
+  useEffect(() => {
+    // AudioManager에 초기 설정값 적용
+    mute('bgm', isBgmMuted);
+    mute('sfx', isSfxMuted);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 사용자 제스처 이후에만 오디오 컨텍스트를 재개
   useEffect(() => {
