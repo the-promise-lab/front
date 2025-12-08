@@ -1,6 +1,9 @@
 export const SOUND_URLS = {
-  buttonClick: '/sounds/button-click.mp3',
-  typing: '/sounds/typing-sound.mp3',
+  buttonClick: '/sounds/sfx/button-click.mp3',
+  typing: '/sounds/sfx/typing-sound.mp3',
+  toggleSwitch: '/sounds/sfx/toggle-switch.wav',
+  popupClick: '/sounds/sfx/popup-click.wav',
+  intro1MartAmbience: '/sounds/bgm/intro1-mart-ambience.mp3',
 } as const;
 
 export type SoundKey = keyof typeof SOUND_URLS;

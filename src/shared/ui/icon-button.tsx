@@ -1,10 +1,10 @@
 import { IconBackpack, IconClose, IconPause } from '@shared/ui/icons';
 import { cn } from '@shared/lib/utils';
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes, MouseEvent } from 'react';
 
 interface IconButtonProps {
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
 }
 

@@ -1,4 +1,4 @@
-import { useCallback, useState, type ReactNode } from 'react';
+import { useCallback, useState, type MouseEvent, type ReactNode } from 'react';
 import { useGameFlowStore } from '../..';
 import { IconPauseButton } from '@shared/ui/icon-button';
 import { cn } from '@shared/lib/utils';
@@ -11,6 +11,7 @@ import { TeamIntroView } from './TeamIntroView';
 import { GlassMenuLayout } from '@shared/ui/layout/GlassMenuLayout';
 import { BackgroundPortal } from '@shared/background-portal';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
+import { useGameSound, SOUND_URLS } from '@shared/audio';
 
 type MenuCategory =
   | 'character-info'
@@ -36,7 +37,9 @@ const MENU_CATEGORIES = [
 
 interface PauseMenuProps {
   hidden?: boolean;
-  renderButton?: (onClick: () => void) => ReactNode;
+  renderButton?: (
+    onClick: (e: MouseEvent<HTMLButtonElement>) => void
+  ) => ReactNode;
   buttonClassName?: string;
 }
 
@@ -46,12 +49,29 @@ export default function PauseMenu({
   buttonClassName,
 }: PauseMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { play } = useGameSound();
   const open = useCallback(() => {
+    void play({
+      url: SOUND_URLS.popupClick,
+      channel: 'sfx',
+    }).catch(error => console.error('pause menu open sfx failed', error));
     setIsOpen(true);
-  }, []);
+  }, [play]);
   const close = useCallback(() => {
+    void play({
+      url: SOUND_URLS.popupClick,
+      channel: 'sfx',
+    }).catch(error => console.error('pause menu close sfx failed', error));
     setIsOpen(false);
-  }, []);
+  }, [play]);
+  const handleClickOpen = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      open();
+    },
+    [open]
+  );
+
   const [selectedCategory, setSelectedCategory] =
     useState<MenuCategory>('character-info');
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -88,7 +108,7 @@ export default function PauseMenu({
   return (
     <>
       {renderButton ? (
-        renderButton(open)
+        renderButton(handleClickOpen)
       ) : (
         <div
           className={cn(
@@ -97,7 +117,7 @@ export default function PauseMenu({
             hidden ? 'hidden' : ''
           )}
         >
-          <IconPauseButton onClick={open} />
+          <IconPauseButton onClick={handleClickOpen} />
         </div>
       )}
       <BackgroundPortal>

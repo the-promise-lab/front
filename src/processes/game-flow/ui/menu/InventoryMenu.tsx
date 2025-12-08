@@ -2,6 +2,7 @@ import { useState, type MouseEvent } from 'react';
 import { cn } from '@shared/lib/utils';
 import { IconBackpack } from '@shared/ui/icons';
 import { InventoryDrawer, type SlotItem } from '@entities/inventory';
+import { useGameSound, SOUND_URLS } from '@shared/audio';
 
 interface InventoryMenuProps {
   className?: string;
@@ -26,6 +27,7 @@ export default function InventoryMenu({
   const [activeItemId, setActiveItemId] = useState<string | undefined>(
     undefined
   );
+  const { play } = useGameSound();
 
   const handleSlotClick = (item: SlotItem) => {
     setActiveItemId(item.id);
@@ -33,10 +35,18 @@ export default function InventoryMenu({
 
   const handleOpen = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    void play({
+      url: SOUND_URLS.popupClick,
+      channel: 'sfx',
+    }).catch(error => console.error('inventory open sfx failed', error));
     setIsOpen(true);
   };
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    void play({
+      url: SOUND_URLS.popupClick,
+      channel: 'sfx',
+    }).catch(error => console.error('inventory close sfx failed', error));
     setIsOpen(false);
   };
 
