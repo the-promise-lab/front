@@ -3,7 +3,7 @@ export const SOUND_URLS = {
   typing: '/sounds/sfx/typing-sound.mp3',
   toggleSwitch: '/sounds/sfx/toggle-switch.wav',
   popupClick: '/sounds/sfx/popup-click.wav',
-  intro1MartAmbience: '/sounds/bgm/intro1-mart-ambience.mp3',
+  intro1MartAmbience: '/sounds/sfx/intro1-mart-ambience.mp3',
   waterDrop: '/sounds/sfx/water-drop.mp3',
   mainBgm1: '/sounds/bgm/main-bgm-1.wav',
   mainBgm2: '/sounds/bgm/main-bgm-2.wav',
