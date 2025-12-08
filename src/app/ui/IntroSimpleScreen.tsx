@@ -81,9 +81,13 @@ function makePortraitCharacter(
 
 interface IntroSimpleScreenProps {
   event: IntroEvent;
+  onComplete?: () => void;
 }
 
-export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
+export default function IntroSimpleScreen({
+  event,
+  onComplete,
+}: IntroSimpleScreenProps) {
   const playingCharacters =
     useGameFlowStore(
       useShallow(
@@ -109,7 +113,7 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
     if (event.CharID2 || event.CharImageUrl2) {
       chars.push(
         makePortraitCharacter(
-      event.CharID2 ?? DEFAULT_RIGHT,
+          event.CharID2 ?? DEFAULT_RIGHT,
           'right',
           event.CharImageUrl2,
           toPortraitPosition(event.CharPosition2, 'right')
@@ -198,6 +202,7 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
         text: script,
       }}
       portraitCharacters={portraitCharacters}
+      onComplete={onComplete}
     />
   );
 }
