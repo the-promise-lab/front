@@ -7,8 +7,10 @@ import {
 import TmpDesignSystemPreview from './TmpDesignSystemPreview';
 import TmpSoundPreview from './TmpSoundPreview';
 import { BackgroundPortal } from '@shared/background-portal';
+import { useButtonClickSfx } from '@shared/audio';
 
 export default function MainMenu() {
+  const playButtonClick = useButtonClickSfx({ variant: 'default' });
   // 새 게임 시작
   const {
     createNewGameSession,
@@ -22,6 +24,16 @@ export default function MainMenu() {
     isLoading: isLoadingSession,
     isError: isSessionError,
   } = useContinueGame();
+
+  const handleCreateNewGameSession = () => {
+    playButtonClick();
+    createNewGameSession();
+  };
+
+  const handleContinueGameSession = () => {
+    playButtonClick();
+    continueGameSession();
+  };
 
   return (
     <div className='relative h-full w-full overflow-hidden'>
@@ -50,7 +62,7 @@ export default function MainMenu() {
         <div className='flex flex-col items-center justify-center gap-2'>
           {/* 새 게임 버튼 */}
           <button
-            onClick={createNewGameSession}
+            onClick={handleCreateNewGameSession}
             disabled={isCreating}
             className='block h-30 w-134 leading-none transition-all disabled:cursor-not-allowed disabled:opacity-50'
           >
@@ -83,7 +95,7 @@ export default function MainMenu() {
             !isSessionError &&
             (hasSession ? (
               <button
-                onClick={continueGameSession}
+                onClick={handleContinueGameSession}
                 className='block h-30 w-134 leading-none transition-all'
               >
                 <img
