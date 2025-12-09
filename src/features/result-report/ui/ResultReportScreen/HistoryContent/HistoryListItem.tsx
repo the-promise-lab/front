@@ -90,10 +90,10 @@ export function HistoryListItem({ item, className }: HistoryListItemProps) {
       <ReportModal
         isOpen={isOpen}
         onClose={close}
-        title={item.playReport.endingTitle}
+        title={item.playReport.ending.title}
       >
         <PlayReportScrollContent
-          endingTitle={item.playReport.endingTitle}
+          ending={item.playReport.ending}
           points={item.playReport.points}
           characters={item.playReport.characters}
           survivalBag={item.playReport.survivalBag}

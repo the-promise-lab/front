@@ -23,7 +23,7 @@ export function PlayReportContent() {
         {/* 2차 스크롤: GlassPanel 내부 스크롤 영역 */}
         <div className='relative z-10 h-full overflow-y-auto'>
           <PlayReportScrollContent
-            endingTitle={mockData.endingTitle}
+            ending={mockData.ending}
             points={mockData.points}
             characters={mockData.characters}
             survivalBag={mockData.survivalBag}

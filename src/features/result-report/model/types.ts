@@ -20,37 +20,75 @@ export interface CollectionCharacterSet {
   collectionCards: CollectionCard[];
 }
 
+export const ENDING_GRADE = {
+  HAPPY: 'HAPPY',
+  NORMAL: 'NORMAL',
+  BAD: 'BAD',
+  HIDDEN: 'HIDDEN',
+} as const;
+export type EndingGrade = (typeof ENDING_GRADE)[keyof typeof ENDING_GRADE];
+
+export const POINT_TYPE = {
+  GOOD: 'GOOD',
+  BAD: 'BAD',
+} as const;
+export type PointType = (typeof POINT_TYPE)[keyof typeof POINT_TYPE];
+
 // ============================================
 // PlayReport 관련 타입
 // ============================================
 
 export interface PlayReportPoint {
-  type: 'positive' | 'negative';
+  type: PointType;
   label: string;
   description: string;
 }
 
 export interface PlayReportCharacterStats {
   name: string;
-  health: number;
-  mental: number;
+  finalHealth: number;
+  finalMental: number;
+  maxHealth: number;
+  maxMental: number;
+  characterCode: string;
   potential: number;
+  survivalStatus: string;
 }
 
 export interface PlayReportSurvivalBag {
   ownerNames: string;
-  bagType: string;
+  bagName: string;
   usability: string;
   itemUsageRate: string;
   bagImage?: string;
   items?: SlotItem[];
 }
 
+export interface PlayReportSessionMetadata {
+  id: number;
+  userName: string;
+  characterGroupCode?: string;
+  characterGroupName?: string;
+  status: string;
+  endedAt?: string;
+  createdAt: string;
+  totalPlayTimeSeconds?: number;
+  lifePoint: number;
+}
+
+export interface PlayreportEnding {
+  id: number;
+  title: string;
+  grade: EndingGrade;
+  image?: string;
+}
 export interface PlayReportData {
-  endingTitle: string;
+  sessionMetadata: PlayReportSessionMetadata;
+  ending: PlayreportEnding;
   points: PlayReportPoint[];
   characters: PlayReportCharacterStats[];
   survivalBag: PlayReportSurvivalBag;
+  experiencePointsTotal: number;
 }
 
 // ============================================

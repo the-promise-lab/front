@@ -224,8 +224,8 @@ export default function CharacterStatsSection({
       {/* 좌측 상단 스탯카드 (첫번째 캐릭터) */}
       {characters[0] && (
         <CharacterStatCard
-          health={characters[0].health}
-          mental={characters[0].mental}
+          health={characters[0].finalHealth}
+          mental={characters[0].finalMental}
           potential={characters[0].potential}
           className='absolute top-25 left-4'
         />
@@ -234,8 +234,8 @@ export default function CharacterStatsSection({
       {/* 우측 하단 스탯카드 (두번째 캐릭터) */}
       {characters[1] && (
         <CharacterStatCard
-          health={characters[1].health}
-          mental={characters[1].mental}
+          health={characters[1].finalHealth}
+          mental={characters[1].finalMental}
           potential={characters[1].potential}
           className='absolute top-1/2 right-4 -translate-y-1/2'
         />
