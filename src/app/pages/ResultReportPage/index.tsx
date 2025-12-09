@@ -1,12 +1,13 @@
 import { useSetBackground } from '@shared/background';
 import { ResultReportScreen } from '@features/result-report';
-import { useGameFlowStore } from '@processes/game-flow';
+import { sessionIdSelector, useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { useEffect, useState } from 'react';
 
 export default function ResultReportPage() {
   const [resultScreenLoaded, setResultScreenLoaded] = useState(false);
+  const sessionId = useGameFlowStore(sessionIdSelector);
   useSetBackground({
     image: 'bg-2.png',
   });
@@ -32,5 +33,11 @@ export default function ResultReportPage() {
   }, []);
 
   if (!resultScreenLoaded) return null;
-  return <ResultReportScreen onGoToMainMenu={handleGoToMainMenu} user={user} />;
+  return (
+    <ResultReportScreen
+      onGoToMainMenu={handleGoToMainMenu}
+      user={user}
+      sessionId={sessionId?.toString() ?? null}
+    />
+  );
 }

@@ -182,3 +182,5 @@ export const selectedBagSelector = (state: GameFlowState) =>
   state.gameSession?.bag;
 export const inventorySelector = (state: GameFlowState) =>
   state.gameSession?.inventory;
+export const sessionIdSelector = (state: GameFlowState) =>
+  state.gameSession?.id;
