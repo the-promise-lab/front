@@ -4,10 +4,13 @@ import { sessionIdSelector, useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { useEffect, useState } from 'react';
+import { useGameSession } from '@entities/game-session';
 
 export default function ResultReportPage() {
   const [resultScreenLoaded, setResultScreenLoaded] = useState(false);
   const sessionId = useGameFlowStore(sessionIdSelector);
+  const fallbackSessionId = useGameSession()?.data?.id ?? null; // TODO: 디버깅용이니 나중에 제거!!
+
   useSetBackground({
     image: 'bg-2.png',
   });
@@ -37,7 +40,7 @@ export default function ResultReportPage() {
     <ResultReportScreen
       onGoToMainMenu={handleGoToMainMenu}
       user={user}
-      sessionId={sessionId?.toString() ?? null}
+      sessionId={sessionId?.toString() ?? fallbackSessionId?.toString() ?? null}
     />
   );
 }

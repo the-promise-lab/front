@@ -3,6 +3,7 @@ import { GlassPanel } from '../kit/GlassPanel';
 import PlayReportScrollContent from './PlayReportScrollContent';
 import useResultReport from '../../../model/useResultReport';
 import { RESULT_PLAY_REPORT_DATA } from '../../../__mocks__/mockResults';
+import Typography from '@shared/ui/Typography';
 
 export function PlayReportContent({ sessionId }: { sessionId: string }) {
   const { data: resultReport, isPending, isError } = useResultReport(sessionId);
@@ -16,7 +17,7 @@ export function PlayReportContent({ sessionId }: { sessionId: string }) {
   const resultReportData = resultReport || RESULT_PLAY_REPORT_DATA;
   return (
     <>
-      // 1차 스크롤: 외부 스크롤 컨테이너
+      {/* 1차 스크롤: 외부 스크롤 컨테이너 */}
       <div className='overflow-y-auto. h-full w-full'>
         {/* 타이틀 영역 - 1차 스크롤 시 밀려올라감 */}
         <div className='flex h-45 shrink-0 items-center px-16'>
@@ -40,8 +41,10 @@ export function PlayReportContent({ sessionId }: { sessionId: string }) {
         </div>
       </div>
       {isError && (
-        <div className='fixed right-0 bottom-0'>
-          결과 보고서 조회 오류로 인해 임시 데이터를 표시중입니다.
+        <div className='fixed bottom-0 left-20'>
+          <Typography variant='mini-dialogue'>
+            결과 보고서 조회 오류로 인해 임시 데이터를 표시중입니다.
+          </Typography>
         </div>
       )}
     </>
