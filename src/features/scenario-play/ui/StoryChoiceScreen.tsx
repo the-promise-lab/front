@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
 import type { ScenarioEvent, ScenarioChoiceOption } from '../model/types';
 import { useState } from 'react';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface StoryChoiceScreenProps {
   event: ScenarioEvent;
@@ -15,6 +16,7 @@ export default function StoryChoiceScreen({
   onSelect,
 }: StoryChoiceScreenProps) {
   const [pressedOptionId, setPressedOptionId] = useState<number | null>(null);
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   const title = event.choice?.title ?? '랜덤 이벤트 제목';
   const description =
     event.choice?.description ??
@@ -59,7 +61,7 @@ export default function StoryChoiceScreen({
       >
         {thumbnail && (
           <img
-            src={thumbnail}
+            src={getObjectUrl(thumbnail)}
             alt={title}
             className='h-full w-full object-cover'
           />

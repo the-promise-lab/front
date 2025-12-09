@@ -5,6 +5,7 @@ import { IconDiamond } from '@shared/ui/icons';
 import type { HistoryItem } from '../../../model/types';
 import { ReportModal } from '../kit/ReportModal';
 import PlayReportScrollContent from '../PlayReportContent/PlayReportScrollContent';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface HistoryListItemProps {
   item: HistoryItem;
@@ -13,7 +14,7 @@ interface HistoryListItemProps {
 
 export function HistoryListItem({ item, className }: HistoryListItemProps) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   const open = useCallback(() => {
     setIsOpen(true);
   }, []);
@@ -46,7 +47,7 @@ export function HistoryListItem({ item, className }: HistoryListItemProps) {
           <div className='relative ml-7.25 h-full w-93 shrink-0 overflow-hidden'>
             {item.characterImageUrl ? (
               <img
-                src={item.characterImageUrl}
+                src={getObjectUrl(item.characterImageUrl)}
                 alt={item.characterName}
                 className='absolute inset-0 h-full w-full object-cover'
               />

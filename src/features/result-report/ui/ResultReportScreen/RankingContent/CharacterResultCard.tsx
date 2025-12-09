@@ -1,5 +1,6 @@
 import Typography from '@shared/ui/Typography';
 import type { RankingCharacterResult } from '../../../model/types';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 type CharacterResultCardProps = RankingCharacterResult;
 
@@ -8,6 +9,7 @@ export default function CharacterResultCard({
   result,
   imageUrl,
 }: CharacterResultCardProps) {
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   return (
     <div className='flex flex-col gap-2'>
       {/* 캐릭터 이름 + 결과 */}
@@ -25,7 +27,7 @@ export default function CharacterResultCard({
       >
         {imageUrl ? (
           <img
-            src={imageUrl}
+            src={getObjectUrl(imageUrl)}
             alt={characterNames}
             className='h-full w-full object-cover'
           />

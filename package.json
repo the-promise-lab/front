@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "prepare": "husky",
-    "generate-api": "npx openapi --input http://43.200.235.94.nip.io/api/docs-json --output src/api --client axios --exportSchemas true && prettier --write src/api",
+    "generate-api": "npx openapi --input https://api.bttf.kr/api/docs-json --output src/api --client axios --exportSchemas true && prettier --write src/api",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

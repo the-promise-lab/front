@@ -1,4 +1,5 @@
 import { cn } from '@shared/lib/utils';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface AvatarProps {
   className?: string;
@@ -17,6 +18,7 @@ export default function Avatar({
   characterColors,
   active = false,
 }: AvatarProps) {
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   return (
     <div
       className={cn(
@@ -39,7 +41,7 @@ export default function Avatar({
       )}
       {image && (
         <img
-          src={image}
+          src={getObjectUrl(image)}
           alt={name || 'avatar'}
           className='absolute top-0 left-0 h-full w-full rounded-[80px] object-cover'
         />
