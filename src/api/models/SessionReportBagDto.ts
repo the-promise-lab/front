@@ -31,4 +31,16 @@ export type SessionReportBagDto = {
    * 가방 효율(%)
    */
   efficiency?: number;
+  /**
+   * 가방 이미지 URL
+   */
+  bagImageUrl?: string;
+  /**
+   * 담은 아이템 개수
+   */
+  ownedItemCount?: number;
+  /**
+   * 실제 사용한 아이템 개수
+   */
+  usedItemCount?: number;
 };

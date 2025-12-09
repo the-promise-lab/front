@@ -35,5 +35,17 @@ export const $SessionReportBagDto = {
       type: 'number',
       description: `가방 효율(%)`,
     },
+    bagImageUrl: {
+      type: 'string',
+      description: `가방 이미지 URL`,
+    },
+    ownedItemCount: {
+      type: 'number',
+      description: `담은 아이템 개수`,
+    },
+    usedItemCount: {
+      type: 'number',
+      description: `실제 사용한 아이템 개수`,
+    },
   },
 } as const;

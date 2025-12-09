@@ -24,14 +24,13 @@ export const $SessionReportHiddenStatDto = {
       description: `최대값`,
       isRequired: true,
     },
-    grade: {
-      type: 'string',
-      description: `등급`,
-      isRequired: true,
-    },
     description: {
       type: 'string',
       description: `설명`,
+    },
+    grade: {
+      type: 'string',
+      description: `등급`,
     },
   },
 } as const;

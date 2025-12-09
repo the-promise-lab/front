@@ -20,11 +20,11 @@ export type SessionReportHiddenStatDto = {
    */
   maxValue: number;
   /**
-   * 등급
-   */
-  grade: string;
-  /**
    * 설명
    */
   description?: string;
+  /**
+   * 등급
+   */
+  grade?: string;
 };

@@ -49,25 +49,17 @@ export class SessionsService {
    * 결과 보고서 조회
    * C001 결과 리포트 탭 데이터를 반환합니다.
    * @param sessionId
-   * @param tab Report tab to fetch. Defaults to result.
-   * @param includeInventory Include inventory details for result tab.
    * @returns SessionReportResponseDto 결과 보고서
    * @throws ApiError
    */
   public static sessionsControllerGetSessionReport(
-    sessionId: string,
-    tab: 'result' | 'ranking' | 'collection' | 'history' = 'result',
-    includeInventory: boolean = true
+    sessionId: string
   ): CancelablePromise<SessionReportResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/api/sessions/{sessionId}/report',
       path: {
         sessionId: sessionId,
-      },
-      query: {
-        tab: tab,
-        includeInventory: includeInventory,
       },
     });
   }

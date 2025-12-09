@@ -15,4 +15,8 @@ export type SessionReportInventoryItemDto = {
    * 남은 수량
    */
   quantity: number;
+  /**
+   * 아이템 이미지 URL
+   */
+  imageUrl?: string;
 };
