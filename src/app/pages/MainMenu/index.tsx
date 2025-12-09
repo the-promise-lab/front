@@ -4,8 +4,6 @@ import {
   PauseMenu,
   useGameFlowStore,
 } from '@processes/game-flow';
-import TmpDesignSystemPreview from './TmpDesignSystemPreview';
-import TmpSoundPreview from './TmpSoundPreview';
 import { BackgroundPortal } from '@shared/background-portal';
 import { useButtonClickSfx } from '@shared/audio';
 
@@ -133,9 +131,6 @@ export default function MainMenu() {
           />
         </div>
       </div>
-
-      <TmpDesignSystemPreview />
-      <TmpSoundPreview />
 
       {/* Debug Button */}
       <button

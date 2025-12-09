@@ -5,6 +5,7 @@ import {
 } from '@entities/game-session';
 import { useGameFlowStore } from './useGameFlowStore';
 import { useShallow } from 'zustand/react/shallow';
+import { useScenarioStore } from '@features/scenario-play';
 
 /**
  * 새 게임 시작 훅
@@ -29,6 +30,11 @@ export function useStartNewGame() {
       startNewGame: state.startNewGame,
     }))
   );
+  const { reset } = useScenarioStore(
+    useShallow(state => ({
+      reset: state.reset,
+    }))
+  );
 
   const {
     mutate: createSession,
@@ -44,6 +50,7 @@ export function useStartNewGame() {
 
       // 게임 플로우 시작 (clearGameSession + isNewGame=true + goto PROGRESS)
       startNewGame(adaptedSession);
+      reset();
     },
     onError: error => {
       console.error('[useStartNewGame] 게임 세션 생성 실패', error);
