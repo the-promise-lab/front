@@ -97,7 +97,7 @@ export default function ItemChoiceScreen({
             {options.map(option => (
               <ItemButton
                 key={option.choiceOptionId}
-                name={option.text}
+                name={option.itemName ?? option.text}
                 imageUrl={option.itemImage ?? undefined}
                 isPressed={pressedOptionId === option.choiceOptionId}
                 onPress={() => handleItemPress(option)}
