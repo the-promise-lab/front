@@ -38,7 +38,10 @@ export default function PlayReportScrollContent({
       <GoodBadPointsSection points={points} />
 
       {/* 캐릭터 영역 */}
-      <CharacterStatsSection characters={characters} />
+      <CharacterStatsSection
+        characters={characters}
+        endingImage={ending.image}
+      />
 
       {/* 구분선 */}
       <div className='h-px w-full bg-white/40' />
