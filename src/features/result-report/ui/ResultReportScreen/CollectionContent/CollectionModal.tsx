@@ -5,6 +5,7 @@ import ImageButton from '../kit/ImageButton';
 import { ReportModal } from '../kit/ReportModal';
 import { IconChevronLeftWhite, IconChevronRightWhite } from '@shared/ui/icons';
 import { cn } from '@shared/lib/utils';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 const CARDS_PER_PAGE = 4;
 
@@ -130,6 +131,7 @@ function CollectionCardItem({
   endingTitle,
   thumbnailUrl,
 }: CollectionCardItemProps) {
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   return (
     <div className='flex flex-col gap-4'>
       {/* 엔딩 타이틀 */}
@@ -141,7 +143,7 @@ function CollectionCardItem({
       <div className='flex-1 rounded border-[0.8px] border-white/35 p-2.5 lg:border-2'>
         {thumbnailUrl ? (
           <img
-            src={thumbnailUrl}
+            src={getObjectUrl(thumbnailUrl)}
             alt={endingTitle}
             className='size-full rounded border-[0.8px] border-white object-cover lg:border-2'
           />

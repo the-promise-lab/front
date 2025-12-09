@@ -53,3 +53,5 @@ export const useAssetStore = create<AssetState>((set, get) => ({
       return { entries: new Map() };
     }),
 }));
+
+export const getObjectUrlSelector = (state: AssetState) => state.getObjectUrl;

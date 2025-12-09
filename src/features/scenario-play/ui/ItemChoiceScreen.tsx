@@ -5,6 +5,7 @@ import Typography from '@shared/ui/Typography';
 import ChoiceOption from './kit/ChoiceOption';
 import ItemButton from './kit/ItemButton';
 import type { ScenarioEvent, ScenarioChoiceOption } from '../model/types';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface ItemChoiceScreenProps {
   event: ScenarioEvent;
@@ -16,7 +17,7 @@ export default function ItemChoiceScreen({
   onSelect,
 }: ItemChoiceScreenProps) {
   const [pressedOptionId, setPressedOptionId] = useState<number | null>(null);
-
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   const title = event.choice?.title ?? '아이템 선택';
   const description =
     event.choice?.description ??
@@ -77,7 +78,7 @@ export default function ItemChoiceScreen({
       >
         {thumbnail && (
           <img
-            src={thumbnail}
+            src={getObjectUrl(thumbnail)}
             alt={title}
             className='h-full w-full object-cover'
           />
