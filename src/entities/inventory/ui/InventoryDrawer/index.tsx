@@ -7,6 +7,7 @@ import WeightGauge from './WeightGauge';
 import type { MouseEvent } from 'react';
 import type { SlotItem } from '../../model/types';
 import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
+import EmptySlot from './EmptySlot';
 
 interface Props {
   isOpen: boolean;
@@ -16,7 +17,7 @@ interface Props {
   bagDescription: string;
   hasWeightBar: boolean;
   weight: number;
-  items: Array<SlotItem>;
+  items: Array<SlotItem | 'EMPTY'>;
   handleSlotClick: (item: SlotItem) => void;
 }
 
@@ -91,15 +92,19 @@ export default function InventoryDrawer({
 
                 {/* 아이템 그리드 (4x5) */}
                 <div className='scrollbar-hide flex w-full flex-1 flex-wrap gap-5 overflow-y-auto pr-4 pb-4'>
-                  {items.map((item, index) => (
-                    <InventorySlot
-                      key={`${item.id}-${index}`}
-                      itemName={item.name}
-                      itemImage={item.image}
-                      state={item.state as 'default' | 'selected' | 'delete'}
-                      onClick={() => handleSlotClick(item)}
-                    />
-                  ))}
+                  {items.map((item, index) =>
+                    item === 'EMPTY' ? (
+                      <EmptySlot key={index} />
+                    ) : (
+                      <InventorySlot
+                        key={`${item.id}-${index}`}
+                        itemName={item.name}
+                        itemImage={item.image}
+                        state={item.state as 'default' | 'selected' | 'delete'}
+                        onClick={() => handleSlotClick(item)}
+                      />
+                    )
+                  )}
                 </div>
               </div>
             </motion.div>

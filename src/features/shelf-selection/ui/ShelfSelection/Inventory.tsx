@@ -63,6 +63,13 @@ export default function Inventory({ bag }: { bag: Bag }) {
       };
     });
   });
+  const slotItemsWithEmpty = [
+    ...slotItems,
+    ...Array.from(
+      { length: bagCapacity - slotItems.length },
+      () => 'EMPTY' as const
+    ),
+  ];
 
   return (
     <>
@@ -103,7 +110,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
         bagDescription={`아이템 적재 가능: ${bagCapacity}개`}
         hasWeightBar
         weight={(progress / bagCapacity) * 100}
-        items={slotItems}
+        items={slotItemsWithEmpty}
         handleSlotClick={handleSlotClick}
       />
     </>
