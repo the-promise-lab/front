@@ -19,6 +19,7 @@ export default function PortraitBanner({
   const typingTextRef = useRef<TypingTextRef>(null);
 
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     if (typingTextRef.current?.isTyping) {
       typingTextRef.current.skipToEnd();
       return;

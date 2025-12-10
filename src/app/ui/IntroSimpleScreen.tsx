@@ -70,7 +70,8 @@ function makePortraitCharacter(
     CHARACTER_IMAGE_MAP[DEFAULT_LEFT];
 
   const base: PortraitCharacter = {
-    id: fallbackPosition === 'left' ? 1 : 2,
+    // 키가 캐릭터 교체 시 변경되도록 character id를 사용
+    id: resolvedId,
     name,
     profileImage: overrideImageUrl ?? image ?? null,
     position: explicitPosition ?? fallbackPosition,
@@ -81,9 +82,13 @@ function makePortraitCharacter(
 
 interface IntroSimpleScreenProps {
   event: IntroEvent;
+  onComplete?: () => void;
 }
 
-export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
+export default function IntroSimpleScreen({
+  event,
+  onComplete,
+}: IntroSimpleScreenProps) {
   const playingCharacters =
     useGameFlowStore(
       useShallow(
@@ -109,7 +114,7 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
     if (event.CharID2 || event.CharImageUrl2) {
       chars.push(
         makePortraitCharacter(
-      event.CharID2 ?? DEFAULT_RIGHT,
+          event.CharID2 ?? DEFAULT_RIGHT,
           'right',
           event.CharImageUrl2,
           toPortraitPosition(event.CharPosition2, 'right')
@@ -198,6 +203,7 @@ export default function IntroSimpleScreen({ event }: IntroSimpleScreenProps) {
         text: script,
       }}
       portraitCharacters={portraitCharacters}
+      onComplete={onComplete}
     />
   );
 }

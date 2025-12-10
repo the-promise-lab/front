@@ -46,7 +46,7 @@ export function BagSelection({ onComplete }: BagSelectionProps) {
 
   if (isError || bags.length === 0) {
     return (
-      <div className='flex h-full w-full items-center justify-center bg-black/80'>
+      <div className='flex h-full w-full items-center justify-center'>
         <Typography variant='title' className='text-white'>
           가방 정보를 불러올 수 없습니다
         </Typography>

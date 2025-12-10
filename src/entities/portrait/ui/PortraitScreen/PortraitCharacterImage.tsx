@@ -1,8 +1,7 @@
 import { cn } from '@shared/lib/utils';
-import { type ImgHTMLAttributes } from 'react';
+import { motion, type HTMLMotionProps } from 'framer-motion';
 
-interface PortraitCharacterImageProps
-  extends ImgHTMLAttributes<HTMLImageElement> {
+interface PortraitCharacterImageProps extends HTMLMotionProps<'img'> {
   dimmed?: boolean;
   position: 'left-end' | 'left' | 'center' | 'right' | 'right-end';
 }
@@ -13,10 +12,16 @@ export default function PortraitCharacterImage({
   ...props
 }: PortraitCharacterImageProps) {
   return (
-    <img
+    <motion.img
+      layout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
       className={cn(
         'absolute bottom-0 h-[80dvh] -translate-x-1/2',
         'transition-all duration-500 ease-out',
+        dimmed ? 'z-10' : 'z-20',
         position === 'left-end' && 'left-[25%]',
         position === 'left' && 'left-[37%]',
         position === 'center' && 'left-1/2',
