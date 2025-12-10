@@ -104,7 +104,7 @@ export default function LoadingPage() {
           {/* 제목 */}
           <div className='text-center'>
             <img
-              src='/image/mainPage/game_logo.svg'
+              src='/image/mainPage/game_logo.png'
               alt='bag to the future'
               className='mx-auto h-42 w-142'
             />
