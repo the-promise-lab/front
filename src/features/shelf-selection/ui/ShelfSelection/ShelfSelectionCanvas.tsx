@@ -6,7 +6,7 @@ import type { ShelfItem } from '../../model/types';
 import { drawMarker, preloadMarkerImage } from '../../lib/drawMarker';
 import GlowNavigationButton from './kit/GlowNavigationButton';
 
-const ITEM_SIZE_PIXEL = 20;
+const ITEM_SIZE_PIXEL = 30;
 
 interface ShelfSelectionCanvasProps {
   backgroundImage: string;

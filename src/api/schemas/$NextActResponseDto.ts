@@ -35,6 +35,13 @@ export const $NextActResponseDto = {
       isRequired: true,
       isNullable: true,
     },
+    playingCharacters: {
+      type: 'array',
+      contains: {
+        type: 'PlayingCharacterStatusDto',
+      },
+      isRequired: true,
+    },
     events: {
       type: 'array',
       contains: {

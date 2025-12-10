@@ -28,6 +28,7 @@ export { NextActSessionStatChangeDto } from './models/NextActSessionStatChangeDt
 export type { NextActUpdatesDto } from './models/NextActUpdatesDto';
 export type { PlayingCharacterDto } from './models/PlayingCharacterDto';
 export type { PlayingCharacterSetDto } from './models/PlayingCharacterSetDto';
+export type { PlayingCharacterStatusDto } from './models/PlayingCharacterStatusDto';
 export type { SelectCharacterSetDto } from './models/SelectCharacterSetDto';
 export type { SelectCharacterSetResultDto } from './models/SelectCharacterSetResultDto';
 export type { SessionActMetaDto } from './models/SessionActMetaDto';
@@ -79,6 +80,7 @@ export { $NextActSessionStatChangeDto } from './schemas/$NextActSessionStatChang
 export { $NextActUpdatesDto } from './schemas/$NextActUpdatesDto';
 export { $PlayingCharacterDto } from './schemas/$PlayingCharacterDto';
 export { $PlayingCharacterSetDto } from './schemas/$PlayingCharacterSetDto';
+export { $PlayingCharacterStatusDto } from './schemas/$PlayingCharacterStatusDto';
 export { $SelectCharacterSetDto } from './schemas/$SelectCharacterSetDto';
 export { $SelectCharacterSetResultDto } from './schemas/$SelectCharacterSetResultDto';
 export { $SessionActMetaDto } from './schemas/$SessionActMetaDto';
