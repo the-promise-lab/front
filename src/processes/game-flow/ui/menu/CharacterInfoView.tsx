@@ -23,7 +23,7 @@ function getCharacterStatImagePath(
     bang: 'bc',
     boksun: 'bs',
     jinsil: 'js',
-    sojaeok: 'jo',
+    sojaewook: 'jo',
     munyewon: 'yw',
     bangmiri: 'mr',
     ryujaeho: 'jh',
@@ -242,28 +242,36 @@ export function CharacterInfoView() {
                 );
 
                 return (
-                  <button
+                  <div
                     key={character.id}
+                    role='button'
+                    tabIndex={0}
                     onClick={() => setActiveCharacterId(character.id)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setActiveCharacterId(character.id);
+                      }
+                    }}
                     className={cn(
-                      'h-37p relative w-37 overflow-hidden border transition-all',
-                      isActive
-                        ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
-                        : 'border-white/15 hover:border-white/30'
+                      'h-37p relative w-37 overflow-hidden border-0 bg-transparent p-0 focus:ring-0 focus:outline-none'
                     )}
                   >
                     {pairImage ? (
                       <img
                         src={getObjectUrl(pairImage)}
                         alt={character.name}
-                        className='h-full w-full object-cover'
+                        className={cn(
+                          'h-full w-full object-contain transition-transform duration-200 ease-out',
+                          isActive ? 'scale-[1.05]' : 'scale-100'
+                        )}
                       />
                     ) : (
                       <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
                         ?
                       </div>
                     )}
-                  </button>
+                  </div>
                 );
               })}
             </div>
