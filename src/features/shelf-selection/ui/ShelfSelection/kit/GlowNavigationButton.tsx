@@ -42,7 +42,7 @@ export default function GlowNavigationButton({
           <IconGlowChevronLeft className='h-12 w-12' />
         )}
         <Typography
-          variant='body-b'
+          variant='h4-eb'
           style={{
             textShadow: '0 0 4px var(--color-sky-1, #01ead6)',
           }}
