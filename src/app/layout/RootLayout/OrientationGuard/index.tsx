@@ -38,29 +38,38 @@ export default function OrientationGuard({
     };
   }, []);
 
-  if (!isLandscape && showGuide) {
-    return (
-      <div className="bg-opacity-60 fixed inset-0 z-50 flex flex-col items-center justify-center bg-black p-6 text-white backdrop-blur-sm">
-        <div className="text-center">
+  return (
+    <>
+      {!isLandscape && showGuide && <OrientationGuardContent />}
+      {children}
+    </>
+  );
+}
+
+function OrientationGuardContent() {
+  return (
+    <>
+      <div className='bg-opacity-60 fixed inset-0 z-5000 flex flex-col items-center justify-center bg-black p-6 text-white backdrop-blur-sm'>
+        <div className='text-center'>
           {/* 회전 안내 애니메이션 - 단순화 */}
-          <div className="flex items-center justify-center">
+          <div className='flex items-center justify-center'>
             {/* 중앙 핸드폰 */}
-            <div className="relative">
+            <div className='relative'>
               {/* 세로 핸드폰 (현재 상태) */}
-              <div className="animate-pulse">
-                <div className="relative h-48 w-32 rounded-lg border-4 border-white bg-gray-800 shadow-xl">
+              <div className='animate-pulse'>
+                <div className='relative h-48 w-32 rounded-lg border-4 border-white bg-gray-800 shadow-xl'>
                   {/* 상단 노치 */}
-                  <div className="absolute top-2 left-1/2 h-1 w-12 -translate-x-1/2 transform rounded-full bg-gray-600"></div>
+                  <div className='absolute top-2 left-1/2 h-1 w-12 -translate-x-1/2 transform rounded-full bg-gray-600'></div>
                   {/* 화면 */}
-                  <div className="bg-opacity-10 absolute inset-3 flex items-center justify-center rounded-md bg-white"></div>
+                  <div className='bg-opacity-10 absolute inset-3 flex items-center justify-center rounded-md bg-white'></div>
                   {/* 홈 버튼 */}
-                  <div className="absolute bottom-2 left-1/2 h-1 w-8 -translate-x-1/2 transform rounded-full bg-gray-600"></div>
+                  <div className='absolute bottom-2 left-1/2 h-1 w-8 -translate-x-1/2 transform rounded-full bg-gray-600'></div>
                 </div>
               </div>
               {/* 90도 회전된 글씨 - 우측에 배치 (가로모드에서 정상으로 보이게) */}
-              <div className="absolute top-1/2 left-40 -translate-y-1/2 transform">
-                <div className="-rotate-90 transform animate-pulse text-lg font-bold whitespace-nowrap text-white">
-                  <p className="animate-pulse text-sm text-gray-300">
+              <div className='absolute top-1/2 left-40 -translate-y-1/2 transform'>
+                <div className='-rotate-90 transform animate-pulse text-lg font-bold whitespace-nowrap text-white'>
+                  <p className='animate-pulse text-sm text-gray-300'>
                     기기를 가로로 회전해주세요
                   </p>
                 </div>
@@ -69,8 +78,6 @@ export default function OrientationGuard({
           </div>
         </div>
       </div>
-    );
-  }
-
-  return <>{children}</>;
+    </>
+  );
 }
