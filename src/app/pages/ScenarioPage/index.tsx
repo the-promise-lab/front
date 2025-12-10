@@ -160,6 +160,9 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
           onGameEnd={() => setIntroPhase('ending')}
           onGameOver={() => useGameFlowStore.getState().goto('MAIN_MENU')}
           onSuddenDeath={() => setIntroPhase('ending')}
+          onStatChange={effects =>
+            useGameFlowStore.getState().updateCharacterStats(effects)
+          }
         />
       </div>
     </div>
