@@ -114,7 +114,7 @@ export default function PackingPhase() {
         showTimeoutModal={showModal}
         renderHeader={() => (
           <Header
-            className='z-[100]'
+            className='z-100'
             hasCharacterProfiles
             playingCharacters={
               gameSession?.playingCharacterSet?.playingCharacters

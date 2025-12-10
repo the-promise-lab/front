@@ -58,9 +58,10 @@ export default function Header({
             </>
           )}
         </div>
-        <AnimatePresence>
+        <AnimatePresence mode='wait'>
           {bubblePortrait && (
             <BubblePortrait
+              key={`${bubblePortrait.speaker}-${bubblePortrait.text}`}
               className='mx-9 my-2'
               text={bubblePortrait.text}
               characterColors={
