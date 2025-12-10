@@ -44,7 +44,7 @@ export function HistoryListItem({ item, className }: HistoryListItemProps) {
               'linear-gradient(77deg, rgba(192, 192, 192, 0.56) 9.55%, rgba(84, 84, 84, 0.00) 90.45%)',
           }}
         >
-          <div className='relative ml-7.25 h-full w-93 shrink-0 overflow-hidden'>
+          <div className='relative h-full w-90 shrink-0 overflow-hidden'>
             {item.characterImageUrl ? (
               <img
                 src={getObjectUrl(item.characterImageUrl)}
@@ -57,7 +57,7 @@ export function HistoryListItem({ item, className }: HistoryListItemProps) {
           </div>
 
           {/* 중앙 컨텐츠 영역 */}
-          <div className='ml-16 flex flex-1 flex-col gap-2'>
+          <div className='ml-10 flex flex-1 flex-col gap-2'>
             {/* 캐릭터 이름 */}
             <Typography variant='dialogue-m' className='text-white'>
               {item.characterName}

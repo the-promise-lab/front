@@ -17,13 +17,13 @@ export default function RankingContent() {
       </div>
 
       {/* GlassPanel 컨테이너 */}
-      <div className='relative flex-1 py-16 pl-15'>
+      <div className='relative flex-1 overflow-y-auto py-16 pl-15'>
         <GlassPanel className='fixed top-45 left-120 ml-[calc(50dvw-50dvh*16/9)] h-dvh w-dvw' />
 
         {/* GlassPanel 내부 컨텐츠 */}
-        <div className='relative z-10 flex h-full gap-16'>
+        <div className='relative z-10 flex h-full flex-wrap gap-16'>
           {/* 좌측: Total Score + Final Result */}
-          <div className='flex flex-1 flex-col gap-8'>
+          <div className='flex min-w-160 flex-1 flex-col gap-8'>
             <TotalScoreSection
               rank={mockData.myScore.rank}
               totalUsers={mockData.myScore.totalUsers}
@@ -33,7 +33,7 @@ export default function RankingContent() {
           </div>
 
           {/* 우측: Ranking 리스트 */}
-          <div className='flex-1'>
+          <div className='min-w-160 flex-1'>
             <RankingListSection rankings={mockData.rankings} />
           </div>
         </div>
