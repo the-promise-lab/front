@@ -39,10 +39,10 @@ const CHARACTER_TAB_IMAGES: Record<
     selectedSrc: '/image/charSelect/char_selected_bs_js.svg',
     alt: '정복순과 진실이 선택 탭',
   },
-  '소재옥&문예원': {
+  '소재욱&문예원': {
     defaultSrc: '/image/charSelect/char_select_jo_yw.svg',
     selectedSrc: '/image/charSelect/char_selected_jo_yw.svg',
-    alt: '소재옥과 문예원 선택 탭',
+    alt: '소재욱과 문예원 선택 탭',
   },
   '방미리&류재호': {
     defaultSrc: '/image/charSelect/char_select_mr_jh.svg',
