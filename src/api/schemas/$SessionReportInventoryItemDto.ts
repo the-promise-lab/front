@@ -19,5 +19,9 @@ export const $SessionReportInventoryItemDto = {
       description: `남은 수량`,
       isRequired: true,
     },
+    imageUrl: {
+      type: 'string',
+      description: `아이템 이미지 URL`,
+    },
   },
 } as const;

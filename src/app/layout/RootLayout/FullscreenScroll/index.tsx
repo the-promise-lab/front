@@ -29,7 +29,7 @@ export default function FullscreenScroll({
   return (
     <div
       aria-hidden
-      className='scrollbar-w-0 relative h-[1000vh] select-none'
+      className='no-scrollbar scrollbar-hide relative h-[1000vh] select-none'
       onScroll={handleScrollReset}
     >
       {children}

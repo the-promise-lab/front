@@ -3,13 +3,14 @@ import type {
   PlayReportPoint,
   PlayReportCharacterStats,
   PlayReportSurvivalBag,
+  PlayreportEnding,
 } from '../../../../model/types';
 import CharacterStatsSection from './CharacterStatsSection';
 import GoodBadPointsSection from './GoodBadPointsSection';
 import SurvivalBagSection from './SurvivalBagSection';
 
 interface PlayReportScrollContentProps {
-  endingTitle: string;
+  ending: PlayreportEnding;
   points: PlayReportPoint[];
   characters: PlayReportCharacterStats[];
   survivalBag: PlayReportSurvivalBag;
@@ -18,7 +19,7 @@ interface PlayReportScrollContentProps {
 }
 
 export default function PlayReportScrollContent({
-  endingTitle,
+  ending,
   points,
   characters,
   survivalBag,
@@ -29,7 +30,7 @@ export default function PlayReportScrollContent({
       {/* 엔딩 타이틀 */}
       {showTitle && (
         <Typography variant='h2-b' className='text-white'>
-          {endingTitle}
+          {ending.title}
         </Typography>
       )}
 
@@ -37,7 +38,10 @@ export default function PlayReportScrollContent({
       <GoodBadPointsSection points={points} />
 
       {/* 캐릭터 영역 */}
-      <CharacterStatsSection characters={characters} />
+      <CharacterStatsSection
+        characters={characters}
+        endingImage={ending.image}
+      />
 
       {/* 구분선 */}
       <div className='h-px w-full bg-white/40' />
@@ -45,7 +49,7 @@ export default function PlayReportScrollContent({
       {/* 생존 가방 섹션 */}
       <SurvivalBagSection
         ownerNames={survivalBag.ownerNames}
-        bagType={survivalBag.bagType}
+        bagType={survivalBag.bagName}
         usability={survivalBag.usability}
         itemUsageRate={survivalBag.itemUsageRate}
         bagImage={survivalBag.bagImage}

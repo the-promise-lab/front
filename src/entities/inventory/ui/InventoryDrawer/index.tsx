@@ -90,7 +90,7 @@ export default function InventoryDrawer({
                 </div>
 
                 {/* 아이템 그리드 (4x5) */}
-                <div className='flex w-full flex-1 flex-wrap gap-5 overflow-y-auto pr-4 pb-4'>
+                <div className='scrollbar-hide flex w-full flex-1 flex-wrap gap-5 overflow-y-auto pr-4 pb-4'>
                   {items.map((item, index) => (
                     <InventorySlot
                       key={`${item.id}-${index}`}

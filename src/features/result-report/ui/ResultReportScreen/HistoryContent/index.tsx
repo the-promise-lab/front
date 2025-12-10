@@ -15,7 +15,7 @@ export default function HistoryContent() {
 
       {/* 컨텐츠 영역 - 리스트만 스크롤 */}
       <div className='relative min-h-0 flex-1 pr-10'>
-        <div className='flex h-full flex-col gap-4.5 overflow-y-auto pr-8.5'>
+        <div className='scrollbar-hide flex h-full flex-col gap-4.5 overflow-y-auto pr-8.5'>
           {historyItems.map(item => (
             <HistoryListItem key={item.id} item={item} />
           ))}

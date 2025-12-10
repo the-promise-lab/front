@@ -1,12 +1,16 @@
 import { useSetBackground } from '@shared/background';
 import { ResultReportScreen } from '@features/result-report';
-import { useGameFlowStore } from '@processes/game-flow';
+import { sessionIdSelector, useGameFlowStore } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { useEffect, useState } from 'react';
+import { useGameSession } from '@entities/game-session';
 
 export default function ResultReportPage() {
   const [resultScreenLoaded, setResultScreenLoaded] = useState(false);
+  const sessionId = useGameFlowStore(sessionIdSelector);
+  const fallbackSessionId = useGameSession()?.data?.id ?? null; // TODO: 디버깅용이니 나중에 제거!!
+
   useSetBackground({
     image: 'bg-2.png',
   });
@@ -32,5 +36,11 @@ export default function ResultReportPage() {
   }, []);
 
   if (!resultScreenLoaded) return null;
-  return <ResultReportScreen onGoToMainMenu={handleGoToMainMenu} user={user} />;
+  return (
+    <ResultReportScreen
+      onClose={handleGoToMainMenu}
+      user={user}
+      sessionId={sessionId?.toString() ?? fallbackSessionId?.toString() ?? null}
+    />
+  );
 }

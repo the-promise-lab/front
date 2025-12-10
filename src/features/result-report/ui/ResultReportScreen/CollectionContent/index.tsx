@@ -15,8 +15,8 @@ export default function CollectionContent({
       </div>
 
       {/* 컨텐츠 영역 */}
-      <div className='relative flex flex-1 justify-center'>
-        <div className='grid h-fit w-fit grid-cols-2 gap-x-25 gap-y-18.75'>
+      <div className='scrollbar-hide relative flex flex-1 justify-center overflow-y-auto'>
+        <div className='flex h-fit w-fit flex-wrap gap-x-25 gap-y-18.75'>
           {RESULT_COLLECTION_CHARACTER_SETS.map(characterSet => (
             <CollectionModal
               key={characterSet.id}

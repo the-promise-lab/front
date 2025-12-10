@@ -48,8 +48,6 @@ export default function LoadingPage() {
   ).length;
   const progressPercent = (loaded / total) * 100;
 
-  console.log('progressPercent', progressPercent);
-
   useEffect(() => {
     if (loaded === total) {
       setAllLoaded(true);

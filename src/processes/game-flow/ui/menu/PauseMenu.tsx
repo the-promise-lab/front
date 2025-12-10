@@ -94,7 +94,7 @@ export default function PauseMenu({
           <SettingsView onLogoutClick={() => setIsLogoutModalOpen(true)} />
         );
       case 'result-report':
-        return <ResultReportView />;
+        return <ResultReportView onClose={close} onBackButtonClick={close} />;
       case 'team-intro':
         return <TeamIntroView />;
       default:
@@ -102,6 +102,19 @@ export default function PauseMenu({
     }
   };
 
+  if (selectedCategory === 'result-report') {
+    return (
+      <ResultReportView
+        onClose={() => {
+          setSelectedCategory('character-info');
+          close();
+        }}
+        onBackButtonClick={() => {
+          setSelectedCategory('character-info');
+        }}
+      />
+    );
+  }
   return (
     <>
       {renderButton ? (

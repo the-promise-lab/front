@@ -297,7 +297,7 @@ export default function CharacterSelect({
       </main>
 
       {/* 우측: 캐릭터 정보 */}
-      <aside className='mr-[calc(50dvw-50dvh*16/9)] flex h-full w-210 flex-col justify-center gap-4 overflow-y-auto pr-5 pl-20'>
+      <aside className='scrollbar-hide mr-[calc(50dvw-50dvh*16/9)] flex h-full w-210 flex-col justify-center gap-4 overflow-y-auto pr-5 pl-20'>
         <div className='flex flex-col gap-3'>
           {activeCharacter ? (
             <>
