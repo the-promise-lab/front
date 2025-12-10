@@ -7,6 +7,7 @@ import type { PlayingCharacter } from '@entities/game-session';
 import { useSetBackground } from '@shared/background';
 import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
+import { usePreloadAssets } from '@shared/preload-assets';
 import {
   type CharacterPairDetail,
   createCharacterSetsFromDetails,
@@ -39,10 +40,10 @@ const CHARACTER_TAB_IMAGES: Record<
     selectedSrc: '/image/charSelect/char_selected_bs_js.svg',
     alt: '정복순과 진실이 선택 탭',
   },
-  '소재옥&문예원': {
+  '소재욱&문예원': {
     defaultSrc: '/image/charSelect/char_select_jo_yw.svg',
     selectedSrc: '/image/charSelect/char_selected_jo_yw.svg',
-    alt: '소재옥과 문예원 선택 탭',
+    alt: '소재욱과 문예원 선택 탭',
   },
   '방미리&류재호': {
     defaultSrc: '/image/charSelect/char_select_mr_jh.svg',
@@ -52,6 +53,41 @@ const CHARACTER_TAB_IMAGES: Record<
 };
 
 const LOCAL_CHARACTER_SETS: CharacterSet[] = createCharacterSetsFromDetails();
+
+const CHARACTER_SELECT_ASSETS: string[] = [
+  '/image/charSelect/char_select_hb_bc.svg',
+  '/image/charSelect/char_selected_hb_bc.svg',
+  '/image/charSelect/char_select_bs_js.svg',
+  '/image/charSelect/char_selected_bs_js.svg',
+  '/image/charSelect/char_select_jo_yw.svg',
+  '/image/charSelect/char_selected_jo_yw.svg',
+  '/image/charSelect/char_select_mr_jh.svg',
+  '/image/charSelect/char_selected_mr_jh.svg',
+  '/image/charSelect/pair_default_hb.svg',
+  '/image/charSelect/pair_active_hb.svg',
+  '/image/charSelect/pair_default_bc.svg',
+  '/image/charSelect/pair_active_bc.svg',
+  '/image/charSelect/pair_default_bs.svg',
+  '/image/charSelect/pair_active_bs.svg',
+  '/image/charSelect/pair_default_js.svg',
+  '/image/charSelect/pair_active_js.svg',
+  '/image/charSelect/pair_default_jo.svg',
+  '/image/charSelect/pair_active_jo.svg',
+  '/image/charSelect/pair_default_yw.svg',
+  '/image/charSelect/pair_active_yw.svg',
+  '/image/charSelect/pair_default_mr.svg',
+  '/image/charSelect/pair_active_mr.svg',
+  '/image/charSelect/pair_default_jh.svg',
+  '/image/charSelect/pair_active_jh.svg',
+  '/image/charSelect/char_hb_stat.svg',
+  '/image/charSelect/char_bc_stat.svg',
+  '/image/charSelect/char_bs_stat.svg',
+  '/image/charSelect/char_js_stat.svg',
+  '/image/charSelect/char_jo_stat.svg',
+  '/image/charSelect/char_yw_stat.svg',
+  '/image/charSelect/char_mr_stat.svg',
+  '/image/charSelect/char_jh_stat.svg',
+];
 
 /**
  * 캐릭터 ID를 스탯 이미지 경로로 변환
@@ -132,6 +168,7 @@ function createPairDetail(set?: CharacterSet): CharacterPairDetail {
       {
         id: `${set.id}-primary`,
         name: set.name,
+        code: set.name,
         age: '',
         stats: [],
         description:
@@ -148,6 +185,7 @@ export default function CharacterSelect({
   onBack: _onBack,
   onSelectSuccess,
 }: CharacterSelectProps) {
+  usePreloadAssets(CHARACTER_SELECT_ASSETS);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
     null

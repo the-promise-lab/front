@@ -18,6 +18,7 @@ export function getFallbackPlayingCharacters(): PlayingCharacter[] {
   return defaultPair.characters.map((detail, index) => ({
     id: index + 1,
     characterId: index + 1,
+    characterCode: detail.code,
     currentHp: null,
     currentMental: null,
     name: detail.name,

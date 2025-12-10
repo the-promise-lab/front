@@ -27,6 +27,7 @@ export interface CharacterSet {
 export interface PlayingCharacter {
   id: number;
   characterId: number;
+  characterCode: string;
   currentHp: number | null;
   currentMental: number | null;
   name: string | null;
