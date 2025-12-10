@@ -1,3 +1,4 @@
+import type { PlayingCharacterStatusDto } from '@api';
 import type { CharacterDetail } from '@entities/character-data';
 
 export type ScenarioEventType =
@@ -121,6 +122,7 @@ export interface ScenarioActBundle {
   status: ScenarioStatus;
   day: ScenarioDayMeta | null;
   act: ScenarioActMeta | null;
+  playingCharacters: PlayingCharacterStatusDto[];
   events: ScenarioEvent[];
   ending: ScenarioEnding | null;
 }
@@ -157,6 +159,11 @@ export interface ScenarioState {
     itemId?: number;
   } | null;
   pendingOutcomeResultType: string | null; // 선택된 outcome의 resultType 저장
+  pendingOutcomeEffects: {
+    characterEffects: ScenarioEffect[];
+    itemChanges: ScenarioItemChange[];
+    sessionEffects: ScenarioSessionEffect[];
+  } | null; // outcome에서 발생한 모든 effects 누적
   isLoading: boolean;
   error: Error | null;
 }
@@ -165,7 +172,11 @@ export interface ScenarioActions {
   loadActBundle: (bundle: ScenarioActBundle) => void;
   nextEvent: () => boolean;
   prevEvent: () => boolean;
-  selectChoice: (optionId: number, itemId?: number) => void;
+  selectChoice: (
+    optionId: number,
+    itemId?: number,
+    outcomeEvents?: ScenarioEvent[]
+  ) => void;
   appendOutcomeEvents: (events: ScenarioEvent[], resultType: string) => void;
   clearChoice: () => void;
   setLoading: (isLoading: boolean) => void;

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { GameFlowState, GameFlowActions, GameStep } from '../types';
 import type { GameSession, Inventory } from '@entities/game-session';
+import type { PlayingCharacterStatusDto } from '@api';
 import { GAME_STEP_ORDER, INITIAL_GAME_FLOW_STATE } from '../types';
 import { resolveCharacterGroupName } from '../lib/characterAssets';
 
@@ -174,49 +175,41 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       store.reset();
     },
 
-    // 캐릭터 스탯 업데이트
-    updateCharacterStats: effects => {
+    // 서버 응답으로 캐릭터 스탯 동기화
+    syncPlayingCharactersFromServer: (
+      playingCharacters: PlayingCharacterStatusDto[]
+    ) => {
       set(state => {
         if (!state.gameSession?.playingCharacterSet) {
           console.warn(
-            '[useGameFlowStore] playingCharacterSet이 없습니다. 스탯 업데이트를 건너뜁니다.'
+            '[useGameFlowStore] playingCharacterSet이 없습니다. 동기화를 건너뜁니다.'
           );
           return state;
         }
 
+        // 서버 응답으로 직접 교체 (characterCode로 매칭)
         const updatedCharacters =
           state.gameSession.playingCharacterSet.playingCharacters.map(char => {
-            const relevantEffects = effects.filter(
-              e => e.characterCode === char.characterCode
+            const serverChar = playingCharacters.find(
+              sc => sc.characterCode === char.characterCode
             );
 
-            if (relevantEffects.length === 0) return char;
+            if (serverChar) {
+              console.log('[useGameFlowStore] 캐릭터 스탯 동기화:', {
+                characterCode: char.characterCode,
+                beforeHp: char.currentHp,
+                afterHp: serverChar.currentHp,
+                beforeMental: char.currentMental,
+                afterMental: serverChar.currentMental,
+              });
 
-            let newHp = char.currentHp;
-            let newMental = char.currentMental;
-
-            relevantEffects.forEach(effect => {
-              if (effect.effectType === 'health') {
-                newHp = effect.newValue ?? (newHp ?? 0) + (effect.change ?? 0);
-              } else if (effect.effectType === 'mental') {
-                newMental =
-                  effect.newValue ?? (newMental ?? 0) + (effect.change ?? 0);
-              }
-            });
-
-            console.log('[useGameFlowStore] 캐릭터 스탯 업데이트:', {
-              characterCode: char.characterCode,
-              beforeHp: char.currentHp,
-              afterHp: newHp,
-              beforeMental: char.currentMental,
-              afterMental: newMental,
-            });
-
-            return {
-              ...char,
-              currentHp: newHp,
-              currentMental: newMental,
-            };
+              return {
+                ...char,
+                currentHp: serverChar.currentHp,
+                currentMental: serverChar.currentMental,
+              };
+            }
+            return char;
           });
 
         return {
@@ -241,3 +234,5 @@ export const inventorySelector = (state: GameFlowState) =>
   state.gameSession?.inventory;
 export const sessionIdSelector = (state: GameFlowState) =>
   state.gameSession?.id;
+export const playingCharactersSelector = (state: GameFlowState) =>
+  state.gameSession?.playingCharacterSet?.playingCharacters;

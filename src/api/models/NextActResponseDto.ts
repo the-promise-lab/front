@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { PlayingCharacterStatusDto } from './PlayingCharacterStatusDto';
 import type { SessionActMetaDto } from './SessionActMetaDto';
 import type { SessionDayMetaDto } from './SessionDayMetaDto';
 import type { SessionEndingMetaDto } from './SessionEndingMetaDto';
@@ -20,6 +21,10 @@ export type NextActResponseDto = {
    * 현재 Act 정보
    */
   act: SessionActMetaDto | null;
+  /**
+   * 현재 플레이 중인 캐릭터 스탯
+   */
+  playingCharacters: Array<PlayingCharacterStatusDto>;
   /**
    * Act 이벤트 리스트
    */
