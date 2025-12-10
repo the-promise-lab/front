@@ -17,6 +17,9 @@ import type {
   ScenarioChoiceFallback,
   ScenarioChoiceOutcome,
   SubmitChoiceParams,
+  ScenarioEffect,
+  ScenarioItemChange,
+  ScenarioSessionEffect,
 } from './types';
 
 export function adaptNextActResponse(
@@ -27,6 +30,7 @@ export function adaptNextActResponse(
     status: adaptStatus(dto.status),
     day: dto.day ? { ...dto.day } : null,
     act: dto.act ? { ...dto.act } : null,
+    playingCharacters: dto.playingCharacters,
     events: dto.events.map(adaptScenarioEvent),
     ending: dto.ending ? { ...dto.ending } : null,
   };
@@ -138,5 +142,96 @@ export function adaptChoiceToRequest(
       chosenItemId: params.choice.itemId,
     },
     updates: params.updates as NextActUpdatesDto | undefined,
+  };
+}
+
+/**
+ * outcome에서 발생한 effects를 서버 요청용 updates로 변환
+ */
+export function adaptOutcomeEffectsToUpdates(params: {
+  characterEffects: ScenarioEffect[];
+  itemChanges: ScenarioItemChange[];
+  sessionEffects: ScenarioSessionEffect[];
+  usedItemId?: number; // ItemChoice에서 사용한 아이템
+}): SubmitChoiceParams['updates'] {
+  const { characterEffects, itemChanges, sessionEffects, usedItemId } = params;
+
+  // 1. characterEffects를 characterCode별로 그룹화하여 누적
+  const characterMap = new Map<
+    string,
+    { hpChange: number; mentalChange: number }
+  >();
+
+  characterEffects.forEach(effect => {
+    if (!effect.characterCode) return;
+
+    const existing = characterMap.get(effect.characterCode) || {
+      hpChange: 0,
+      mentalChange: 0,
+    };
+
+    if (effect.effectType === 'health') {
+      existing.hpChange += effect.change ?? 0;
+    } else if (effect.effectType === 'mental') {
+      existing.mentalChange += effect.change ?? 0;
+    }
+
+    characterMap.set(effect.characterCode, existing);
+  });
+
+  const characterStatusChanges = Array.from(characterMap.entries()).map(
+    ([code, changes]) => ({
+      characterCode: code,
+      hpChange: changes.hpChange,
+      mentalChange: changes.mentalChange,
+    })
+  );
+
+  // 2. itemChanges 변환 + 사용한 아이템 추가
+  const itemChangesList = itemChanges.map(ic => ({
+    itemId: ic.itemId,
+    quantityChange: ic.quantityChange,
+  }));
+
+  // ItemChoice에서 아이템을 사용한 경우 -1 추가
+  if (usedItemId !== undefined) {
+    // 이미 같은 itemId가 있는지 확인
+    const existingItemChange = itemChangesList.find(
+      ic => ic.itemId === usedItemId
+    );
+
+    if (existingItemChange) {
+      // 이미 있으면 누적
+      existingItemChange.quantityChange -= 1;
+    } else {
+      // 없으면 새로 추가
+      itemChangesList.push({
+        itemId: usedItemId,
+        quantityChange: -1,
+      });
+    }
+  }
+
+  // 3. sessionEffects 변환
+  const sessionStatChanges = sessionEffects.map(se => ({
+    statType: 'LifePoint' as const,
+    change: se.change,
+  }));
+
+  // 비어있으면 undefined 반환
+  if (
+    characterStatusChanges.length === 0 &&
+    itemChangesList.length === 0 &&
+    sessionStatChanges.length === 0
+  ) {
+    return undefined;
+  }
+
+  return {
+    characterStatusChanges:
+      characterStatusChanges.length > 0 ? characterStatusChanges : undefined,
+    itemChanges: itemChangesList.length > 0 ? itemChangesList : undefined,
+    sessionStatChanges:
+      sessionStatChanges.length > 0 ? sessionStatChanges : undefined,
   };
 }

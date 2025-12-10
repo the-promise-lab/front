@@ -4,6 +4,9 @@ import type {
   ScenarioActions,
   ScenarioActBundle,
   ScenarioEvent,
+  ScenarioEffect,
+  ScenarioItemChange,
+  ScenarioSessionEffect,
 } from './types';
 
 const INITIAL_STATE: ScenarioState = {
@@ -11,6 +14,7 @@ const INITIAL_STATE: ScenarioState = {
   currentEventIndex: 0,
   pendingChoice: null,
   pendingOutcomeResultType: null,
+  pendingOutcomeEffects: null,
   isLoading: false,
   error: null,
 };
@@ -25,6 +29,7 @@ export const useScenarioStore = create<ScenarioState & ScenarioActions>()(
         currentEventIndex: 0,
         pendingChoice: null,
         pendingOutcomeResultType: null,
+        pendingOutcomeEffects: null,
         isLoading: false,
         error: null,
       });
@@ -57,9 +62,32 @@ export const useScenarioStore = create<ScenarioState & ScenarioActions>()(
       return hasPrev;
     },
 
-    selectChoice: (optionId: number, itemId?: number) => {
+    selectChoice: (
+      optionId: number,
+      itemId?: number,
+      outcomeEvents?: ScenarioEvent[]
+    ) => {
+      const characterEffects: ScenarioEffect[] = [];
+      const itemChanges: ScenarioItemChange[] = [];
+      const sessionEffects: ScenarioSessionEffect[] = [];
+
+      // outcome events에서 모든 effects 수집
+      if (outcomeEvents) {
+        outcomeEvents.forEach(event => {
+          if (event.effects) characterEffects.push(...event.effects);
+          if (event.itemChanges) itemChanges.push(...event.itemChanges);
+          if (event.sessionEffects)
+            sessionEffects.push(...event.sessionEffects);
+        });
+      }
+
       set({
         pendingChoice: { optionId, itemId },
+        pendingOutcomeEffects: {
+          characterEffects,
+          itemChanges,
+          sessionEffects,
+        },
       });
     },
 
@@ -81,7 +109,11 @@ export const useScenarioStore = create<ScenarioState & ScenarioActions>()(
     },
 
     clearChoice: () => {
-      set({ pendingChoice: null, pendingOutcomeResultType: null });
+      set({
+        pendingChoice: null,
+        pendingOutcomeResultType: null,
+        pendingOutcomeEffects: null,
+      });
     },
 
     setLoading: (isLoading: boolean) => {
@@ -160,4 +192,8 @@ export const selectStatus = (state: ScenarioState) => {
 
 export const selectPendingOutcomeResultType = (state: ScenarioState) => {
   return state.pendingOutcomeResultType;
+};
+
+export const selectPendingOutcomeEffects = (state: ScenarioState) => {
+  return state.pendingOutcomeEffects;
 };

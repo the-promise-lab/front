@@ -4,6 +4,7 @@ import type {
   Bag,
   Inventory,
 } from '@entities/game-session';
+import type { PlayingCharacterStatusDto } from '@api';
 
 export type GameStep =
   | 'LOGIN' // 로그인 페이지
@@ -71,14 +72,10 @@ export interface GameFlowActions {
   startScenarioFlow: () => void;
   continueGame: () => void;
   resetGame: () => void;
-  updateCharacterStats: (
-    effects: Array<{
-      characterCode: string | null;
-      effectType: string;
-      change: number | null;
-      newValue: number | null;
-    }>
+  syncPlayingCharactersFromServer: (
+    playingCharacters: PlayingCharacterStatusDto[]
   ) => void;
+  deleteUsedItemFromInventory: (itemId: number) => void;
 }
 
 // 게임 단계 순서 정의

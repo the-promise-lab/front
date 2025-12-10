@@ -4,9 +4,9 @@ import {
   SideInventory,
   useGameFlowStore,
   Header,
-  playingCharacterSetSelector,
   inventorySelector,
   selectedBagSelector,
+  playingCharactersSelector,
 } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
@@ -42,10 +42,16 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
   const backgroundImage = getObjectUrl('shelter-bg.png');
 
   // 플레이 중인 캐릭터 정보 가져오기
-  const playingCharacters =
-    useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
+  const playingCharacters = useGameFlowStore(playingCharactersSelector) || [];
   const inventory = useGameFlowStore(inventorySelector);
   const selectedBag = useGameFlowStore(selectedBagSelector);
+  const { syncPlayingCharactersFromServer, deleteUsedItemFromInventory } =
+    useGameFlowStore(
+      useShallow(state => ({
+        syncPlayingCharactersFromServer: state.syncPlayingCharactersFromServer,
+        deleteUsedItemFromInventory: state.deleteUsedItemFromInventory,
+      }))
+    );
 
   const currentEvent = useScenarioStore(selectCurrentEvent);
   const skipDialogueEvents = useScenarioStore(
@@ -83,8 +89,6 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
       image: item.item.image ?? '',
       state: 'default' as const,
     })) ?? undefined;
-
-  console.log(inventory);
 
   // PlaceScreen 단계
   if (introPhase === 'place') {
@@ -160,9 +164,14 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
           onGameEnd={() => setIntroPhase('ending')}
           onGameOver={() => useGameFlowStore.getState().goto('MAIN_MENU')}
           onSuddenDeath={() => setIntroPhase('ending')}
-          onStatChange={effects =>
-            useGameFlowStore.getState().updateCharacterStats(effects)
-          }
+          onActComplete={bundle => {
+            if (bundle.playingCharacters?.length > 0) {
+              syncPlayingCharactersFromServer(bundle.playingCharacters);
+            }
+          }}
+          onItemUsed={itemId => {
+            deleteUsedItemFromInventory(itemId);
+          }}
         />
       </div>
     </div>
