@@ -87,7 +87,7 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   }
 
   return (
-    <div className='relative flex h-full w-full flex-col' onClick={handleNext}>
+    <div className='relative flex h-full w-full flex-col'>
       <Header
         hasCharacterProfiles
         playingCharacters={playingCharacters}
@@ -104,18 +104,24 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
         }
       />
       <div className='flex-1'>
-        <IntroEventRenderer event={currentEvent} />
+        <IntroEventRenderer event={currentEvent} onNext={handleNext} />
       </div>
     </div>
   );
 }
 
-function IntroEventRenderer({ event }: { event: IntroEvent }) {
+function IntroEventRenderer({
+  event,
+  onNext,
+}: {
+  event: IntroEvent;
+  onNext?: () => void;
+}) {
   switch (event.Event) {
     case 'Simple':
-      return <IntroSimpleScreen event={event} />;
+      return <IntroSimpleScreen event={event} onComplete={onNext} />;
     case 'System':
-      return <SystemMessage event={event} />;
+      return <SystemMessage event={event} onNext={onNext} />;
     default:
       return (
         <div className='flex h-full items-center justify-center px-14 text-center'>
@@ -127,12 +133,29 @@ function IntroEventRenderer({ event }: { event: IntroEvent }) {
   }
 }
 
-function SystemMessage({ event }: { event: IntroEvent }) {
+function SystemMessage({
+  event,
+  onNext,
+}: {
+  event: IntroEvent;
+  onNext?: () => void;
+}) {
   const message =
     event.SystemScript || event.Script || '시스템 메시지가 도착했습니다.';
 
   return (
-    <div className='flex h-full items-center justify-center px-6'>
+    <div
+      className='flex h-full items-center justify-center px-6'
+      role='button'
+      tabIndex={0}
+      onClick={() => onNext?.()}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onNext?.();
+        }
+      }}
+    >
       <NoticeBanner withCaution={false} className='max-w-[1020px]'>
         <Typography variant='dialogue-2' className='text-white'>
           {message}

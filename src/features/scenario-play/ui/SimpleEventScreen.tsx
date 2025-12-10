@@ -23,6 +23,13 @@ export default function SimpleEventScreen({
     position: (c.position as PortraitCharacter['position']) ?? null,
   }));
 
+  if (portraitCharacters.length === 1) {
+    portraitCharacters[0] = {
+      ...portraitCharacters[0],
+      position: 'center',
+    };
+  }
+
   return (
     <PortraitScreen
       portrait={portrait}
