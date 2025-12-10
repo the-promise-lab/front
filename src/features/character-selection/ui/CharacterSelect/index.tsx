@@ -373,11 +373,11 @@ export default function CharacterSelect({
           </p>
         )}
 
-        <Typography variant='body-3-r' className='h-40'>
+        <Typography variant='body' className='h-40'>
           {activeCharacter?.description}
         </Typography>
 
-        <Typography variant='body-3-r' className='h-20'>
+        <Typography variant='body' className='h-20'>
           {activeCharacter?.traits}
         </Typography>
 
