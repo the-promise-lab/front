@@ -81,6 +81,19 @@ export class GameService {
     });
   }
   /**
+   * 게임 리소스 CDN 경로 조회
+   * @returns string 디렉터리별 게임 리소스 목록 반환
+   * @throws ApiError
+   */
+  public static gameControllerGetResources(): CancelablePromise<
+    Record<string, Array<string>>
+  > {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/game/resources',
+    });
+  }
+  /**
    * 인벤토리 제출
    * @param requestBody
    * @returns GameSessionDto 인벤토리 제출 성공
