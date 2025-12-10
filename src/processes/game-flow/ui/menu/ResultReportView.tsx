@@ -1,11 +1,20 @@
-import Typography from '@shared/ui/Typography';
+import { ResultReportScreen } from '@features/result-report';
+import { useAuthStore } from '@shared/auth/model/useAuthStore';
 
-export function ResultReportView() {
+interface Props {
+  onClose: () => void;
+  onBackButtonClick: () => void;
+}
+
+export function ResultReportView({ onClose, onBackButtonClick }: Props) {
+  const user = useAuthStore.getState().user;
   return (
-    <div className='flex h-full w-full items-center justify-center text-white/70'>
-      <Typography variant='dialogue-m' className='text-white/70'>
-        결과 리포트는 준비 중입니다.
-      </Typography>
-    </div>
+    <ResultReportScreen
+      sessionId={null}
+      user={user}
+      isEndingScreen
+      onClose={onClose}
+      onBackButtonClick={onBackButtonClick}
+    />
   );
 }

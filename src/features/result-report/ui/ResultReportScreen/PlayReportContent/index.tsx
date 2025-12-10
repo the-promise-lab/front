@@ -4,16 +4,28 @@ import PlayReportScrollContent from './PlayReportScrollContent';
 import useResultReport from '../../../model/useResultReport';
 import { RESULT_PLAY_REPORT_DATA } from '../../../__mocks__/mockResults';
 import Typography from '@shared/ui/Typography';
+import { IconCaution } from '@shared/ui/icons';
 
-export function PlayReportContent({ sessionId }: { sessionId: string }) {
+export function PlayReportContent({ sessionId }: { sessionId: string | null }) {
   const { data: resultReport, isPending, isError } = useResultReport(sessionId);
 
-  if (isPending)
+  if (!sessionId) {
+    return (
+      <div className='flex h-full w-full items-center justify-center gap-4'>
+        <IconCaution className='size-10' />
+        <Typography variant='dialogue-m' className='text-white'>
+          게임 세션 정보를 찾을 수 없습니다.
+        </Typography>
+      </div>
+    );
+  }
+  if (isPending) {
     return (
       <div className='flex h-full w-full items-center justify-center'>
         결과 보고서를 조회중입니다..
       </div>
     );
+  }
   const resultReportData = resultReport || RESULT_PLAY_REPORT_DATA;
   return (
     <>

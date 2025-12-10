@@ -8,7 +8,6 @@ import RankingContent from './RankingContent';
 import CollectionContent from './CollectionContent';
 import HistoryContent from './HistoryContent';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
-import { IconCaution } from '@shared/ui/icons';
 
 const RESULT_MENU_CATEGORIES = [
   { id: 'play-report', label: { kor: '최종결과', eng: 'Play Report' } },
@@ -20,29 +19,25 @@ const RESULT_MENU_CATEGORIES = [
 type ResultMenuCategory = (typeof RESULT_MENU_CATEGORIES)[number]['id'];
 
 interface ResultReportScreenProps {
-  onGoToMainMenu: () => void;
+  onClose: () => void;
   user: User | null;
   sessionId: string | null;
+  isEndingScreen?: boolean;
+  onBackButtonClick?: () => void;
 }
 
 export function ResultReportScreen({
-  onGoToMainMenu,
+  onClose,
   user,
   sessionId,
+  isEndingScreen = false,
+  onBackButtonClick,
 }: ResultReportScreenProps) {
-  const [selectedCategory, setSelectedCategory] =
-    useState<ResultMenuCategory>('play-report');
+  const [selectedCategory, setSelectedCategory] = useState<ResultMenuCategory>(
+    isEndingScreen ? 'ranking' : 'play-report'
+  );
 
   const renderContent = () => {
-    if (!sessionId)
-      return (
-        <div className='flex h-full w-full items-center justify-center gap-4'>
-          <IconCaution className='size-10' />
-          <Typography variant='dialogue-m' className='text-white'>
-            게임 세션 정보를 찾을 수 없습니다.
-          </Typography>
-        </div>
-      );
     switch (selectedCategory) {
       case 'play-report':
         return <PlayReportContent sessionId={sessionId} />;
@@ -57,14 +52,19 @@ export function ResultReportScreen({
     }
   };
 
+  const menuItems = isEndingScreen
+    ? RESULT_MENU_CATEGORIES.filter(item => item.id !== 'play-report')
+    : RESULT_MENU_CATEGORIES;
+
   return (
     <BackgroundPortal>
       <EdgeGradient />
       <GlassMenuLayout
-        menuItems={RESULT_MENU_CATEGORIES}
+        onBackButtonClick={onBackButtonClick}
+        menuItems={menuItems}
         selectedId={selectedCategory}
         onSelect={id => setSelectedCategory(id as ResultMenuCategory)}
-        onClose={onGoToMainMenu}
+        onClose={onClose}
         menuHeader={
           /* 임시 유저 정보 (나중에 실제 데이터로 교체) */
           <div className='flex items-center gap-4.5 px-5'>

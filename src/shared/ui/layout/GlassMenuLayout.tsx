@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { cn } from '@shared/lib/utils';
-import { IconCloseButton } from '@shared/ui/icon-button';
+import { IconBackArrowButton, IconCloseButton } from '@shared/ui/icon-button';
 import type { ReactNode } from 'react';
 import Typography from '../Typography';
 import { GradientGlassFromEdge } from '../GradientGlassFromEdge';
@@ -16,6 +16,7 @@ interface GlassMenuLayoutProps<T extends string = string> {
   selectedId: T;
   onSelect: (id: T) => void;
   onClose?: () => void;
+  onBackButtonClick?: () => void;
   children: ReactNode;
   className?: string;
   menuHeader?: ReactNode;
@@ -27,6 +28,7 @@ export function GlassMenuLayout<T extends string = string>({
   selectedId,
   onSelect,
   onClose,
+  onBackButtonClick,
   children,
   className,
   menuHeader,
@@ -111,18 +113,18 @@ export function GlassMenuLayout<T extends string = string>({
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.25, ease: 'easeOut', delay: 0.1 }}
         >
-          {/* 닫기 버튼 (우측 상단 absolute) */}
-          {onClose && (
-            <motion.div
-              className='absolute top-10 right-10 z-10'
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <IconCloseButton onClick={onClose} />
-            </motion.div>
-          )}
+          <motion.div
+            className='absolute top-10 right-10 z-10 flex gap-6'
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+          >
+            {onBackButtonClick && (
+              <IconBackArrowButton onClick={onBackButtonClick} />
+            )}
+            {onClose && <IconCloseButton onClick={onClose} />}
+          </motion.div>
 
           {/* 컨텐츠 영역 */}
           <div className='relative flex h-full flex-1 flex-col overflow-hidden'>

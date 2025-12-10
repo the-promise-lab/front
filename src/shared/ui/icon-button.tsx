@@ -1,4 +1,9 @@
-import { IconBackpack, IconClose, IconPause } from '@shared/ui/icons';
+import {
+  IconBackArrow,
+  IconBackpack,
+  IconClose,
+  IconPause,
+} from '@shared/ui/icons';
 import { cn } from '@shared/lib/utils';
 import type { HTMLAttributes, MouseEvent } from 'react';
 
@@ -80,6 +85,23 @@ export function IconCloseButton({
       aria-label='Close'
     >
       <IconClose className='h-full w-full' />
+    </IconButtonBase>
+  );
+}
+
+export function IconBackArrowButton({
+  className,
+  onClick,
+  disabled = false,
+}: IconButtonProps) {
+  return (
+    <IconButtonBase
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(className)}
+      aria-label='Back Arrow'
+    >
+      <IconBackArrow className='h-full w-full' />
     </IconButtonBase>
   );
 }

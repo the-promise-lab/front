@@ -38,7 +38,7 @@ export default function ResultReportPage() {
   if (!resultScreenLoaded) return null;
   return (
     <ResultReportScreen
-      onGoToMainMenu={handleGoToMainMenu}
+      onClose={handleGoToMainMenu}
       user={user}
       sessionId={sessionId?.toString() ?? fallbackSessionId?.toString() ?? null}
     />
