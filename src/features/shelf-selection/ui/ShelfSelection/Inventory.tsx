@@ -29,7 +29,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
   const progressColor = isOverweight ? '#FF4E59' : '#01EAD6';
 
   // 원형 프로그레스 바를 위한 SVG 계산
-  const radius = 65; // 원의 반지름
+  const radius = 71; // 원의 반지름
   const circumference = 2 * Math.PI * radius;
   const progress = Math.min(Math.max(currentWieght, 0), bagCapacity); // 0~MAX 범위 제한
   const strokeDashoffset =
@@ -67,7 +67,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
   return (
     <>
       <button
-        className='pointer-events-auto absolute right-11 bottom-11 z-[10] h-36 w-36'
+        className='pointer-events-auto absolute right-11 bottom-11 z-10 h-36 w-36'
         onClick={handleClickOpen}
       >
         <div className='relative h-full w-full'>
@@ -75,10 +75,7 @@ export default function Inventory({ bag }: { bag: Bag }) {
           <IconBackpackCircle className='h-full w-full' />
 
           {/* 원형 프로그레스 바 (SVG) */}
-          <svg
-            className='absolute -inset-[12.55%] -rotate-90'
-            viewBox='0 0 160 160'
-          >
+          <svg className='absolute inset-0 -rotate-90' viewBox='0 0 160 160'>
             <circle
               cx='80'
               cy='80'
