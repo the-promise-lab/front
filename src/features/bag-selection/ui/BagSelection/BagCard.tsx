@@ -25,13 +25,13 @@ export default function BagCard({ bag, isSelected, onClick }: BagCardProps) {
       onClick={handleClick}
       className={cn(
         'flex flex-col',
-        'h-125 w-95',
-        'border-[0.4px] lg:border-[1px]',
+        'max-h-125 min-h-110 w-95',
+        'border-[0.4px] lg:border',
         'rounded-[9.6px] lg:rounded-[24px]',
         'px-9',
         'transition-all duration-200',
         'text-left',
-        'flex-shrink-0',
+        'shrink-0',
         isSelected ? 'background-glass-pressed' : 'background-glass'
         // isSelected
         //   ? 'border-white. bg-gradient-to-b from-white/30 via-white/20 to-white/20 shadow-lg shadow-white/50'
@@ -39,7 +39,7 @@ export default function BagCard({ bag, isSelected, onClick }: BagCardProps) {
       )}
     >
       {/* 가방 이미지 영역 */}
-      <div className='flex h-72.5 w-full items-center justify-center'>
+      <div className='flex max-h-72.5 w-full items-center justify-center'>
         <div className='h-full w-65'>
           <img
             src={getObjectUrl(bag.image)}

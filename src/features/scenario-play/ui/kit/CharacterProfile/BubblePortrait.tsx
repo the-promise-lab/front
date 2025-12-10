@@ -27,7 +27,7 @@ export default function BubblePortrait({
       className={cn(
         'flex w-fit items-center justify-center px-6.5 py-4',
         'rounded-[8px] lg:rounded-[16px]',
-        'border-1 border-solid lg:border-2',
+        'border border-solid lg:border-2',
         'fade-in',
         className
       )}

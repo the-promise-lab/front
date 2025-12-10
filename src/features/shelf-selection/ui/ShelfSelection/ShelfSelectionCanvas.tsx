@@ -301,7 +301,7 @@ export default function ShelfSelectionCanvas({
           {...dragHandlers}
         />
       </div>
-      <div className='pointer-events-none absolute top-1/2 left-1/2 z-10 aspect-[16/9] h-[100dvh] w-auto -translate-x-1/2 -translate-y-1/2'>
+      <div className='pointer-events-none absolute top-1/2 left-1/2 z-10 aspect-video h-dvh w-auto -translate-x-1/2 -translate-y-1/2'>
         <GlowNavigationButton
           className='pointer-events-auto'
           hidden={viewOffsetX !== 0}

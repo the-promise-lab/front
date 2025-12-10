@@ -122,14 +122,14 @@ export default function Minimap({
                     Icon = section.icons.focus;
                   }
                   const IconWithClass = cloneElement(Icon, {
-                    className: cn('h-full w-full', Icon.props.className),
+                    className: cn('h-35 w-auto', Icon.props.className),
                   });
 
                   return (
                     <button
                       key={section.code}
                       className={cn(
-                        'absolute h-35 w-auto -translate-x-1/2 -translate-y-1/2',
+                        'absolute flex h-50 w-50 -translate-x-1/2 -translate-y-1/2 items-center justify-center',
                         section.positionClassName
                       )}
                       title={section.displayName}
