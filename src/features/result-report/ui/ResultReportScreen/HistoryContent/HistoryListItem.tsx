@@ -5,6 +5,7 @@ import { IconDiamond } from '@shared/ui/icons';
 import type { HistoryItem } from '../../../model/types';
 import { ReportModal } from '../kit/ReportModal';
 import PlayReportScrollContent from '../PlayReportContent/PlayReportScrollContent';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface HistoryListItemProps {
   item: HistoryItem;
@@ -13,7 +14,7 @@ interface HistoryListItemProps {
 
 export function HistoryListItem({ item, className }: HistoryListItemProps) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   const open = useCallback(() => {
     setIsOpen(true);
   }, []);
@@ -43,10 +44,10 @@ export function HistoryListItem({ item, className }: HistoryListItemProps) {
               'linear-gradient(77deg, rgba(192, 192, 192, 0.56) 9.55%, rgba(84, 84, 84, 0.00) 90.45%)',
           }}
         >
-          <div className='relative ml-7.25 h-full w-93 shrink-0 overflow-hidden'>
+          <div className='relative h-full w-90 shrink-0 overflow-hidden'>
             {item.characterImageUrl ? (
               <img
-                src={item.characterImageUrl}
+                src={getObjectUrl(item.characterImageUrl)}
                 alt={item.characterName}
                 className='absolute inset-0 h-full w-full object-cover'
               />
@@ -56,7 +57,7 @@ export function HistoryListItem({ item, className }: HistoryListItemProps) {
           </div>
 
           {/* 중앙 컨텐츠 영역 */}
-          <div className='ml-16 flex flex-1 flex-col gap-2'>
+          <div className='ml-10 flex flex-1 flex-col gap-2'>
             {/* 캐릭터 이름 */}
             <Typography variant='dialogue-m' className='text-white'>
               {item.characterName}
@@ -89,10 +90,10 @@ export function HistoryListItem({ item, className }: HistoryListItemProps) {
       <ReportModal
         isOpen={isOpen}
         onClose={close}
-        title={item.playReport.endingTitle}
+        title={item.playReport.ending.title}
       >
         <PlayReportScrollContent
-          endingTitle={item.playReport.endingTitle}
+          ending={item.playReport.ending}
           points={item.playReport.points}
           characters={item.playReport.characters}
           survivalBag={item.playReport.survivalBag}

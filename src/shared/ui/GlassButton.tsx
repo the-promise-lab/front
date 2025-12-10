@@ -1,5 +1,6 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, MouseEvent } from 'react';
 import { cn } from '@shared/lib/utils';
+import { useButtonClickSfx } from '@shared/audio';
 
 interface GlassButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -10,6 +11,13 @@ export default function GlassButton({
   className,
   ...props
 }: GlassButtonProps) {
+  const playClickSfx = useButtonClickSfx();
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    playClickSfx();
+    props.onClick?.(event);
+  };
+
   return (
     <button
       className={cn(
@@ -20,6 +28,7 @@ export default function GlassButton({
         className
       )}
       {...props}
+      onClick={handleClick}
     >
       {/* SVG 배경 */}
       <svg

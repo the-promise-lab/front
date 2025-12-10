@@ -54,7 +54,9 @@ export function ReportModal({
               </div>
 
               {/* 컨텐츠 영역 */}
-              <div className='min-h-0 flex-1 overflow-y-auto'>{children}</div>
+              <div className='scrollbar-hide min-h-0 flex-1 overflow-y-auto'>
+                {children}
+              </div>
             </div>
           </div>
         </motion.div>

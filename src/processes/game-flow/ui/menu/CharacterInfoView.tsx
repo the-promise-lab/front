@@ -7,6 +7,7 @@ import {
   getCharacterPairDetailByGroupId,
   getCharacterPairDetailByName,
 } from '@entities/character-data';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 /**
  * 캐릭터 ID를 스탯 이미지 경로로 변환
@@ -127,6 +128,7 @@ export function CharacterInfoView() {
       }
     }
   }, [characterDetails, activeCharacterId]);
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
 
   if (!playingCharacters || playingCharacters.length === 0) {
     return (
@@ -157,13 +159,13 @@ export function CharacterInfoView() {
       <main className='relative flex flex-1 items-center justify-center'>
         {activeCharacter?.image ? (
           <img
-            src={activeCharacter.image}
+            src={getObjectUrl(activeCharacter.image)}
             alt={activeCharacter.name}
             className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
           />
         ) : playingCharacter.fullImage ? (
           <img
-            src={playingCharacter.fullImage}
+            src={getObjectUrl(playingCharacter.fullImage)}
             alt={playingCharacter.name || 'Character'}
             className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
           />
@@ -175,7 +177,7 @@ export function CharacterInfoView() {
       </main>
 
       {/* 우측: 캐릭터 정보 (CharacterSelect 스타일 적용) */}
-      <aside className='flex h-full w-[360px] flex-col justify-center gap-4 overflow-y-auto px-40'>
+      <aside className='scrollbar-hide flex h-full w-[360px] flex-col justify-center gap-4 overflow-y-auto px-40'>
         <div className='flex flex-col gap-3'>
           <span className='text-sm font-semibold text-white/40'>
             {/* {pairDetail.title} */}
@@ -200,7 +202,7 @@ export function CharacterInfoView() {
                     );
                     return statImagePath ? (
                       <img
-                        src={statImagePath}
+                        src={getObjectUrl(statImagePath)}
                         alt={`${activeCharacter.name} 스탯`}
                         className='h-33 w-83 object-contain'
                       />
@@ -252,7 +254,7 @@ export function CharacterInfoView() {
                   >
                     {pairImage ? (
                       <img
-                        src={pairImage}
+                        src={getObjectUrl(pairImage)}
                         alt={character.name}
                         className='h-full w-full object-cover'
                       />

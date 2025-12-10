@@ -13,6 +13,7 @@ import {
   getCharacterPairDetailByName,
 } from '../../model/characterPairDetails';
 import { BackgroundPortal } from '@shared/background-portal';
+import { useButtonClickSfx } from '@shared/audio';
 
 interface CharacterSelectProps {
   onNext: () => void;
@@ -151,6 +152,10 @@ export default function CharacterSelect({
   const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
     null
   );
+  const playCharacterSetButtonClick = useButtonClickSfx({
+    variant: 'waterDrop',
+  });
+
   useSetBackground({
     image: '/shelter-bg.png',
     className: 'backdrop-blur-[100px]',
@@ -226,7 +231,10 @@ export default function CharacterSelect({
             return (
               <button
                 key={set.id}
-                onClick={() => setCurrentIndex(index)}
+                onClick={() => {
+                  playCharacterSetButtonClick();
+                  setCurrentIndex(index);
+                }}
                 className={cn(
                   'group relative rounded-3xl border border-transparent py-1 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
                   isActive ? 'ring-0' : 'hover:border-white/15'
@@ -289,20 +297,16 @@ export default function CharacterSelect({
       </main>
 
       {/* 우측: 캐릭터 정보 */}
-      <aside className='flex h-full w-210 flex-col justify-center gap-4 overflow-y-auto pl-20 pr-5 mr-[calc(50dvw-50dvh*16/9)]'>
+      <aside className='scrollbar-hide mr-[calc(50dvw-50dvh*16/9)] flex h-full w-210 flex-col justify-center gap-4 overflow-y-auto pr-5 pl-20'>
         <div className='flex flex-col gap-3'>
           {activeCharacter ? (
             <>
               <div className='flex items-baseline gap-3'>
-                 <Typography variant='h4-eb'>
+                <Typography variant='h4-eb'>
                   | {activeCharacter.name}
-                  </Typography>
+                </Typography>
                 {activeCharacter.age && (
-
-                      <Typography variant='body'>
-                    {activeCharacter.age}
-                    </Typography>
-
+                  <Typography variant='body'>{activeCharacter.age}</Typography>
                 )}
               </div>
               {activeCharacter?.id ? (
@@ -331,19 +335,17 @@ export default function CharacterSelect({
           </p>
         )}
 
-<Typography variant='body-3-r' className='h-40'>
+        <Typography variant='body-3-r' className='h-40'>
           {activeCharacter?.description}
-          </Typography>
+        </Typography>
 
-          <Typography variant='body-3-r' className='h-20'>
+        <Typography variant='body-3-r' className='h-20'>
           {activeCharacter?.traits}
-          </Typography>
+        </Typography>
 
         <div className='flex w-full items-start justify-between'>
           <div>
-          <Typography variant='caption'>
-              플레이어 페어
-              </Typography>
+            <Typography variant='caption'>플레이어 페어</Typography>
             <div className='mt-3 flex gap-3'>
               {pairDetail.characters.map(character => {
                 const isActive = character.id === activeCharacter?.id;
@@ -355,7 +357,10 @@ export default function CharacterSelect({
                 return (
                   <button
                     key={character.id}
-                    onClick={() => setActiveCharacterId(character.id)}
+                    onClick={() => {
+                      playCharacterSetButtonClick();
+                      setActiveCharacterId(character.id);
+                    }}
                     className={cn(
                       'h-37p relative w-37 overflow-hidden border transition-all',
                       isActive

@@ -11,7 +11,7 @@ export default function RankingListSection({
   rankings,
 }: RankingListSectionProps) {
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col pb-16'>
       {/* Ranking 라벨 */}
       <div className='mb-4 flex items-center gap-3.5'>
         <IconDiamond className='size-8' />

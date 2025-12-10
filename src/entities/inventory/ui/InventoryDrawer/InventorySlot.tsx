@@ -1,6 +1,7 @@
 import { cn } from '@shared/lib/utils';
 import Typography from '@shared/ui/Typography';
 import { IconTrash2 } from '@shared/ui/icons';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface InventorySlotProps {
   className?: string;
@@ -19,7 +20,7 @@ export default function InventorySlot({
 }: InventorySlotProps) {
   const isDelete = state === 'delete';
   const isSelected = state === 'selected';
-
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   return (
     <div
       className={cn(
@@ -50,7 +51,7 @@ export default function InventorySlot({
             <img
               alt={itemName}
               className='pointer-events-none absolute inset-0 size-full max-w-none object-cover'
-              src={itemImage}
+              src={getObjectUrl(itemImage)}
             />
           ) : (
             <div className='absolute inset-0 bg-gray-600' />

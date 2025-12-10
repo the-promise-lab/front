@@ -1,7 +1,11 @@
 import { cn } from '@shared/lib/utils';
 import { IconDiamond } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
-import type { PlayReportPoint } from '../../../../model/types';
+import {
+  POINT_TYPE,
+  type PlayReportPoint,
+  type PointType,
+} from '../../../../model/types';
 
 interface GoodBadPointsSectionProps {
   points: PlayReportPoint[];
@@ -13,11 +17,11 @@ function PointSection({
   label,
   description,
 }: {
-  type: 'positive' | 'negative';
+  type: PointType;
   label: string;
   description: string;
 }) {
-  const isPositive = type === 'positive';
+  const isPositive = type === POINT_TYPE.GOOD;
 
   return (
     <div className='flex h-22.5 w-full items-center gap-2'>

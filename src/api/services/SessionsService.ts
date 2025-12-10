@@ -6,6 +6,7 @@ import type { IntroRequestDto } from '../models/IntroRequestDto';
 import type { IntroResponseDto } from '../models/IntroResponseDto';
 import type { NextActRequestDto } from '../models/NextActRequestDto';
 import type { NextActResponseDto } from '../models/NextActResponseDto';
+import type { SessionReportResponseDto } from '../models/SessionReportResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -42,6 +43,24 @@ export class SessionsService {
       url: '/api/sessions/active/next',
       body: requestBody,
       mediaType: 'application/json',
+    });
+  }
+  /**
+   * 결과 보고서 조회
+   * C001 결과 리포트 탭 데이터를 반환합니다.
+   * @param sessionId
+   * @returns SessionReportResponseDto 결과 보고서
+   * @throws ApiError
+   */
+  public static sessionsControllerGetSessionReport(
+    sessionId: string
+  ): CancelablePromise<SessionReportResponseDto> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/sessions/{sessionId}/report',
+      path: {
+        sessionId: sessionId,
+      },
     });
   }
 }

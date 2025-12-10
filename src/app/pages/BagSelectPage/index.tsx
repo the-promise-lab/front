@@ -1,6 +1,7 @@
 import { BagSelection } from '@features/bag-selection/ui/BagSelection';
 import {
   Header,
+  PauseMenu,
   playingCharacterSetSelector,
   useGameFlowStore,
 } from '@processes/game-flow';
@@ -15,6 +16,7 @@ export default function BagSelectPage() {
       <Header
         hasCharacterProfiles
         playingCharacters={playingCharacterSet?.playingCharacters}
+        menuSlot={<PauseMenu buttonClassName='static' />}
       />
       <BagSelection
         onComplete={selectedBag => {

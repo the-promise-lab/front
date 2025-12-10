@@ -118,10 +118,7 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
     return (
       <div className='relative h-full w-full'>
         <EdgeGradient />
-        <IntroStory
-          introMode={3}
-          onNext={handleIntro3Complete}
-        />
+        <IntroStory introMode={3} onNext={handleIntro3Complete} />
       </div>
     );
   }
@@ -161,8 +158,8 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
       <div className='flex-1'>
         <ScenarioController
           onGameEnd={() => setIntroPhase('ending')}
-          onGameOver={() => setIntroPhase('ending')}
-          onSuddenDeath={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+          onGameOver={() => useGameFlowStore.getState().goto('MAIN_MENU')}
+          onSuddenDeath={() => setIntroPhase('ending')}
         />
       </div>
     </div>

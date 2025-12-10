@@ -1,4 +1,5 @@
 import scrollbar from 'tailwind-scrollbar';
+import scrollbarHide from 'tailwind-scrollbar-hide';
 
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
@@ -66,5 +67,5 @@ export default {
       },
     },
   },
-  plugins: [scrollbar],
+  plugins: [scrollbar, scrollbarHide],
 };

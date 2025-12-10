@@ -6,6 +6,7 @@ import InventorySlot from './InventorySlot';
 import WeightGauge from './WeightGauge';
 import type { MouseEvent } from 'react';
 import type { SlotItem } from '../../model/types';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface Props {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export default function InventoryDrawer({
   items,
   handleSlotClick,
 }: Props) {
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   return (
     <BackgroundPortal>
       <AnimatePresence>
@@ -58,7 +60,7 @@ export default function InventoryDrawer({
                       <img
                         alt={bagTitle}
                         className='pointer-events-none absolute inset-0 size-full max-w-none rounded object-cover'
-                        src={bagImage}
+                        src={getObjectUrl(bagImage)}
                       />
                     ) : (
                       <div className='size-full bg-gray-200/50' />
@@ -88,7 +90,7 @@ export default function InventoryDrawer({
                 </div>
 
                 {/* 아이템 그리드 (4x5) */}
-                <div className='flex w-full flex-1 flex-wrap gap-5 overflow-y-auto pr-4 pb-4'>
+                <div className='scrollbar-hide flex w-full flex-1 flex-wrap gap-5 overflow-y-auto pr-4 pb-4'>
                   {items.map((item, index) => (
                     <InventorySlot
                       key={`${item.id}-${index}`}

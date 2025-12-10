@@ -6,6 +6,8 @@ import { cloneElement, useCallback, useMemo, useState } from 'react';
 import type { MinimapSection } from '../../model/types';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShallow } from 'zustand/react/shallow';
+import { useButtonClickSfx } from '@shared/audio';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 const minimapThumbnail = '/image/minimap/minimap_thumbnail.png';
 const minimap1024 = '/image/minimap/minimap@1024.png';
@@ -24,6 +26,8 @@ export default function Minimap({
   currentShelfCode,
 }: MinimapProps) {
   const [opened, setOpened] = useState(false);
+  const playPopupClick = useButtonClickSfx({ variant: 'popup' });
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   const { isShelfVisited } = useShelfSelectionStore(
     useShallow(state => ({
       isShelfVisited: state.isShelfVisited,
@@ -31,12 +35,14 @@ export default function Minimap({
   );
 
   const close = useCallback(() => {
+    playPopupClick();
     setOpened(false);
-  }, []);
+  }, [playPopupClick]);
 
   const open = useCallback(() => {
+    playPopupClick();
     setOpened(true);
-  }, []);
+  }, [playPopupClick]);
 
   const handleSectionClick = useCallback(
     (sectionCode: string) => {
@@ -94,7 +100,7 @@ export default function Minimap({
             >
               <div className='relative z-201 h-dvh w-dvw'>
                 <img
-                  src={minimap1920}
+                  src={getObjectUrl(minimap1920)}
                   srcSet={minimapSrcSet}
                   sizes='(max-width: 1024px) 100vw, 100vw'
                   alt='전체 매장 미니맵'

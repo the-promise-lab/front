@@ -2,9 +2,11 @@ import { cn } from '@shared/lib/utils';
 import { IconHeart, IconLightning, IconPotential } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
 import type { PlayReportCharacterStats } from '../../../../model/types';
+import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
 
 interface CharacterStatsSectionProps {
   characters: PlayReportCharacterStats[];
+  endingImage?: string;
 }
 
 function StateCardBackground() {
@@ -154,22 +156,26 @@ function StateCardBackground() {
 
 // 캐릭터 스탯 카드 컴포넌트
 function CharacterStatCard({
-  health,
-  mental,
-  potential,
+  character,
+  imageUrl,
   className,
 }: {
-  health: number;
-  mental: number;
-  potential: number;
+  character: PlayReportCharacterStats;
   className?: string;
+  imageUrl?: string;
 }) {
+  const getObjectUrl = useAssetStore(getObjectUrlSelector);
   return (
     <div
       className={cn(
         'relative flex h-fit w-87 flex-col items-center gap-2 px-7.5 py-4.5',
         className
       )}
+      style={{
+        backgroundImage: imageUrl
+          ? `url(${getObjectUrl(imageUrl)})`
+          : undefined,
+      }}
     >
       <StateCardBackground />
       {/* 라벨 행 */}
@@ -200,13 +206,13 @@ function CharacterStatCard({
       {/* 수치 행 */}
       <div className='flex w-full items-center justify-between px-6'>
         <Typography variant='body-b' className='text-white'>
-          {health}
+          {character.finalHealth}
         </Typography>
         <Typography variant='body-b' className='text-white'>
-          {mental}
+          {character.finalMental}
         </Typography>
         <Typography variant='body-b' className='text-white'>
-          {potential}
+          {character.potential}
         </Typography>
       </div>
     </div>
@@ -215,6 +221,7 @@ function CharacterStatCard({
 
 export default function CharacterStatsSection({
   characters,
+  endingImage,
 }: CharacterStatsSectionProps) {
   return (
     <div className='relative h-125 w-full'>
@@ -224,9 +231,8 @@ export default function CharacterStatsSection({
       {/* 좌측 상단 스탯카드 (첫번째 캐릭터) */}
       {characters[0] && (
         <CharacterStatCard
-          health={characters[0].health}
-          mental={characters[0].mental}
-          potential={characters[0].potential}
+          character={characters[0]}
+          imageUrl={endingImage}
           className='absolute top-25 left-4'
         />
       )}
@@ -234,9 +240,8 @@ export default function CharacterStatsSection({
       {/* 우측 하단 스탯카드 (두번째 캐릭터) */}
       {characters[1] && (
         <CharacterStatCard
-          health={characters[1].health}
-          mental={characters[1].mental}
-          potential={characters[1].potential}
+          character={characters[1]}
+          imageUrl={endingImage}
           className='absolute top-1/2 right-4 -translate-y-1/2'
         />
       )}

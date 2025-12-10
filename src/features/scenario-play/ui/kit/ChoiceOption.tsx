@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Typography from '@shared/ui/Typography';
 import { GradientGlassFromEdge } from '@shared/ui/GradientGlassFromEdge';
 import { IconDiamond, IconDiamondPressed } from '@shared/ui/icons';
+import { useButtonClickSfx } from '@shared/audio';
 
 interface ChoiceOptionProps {
   text: string;
@@ -21,9 +22,10 @@ export default function ChoiceOption({
   onPress,
 }: ChoiceOptionProps) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
+  const playChoiceOptionClick = useButtonClickSfx({ variant: 'default' });
   const handlePress = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    playChoiceOptionClick();
     onPress();
 
     if (timeoutRef.current) {

@@ -3,6 +3,7 @@ import type { Bag } from '@entities/game-session';
 import { cn } from '@shared/lib/utils';
 import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
+import { useButtonClickSfx } from '@shared/audio';
 
 interface BagCardProps {
   bag: Bag;
@@ -12,9 +13,16 @@ interface BagCardProps {
 
 export default function BagCard({ bag, isSelected, onClick }: BagCardProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
+  const playButtonClick = useButtonClickSfx({ variant: 'waterDrop' });
+
+  const handleClick = () => {
+    playButtonClick();
+    onClick();
+  };
+
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       className={cn(
         'flex flex-col',
         'h-125 w-95',
