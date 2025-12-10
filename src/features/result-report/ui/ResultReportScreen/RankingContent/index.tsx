@@ -17,7 +17,7 @@ export default function RankingContent() {
       </div>
 
       {/* GlassPanel 컨테이너 */}
-      <div className='relative flex-1 overflow-y-auto py-16 pl-15'>
+      <div className='scrollbar-hide relative flex-1 overflow-y-auto py-16 pl-15'>
         <GlassPanel className='fixed top-45 left-120 ml-[calc(50dvw-50dvh*16/9)] h-dvh w-dvw' />
 
         {/* GlassPanel 내부 컨텐츠 */}

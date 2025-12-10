@@ -177,7 +177,7 @@ export function CharacterInfoView() {
       </main>
 
       {/* 우측: 캐릭터 정보 (CharacterSelect 스타일 적용) */}
-      <aside className='flex h-full w-[360px] flex-col justify-center gap-4 overflow-y-auto px-40'>
+      <aside className='scrollbar-hide flex h-full w-[360px] flex-col justify-center gap-4 overflow-y-auto px-40'>
         <div className='flex flex-col gap-3'>
           <span className='text-sm font-semibold text-white/40'>
             {/* {pairDetail.title} */}
