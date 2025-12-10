@@ -70,7 +70,8 @@ function makePortraitCharacter(
     CHARACTER_IMAGE_MAP[DEFAULT_LEFT];
 
   const base: PortraitCharacter = {
-    id: fallbackPosition === 'left' ? 1 : 2,
+    // 키가 캐릭터 교체 시 변경되도록 character id를 사용
+    id: resolvedId,
     name,
     profileImage: overrideImageUrl ?? image ?? null,
     position: explicitPosition ?? fallbackPosition,
