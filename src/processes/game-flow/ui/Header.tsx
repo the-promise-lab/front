@@ -42,7 +42,7 @@ export default function Header({
         >
           {hasCharacterProfiles && playingCharacters && (
             <>
-              {playingCharacters.map((char, index) => (
+              {playingCharacters.map(char => (
                 <CharacterProfile
                   key={char.id}
                   name={char.name || '-'}
@@ -52,7 +52,7 @@ export default function Header({
                   characterColors={
                     char.colors || { backgroundColor: null, borderColor: null }
                   }
-                  active={index === 0}
+                  active={char.name === bubblePortrait?.speaker}
                 />
               ))}
             </>

@@ -150,6 +150,7 @@ export function adaptPlayingCharacterFromApi(
   return {
     id: playingCharacter.id,
     characterId: playingCharacter.character.id,
+    characterCode: playingCharacter.character.code,
     name: resolvedName,
     fullImage: resolvedFullImage,
     profileImage: resolvedProfileImage,

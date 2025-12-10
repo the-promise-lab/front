@@ -168,6 +168,7 @@ function createPairDetail(set?: CharacterSet): CharacterPairDetail {
       {
         id: `${set.id}-primary`,
         name: set.name,
+        code: set.name,
         age: '',
         stats: [],
         description:

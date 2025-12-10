@@ -5,6 +5,7 @@ export interface CharacterStat {
 
 export interface CharacterDetail {
   id: string;
+  code: string;
   name: string;
   aliases?: string[];
   age?: string;
@@ -38,6 +39,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'hem',
         name: '형빈',
+        code: 'hb',
         aliases: [
           '헴',
           'Char_hem',
@@ -62,7 +64,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits:
           '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
         image: '/image/introPage/char_hb_intro.svg',
-        thumbnail: '/image/introPage/char_hb_intro.svg',
+        thumbnail: '/image/character/char_hb/thumb.svg',
         colors: {
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
@@ -71,6 +73,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'bang',
         name: '병철',
+        code: 'bc',
         aliases: [
           '병철',
           'Char_bang',
@@ -90,7 +93,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
         traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
         image: '/image/introPage/char_bc_intro.svg',
-        thumbnail: '/image/introPage/char_bc_intro.svg',
+        thumbnail: '/image/character/char_bc/thumb.svg',
         colors: {
           backgroundColor: '#5B707E',
           borderColor: '#9FEFD2',
@@ -106,6 +109,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'boksun',
         name: '복순',
+        code: 'bs',
         aliases: [
           '복순',
           'char_boksoon',
@@ -134,6 +138,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'jinsil',
         name: '진실이',
+        code: 'js',
         aliases: [
           '진실',
           'char_js',
@@ -166,8 +171,9 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
     nameVariants: ['소재욱&문예원'],
     characters: [
       {
-        id: 'sojaeok',
+        id: 'sojaewook',
         name: '재욱',
+        code: 'jw',
         aliases: [
           '재욱',
           'char_zewook',
@@ -198,6 +204,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'munyewon',
         name: '예원',
+        code: 'yw',
         aliases: [
           '예원',
           'char_yewon',
@@ -233,6 +240,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'bangmiri',
         name: '미리',
+        code: 'mr',
         aliases: [
           '미리',
           'char_miri',
@@ -260,6 +268,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'ryujaeho',
         name: '재호',
+        code: 'jh',
         aliases: [
           '재호',
           'char_jeaho',

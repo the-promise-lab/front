@@ -173,6 +173,63 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
       const store = useGameFlowStore.getState();
       store.reset();
     },
+
+    // 캐릭터 스탯 업데이트
+    updateCharacterStats: effects => {
+      set(state => {
+        if (!state.gameSession?.playingCharacterSet) {
+          console.warn(
+            '[useGameFlowStore] playingCharacterSet이 없습니다. 스탯 업데이트를 건너뜁니다.'
+          );
+          return state;
+        }
+
+        const updatedCharacters =
+          state.gameSession.playingCharacterSet.playingCharacters.map(char => {
+            const relevantEffects = effects.filter(
+              e => e.characterCode === char.characterCode
+            );
+
+            if (relevantEffects.length === 0) return char;
+
+            let newHp = char.currentHp;
+            let newMental = char.currentMental;
+
+            relevantEffects.forEach(effect => {
+              if (effect.effectType === 'health') {
+                newHp = effect.newValue ?? (newHp ?? 0) + (effect.change ?? 0);
+              } else if (effect.effectType === 'mental') {
+                newMental =
+                  effect.newValue ?? (newMental ?? 0) + (effect.change ?? 0);
+              }
+            });
+
+            console.log('[useGameFlowStore] 캐릭터 스탯 업데이트:', {
+              characterCode: char.characterCode,
+              beforeHp: char.currentHp,
+              afterHp: newHp,
+              beforeMental: char.currentMental,
+              afterMental: newMental,
+            });
+
+            return {
+              ...char,
+              currentHp: newHp,
+              currentMental: newMental,
+            };
+          });
+
+        return {
+          gameSession: {
+            ...state.gameSession,
+            playingCharacterSet: {
+              ...state.gameSession.playingCharacterSet,
+              playingCharacters: updatedCharacters,
+            },
+          },
+        };
+      });
+    },
   })
 );
 

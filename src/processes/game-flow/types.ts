@@ -71,6 +71,14 @@ export interface GameFlowActions {
   startScenarioFlow: () => void;
   continueGame: () => void;
   resetGame: () => void;
+  updateCharacterStats: (
+    effects: Array<{
+      characterCode: string | null;
+      effectType: string;
+      change: number | null;
+      newValue: number | null;
+    }>
+  ) => void;
 }
 
 // 게임 단계 순서 정의

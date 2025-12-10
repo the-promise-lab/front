@@ -9,7 +9,11 @@ import {
   useLoadCurrentAct,
   useSubmitChoiceAndLoadNextAct,
 } from '../model/useScenarioApi';
-import type { ScenarioChoiceOption, SubmitChoiceParams } from '../model/types';
+import type {
+  ScenarioChoiceOption,
+  SubmitChoiceParams,
+  ScenarioEffect,
+} from '../model/types';
 import SimpleEventScreen from './SimpleEventScreen';
 import StoryChoiceScreen from './StoryChoiceScreen';
 import ItemChoiceScreen from './ItemChoiceScreen';
@@ -24,6 +28,7 @@ interface ScenarioControllerProps {
   onGameEnd?: () => void;
   onGameOver?: () => void;
   onSuddenDeath?: () => void;
+  onStatChange?: (effects: ScenarioEffect[]) => void;
 }
 
 /**
@@ -34,6 +39,7 @@ export function ScenarioController({
   onGameEnd,
   onGameOver,
   onSuddenDeath,
+  onStatChange,
 }: ScenarioControllerProps) {
   const {
     currentActBundle,
@@ -121,6 +127,11 @@ export function ScenarioController({
 
   // 이벤트 완료 핸들러 (Simple, Status, System 타입용)
   const handleEventComplete = useCallback(() => {
+    // Status 이벤트인 경우 스탯 업데이트
+    if (currentEvent?.type === 'Status' && currentEvent.effects) {
+      onStatChange?.(currentEvent.effects);
+    }
+
     const hasMore = nextEvent();
 
     if (!hasMore) {
@@ -167,6 +178,7 @@ export function ScenarioController({
       }
     }
   }, [
+    currentEvent,
     nextEvent,
     pendingOutcomeResultType,
     status,
@@ -175,6 +187,7 @@ export function ScenarioController({
     setLoading,
     submitChoice,
     onGameOver,
+    onStatChange,
   ]);
 
   // 선택지 선택 핸들러 (StoryChoice, ItemChoice 타입용)

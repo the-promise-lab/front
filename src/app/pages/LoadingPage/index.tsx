@@ -15,10 +15,8 @@ const ASSETS_TO_PRELOAD = [
   'shelf-food.png',
   'byungcheol.png',
   'ham.png',
-  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/angry.png',
-  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/default.png',
-  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/happy.png',
-  'https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/shocked.png',
+  'image/character/char_hb/thumb.svg',
+  'image/character/char_bc/thumb.svg',
 ];
 
 export default function LoadingPage() {
