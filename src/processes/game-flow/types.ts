@@ -75,6 +75,7 @@ export interface GameFlowActions {
   syncPlayingCharactersFromServer: (
     playingCharacters: PlayingCharacterStatusDto[]
   ) => void;
+  deleteUsedItemFromInventory: (itemId: number) => void;
 }
 
 // 게임 단계 순서 정의

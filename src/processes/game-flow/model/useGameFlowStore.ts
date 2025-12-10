@@ -195,14 +195,6 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
             );
 
             if (serverChar) {
-              console.log('[useGameFlowStore] 캐릭터 스탯 동기화:', {
-                characterCode: char.characterCode,
-                beforeHp: char.currentHp,
-                afterHp: serverChar.currentHp,
-                beforeMental: char.currentMental,
-                afterMental: serverChar.currentMental,
-              });
-
               return {
                 ...char,
                 currentHp: serverChar.currentHp,
@@ -218,6 +210,26 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
             playingCharacterSet: {
               ...state.gameSession.playingCharacterSet,
               playingCharacters: updatedCharacters,
+            },
+          },
+        };
+      });
+    },
+
+    deleteUsedItemFromInventory: (itemId: number) => {
+      set(state => {
+        if (!state.gameSession?.inventory) {
+          return state;
+        }
+        const updatedItems = state.gameSession.inventory.items.filter(
+          item => item.item.id !== itemId
+        );
+        return {
+          gameSession: {
+            ...state.gameSession,
+            inventory: {
+              ...state.gameSession.inventory,
+              items: updatedItems,
             },
           },
         };

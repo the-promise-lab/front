@@ -31,6 +31,7 @@ interface ScenarioControllerProps {
   onGameOver?: () => void;
   onSuddenDeath?: () => void;
   onActComplete?: (bundle: ScenarioActBundle) => void;
+  onItemUsed?: (itemId: number) => void;
 }
 
 /**
@@ -42,6 +43,7 @@ export function ScenarioController({
   onGameOver,
   onSuddenDeath,
   onActComplete,
+  onItemUsed,
 }: ScenarioControllerProps) {
   const {
     currentActBundle,
@@ -89,6 +91,7 @@ export function ScenarioController({
   const { mutate: submitChoice } = useSubmitChoiceAndLoadNextAct({
     onSuccess: bundle => {
       onActComplete?.(bundle);
+      onItemUsed?.(pendingChoice?.itemId ?? 0);
       loadActBundle(bundle);
       clearChoice();
       setLoading(false);

@@ -45,9 +45,13 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
   const playingCharacters = useGameFlowStore(playingCharactersSelector) || [];
   const inventory = useGameFlowStore(inventorySelector);
   const selectedBag = useGameFlowStore(selectedBagSelector);
-  const syncPlayingCharactersFromServer = useGameFlowStore(
-    useShallow(state => state.syncPlayingCharactersFromServer)
-  );
+  const { syncPlayingCharactersFromServer, deleteUsedItemFromInventory } =
+    useGameFlowStore(
+      useShallow(state => ({
+        syncPlayingCharactersFromServer: state.syncPlayingCharactersFromServer,
+        deleteUsedItemFromInventory: state.deleteUsedItemFromInventory,
+      }))
+    );
 
   const currentEvent = useScenarioStore(selectCurrentEvent);
   const skipDialogueEvents = useScenarioStore(
@@ -85,8 +89,6 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
       image: item.item.image ?? '',
       state: 'default' as const,
     })) ?? undefined;
-
-  console.log(inventory);
 
   // PlaceScreen 단계
   if (introPhase === 'place') {
@@ -166,6 +168,9 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
             if (bundle.playingCharacters?.length > 0) {
               syncPlayingCharactersFromServer(bundle.playingCharacters);
             }
+          }}
+          onItemUsed={itemId => {
+            deleteUsedItemFromInventory(itemId);
           }}
         />
       </div>
