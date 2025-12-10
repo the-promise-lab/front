@@ -162,14 +162,14 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
   },
   {
     groupId: 3,
-    title: '소재옥&문예원',
-    nameVariants: ['소재옥&문예원'],
+    title: '소재욱&문예원',
+    nameVariants: ['소재욱&문예원'],
     characters: [
       {
         id: 'sojaeok',
-        name: '재옥',
+        name: '재욱',
         aliases: [
-          '재옥',
+          '재욱',
           'char_zewook',
           'Char_zewook',
           'char_jo',

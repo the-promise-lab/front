@@ -5,6 +5,7 @@ import { cn } from '@shared/lib/utils';
 import { AuthService } from '@api';
 import { useAuthStore } from '@shared/auth/model/useAuthStore';
 import { useGameFlowStore } from '@processes/game-flow';
+import { usePreloadAssets, useAssetStore } from '@shared/preload-assets';
 import { isAxiosError } from 'axios';
 import { useShallow } from 'zustand/react/shallow';
 import Typography from '@shared/ui/Typography';
@@ -20,10 +21,14 @@ export default function LoginPage() {
   const [hasShownEarlyModal, setHasShownEarlyModal] = useState(false);
   const introVideoRef = useRef<HTMLVideoElement | null>(null);
   const splashVideoRef = useRef<HTMLVideoElement | null>(null);
+  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const { login } = useAuthStore(useShallow(state => ({ login: state.login })));
   const { goto } = useGameFlowStore(
     useShallow(state => ({ goto: state.goto }))
   );
+
+  // 스플래시 영상 사전 로드
+  usePreloadAssets(['/video/splash_main.mp4']);
 
   useSetBackground({
     color: '#000',
@@ -158,7 +163,11 @@ export default function LoginPage() {
             'absolute top-1/2 left-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 object-cover transition-opacity duration-700',
             phase === 'splash' ? 'opacity-100' : 'opacity-0'
           )}
-          src='/video/splash_login.mp4'
+          src={
+            getObjectUrl('/video/splash_login.mp4') ??
+            getObjectUrl('/video/splash_main.mp4') ??
+            '/video/splash_login.mp4'
+          }
           autoPlay={phase === 'splash'}
           loop
           preload='auto'
