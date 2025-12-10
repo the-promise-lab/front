@@ -5,6 +5,7 @@ export interface CharacterStat {
 
 export interface CharacterDetail {
   id: string;
+  code: string;
   name: string;
   aliases?: string[];
   age?: string;
@@ -38,6 +39,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'hem',
         name: '형빈',
+        code: 'hb',
         aliases: [
           '헴',
           'Char_hem',
@@ -71,6 +73,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'bang',
         name: '병철',
+        code: 'bc',
         aliases: [
           '병철',
           'Char_bang',
@@ -106,6 +109,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'boksun',
         name: '복순',
+        code: 'bs',
         aliases: [
           '복순',
           'char_boksoon',
@@ -134,6 +138,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'jinsil',
         name: '진실이',
+        code: 'js',
         aliases: [
           '진실',
           'char_js',
@@ -166,8 +171,9 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
     nameVariants: ['소재욱&문예원'],
     characters: [
       {
-        id: 'sojaeok',
+        id: 'sojaewook',
         name: '재욱',
+        code: 'jw',
         aliases: [
           '재욱',
           'char_zewook',
@@ -198,6 +204,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'munyewon',
         name: '예원',
+        code: 'yw',
         aliases: [
           '예원',
           'char_yewon',
@@ -233,6 +240,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'bangmiri',
         name: '미리',
+        code: 'mr',
         aliases: [
           '미리',
           'char_miri',
@@ -260,6 +268,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
       {
         id: 'ryujaeho',
         name: '재호',
+        code: 'jh',
         aliases: [
           '재호',
           'char_jeaho',
