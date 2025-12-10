@@ -1,4 +1,4 @@
-import { useEffect, useMemo, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, type ReactNode } from 'react';
 import ShelfSelectionCanvas from './ShelfSelectionCanvas';
 import { useShelfSelectionStore } from '../../model/useShelfSelectionStore';
 import { useShelfData } from '../../model/useShelfData';
@@ -68,14 +68,14 @@ export default function ShelfSelection({
     },
   });
 
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     const payload = adaptShelfItemsToInventoryPayload(
       selectedShelfItems,
       bag.id
     );
 
     submitInventory(payload);
-  };
+  }, [selectedShelfItems, bag.id, submitInventory]);
 
   useEffect(() => {
     if (shelves.length > 0) {
@@ -134,7 +134,7 @@ export default function ShelfSelection({
           onNextShelfClick={moveToNextShelf}
         />
 
-        <div className='pointer-events-none fixed left-1/2 z-10 aspect-[16/9] h-[100dvh] w-auto -translate-x-1/2 touch-pan-y overflow-x-visible'>
+        <div className='pointer-events-none fixed left-1/2 z-10 aspect-video h-dvh w-auto -translate-x-1/2 touch-pan-y overflow-x-visible'>
           {/* 뒤로가기 버튼 */}
           <div className='pointer-events-auto absolute top-4 left-4 z-10'>
             <button
