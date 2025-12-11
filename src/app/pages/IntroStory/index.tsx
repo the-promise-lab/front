@@ -19,6 +19,8 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
+  // const playingCharacters =
+  //   useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
   const { data, isPending, isError, error } = useIntroEvents({ introMode });
 
   useIntroAmbienceSound(introMode);

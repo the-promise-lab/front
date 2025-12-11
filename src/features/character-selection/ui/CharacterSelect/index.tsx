@@ -373,11 +373,11 @@ export default function CharacterSelect({
           </p>
         )}
 
-        <Typography variant='body' className='h-40'>
+        <Typography variant='body-3-r' className='h-40'>
           {activeCharacter?.description}
         </Typography>
 
-        <Typography variant='body' className='h-20'>
+        <Typography variant='body-3-r' className='h-20'>
           {activeCharacter?.traits}
         </Typography>
 
@@ -399,7 +399,12 @@ export default function CharacterSelect({
                       playCharacterSetButtonClick();
                       setActiveCharacterId(character.id);
                     }}
-                    className={cn('h-37p relative w-37 overflow-hidden')}
+                    className={cn(
+                      'h-37p relative w-37 overflow-hidden border transition-all',
+                      isActive
+                        ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
+                        : 'border-white/15 hover:border-white/30'
+                    )}
                   >
                     {pairImage ? (
                       <img

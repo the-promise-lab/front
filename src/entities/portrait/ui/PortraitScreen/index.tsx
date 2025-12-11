@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type MouseEvent,
-} from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 import PortraitBanner from './PortraitBanner';
 import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
@@ -28,32 +22,19 @@ export default function PortraitScreen({
   const [portraitStarted, setPortraitStarted] = useState(false);
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
 
-  const renderCharacters = useMemo(
-    () => portraitCharacters.slice(0, 2),
-    [portraitCharacters]
-  );
-  const fallbackPositions = useMemo(
-    () =>
-      renderCharacters.length === 1
-        ? (['center'] as const)
-        : (['left', 'right'] as const),
-    [renderCharacters]
-  );
-  const characterImages = useMemo(
-    () =>
-      renderCharacters.map(character =>
-        getObjectUrl(character?.profileImage || '')
-      ),
-    [renderCharacters, getObjectUrl]
+  const renderCharacters = portraitCharacters.slice(0, 2);
+  const fallbackPositions =
+    renderCharacters.length === 1
+      ? (['center'] as const)
+      : (['left', 'right'] as const);
+  const characterImages = renderCharacters.map(character =>
+    getObjectUrl(character?.profileImage || '')
   );
 
-  const handleClick = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      e.stopPropagation();
-      onComplete?.();
-    },
-    [onComplete]
-  );
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onComplete?.();
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -68,16 +49,12 @@ export default function PortraitScreen({
 
   return (
     <div className='relative h-full w-full'>
-      {/* 각 캐릭터마다 개별 AnimatePresence */}
-      {renderCharacters.map((character, index) => {
-        const position = character.position ?? fallbackPositions[index];
-        const characterKey =
-          character?.id ?? `${position}-${character?.name ?? index}`;
-
-        return (
-          <AnimatePresence key={`presence-${position}`}>
+      <AnimatePresence>
+        {renderCharacters.map((character, index) => {
+          const position = character.position ?? fallbackPositions[index];
+          return (
             <PortraitCharacterImage
-              key={characterKey}
+              key={character?.id ?? index}
               src={
                 characterImages[index] ||
                 (position === 'right' ? '/ham.png' : '/byungcheol.png')
@@ -86,12 +63,8 @@ export default function PortraitScreen({
               dimmed={!isSpeaker(character?.name)}
               position={position}
             />
-          </AnimatePresence>
-        );
-      })}
-
-      {/* Banner는 별도 AnimatePresence */}
-      <AnimatePresence>
+          );
+        })}
         {portraitStarted && portrait.text && (
           <PortraitBanner
             onClick={handleClick}

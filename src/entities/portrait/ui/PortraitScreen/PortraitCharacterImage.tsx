@@ -13,29 +13,21 @@ export default function PortraitCharacterImage({
 }: PortraitCharacterImageProps) {
   return (
     <motion.img
+      layout
       initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        scale: dimmed ? 1 : 1.1,
-        filter: dimmed
-          ? 'brightness(0.5) grayscale(1)'
-          : 'brightness(1) grayscale(0)',
-      }}
+      animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{
-        duration: 0.35,
-        ease: 'easeOut',
-        scale: { duration: 0.5, ease: 'easeOut' },
-        filter: { duration: 0.5, ease: 'easeOut' },
-      }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
       className={cn(
         'absolute bottom-0 h-[80dvh] -translate-x-1/2',
+        'transition-all duration-500 ease-out',
         dimmed ? 'z-10' : 'z-20',
         position === 'left-end' && 'left-[25%]',
         position === 'left' && 'left-[37%]',
         position === 'center' && 'left-1/2',
         position === 'right' && 'left-[62%]',
-        position === 'right-end' && 'left-[75%]'
+        position === 'right-end' && 'left-[75%]',
+        dimmed ? 'scale-100 brightness-50 grayscale' : 'scale-110'
       )}
       {...props}
     />

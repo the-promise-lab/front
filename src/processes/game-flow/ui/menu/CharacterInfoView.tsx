@@ -153,45 +153,45 @@ export function CharacterInfoView() {
   const { playingCharacter, detail } = activeCharacterDetail;
   const activeCharacter = detail; // CharacterSelect와 변수명 통일
 
+  console.log(activeCharacter);
+
   return (
     <div className='flex h-full w-full text-white'>
+      {/* 좌측: 캐릭터 셋 선택 자리 (선택 UI는 기존 컴포넌트에서 처리) */}
+      {/* <aside className='flex h-full w-160 flex-col' /> */}
+
       {/* 중앙 캐릭터 이미지 */}
       <main className='relative flex flex-1 items-center justify-center'>
         {activeCharacter?.image ? (
           <img
             src={getObjectUrl(activeCharacter.image)}
             alt={activeCharacter.name}
-            className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+            className='w-140 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
           />
         ) : playingCharacter.fullImage ? (
           <img
             src={getObjectUrl(playingCharacter.fullImage)}
             alt={playingCharacter.name || 'Character'}
-            className='max-h-[540px] min-h-[400px] min-w-[200px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+            className='w-140 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
           />
         ) : (
-          <div className='flex h-[140px] w-[140px] items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
+          <div className='flex w-140 items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
             이미지 준비 중
           </div>
         )}
       </main>
 
       {/* 우측: 캐릭터 정보 (CharacterSelect 스타일 적용) */}
-      <aside className='scrollbar-hide flex h-full w-[360px] flex-col justify-center gap-4 overflow-y-auto px-40'>
+      <aside className='scrollbar-hide ml-10 flex h-full w-150 flex-col justify-center gap-4 overflow-y-auto pr-5'>
         <div className='flex flex-col gap-3'>
-          <span className='text-sm font-semibold text-white/40'>
-            {/* {pairDetail.title} */}
-          </span>
           {activeCharacter ? (
             <>
               <div className='flex items-baseline gap-3'>
-                <span className='text-[16px] font-extrabold tracking-tight'>
+                <Typography variant='h4-eb'>
                   | {activeCharacter.name}
-                </span>
+                </Typography>
                 {activeCharacter.age && (
-                  <span className='text-[12px] font-bold text-white/60'>
-                    {activeCharacter.age}
-                  </span>
+                  <Typography variant='body'>{activeCharacter.age}</Typography>
                 )}
               </div>
               {activeCharacter.id ? (
@@ -215,24 +215,25 @@ export function CharacterInfoView() {
         </div>
 
         {pairDetail.overview && (
-          <p className='text-sm leading-relaxed whitespace-pre-line'>
+          <Typography
+            variant='body'
+            className='text-sm leading-relaxed whitespace-pre-line'
+          >
             {pairDetail.overview}
-          </p>
+          </Typography>
         )}
 
-        <p className='h-[60px] text-[9px] leading-relaxed whitespace-pre-line'>
+        <Typography variant='body' className='h-40'>
           {activeCharacter?.description}
-        </p>
+        </Typography>
 
-        <p className='h-[40px] text-[9px] whitespace-pre-line'>
+        <Typography variant='body' className='h-20'>
           {activeCharacter?.traits}
-        </p>
+        </Typography>
 
         <div className='flex w-full items-start justify-between'>
           <div>
-            <div className='text-[10px] font-semibold uppercase'>
-              플레이어 페어
-            </div>
+            <Typography variant='caption'>플레이어 페어</Typography>
             <div className='mt-3 flex gap-3'>
               {pairDetail.characters.map(character => {
                 const isActive = character.id === activeCharacter?.id;
@@ -253,18 +254,13 @@ export function CharacterInfoView() {
                         setActiveCharacterId(character.id);
                       }
                     }}
-                    className={cn(
-                      'h-37p relative w-37 overflow-hidden border-0 bg-transparent p-0 focus:ring-0 focus:outline-none'
-                    )}
+                    className={cn('relative h-37 w-37')}
                   >
                     {pairImage ? (
                       <img
                         src={getObjectUrl(pairImage)}
                         alt={character.name}
-                        className={cn(
-                          'h-full w-full object-contain transition-transform duration-200 ease-out',
-                          isActive ? 'scale-[1.05]' : 'scale-100'
-                        )}
+                        className='h-full w-full object-cover'
                       />
                     ) : (
                       <div className='flex h-full w-full items-center justify-center bg-white/10 text-sm text-white/60'>
