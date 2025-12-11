@@ -153,8 +153,6 @@ export function CharacterInfoView() {
   const { playingCharacter, detail } = activeCharacterDetail;
   const activeCharacter = detail; // CharacterSelect와 변수명 통일
 
-  console.log(activeCharacter);
-
   return (
     <div className='flex h-full w-full text-white'>
       {/* 좌측: 캐릭터 셋 선택 자리 (선택 UI는 기존 컴포넌트에서 처리) */}

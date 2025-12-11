@@ -80,6 +80,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           'char_bang',
           'Char_bc',
           'char_bc',
+          'char_handsome',
           'bang',
           'BANG',
           '이병철',
