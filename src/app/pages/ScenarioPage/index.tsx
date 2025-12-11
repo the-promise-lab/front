@@ -24,6 +24,7 @@ import {
 import IntroStory from '../IntroStory';
 import BeforeResultScreen from '@features/scenario-play/ui/BeforeResultScreen';
 import type { SlotItem } from '@entities/inventory';
+import { useShallow } from 'zustand/react/shallow';
 
 type IntroPhase = 'place' | 'caution' | 'intro3' | 'scenario' | 'ending';
 
