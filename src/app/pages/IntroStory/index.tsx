@@ -7,12 +7,7 @@ import IntroSimpleScreen from '../../ui/IntroSimpleScreen';
 import { useSetBackground } from '@shared/background';
 import { useIntroEvents, type IntroEvent } from '@features/intro';
 import { SkipButton } from '@features/scenario-play';
-import {
-  Header,
-  PauseMenu,
-  playingCharacterSetSelector,
-  useGameFlowStore,
-} from '@processes/game-flow';
+import { Header, PauseMenu } from '@processes/game-flow';
 import { useIntroAmbienceSound } from '@features/intro/model/useIntroAmbienceSound';
 
 interface IntroStoryProps {
@@ -24,8 +19,8 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
-  const playingCharacters =
-    useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
+  // const playingCharacters =
+  //   useGameFlowStore(playingCharacterSetSelector)?.playingCharacters || [];
   const { data, isPending, isError, error } = useIntroEvents({ introMode });
 
   useIntroAmbienceSound(introMode);
@@ -89,8 +84,7 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
   return (
     <div className='relative flex h-full w-full flex-col'>
       <Header
-        hasCharacterProfiles
-        playingCharacters={playingCharacters}
+        hasCharacterProfiles={false}
         menuSlot={<PauseMenu buttonClassName='static' />}
         skipSlot={
           !isSkipped ? (

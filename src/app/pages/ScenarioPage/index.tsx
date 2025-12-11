@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAssetStore } from '@shared/preload-assets';
+import { BackgroundPortal } from '@shared/background-portal';
 import {
   SideInventory,
   useGameFlowStore,
@@ -8,7 +8,6 @@ import {
   selectedBagSelector,
   playingCharactersSelector,
 } from '@processes/game-flow';
-import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
 import PauseMenu from '@processes/game-flow/ui/menu/PauseMenu';
 import EdgeGradient from '@shared/ui/layout/EdgeGradient';
@@ -25,6 +24,7 @@ import {
 import IntroStory from '../IntroStory';
 import BeforeResultScreen from '@features/scenario-play/ui/BeforeResultScreen';
 import type { SlotItem } from '@entities/inventory';
+import { useShallow } from 'zustand/react/shallow';
 
 type IntroPhase = 'place' | 'caution' | 'intro3' | 'scenario' | 'ending';
 
@@ -38,8 +38,7 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
     isNewGame ? 'place' : 'scenario'
   );
 
-  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
-  const backgroundImage = getObjectUrl('shelter-bg.png');
+  const backgroundImage = '/image/backGround/bg_shelter.png';
 
   // 플레이 중인 캐릭터 정보 가져오기
   const playingCharacters = useGameFlowStore(playingCharactersSelector) || [];
@@ -103,17 +102,25 @@ export default function ScenarioPage({ isNewGame }: { isNewGame: boolean }) {
   // Caution 단계
   if (introPhase === 'caution') {
     return (
-      <div
-        className='relative h-full w-full cursor-pointer'
-        onClick={handleCautionClick}
-      >
-        <EdgeGradient />
-        <NoticeBanner withCaution>
-          <Typography variant='dialogue-2'>
-            <TypingText texts={CAUTION_TEXTS} smooth />
-          </Typography>
-        </NoticeBanner>
-      </div>
+      <>
+        <BackgroundPortal>
+          <div
+            className='absolute inset-0 cursor-pointer bg-black/40'
+            onClick={handleCautionClick}
+          />
+        </BackgroundPortal>
+        <div
+          className='relative h-full w-full cursor-pointer'
+          onClick={handleCautionClick}
+        >
+          <EdgeGradient />
+          <NoticeBanner withCaution>
+            <Typography variant='dialogue-2'>
+              <TypingText texts={CAUTION_TEXTS} smooth />
+            </Typography>
+          </NoticeBanner>
+        </div>
+      </>
     );
   }
 
