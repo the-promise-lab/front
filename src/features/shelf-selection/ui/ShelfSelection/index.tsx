@@ -124,8 +124,9 @@ export default function ShelfSelection({
     <BackgroundPortal>
       <div className='fixed inset-0 z-10 h-full w-full'>
         <ShelfSelectionCanvas
-          backgroundImage={'/long-shelf-example.png'} // TODO: 리소스 나오고 백엔드에 CDN URL 들어가면 변경
-          // backgroundImage={currentShelf.backgroundImage}
+          backgroundImage={
+            currentShelf.backgroundImage || '/long-shelf-example.png'
+          }
           items={currentShelf.shelfItems}
           onClickItem={onClickItem}
           previousShelfName={previousShelf?.name || ''}

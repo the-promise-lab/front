@@ -56,7 +56,8 @@ export default function ShelfSelectionCanvas({
   // 이미지 스케일 계산 (높이 100svh 기준, 원본 비율 유지)
   const calculateImageScale = useCallback(
     (imgWidth: number, imgHeight: number) => {
-      const { height: containerHeight } = calculateCanvasSize();
+      const { height: containerHeight, width: containerWidth } =
+        calculateCanvasSize();
 
       // 높이를 100dvh에 맞추고 원본 비율 유지
       const scaleRatio = containerHeight / imgHeight;
@@ -66,7 +67,7 @@ export default function ShelfSelectionCanvas({
       return {
         width: scaledWidth,
         height: scaledHeight,
-        offsetX: 0,
+        offsetX: Math.floor((containerWidth - scaledWidth) / 2),
       };
     },
     [calculateCanvasSize]
@@ -312,7 +313,7 @@ export default function ShelfSelectionCanvas({
         <GlowNavigationButton
           className='pointer-events-auto'
           hidden={
-            viewOffsetX !== imageScale.width - canvasSize.width ||
+            viewOffsetX !== Math.max(0, imageScale.width - canvasSize.width) ||
             imageScale.width === 0
           }
           onClick={onNextShelfClick}
