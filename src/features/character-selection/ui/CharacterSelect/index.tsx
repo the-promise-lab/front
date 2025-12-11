@@ -307,7 +307,7 @@ export default function CharacterSelect({
           <img
             src={activeCharacter.image}
             alt={activeCharacter.name}
-            className='h-237 w-140 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+            className='fixed bottom-0 h-[80dvh] w-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
           />
         ) : (
           <div className='flex h-237 w-140 items-center justify-center rounded-3xl border border-white/10 bg-white/5 text-white/40'>
@@ -335,7 +335,7 @@ export default function CharacterSelect({
       </main>
 
       {/* 우측: 캐릭터 정보 */}
-      <aside className='scrollbar-hide mr-[calc(50dvw-50dvh*16/9)] flex h-full w-210 flex-col justify-center gap-4 overflow-y-auto pr-5 pl-20'>
+      <aside className='scrollbar-hide mr-[calc(50dvw-50dvh*16/9)] flex h-full w-160 flex-col justify-center gap-4 overflow-y-auto pr-5 pl-20'>
         <div className='flex flex-col gap-3'>
           {activeCharacter ? (
             <>
@@ -400,10 +400,8 @@ export default function CharacterSelect({
                       setActiveCharacterId(character.id);
                     }}
                     className={cn(
-                      'h-37p relative w-37 overflow-hidden border transition-all',
-                      isActive
-                        ? 'border-white shadow-[0_0_22px_rgba(255,255,255,0.35)]'
-                        : 'border-white/15 hover:border-white/30'
+                      'relative h-37 w-37 overflow-hidden transition-all',
+                      isActive ? 'shadow-[0_0_22px_rgba(255,255,255,0.35)]' : ''
                     )}
                   >
                     {pairImage ? (
