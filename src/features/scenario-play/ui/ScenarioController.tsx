@@ -235,7 +235,7 @@ export function ScenarioController({
     const day = currentActBundle?.day;
     return (
       <DayScreen
-        dayNumber={day?.number ?? 0}
+        dayNumber={(day?.number ?? 0) + 1}
         onComplete={() => {
           setLoading(true);
           loadCurrentAct();
