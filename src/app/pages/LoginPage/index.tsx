@@ -107,6 +107,14 @@ export default function LoginPage() {
     setShowLogin(true);
   };
 
+  // 모바일에서 자동재생이 막힐 때 수동으로 play 시도
+  useEffect(() => {
+    const intro = introVideoRef.current;
+    if (intro) {
+      intro.play().catch(() => {});
+    }
+  }, []);
+
   useEffect(() => {
     if (phase === 'splash') {
       const video = splashVideoRef.current;
@@ -153,6 +161,7 @@ export default function LoginPage() {
             autoPlay
             muted
             playsInline
+            preload='auto'
             onEnded={handleIntroEnded}
           />
         )}
@@ -178,7 +187,7 @@ export default function LoginPage() {
         />
         <div
           className={cn(
-            'absolute inset-0',
+            'pointer-events-none absolute inset-0',
             (showLogin || isProcessing) && 'bg-black/35'
           )}
         />

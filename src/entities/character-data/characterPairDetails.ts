@@ -57,12 +57,12 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         age: '35세',
         stats: [
           { label: '체력', value: 'High' },
-          { label: '정신력', value: 'Low' },
+          { label: '정신력', value: 'Normal' },
         ],
         description:
-          '득근에 살고 근손실에 죽는 헬스 미친 자. 가오를 중시하고 매일 데리고 다니는 병철에게 헬스를 부리며 모든 것을 가르치려고 함.',
+          '득근에 살고 근손실에 죽는, 헬스에 미친 부산 남자. 가오에 진심이고 보호 본능이 강하지만, 감정 표현이 서툴러 훈계하는 것처럼 들리기도 한다.',
         traits:
-          '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
+          '※특징: 보기와 달리 허리디스크 진단을 받아 조금만 무리하면 허리가 아프다.',
         image: '/image/introPage/char_hb_intro.png',
         thumbnail: '/image/character/char_hb/thumb.png',
         colors: {
@@ -85,14 +85,14 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           'BANG',
           '이병철',
         ],
-        age: '29세',
+        age: '27세',
         stats: [
           { label: '체력', value: 'Low' },
           { label: '정신력', value: 'Low' },
         ],
         description:
-          '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
-        traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
+          '몸과 정신을 단련하고자 헬스장에 등록했다가 형빈을 만나 운동을 배우고 있다. 형빈을 완전한 형님으로 모시며 충성한다. 정이 많고 겁도 많다.',
+        traits: '※특징: 고도 근시가 심해 안경이 없으면 아무것도 안 보인다.',
         image: '/image/introPage/char_bc_intro.png',
         thumbnail: '/image/character/char_bc/thumb.png',
         colors: {
@@ -258,7 +258,8 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         ],
         description:
           '대기업 마트 본사에 최연소 팀장으로 승진한 일잘러. MBTI J 끝판왕으로 어디서나 계획하고, 기획하고, 정리하려는 강박을 가지고 있다.',
-        traits: '※특징: 자기 관리 강박증으로 방문 횟수가 많은 편이다.',
+        traits:
+          '※특징: 일이 계획대로 되지 않을 때마다 스트레스로 인한 위염과 편두통으로 고통 받는다.',
         image: '/image/introPage/char_mr_intro.png',
         thumbnail: '/image/introPage/char_mr_intro.png',
         colors: {
@@ -376,4 +377,12 @@ export const CHARACTER_SELECT_ASSETS: string[] = [
   '/image/charSelect/char_yw_stat.svg',
   '/image/charSelect/char_mr_stat.svg',
   '/image/charSelect/char_jh_stat.svg',
+  '/image/introPage/char_jw_intro.png',
+  '/image/introPage/char_yw_intro.png',
+  '/image/introPage/char_mr_intro.png',
+  '/image/introPage/char_jh_intro.png',
+  '/image/introPage/char_bs_intro.png',
+  '/image/introPage/char_js_intro.png',
+  '/image/introPage/char_bc_intro.png',
+  '/image/introPage/char_hb_intro.png',
 ];
