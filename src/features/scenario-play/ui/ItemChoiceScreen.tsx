@@ -51,7 +51,7 @@ export default function ItemChoiceScreen({
   };
 
   const handleItemProceed = (option: ScenarioChoiceOption) => {
-    onSelect?.(option, option.choiceOptionId);
+    onSelect?.(option, option.itemId ?? undefined);
   };
 
   const handleFallbackPress = () => {

@@ -5,6 +5,9 @@ import { cn } from '@shared/lib/utils';
 import Counter from '@shared/ui/Counter';
 import Typography from '@shared/ui/Typography';
 import type { ScenarioEvent, ScenarioEffect } from '../model/types';
+import { getCharacterDetailByCode } from '@entities/character-data';
+import { useAssetStore } from '@shared/preload-assets';
+import { useShallow } from 'zustand/react/shallow';
 
 interface StatusScreenProps {
   event: ScenarioEvent;
@@ -65,11 +68,21 @@ function CharacterEffectRow({
 }: CharacterEffectRowProps) {
   const hpEffect = effects.find(e => e.effectType === 'health');
   const mentalEffect = effects.find(e => e.effectType === 'mental');
-
+  const characterDetail = getCharacterDetailByCode(characterCode);
+  const characterImage = characterDetail?.thumbnail;
+  const getObjectUrl = useAssetStore(useShallow(state => state.getObjectUrl));
   return (
     <div className='flex items-center gap-14'>
-      <div className='flex h-35 w-35 items-center justify-center bg-white/10 text-white'>
-        <span className='text-sm font-semibold'>{characterCode}</span>
+      <div className='flex h-35 w-35 items-center justify-center rounded-full bg-white/80 text-white'>
+        {characterImage ? (
+          <img
+            src={getObjectUrl(characterImage)}
+            alt={characterDetail?.name}
+            className='h-full w-full rounded-full object-cover'
+          />
+        ) : (
+          <span className='text-sm font-semibold'>{characterCode}</span>
+        )}
       </div>
       <div className='flex items-center gap-14'>
         {hpEffect && (

@@ -1,3 +1,4 @@
+import type React from 'react';
 import TypingText from '@shared/ui/TypingText';
 import NoticeBanner from '@shared/ui/NoticeBanner';
 import Typography from '@shared/ui/Typography';
@@ -10,17 +11,29 @@ interface SystemScreenProps {
 
 export default function SystemScreen({ event, onComplete }: SystemScreenProps) {
   const script = event.script ?? '';
-  // script를 줄바꿈으로 분리하여 TypingText에 전달
   const texts = script.split('\n').filter(text => text.trim() !== '');
 
-  const handleClick = () => {
+  const handleNext = () => {
     onComplete?.();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onComplete?.();
+    }
+  };
+
   return (
-    <div className='h-full w-full cursor-pointer' onClick={handleClick}>
-      <NoticeBanner withCaution>
-        <Typography variant='dialogue-2'>
+    <div
+      className='flex h-full w-full items-center justify-center px-6'
+      role='button'
+      tabIndex={0}
+      onClick={handleNext}
+      onKeyDown={handleKeyDown}
+    >
+      <NoticeBanner withCaution={false} className='max-w-[1020px]'>
+        <Typography variant='dialogue-2' className='text-white'>
           <TypingText texts={texts.length > 0 ? texts : [script]} smooth />
         </Typography>
       </NoticeBanner>

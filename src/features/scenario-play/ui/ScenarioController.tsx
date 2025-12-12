@@ -4,6 +4,7 @@ import {
   selectCurrentEvent,
   selectStatus,
   selectPendingOutcomeResultType,
+  selectPendingOutcomeEffects,
 } from '../model/useScenarioStore';
 import {
   useLoadCurrentAct,
@@ -12,8 +13,9 @@ import {
 import type {
   ScenarioChoiceOption,
   SubmitChoiceParams,
-  ScenarioEffect,
+  ScenarioActBundle,
 } from '../model/types';
+import { adaptOutcomeEffectsToUpdates } from '../model/adapters';
 import SimpleEventScreen from './SimpleEventScreen';
 import StoryChoiceScreen from './StoryChoiceScreen';
 import ItemChoiceScreen from './ItemChoiceScreen';
@@ -28,7 +30,8 @@ interface ScenarioControllerProps {
   onGameEnd?: () => void;
   onGameOver?: () => void;
   onSuddenDeath?: () => void;
-  onStatChange?: (effects: ScenarioEffect[]) => void;
+  onActComplete?: (bundle: ScenarioActBundle) => void;
+  onItemUsed?: (itemId: number) => void;
 }
 
 /**
@@ -39,7 +42,8 @@ export function ScenarioController({
   onGameEnd,
   onGameOver,
   onSuddenDeath,
-  onStatChange,
+  onActComplete,
+  onItemUsed,
 }: ScenarioControllerProps) {
   const {
     currentActBundle,
@@ -71,6 +75,7 @@ export function ScenarioController({
     selectPendingOutcomeResultType
   );
   const pendingChoice = useScenarioStore(state => state.pendingChoice);
+  const pendingOutcomeEffects = useScenarioStore(selectPendingOutcomeEffects);
 
   const { mutate: loadCurrentAct } = useLoadCurrentAct({
     onSuccess: bundle => {
@@ -85,6 +90,8 @@ export function ScenarioController({
 
   const { mutate: submitChoice } = useSubmitChoiceAndLoadNextAct({
     onSuccess: bundle => {
+      onActComplete?.(bundle);
+      onItemUsed?.(pendingChoice?.itemId ?? 0);
       loadActBundle(bundle);
       clearChoice();
       setLoading(false);
@@ -127,11 +134,6 @@ export function ScenarioController({
 
   // 이벤트 완료 핸들러 (Simple, Status, System 타입용)
   const handleEventComplete = useCallback(() => {
-    // Status 이벤트인 경우 스탯 업데이트
-    if (currentEvent?.type === 'Status' && currentEvent.effects) {
-      onStatChange?.(currentEvent.effects);
-    }
-
     const hasMore = nextEvent();
 
     if (!hasMore) {
@@ -141,13 +143,22 @@ export function ScenarioController({
         switch (pendingOutcomeResultType) {
           case 'ACT_END':
             // 다음 Act 요청
-            if (currentActBundle?.act) {
+            if (currentActBundle?.act && pendingChoice) {
+              // Adapter를 사용하여 updates 생성
+              const updates = pendingOutcomeEffects
+                ? adaptOutcomeEffectsToUpdates({
+                    ...pendingOutcomeEffects,
+                    usedItemId: pendingChoice.itemId, // ItemChoice의 경우
+                  })
+                : undefined;
+
               const params: SubmitChoiceParams = {
                 lastActId: currentActBundle.act.id,
                 choice: {
-                  optionId: pendingChoice?.optionId ?? 0,
-                  itemId: pendingChoice?.itemId,
+                  optionId: pendingChoice.optionId,
+                  itemId: pendingChoice.itemId,
                 },
+                updates,
               };
               setLoading(true);
               submitChoice(params);
@@ -161,13 +172,22 @@ export function ScenarioController({
             break;
           default:
             // 기본적으로 다음 Act 요청
-            if (currentActBundle?.act) {
+            if (currentActBundle?.act && pendingChoice) {
+              // Adapter를 사용하여 updates 생성
+              const updates = pendingOutcomeEffects
+                ? adaptOutcomeEffectsToUpdates({
+                    ...pendingOutcomeEffects,
+                    usedItemId: pendingChoice.itemId, // ItemChoice의 경우
+                  })
+                : undefined;
+
               const params: SubmitChoiceParams = {
                 lastActId: currentActBundle.act.id,
                 choice: {
-                  optionId: pendingChoice?.optionId ?? 0,
-                  itemId: pendingChoice?.itemId,
+                  optionId: pendingChoice.optionId,
+                  itemId: pendingChoice.itemId,
                 },
+                updates,
               };
               setLoading(true);
               submitChoice(params);
@@ -178,28 +198,27 @@ export function ScenarioController({
       }
     }
   }, [
-    currentEvent,
     nextEvent,
     pendingOutcomeResultType,
     status,
     currentActBundle,
     pendingChoice,
+    pendingOutcomeEffects,
     setLoading,
     submitChoice,
     onGameOver,
-    onStatChange,
   ]);
 
   // 선택지 선택 핸들러 (StoryChoice, ItemChoice 타입용)
   const handleChoiceSelect = useCallback(
     (option: ScenarioChoiceOption, itemId?: number) => {
-      selectChoice(option.choiceOptionId, itemId);
-
       // 선택된 옵션의 outcome 찾기
       const outcomeKey = option.choiceOptionId.toString();
       const outcome = currentEvent?.choice?.outcomes?.[outcomeKey];
 
       if (outcome) {
+        // outcome의 events를 selectChoice에 전달하여 effects 수집
+        selectChoice(option.choiceOptionId, itemId, outcome.events);
         // outcome의 events를 현재 events에 추가하고 다음 이벤트로 이동
         appendOutcomeEvents(outcome.events, outcome.resultType);
         nextEvent();
@@ -216,7 +235,7 @@ export function ScenarioController({
     const day = currentActBundle?.day;
     return (
       <DayScreen
-        dayNumber={day?.number ?? 0}
+        dayNumber={(day?.number ?? 0) + 1}
         onComplete={() => {
           setLoading(true);
           loadCurrentAct();

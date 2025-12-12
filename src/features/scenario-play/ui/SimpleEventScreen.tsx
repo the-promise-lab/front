@@ -6,6 +6,7 @@ import type { ScenarioEvent } from '../model/types';
 // 시나리오 전용 이름 매핑(선택 화면에 노출되지 않는 등장인물용)
 const SCENARIO_NAME_FALLBACKS: Record<string, string> = {
   char_sua: '수아',
+  char_handsome: '병철',
 };
 
 interface SimpleEventScreenProps {

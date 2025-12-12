@@ -721,16 +721,6 @@ export function IconDiamondPressed({ className }: IconProps) {
       xmlns='http://www.w3.org/2000/svg'
       className={className}
     >
-      <foreignObject x='-4' y='-4' width='50' height='50'>
-        <div
-          style={{
-            backdropFilter: 'blur(2px)',
-            clipPath: 'url(#bgblur_0_504_2838_clip_path)',
-            height: '100%',
-            width: '100%',
-          }}
-        ></div>
-      </foreignObject>
       <g data-figma-bg-blur-radius='4'>
         <path
           d='M40.5856 20.9998L21 40.5854L1.41439 20.9998L21 1.41421L40.5856 20.9998Z'
@@ -744,16 +734,7 @@ export function IconDiamondPressed({ className }: IconProps) {
           strokeWidth='2'
         />
       </g>
-      <foreignObject x='4.13068' y='4.00018' width='33.7386' height='34'>
-        <div
-          style={{
-            backdropFilter: 'blur(2px)',
-            clipPath: 'url(#bgblur_1_504_2838_clip_path)',
-            height: '100%',
-            width: '100%',
-          }}
-        ></div>
-      </foreignObject>
+
       <g data-figma-bg-blur-radius='4'>
         <rect
           y='0.355335'
