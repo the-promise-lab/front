@@ -7,4 +7,5 @@ export {
   type CharacterPairDetail,
   type CharacterDetail,
   type CharacterStat,
+  CHARACTER_SELECT_ASSETS,
 } from './characterPairDetails';

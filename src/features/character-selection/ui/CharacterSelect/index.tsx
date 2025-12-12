@@ -7,7 +7,6 @@ import type { PlayingCharacter } from '@entities/game-session';
 import { useSetBackground } from '@shared/background';
 import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
-import { usePreloadAssets } from '@shared/preload-assets';
 import {
   type CharacterPairDetail,
   createCharacterSetsFromDetails,
@@ -31,63 +30,28 @@ const CHARACTER_TAB_IMAGES: Record<
   { defaultSrc: string; selectedSrc: string; alt: string }
 > = {
   '김형빈과 이병철': {
-    defaultSrc: '/image/charSelect/char_select_hb_bc.svg',
-    selectedSrc: '/image/charSelect/char_selected_hb_bc.svg',
+    defaultSrc: '/image/charSelect/char_select_hb_bc.png',
+    selectedSrc: '/image/charSelect/char_selected_hb_bc.png',
     alt: '김형빈과 이병철 선택 탭',
   },
   '정복순&진실이': {
-    defaultSrc: '/image/charSelect/char_select_bs_js.svg',
-    selectedSrc: '/image/charSelect/char_selected_bs_js.svg',
+    defaultSrc: '/image/charSelect/char_select_bs_js.png',
+    selectedSrc: '/image/charSelect/char_selected_bs_js.png',
     alt: '정복순과 진실이 선택 탭',
   },
   '소재욱&문예원': {
-    defaultSrc: '/image/charSelect/char_select_jo_yw.svg',
-    selectedSrc: '/image/charSelect/char_selected_jo_yw.svg',
+    defaultSrc: '/image/charSelect/char_select_jw_yw.png',
+    selectedSrc: '/image/charSelect/char_selected_jw_yw.png',
     alt: '소재욱과 문예원 선택 탭',
   },
   '방미리&류재호': {
-    defaultSrc: '/image/charSelect/char_select_mr_jh.svg',
-    selectedSrc: '/image/charSelect/char_selected_mr_jh.svg',
+    defaultSrc: '/image/charSelect/char_select_mr_jh.png',
+    selectedSrc: '/image/charSelect/char_selected_mr_jh.png',
     alt: '방미리와 류재호 선택 탭',
   },
 };
 
 const LOCAL_CHARACTER_SETS: CharacterSet[] = createCharacterSetsFromDetails();
-
-const CHARACTER_SELECT_ASSETS: string[] = [
-  '/image/charSelect/char_select_hb_bc.svg',
-  '/image/charSelect/char_selected_hb_bc.svg',
-  '/image/charSelect/char_select_bs_js.svg',
-  '/image/charSelect/char_selected_bs_js.svg',
-  '/image/charSelect/char_select_jo_yw.svg',
-  '/image/charSelect/char_selected_jo_yw.svg',
-  '/image/charSelect/char_select_mr_jh.svg',
-  '/image/charSelect/char_selected_mr_jh.svg',
-  '/image/charSelect/pair_default_hb.svg',
-  '/image/charSelect/pair_active_hb.svg',
-  '/image/charSelect/pair_default_bc.svg',
-  '/image/charSelect/pair_active_bc.svg',
-  '/image/charSelect/pair_default_bs.svg',
-  '/image/charSelect/pair_active_bs.svg',
-  '/image/charSelect/pair_default_js.svg',
-  '/image/charSelect/pair_active_js.svg',
-  '/image/charSelect/pair_default_jo.svg',
-  '/image/charSelect/pair_active_jo.svg',
-  '/image/charSelect/pair_default_yw.svg',
-  '/image/charSelect/pair_active_yw.svg',
-  '/image/charSelect/pair_default_mr.svg',
-  '/image/charSelect/pair_active_mr.svg',
-  '/image/charSelect/pair_default_jh.svg',
-  '/image/charSelect/pair_active_jh.svg',
-  '/image/charSelect/char_hb_stat.svg',
-  '/image/charSelect/char_bc_stat.svg',
-  '/image/charSelect/char_bs_stat.svg',
-  '/image/charSelect/char_js_stat.svg',
-  '/image/charSelect/char_jo_stat.svg',
-  '/image/charSelect/char_yw_stat.svg',
-  '/image/charSelect/char_mr_stat.svg',
-  '/image/charSelect/char_jh_stat.svg',
-];
 
 /**
  * 캐릭터 ID를 스탯 이미지 경로로 변환
@@ -103,7 +67,7 @@ function getCharacterStatImagePath(
     bang: 'bc',
     boksun: 'bs',
     jinsil: 'js',
-    sojaewook: 'jo',
+    sojaewook: 'jw',
     munyewon: 'yw',
     bangmiri: 'mr',
     ryujaeho: 'jh',
@@ -130,7 +94,7 @@ function getCharacterPairImagePath(
     bang: 'bc',
     boksun: 'bs',
     jinsil: 'js',
-    sojaewook: 'jo',
+    sojaewook: 'jw',
     munyewon: 'yw',
     bangmiri: 'mr',
     ryujaeho: 'jh',
@@ -140,7 +104,7 @@ function getCharacterPairImagePath(
   if (!initial) return null;
 
   const type = isActive ? 'active' : 'default';
-  return `/image/charSelect/pair_${type}_${initial}.svg`;
+  return `/image/charSelect/pair_${type}_${initial}.png`;
 }
 
 function createPairDetail(set?: CharacterSet): CharacterPairDetail {
@@ -185,7 +149,6 @@ export default function CharacterSelect({
   onBack: _onBack,
   onSelectSuccess,
 }: CharacterSelectProps) {
-  usePreloadAssets(CHARACTER_SELECT_ASSETS);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
     null
