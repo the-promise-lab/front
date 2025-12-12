@@ -41,7 +41,6 @@ export default function BgmLayout({ children }: BgmLayoutProps) {
         return SOUND_URLS.mainBgm1;
       case 'INTRO_STORY':
       case 'INTRO_STORY_2':
-      case 'INTRO_STORY_3':
         return SOUND_URLS.introBagChoiceBgm;
       case 'BAG_SELECT':
         return SOUND_URLS.introBagChoiceBgm;
@@ -49,6 +48,7 @@ export default function BgmLayout({ children }: BgmLayoutProps) {
         return SOUND_URLS.itemChoiceBgm;
       case 'ONBOARDING':
         return SOUND_URLS.itemChoiceBgm;
+      case 'INTRO_STORY_3':
       case 'SCENARIO_FLOW':
         return SOUND_URLS.mainBgm2;
       case 'RESULT_REPORT':
