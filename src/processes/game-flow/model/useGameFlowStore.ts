@@ -149,24 +149,53 @@ export const useGameFlowStore = create<GameFlowState & GameFlowActions>()(
     continueGame: () => {
       const store = useGameFlowStore.getState();
       store.setIsNewGame(false); // 이어하기 플래그 설정
-      const gameSession = store.gameSession;
-      const goto = store.goto;
-      const startScenarioFlow = store.startScenarioFlow;
+      store.goto('PROGRESS'); // LoadingPage로 이동 (완료 후 completeProgress에서 분기)
+    },
+
+    // PROGRESS(LoadingPage) 완료 후 다음 step으로 이동
+    completeProgress: () => {
+      const store = useGameFlowStore.getState();
+      const { gameSession, isNewGame } = store;
+
+      // 로그인 후 PROGRESS 등: 세션이 없다면 메인 메뉴로 안전하게 복귀
       if (!gameSession) {
         console.warn(
-          'LoadingPage: 게임 세션이 정상적으로 생성되지 않음 - ERROR'
+          '[useGameFlowStore.completeProgress] gameSession이 없습니다. MAIN_MENU로 이동합니다.'
         );
-        goto('MAIN_MENU'); // TODO: 적절한 에러 처리 로직 구현.
-      } else if (!gameSession.playingCharacterSet) {
-        console.log('LoadingPage: 이어하기 - CHARACTER_SELECT로 이동');
-        goto('CHARACTER_SELECT');
-      } else if (!gameSession.currentActId) {
-        console.log('LoadingPage: 이어하기 - INTRO_STORY부터 재개');
-        goto('INTRO_STORY');
-      } else {
-        console.log('LoadingPage: 이어하기 - SCENARIO_FLOW로 이동');
-        startScenarioFlow();
+        store.goto('MAIN_MENU');
+        return;
       }
+
+      // 새 게임: 항상 캐릭터 선택으로
+      if (isNewGame) {
+        console.log(
+          '[useGameFlowStore.completeProgress] 새 게임 - CHARACTER_SELECT로 이동'
+        );
+        store.goto('CHARACTER_SELECT');
+        return;
+      }
+
+      // 이어하기: 세션 상태에 따라 복귀 지점 결정
+      if (!gameSession.playingCharacterSet) {
+        console.log(
+          '[useGameFlowStore.completeProgress] 이어하기 - CHARACTER_SELECT로 이동'
+        );
+        store.goto('CHARACTER_SELECT');
+        return;
+      }
+
+      if (!gameSession.currentActId) {
+        console.log(
+          '[useGameFlowStore.completeProgress] 이어하기 - INTRO_STORY부터 재개'
+        );
+        store.goto('INTRO_STORY');
+        return;
+      }
+
+      console.log(
+        '[useGameFlowStore.completeProgress] 이어하기 - SCENARIO_FLOW로 이동'
+      );
+      store.startScenarioFlow();
     },
 
     // 게임 리셋
