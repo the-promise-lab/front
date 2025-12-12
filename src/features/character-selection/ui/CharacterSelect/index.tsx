@@ -7,7 +7,6 @@ import type { PlayingCharacter } from '@entities/game-session';
 import { useSetBackground } from '@shared/background';
 import GlassButton from '@shared/ui/GlassButton';
 import Typography from '@shared/ui/Typography';
-import { usePreloadAssets } from '@shared/preload-assets';
 import {
   type CharacterPairDetail,
   createCharacterSetsFromDetails,
@@ -53,41 +52,6 @@ const CHARACTER_TAB_IMAGES: Record<
 };
 
 const LOCAL_CHARACTER_SETS: CharacterSet[] = createCharacterSetsFromDetails();
-
-const CHARACTER_SELECT_ASSETS: string[] = [
-  '/image/charSelect/char_select_hb_bc.png',
-  '/image/charSelect/char_selected_hb_bc.png',
-  '/image/charSelect/char_select_bs_js.png',
-  '/image/charSelect/char_selected_bs_js.png',
-  '/image/charSelect/char_select_jw_yw.png',
-  '/image/charSelect/char_selected_jw_yw.png',
-  '/image/charSelect/char_select_mr_jh.png',
-  '/image/charSelect/char_selected_mr_jh.png',
-  '/image/charSelect/pair_default_hb.png',
-  '/image/charSelect/pair_active_hb.png',
-  '/image/charSelect/pair_default_bc.png',
-  '/image/charSelect/pair_active_bc.png',
-  '/image/charSelect/pair_default_bs.png',
-  '/image/charSelect/pair_active_bs.png',
-  '/image/charSelect/pair_default_js.png',
-  '/image/charSelect/pair_active_js.png',
-  '/image/charSelect/pair_default_jw.png',
-  '/image/charSelect/pair_active_jw.png',
-  '/image/charSelect/pair_default_yw.png',
-  '/image/charSelect/pair_active_yw.png',
-  '/image/charSelect/pair_default_mr.png',
-  '/image/charSelect/pair_active_mr.png',
-  '/image/charSelect/pair_default_jh.png',
-  '/image/charSelect/pair_active_jh.png',
-  '/image/charSelect/char_hb_stat.svg',
-  '/image/charSelect/char_bc_stat.svg',
-  '/image/charSelect/char_bs_stat.svg',
-  '/image/charSelect/char_js_stat.svg',
-  '/image/charSelect/char_jw_stat.svg',
-  '/image/charSelect/char_yw_stat.svg',
-  '/image/charSelect/char_mr_stat.svg',
-  '/image/charSelect/char_jh_stat.svg',
-];
 
 /**
  * 캐릭터 ID를 스탯 이미지 경로로 변환
@@ -185,7 +149,6 @@ export default function CharacterSelect({
   onBack: _onBack,
   onSelectSuccess,
 }: CharacterSelectProps) {
-  usePreloadAssets(CHARACTER_SELECT_ASSETS);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
     null

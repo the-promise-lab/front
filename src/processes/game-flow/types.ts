@@ -71,6 +71,7 @@ export interface GameFlowActions {
   startNewGame: (newGameSession: GameSession) => void;
   startScenarioFlow: () => void;
   continueGame: () => void;
+  completeProgress: () => void;
   resetGame: () => void;
   syncPlayingCharactersFromServer: (
     playingCharacters: PlayingCharacterStatusDto[]

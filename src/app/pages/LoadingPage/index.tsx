@@ -1,41 +1,40 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useGameFlowStore } from '@processes/game-flow';
 import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
 import { useCdnResources } from '@shared/preload-assets/model/useCdnResources';
 import PreloadAssets from './PreloadAssets';
+import { CHARACTER_SELECT_ASSETS } from '@entities/character-data';
+
+const MIN_LOADING_MS = 3000;
+const MAX_LOADING_MS = 10000;
 
 const ASSETS_TO_PRELOAD = [
-  'shelter-bg.png',
-  'chicken-breast.png',
-  'long-shelf-example.png',
-  'shelf-household.png',
-  'shelf-clothing.png',
-  'shelf-food.png',
-  'byungcheol.png',
-  'ham.png',
   'image/character/char_hb/thumb.png',
   'image/character/char_bc/thumb.png',
+  ...CHARACTER_SELECT_ASSETS,
 ];
 
 export default function LoadingPage() {
   const [allLoaded, setAllLoaded] = useState(false);
-  const [timerEnded, setTimerEnded] = useState(false);
   const assetEntries = useAssetStore(useShallow(state => state.entries));
   const { data: resources, isPending } = useCdnResources();
   const assets = useMemo(() => {
     return [...ASSETS_TO_PRELOAD, ...Object.values(resources ?? {}).flat()];
   }, [resources]);
 
+  const startedAtRef = useRef<number>(Date.now());
+  const completeTimeoutIdRef = useRef<number | null>(null);
+  const hasCompletedRef = useRef(false);
+
   // 배경 이미지 설정
   useSetBackground({ image: '/image/mainPage/main_splash_bg.png' });
 
   // 게임 플로우 상태
-  const { isNewGame, goto } = useGameFlowStore(
+  const { completeProgress } = useGameFlowStore(
     useShallow(state => ({
-      isNewGame: state.isNewGame,
-      goto: state.goto,
+      completeProgress: state.completeProgress,
     }))
   );
 
@@ -52,50 +51,43 @@ export default function LoadingPage() {
     }
   }, [loaded, total]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('LoadingPage: 3초 타이머 완료');
-      setTimerEnded(true);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  const completeOnce = useCallback(() => {
+    if (hasCompletedRef.current) return;
+    hasCompletedRef.current = true;
+    completeProgress();
+  }, [completeProgress]);
 
-  const onComplete = useCallback(() => {
-    console.log('LoadingPage onComplete:', {
-      allLoaded,
-      timerEnded,
-      loaded,
-      total,
-      isNewGame,
-    });
-    if (isNewGame) {
-      console.log('LoadingPage: 새 게임 - CHARACTER_SELECT로 이동');
-      goto('CHARACTER_SELECT');
-    } else {
-      // 그 외의 경우(초기 진입, 이어하기 등) 메인 메뉴로 이동
-      console.log('LoadingPage: 메인 메뉴로 이동');
-      goto('MAIN_MENU');
+  useEffect(() => {
+    if (!allLoaded) return;
+
+    const elapsed = Date.now() - startedAtRef.current;
+    const remaining = Math.max(0, MIN_LOADING_MS - elapsed);
+
+    if (completeTimeoutIdRef.current !== null) {
+      window.clearTimeout(completeTimeoutIdRef.current);
     }
-  }, [isNewGame, goto, allLoaded, timerEnded, loaded, total]);
 
+    completeTimeoutIdRef.current = window.setTimeout(() => {
+      completeOnce();
+    }, remaining);
+
+    return () => {
+      if (completeTimeoutIdRef.current !== null) {
+        window.clearTimeout(completeTimeoutIdRef.current);
+      }
+    };
+  }, [allLoaded, completeOnce]);
+
+  // 최대 대기 시간: 10초가 지나면 강제로 다음 단계로 진행
   useEffect(() => {
-    // 로딩 완료 조건: 에셋 로딩 + 타이머
-    const isLoadingComplete = allLoaded && timerEnded;
+    const timeoutId = window.setTimeout(() => {
+      completeOnce();
+    }, MAX_LOADING_MS);
 
-    if (isLoadingComplete) {
-      onComplete();
-    }
-  }, [allLoaded, timerEnded, onComplete]);
-
-  // 3초 후 fallback 타이머 (안전장치)
-  useEffect(() => {
-    const fallbackTimer = setTimeout(() => {
-      console.log('LoadingPage: 3초 경과로 강제 이동');
-      onComplete();
-    }, 3000);
-
-    return () => clearTimeout(fallbackTimer);
-  }, [onComplete]);
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [completeOnce]);
 
   return (
     <>
@@ -118,7 +110,7 @@ export default function LoadingPage() {
           <div className='mx-auto w-105'>
             <div className='h-3 overflow-hidden rounded-full'>
               <div
-                className='from-secondary-1/50 to-secondary-1 h-full rounded-full bg-gradient-to-r transition-all duration-500'
+                className='from-secondary-1/50 to-secondary-1 h-full rounded-full bg-linear-to-r transition-all duration-500'
                 style={{
                   willChange: 'width',
                   width: `${progressPercent}%`,
