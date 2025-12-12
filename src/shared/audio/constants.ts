@@ -7,6 +7,8 @@ export const SOUND_URLS = {
   waterDrop: '/sounds/sfx/water-drop.mp3',
   mainBgm1: '/sounds/bgm/main-bgm-1.wav',
   mainBgm2: '/sounds/bgm/main-bgm-2.wav',
+  introBagChoiceBgm: '/sounds/bgm/intro-bagchoice.wav',
+  itemChoiceBgm: '/sounds/bgm/item-choice.wav',
 } as const;
 
 export type SoundKey = keyof typeof SOUND_URLS;

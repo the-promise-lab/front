@@ -1,12 +1,11 @@
 import {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
   type ReactNode,
 } from 'react';
-import { useGameFlowStore } from '@processes/game-flow';
+import { useGameFlowStore, type GameStep } from '@processes/game-flow';
 import { useShallow } from 'zustand/react/shallow';
 import { SOUND_URLS, type PlayHandle, useGameSound } from '@shared/audio';
 import { useSoundSettingsStore } from '@shared/audio/useSoundSettingsStore';
@@ -32,18 +31,34 @@ export default function BgmLayout({ children }: BgmLayoutProps) {
     handle: null,
   });
 
-  const MAIN_BGM_1_STEPS = useMemo(
-    () => new Set(['MAIN_MENU', 'LOGIN', 'LOGIN_PROGRESS']),
-    []
-  );
-
-  const getBgmUrlForStep = useCallback(
-    (nextStep: string) =>
-      MAIN_BGM_1_STEPS.has(nextStep)
-        ? SOUND_URLS.mainBgm1
-        : SOUND_URLS.mainBgm2,
-    [MAIN_BGM_1_STEPS]
-  );
+  const getBgmUrlForStep = useCallback((nextStep: GameStep) => {
+    switch (nextStep) {
+      case 'MAIN_MENU':
+        return SOUND_URLS.mainBgm1;
+      case 'LOGIN':
+        return SOUND_URLS.mainBgm1;
+      case 'LOGIN_PROGRESS':
+        return SOUND_URLS.mainBgm1;
+      case 'INTRO_STORY':
+      case 'INTRO_STORY_2':
+        return SOUND_URLS.introBagChoiceBgm;
+      case 'BAG_SELECT':
+        return SOUND_URLS.introBagChoiceBgm;
+      case 'PACKING_PHASE':
+        return SOUND_URLS.itemChoiceBgm;
+      case 'ONBOARDING':
+        return SOUND_URLS.itemChoiceBgm;
+      case 'INTRO_STORY_3':
+      case 'SCENARIO_FLOW':
+        return SOUND_URLS.mainBgm2;
+      case 'RESULT_REPORT':
+        return SOUND_URLS.mainBgm2;
+      case 'PLAYING':
+        return SOUND_URLS.mainBgm2;
+      default:
+        return SOUND_URLS.mainBgm1;
+    }
+  }, []);
 
   useEffect(() => {
     // AudioManager에 초기 설정값 적용
