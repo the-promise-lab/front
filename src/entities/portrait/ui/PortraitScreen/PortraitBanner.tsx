@@ -45,7 +45,7 @@ export default function PortraitBanner({
           <TypingText
             key={portrait}
             ref={typingTextRef}
-            texts={portrait.split('\n')}
+            texts={[portrait]}
             smooth
             speed={35}
           />
