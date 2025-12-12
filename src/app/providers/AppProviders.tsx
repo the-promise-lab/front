@@ -60,7 +60,7 @@ function GlobalLoadingSpinner() {
   if (!showSpinner) return null;
 
   return (
-    <div className='fixed right-5 bottom-5 z-50'>
+    <div className='fixed right-5 bottom-5 z-50 -translate-x-1/2 -translate-y-1/2'>
       <SpinnerCustom />
     </div>
   );

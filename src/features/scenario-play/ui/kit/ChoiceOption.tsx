@@ -93,22 +93,13 @@ export default function ChoiceOption({
 function ChoiceOptionSelectedSvg({ className }: { className?: string }) {
   return (
     <svg
+      preserveAspectRatio='none'
       viewBox='0 0 1401 152'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       className={className}
     >
-      <foreignObject x='0' y='0' width='1401' height='152'>
-        <div
-          style={{
-            backdropFilter: 'blur(2px)',
-            clipPath: 'url(#bgblur_0_2713_3422_clip_path)',
-            height: '100%',
-            width: '100%',
-          }}
-        ></div>
-      </foreignObject>
-      <g filter='url(#filter0_d_2713_3422)' data-figma-bg-blur-radius='4'>
+      <g filter='url(#filter0_d_2713_3422)'>
         <path
           d='M28 76C28 49.4903 49.4903 28 76 28H1373V124H76C49.4903 124 28 102.51 28 76Z'
           fill='black'

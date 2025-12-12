@@ -164,7 +164,7 @@ export function CharacterInfoView() {
           <img
             src={getObjectUrl(activeCharacter.image)}
             alt={activeCharacter.name}
-            className='w-140 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
+            className='fixed bottom-0 h-[80dvh] w-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]'
           />
         ) : playingCharacter.fullImage ? (
           <img
@@ -257,7 +257,6 @@ export function CharacterInfoView() {
                     {pairImage ? (
                       <img
                         src={getObjectUrl(pairImage)}
-                        alt={character.name}
                         className='h-full w-full object-cover'
                       />
                     ) : (

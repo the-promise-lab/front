@@ -53,12 +53,9 @@ export default function Counter({
     [springValue, direction]
   );
 
-  if (value === 0) {
-    return (
-      <span className={className} ref={ref}>
-        &nbsp;
-      </span>
-    );
-  }
-  return <span className={className} ref={ref} />;
+  return (
+    <span className={className} ref={ref}>
+      {value === 0 ? '0' : null}
+    </span>
+  );
 }

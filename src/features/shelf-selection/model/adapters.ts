@@ -79,21 +79,23 @@ function adaptShelfItemFromItemDto(
  * @returns Shelf[] (레거시 UI 구조)
  */
 export function adaptShelvesFromSetupInfo(setupInfo: SetupInfoDto): Shelf[] {
-  return setupInfo.storeSections.map(section => {
-    const shelfItems = section.items.map((item, itemIndex) =>
-      adaptShelfItemFromItemDto(item, itemIndex, section.items.length)
-    );
+  return setupInfo.storeSections
+    .map(section => {
+      const shelfItems = section.items.map((item, itemIndex) =>
+        adaptShelfItemFromItemDto(item, itemIndex, section.items.length)
+      );
 
-    return {
-      id: section.id,
-      code: section.code,
-      name: section.displayName,
-      backgroundImage:
-        section.backgroundImage ||
-        getFallbackBackgroundImage(section.displayName),
-      shelfItems,
-    };
-  });
+      return {
+        id: section.id,
+        code: section.code,
+        name: section.displayName,
+        backgroundImage:
+          section.backgroundImage ||
+          getFallbackBackgroundImage(section.displayName),
+        shelfItems,
+      };
+    })
+    .filter(section => section.code !== 'NoStore');
 }
 
 /**

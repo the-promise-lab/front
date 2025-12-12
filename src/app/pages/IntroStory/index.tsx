@@ -9,6 +9,7 @@ import { useIntroEvents, type IntroEvent } from '@features/intro';
 import { SkipButton } from '@features/scenario-play';
 import { Header, PauseMenu } from '@processes/game-flow';
 import { useIntroAmbienceSound } from '@features/intro/model/useIntroAmbienceSound';
+import TypingText from '@shared/ui/TypingText';
 
 interface IntroStoryProps {
   onNext?: () => void;
@@ -134,8 +135,8 @@ function SystemMessage({
   event: IntroEvent;
   onNext?: () => void;
 }) {
-  const message =
-    event.SystemScript || event.Script || '시스템 메시지가 도착했습니다.';
+  const script = event.SystemScript ?? '';
+  const texts = script.split('\n').filter(text => text.trim() !== '');
 
   return (
     <div
@@ -152,7 +153,7 @@ function SystemMessage({
     >
       <NoticeBanner withCaution={false} className='max-w-[1020px]'>
         <Typography variant='dialogue-2' className='text-white'>
-          {message}
+          <TypingText texts={texts.length > 0 ? texts : [script]} smooth />
         </Typography>
       </NoticeBanner>
     </div>
