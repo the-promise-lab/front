@@ -14,9 +14,9 @@ export const RESULT_COLLECTION_CHARACTER_SETS: CollectionCharacterSet[] = [
     id: 1,
     name: '형빈과 병철',
     images: {
-      active: '/image/reportPage/collection_hbbc_active.svg',
-      disabled: '/image/reportPage/collection_hbbc_disabled.svg',
-      default: '/image/reportPage/collection_hbbc_default.svg',
+      active: '/image/reportPage/collection_hbbc_active.png',
+      disabled: '/image/reportPage/collection_hbbc_disabled.png',
+      default: '/image/reportPage/collection_hbbc_default.png',
     },
     collectionCards: [
       {
@@ -45,9 +45,9 @@ export const RESULT_COLLECTION_CHARACTER_SETS: CollectionCharacterSet[] = [
     id: 2,
     name: '복순과 진실',
     images: {
-      active: '/image/reportPage/collection_bsjs_active.svg',
-      disabled: '/image/reportPage/collection_bsjs_disabled.svg',
-      default: '/image/reportPage/collection_bsjs_default.svg',
+      active: '/image/reportPage/collection_bsjs_active.png',
+      disabled: '/image/reportPage/collection_bsjs_disabled.png',
+      default: '/image/reportPage/collection_bsjs_default.png',
     },
     collectionCards: [
       {
@@ -60,9 +60,9 @@ export const RESULT_COLLECTION_CHARACTER_SETS: CollectionCharacterSet[] = [
     id: 3,
     name: '재욱과 예원',
     images: {
-      active: '/image/reportPage/collection_jwyw_active.svg',
-      disabled: '/image/reportPage/collection_jwyw_disabled.svg',
-      default: '/image/reportPage/collection_jwyw_default.svg',
+      active: '/image/reportPage/collection_jwyw_active.png',
+      disabled: '/image/reportPage/collection_jwyw_disabled.png',
+      default: '/image/reportPage/collection_jwyw_default.png',
     },
     collectionCards: [],
   },
@@ -70,9 +70,9 @@ export const RESULT_COLLECTION_CHARACTER_SETS: CollectionCharacterSet[] = [
     id: 4,
     name: '미리와 재호',
     images: {
-      active: '/image/reportPage/collection_mrjh_active.svg',
-      disabled: '/image/reportPage/collection_mrjh_disabled.svg',
-      default: '/image/reportPage/collection_mrjh_default.svg',
+      active: '/image/reportPage/collection_mrjh_active.png',
+      disabled: '/image/reportPage/collection_mrjh_disabled.png',
+      default: '/image/reportPage/collection_mrjh_default.png',
     },
     collectionCards: [],
   },

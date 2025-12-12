@@ -15,8 +15,8 @@ const ASSETS_TO_PRELOAD = [
   'shelf-food.png',
   'byungcheol.png',
   'ham.png',
-  'image/character/char_hb/thumb.svg',
-  'image/character/char_bc/thumb.svg',
+  'image/character/char_hb/thumb.png',
+  'image/character/char_bc/thumb.png',
 ];
 
 export default function LoadingPage() {

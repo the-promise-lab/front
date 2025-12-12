@@ -23,7 +23,7 @@ function getCharacterStatImagePath(
     bang: 'bc',
     boksun: 'bs',
     jinsil: 'js',
-    sojaewook: 'jo',
+    sojaewook: 'jw',
     munyewon: 'yw',
     bangmiri: 'mr',
     ryujaeho: 'jh',
@@ -50,7 +50,7 @@ function getCharacterPairImagePath(
     bang: 'bc',
     boksun: 'bs',
     jinsil: 'js',
-    sojaeok: 'jo',
+    sojaewook: 'jw',
     munyewon: 'yw',
     bangmiri: 'mr',
     ryujaeho: 'jh',
@@ -60,7 +60,7 @@ function getCharacterPairImagePath(
   if (!initial) return null;
 
   const type = isActive ? 'active' : 'default';
-  return `/image/charSelect/pair_${type}_${initial}.svg`;
+  return `/image/charSelect/pair_${type}_${initial}.png`;
 }
 
 export function CharacterInfoView() {
