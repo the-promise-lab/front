@@ -342,3 +342,38 @@ export function getCharacterDetailByCode(
 ): CharacterDetail | null {
   return getCharacterDetailByName(code);
 }
+
+export const CHARACTER_SELECT_ASSETS: string[] = [
+  '/image/charSelect/char_select_hb_bc.png',
+  '/image/charSelect/char_selected_hb_bc.png',
+  '/image/charSelect/char_select_bs_js.png',
+  '/image/charSelect/char_selected_bs_js.png',
+  '/image/charSelect/char_select_jw_yw.png',
+  '/image/charSelect/char_selected_jw_yw.png',
+  '/image/charSelect/char_select_mr_jh.png',
+  '/image/charSelect/char_selected_mr_jh.png',
+  '/image/charSelect/pair_default_hb.png',
+  '/image/charSelect/pair_active_hb.png',
+  '/image/charSelect/pair_default_bc.png',
+  '/image/charSelect/pair_active_bc.png',
+  '/image/charSelect/pair_default_bs.png',
+  '/image/charSelect/pair_active_bs.png',
+  '/image/charSelect/pair_default_js.png',
+  '/image/charSelect/pair_active_js.png',
+  '/image/charSelect/pair_default_jw.png',
+  '/image/charSelect/pair_active_jw.png',
+  '/image/charSelect/pair_default_yw.png',
+  '/image/charSelect/pair_active_yw.png',
+  '/image/charSelect/pair_default_mr.png',
+  '/image/charSelect/pair_active_mr.png',
+  '/image/charSelect/pair_default_jh.png',
+  '/image/charSelect/pair_active_jh.png',
+  '/image/charSelect/char_hb_stat.svg',
+  '/image/charSelect/char_bc_stat.svg',
+  '/image/charSelect/char_bs_stat.svg',
+  '/image/charSelect/char_js_stat.svg',
+  '/image/charSelect/char_jw_stat.svg',
+  '/image/charSelect/char_yw_stat.svg',
+  '/image/charSelect/char_mr_stat.svg',
+  '/image/charSelect/char_jh_stat.svg',
+];

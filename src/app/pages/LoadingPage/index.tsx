@@ -5,20 +5,14 @@ import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
 import { useCdnResources } from '@shared/preload-assets/model/useCdnResources';
 import PreloadAssets from './PreloadAssets';
+import { CHARACTER_SELECT_ASSETS } from '@entities/character-data';
 
 const MIN_LOADING_MS = 3000;
 
 const ASSETS_TO_PRELOAD = [
-  'shelter-bg.png',
-  'chicken-breast.png',
-  'long-shelf-example.png',
-  'shelf-household.png',
-  'shelf-clothing.png',
-  'shelf-food.png',
-  'byungcheol.png',
-  'ham.png',
   'image/character/char_hb/thumb.png',
   'image/character/char_bc/thumb.png',
+  ...CHARACTER_SELECT_ASSETS,
 ];
 
 export default function LoadingPage() {
