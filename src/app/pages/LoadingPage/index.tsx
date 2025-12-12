@@ -13,6 +13,8 @@ const MAX_LOADING_MS = 10000;
 const ASSETS_TO_PRELOAD = [
   'image/character/char_hb/thumb.png',
   'image/character/char_bc/thumb.png',
+  '/image/mainPage/main_splash_bg.png',
+  '/image/mainPage/game_logo.png',
   ...CHARACTER_SELECT_ASSETS,
 ];
 
