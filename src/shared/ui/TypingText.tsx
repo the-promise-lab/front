@@ -10,6 +10,7 @@ import {
 import { motion, useAnimationControls } from 'framer-motion';
 import { useGameSound, SOUND_URLS } from '@shared/audio';
 import type { PlayHandle } from '@shared/audio';
+import { cn } from '@shared/lib/utils';
 import type { TypographyVariant } from './Typography';
 import Typography from './Typography';
 
@@ -26,6 +27,7 @@ interface TypingTextProps {
   playWhenVisible?: boolean;
   rootMargin?: string;
   className?: string;
+  align?: 'left' | 'center' | 'right';
   locale?: string;
   smooth?: boolean;
   variant?: TypographyVariant;
@@ -46,6 +48,13 @@ function splitGraphemes(text: string, locale = 'ko') {
   return Array.from(text);
 }
 
+function normalizeNewlines(text: string) {
+  return text
+    .replace(/\r\n/g, '\n')
+    .replace(/\\r\\n/g, '\n')
+    .replace(/\\n/g, '\n');
+}
+
 const NEWLINE_CHAR = '\n' as const;
 
 const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
@@ -58,6 +67,7 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
       playWhenVisible = true,
       rootMargin = '0px',
       className,
+      align = 'center',
       locale = 'ko',
       smooth = false,
       variant = 'dialogue-m',
@@ -70,8 +80,16 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
     const units = useMemo(() => {
       const result: (string | typeof NEWLINE_CHAR)[] = [];
       texts.forEach((text, index) => {
-        const graphemes = splitGraphemes(text, locale);
-        result.push(...graphemes);
+        const normalizedText = normalizeNewlines(text);
+        const graphemes = splitGraphemes(normalizedText, locale);
+        // 개행 문자를 NEWLINE_CHAR로 변환
+        graphemes.forEach(grapheme => {
+          if (grapheme === '\n') {
+            result.push(NEWLINE_CHAR);
+          } else {
+            result.push(grapheme);
+          }
+        });
         // 마지막 텍스트가 아니면 구분자 추가
         if (index < texts.length - 1) {
           result.push(NEWLINE_CHAR);
@@ -270,12 +288,19 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
     // 현재까지 타이핑된 units
     const visibleUnits = units.slice(0, Math.min(count, units.length));
 
+    const alignClassName = (() => {
+      if (align === 'center')
+        return 'block w-fit max-w-full mx-auto text-center';
+      if (align === 'right') return 'block w-fit max-w-full ml-auto text-right';
+      return undefined;
+    })();
+
     return (
       <Typography
         ref={containerRef}
         variant={variant}
         as='span'
-        className={className}
+        className={cn(className, alignClassName)}
       >
         {smooth ? (
           // smooth 모드: 모든 글자를 미리 렌더링하고 opacity 0, 제자리에서 fade-in 효과
@@ -317,7 +342,7 @@ const TypingText = forwardRef<TypingTextRef, TypingTextProps>(
           <motion.span
             aria-hidden
             animate={cursorControls}
-            className='ml-[1px] h-[1em] w-[0.6ch] border-r-2 border-current motion-reduce:animate-none'
+            className='ml-px h-[1em] w-[0.6ch] border-r-2 border-current motion-reduce:animate-none'
           />
         )}
       </Typography>
