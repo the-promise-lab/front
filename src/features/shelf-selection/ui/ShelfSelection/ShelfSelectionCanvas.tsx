@@ -5,6 +5,7 @@ import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
 import { drawMarker, preloadMarkerImage } from '../../lib/drawMarker';
 import GlowNavigationButton from './kit/GlowNavigationButton';
+import Typography from '@shared/ui/Typography';
 
 const ITEM_SIZE_PIXEL = 30;
 
@@ -28,15 +29,24 @@ export default function ShelfSelectionCanvas({
   onNextShelfClick,
 }: ShelfSelectionCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const backgroundLoadSeqRef = useRef(0);
+  const [isMoving, setIsMoving] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [backgroundImg, setBackgroundImg] = useState<HTMLImageElement | null>(
     null
   );
+  const [renderItems, setRenderItems] = useState<ShelfItem[]>(items);
   const [imageScale, setImageScale] = useState({
     width: 0,
     height: 0,
     offsetX: 0, // 가로 중앙 정렬을 위한 오프셋
   });
+
+  // 오버레이로 덮이는 동안에는 마커/아이템이 먼저 바뀌어 보이지 않도록 freeze
+  useEffect(() => {
+    if (isMoving) return;
+    setRenderItems(items);
+  }, [items, isMoving]);
 
   // 🎨 횡스크롤 훅
   const { viewOffsetX, setViewOffsetX, isDragging, dragHandlers } =
@@ -78,7 +88,7 @@ export default function ShelfSelectionCanvas({
     (ctx: CanvasRenderingContext2D) => {
       if (imageScale.width === 0) return;
 
-      items.forEach(item => {
+      renderItems.forEach(item => {
         // 이미지 내 상대 좌표를 스케일된 캔버스 좌표로 변환
         const isWide = imageScale.width > canvasSize.width;
         const baseX = item.x * imageScale.width;
@@ -91,7 +101,7 @@ export default function ShelfSelectionCanvas({
         drawMarker(ctx, scaledX, scaledY, ITEM_SIZE_PIXEL, ITEM_SIZE_PIXEL);
       });
     },
-    [items, imageScale, canvasSize.width, viewOffsetX]
+    [renderItems, imageScale, canvasSize.width, viewOffsetX]
   );
 
   // 마커 이미지 미리 로드
@@ -103,8 +113,13 @@ export default function ShelfSelectionCanvas({
 
   // 배경 이미지 로드
   useEffect(() => {
+    const seq = (backgroundLoadSeqRef.current += 1);
+    setIsMoving(true);
+
     const img = new Image();
     img.onload = () => {
+      if (backgroundLoadSeqRef.current !== seq) return;
+
       setBackgroundImg(img);
       // 이미지 로드 완료 시 배율 계산
       const scale = calculateImageScale(img.naturalWidth, img.naturalHeight);
@@ -113,6 +128,12 @@ export default function ShelfSelectionCanvas({
       const container = calculateCanvasSize();
       const maxScroll = Math.max(0, scale.width - container.width);
       setViewOffsetX(maxScroll > 0 ? Math.floor(maxScroll / 2) : 0);
+      setIsMoving(false);
+    };
+    img.onerror = () => {
+      if (backgroundLoadSeqRef.current !== seq) return;
+      console.error('Failed to load background image:', backgroundImage);
+      setIsMoving(false);
     };
     img.src = backgroundImage;
   }, [
@@ -241,7 +262,7 @@ export default function ShelfSelectionCanvas({
     (imageX: number, imageY: number) => {
       if (imageScale.width === 0) return null;
 
-      for (const item of items) {
+      for (const item of renderItems) {
         // 아이템의 실제 스케일된 좌표
         const itemX = item.x * imageScale.width;
         const itemY = item.y * imageScale.height;
@@ -259,12 +280,12 @@ export default function ShelfSelectionCanvas({
       }
       return null;
     },
-    [items, imageScale]
+    [renderItems, imageScale]
   );
 
   // 🖱️ 아이템 클릭 훅
   const { handleClick: baseHandleClick } = useCanvasItemClick({
-    items,
+    items: renderItems,
     getImageCoordinates,
     detectItemSelection,
     isDragging,
@@ -272,6 +293,7 @@ export default function ShelfSelectionCanvas({
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
+      if (isMoving) return;
       baseHandleClick(e);
 
       // 클릭 좌표로 아이템 감지
@@ -283,7 +305,13 @@ export default function ShelfSelectionCanvas({
         onClickItem(item);
       }
     },
-    [baseHandleClick, getImageCoordinates, detectItemSelection, onClickItem]
+    [
+      baseHandleClick,
+      getImageCoordinates,
+      detectItemSelection,
+      onClickItem,
+      isMoving,
+    ]
   );
 
   return (
@@ -305,7 +333,7 @@ export default function ShelfSelectionCanvas({
       <div className='pointer-events-none absolute top-1/2 left-1/2 z-10 aspect-video h-dvh w-auto -translate-x-1/2 -translate-y-1/2'>
         <GlowNavigationButton
           className='pointer-events-auto'
-          hidden={viewOffsetX !== 0}
+          hidden={isMoving || viewOffsetX !== 0}
           onClick={onPreviousShelfClick}
           direction='left'
           displayName={previousShelfName}
@@ -313,6 +341,7 @@ export default function ShelfSelectionCanvas({
         <GlowNavigationButton
           className='pointer-events-auto'
           hidden={
+            isMoving ||
             viewOffsetX !== Math.max(0, imageScale.width - canvasSize.width) ||
             imageScale.width === 0
           }
@@ -321,6 +350,18 @@ export default function ShelfSelectionCanvas({
           displayName={nextShelfName}
         />
       </div>
+
+      {isMoving && (
+        <div
+          className='absolute inset-0 z-50 flex items-center justify-center bg-black/80'
+          role='status'
+          aria-live='polite'
+        >
+          <Typography variant='dialogue-2' className='text-white'>
+            장소를 이동중입니다..
+          </Typography>
+        </div>
+      )}
     </>
   );
 }

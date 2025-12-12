@@ -18,3 +18,7 @@ export function getCookie(name: string): string | null {
   }
   return null;
 }
+
+export function isDevEnv(): boolean {
+  return import.meta.env.MODE === 'development';
+}
