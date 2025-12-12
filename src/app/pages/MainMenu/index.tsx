@@ -6,6 +6,7 @@ import {
 } from '@processes/game-flow';
 import { BackgroundPortal } from '@shared/background-portal';
 import { useButtonClickSfx } from '@shared/audio';
+import { isDevEnv } from '@shared/lib/utils';
 
 export default function MainMenu() {
   const playButtonClick = useButtonClickSfx({ variant: 'default' });
@@ -133,12 +134,14 @@ export default function MainMenu() {
       </div>
 
       {/* Debug Button */}
-      <button
-        onClick={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
-        className='absolute right-4 bottom-4 z-50 rounded bg-red-500 px-2 py-1 text-xs text-white opacity-50 hover:opacity-100'
-      >
-        Debug: Result Report
-      </button>
+      {isDevEnv() && (
+        <button
+          onClick={() => useGameFlowStore.getState().goto('RESULT_REPORT')}
+          className='absolute right-4 bottom-4 z-50 rounded bg-red-500 px-2 py-1 text-xs text-white opacity-50 hover:opacity-100'
+        >
+          Debug: Result Report
+        </button>
+      )}
     </div>
   );
 }

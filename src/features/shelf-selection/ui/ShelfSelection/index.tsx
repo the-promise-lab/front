@@ -18,6 +18,7 @@ import type { GameSessionDto } from '@api';
 import { useCapacityWarning } from '../../model/useCapacityWarning';
 import type { ShelfItem } from '../../model/types';
 import { toastItemAdded } from '@shared/ui/toast-variants';
+import { isDevEnv } from '@shared/lib/utils';
 
 interface ShelfSelectionProps {
   onBack: () => void;
@@ -137,34 +138,38 @@ export default function ShelfSelection({
 
         <div className='pointer-events-none fixed left-1/2 z-10 aspect-video h-dvh w-auto -translate-x-1/2 touch-pan-y overflow-x-visible'>
           {/* 뒤로가기 버튼 */}
-          <div className='pointer-events-auto absolute top-4 left-4 z-10'>
-            <button
-              className='bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95'
-              onClick={onBack}
-            >
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                className='text-gray-700'
+          {isDevEnv() && (
+            <div className='pointer-events-auto absolute top-4 left-4 z-10'>
+              <button
+                className='bg-opacity-80 hover:bg-opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:scale-105 active:scale-95'
+                onClick={onBack}
               >
-                <polyline points='15 18 9 12 15 6' />
-              </svg>
-            </button>
-          </div>
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  stroke='currentColor'
+                  strokeWidth='2'
+                  className='text-gray-700'
+                >
+                  <polyline points='15 18 9 12 15 6' />
+                </svg>
+              </button>
+            </div>
+          )}
 
-          <div className='pointer-events-auto absolute bottom-0 left-0 flex gap-2'>
-            <button
-              className='h-20 w-40 bg-emerald-600/80 hover:bg-emerald-500'
-              onClick={handleComplete}
-              disabled={isPending}
-            >
-              <Typography variant='mini-dialogue'>완료</Typography>
-            </button>
-          </div>
+          {isDevEnv() && (
+            <div className='pointer-events-auto absolute bottom-0 left-0 flex gap-2'>
+              <button
+                className='h-20 w-40 bg-emerald-600/80 hover:bg-emerald-500'
+                onClick={handleComplete}
+                disabled={isPending}
+              >
+                <Typography variant='mini-dialogue'>완료</Typography>
+              </button>
+            </div>
+          )}
 
           <Minimap
             sections={minimapSections}

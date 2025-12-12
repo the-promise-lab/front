@@ -70,7 +70,7 @@ export function adaptResultReport(
         data.data.result.inventory?.map(item => ({
           id: item.itemId.toString(),
           name: item.itemName,
-          image: '!!', // FIXME: 서버 응답값에 프로퍼티 추가 후 수정
+          image: item.imageUrl ?? '',
           state: 'default',
         })) ?? [],
     },
