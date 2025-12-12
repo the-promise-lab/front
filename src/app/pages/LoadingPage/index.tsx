@@ -7,6 +7,8 @@ import { useCdnResources } from '@shared/preload-assets/model/useCdnResources';
 import PreloadAssets from './PreloadAssets';
 
 const ASSETS_TO_PRELOAD = [
+  '/image/mainPage/main_splash_bg.png',
+  '/image/mainPage/game_logo.png',
   'shelter-bg.png',
   'chicken-breast.png',
   'long-shelf-example.png',
