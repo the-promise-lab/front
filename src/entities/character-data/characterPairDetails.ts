@@ -64,7 +64,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits:
           '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
         image: '/image/introPage/char_hb_intro.png',
-        thumbnail: '/image/character/char_hb/thumb.svg',
+        thumbnail: '/image/character/char_hb/thumb.png',
         colors: {
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
@@ -94,7 +94,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
         traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
         image: '/image/introPage/char_bc_intro.png',
-        thumbnail: '/image/character/char_bc/thumb.svg',
+        thumbnail: '/image/character/char_bc/thumb.png',
         colors: {
           backgroundColor: '#5B707E',
           borderColor: '#9FEFD2',
