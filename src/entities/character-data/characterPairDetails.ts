@@ -64,7 +64,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits:
           '※특징: 보기와 달리 허리디스크 진단을 받아 허리 통증을 달고 다닌다.',
         image: '/image/introPage/char_hb_intro.png',
-        thumbnail: '/image/character/char_hb/thumb.svg',
+        thumbnail: '/image/character/char_hb/thumb.png',
         colors: {
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
@@ -94,7 +94,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '헴을 형님으로 모시고 있는 순박한 청년. 헴이 시키면 뭐든지 할 것 같지만 속으로는 눈물을 머금고 있다.',
         traits: '※특징: 야채를 싫어하고, 매번 헬스를 빼먹을 생각만 한다.',
         image: '/image/introPage/char_bc_intro.png',
-        thumbnail: '/image/character/char_bc/thumb.svg',
+        thumbnail: '/image/character/char_bc/thumb.png',
         colors: {
           backgroundColor: '#5B707E',
           borderColor: '#9FEFD2',
@@ -130,7 +130,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '한 때 엄청나게 이름을 날리던 만신 무당. 지금은 재야에 은둔해 유기견 진실이와 함께 조용히 살고 있다. 인자한 미소 뒤에 엄청나게 날카로운 동자신을 모시고 있다.',
         traits: '※특징: 노환으로 몸이 쇠약하고 악몽을 자주 꾼다.',
         image: '/image/introPage/char_bs_intro.png',
-        thumbnail: '/image/introPage/char_bs_intro.svg',
+        thumbnail: '/image/introPage/char_bs_intro.png',
         colors: {
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
@@ -158,7 +158,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '할머니 앞에서는 천사견, 다른 사람 앞에선 까칠 포악 그 자체인 강아지. 하지만 간식 앞에서는 한 마리의 순한 양(?)처럼 변한다.',
         traits: '※특징: 특별히 아픈 곳은 없지만 기분을 잘 맞춰줘야 한다.',
         image: '/image/introPage/char_js_intro.png',
-        thumbnail: '/image/introPage/char_js_intro.svg',
+        thumbnail: '/image/introPage/char_js_intro.png',
         colors: {
           backgroundColor: '#5B707E',
           borderColor: '#9FEFD2',
@@ -195,8 +195,8 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '카메라 앞에서는 세상 다정한 스윗함을 보여주지만 실제로는 시청자 수와 반응에 예민하고 강박이 있다. 여자친구와의 일상을 기록하려 유튜브 <소문커플>을 시작했지만 지금은 인플루언서 병에 걸렸다.',
         traits:
           '※특징: 조금 긴장하거나 당황하면 과민성대장증후군으로 화장실이 급해진다.',
-        image: '/image/introPage/char_jo_intro.png',
-        thumbnail: '/image/introPage/char_jo_intro.svg',
+        image: '/image/introPage/char_jw_intro.png',
+        thumbnail: '/image/introPage/char_jw_intro.png',
         colors: {
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
@@ -225,7 +225,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits:
           '※특징: 발목을 다친 적이 있어 오래 걷거나 무거운 물건을 들면 통증에 시달린다.',
         image: '/image/introPage/char_yw_intro.png',
-        thumbnail: '/image/introPage/char_yw_intro.svg',
+        thumbnail: '/image/introPage/char_yw_intro.png',
         colors: {
           backgroundColor: '#5B707E',
           borderColor: '#9FEFD2',
@@ -260,7 +260,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '대기업 마트 본사에 최연소 팀장으로 승진한 일잘러. MBTI J 끝판왕으로 어디서나 계획하고, 기획하고, 정리하려는 강박을 가지고 있다.',
         traits: '※특징: 자기 관리 강박증으로 방문 횟수가 많은 편이다.',
         image: '/image/introPage/char_mr_intro.png',
-        thumbnail: '/image/introPage/char_mr_intro.svg',
+        thumbnail: '/image/introPage/char_mr_intro.png',
         colors: {
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
@@ -289,7 +289,7 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
         traits:
           '※특징: 만성 비염 환자로 온도차가 심한 환경에서는 재채기를 하거나 코가 꽉 막힌다.',
         image: '/image/introPage/char_jh_intro.png',
-        thumbnail: '/image/introPage/char_jh_intro.svg',
+        thumbnail: '/image/introPage/char_jh_intro.png',
         colors: {
           backgroundColor: '#5B707E',
           borderColor: '#9FEFD2',

@@ -41,7 +41,7 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
     return asset || currentEvent.BGImage || null;
   }, [currentEvent?.BGImage, getObjectUrl]);
   useSetBackground({
-    image: backgroundImage || '/shelter-bg.png',
+    image: backgroundImage || '/backGround/bg_shelter.png',
   });
 
   const handleNext = () => {
