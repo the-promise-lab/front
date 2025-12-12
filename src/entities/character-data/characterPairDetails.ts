@@ -195,8 +195,8 @@ export const CHARACTER_PAIR_DETAILS: CharacterPairDetail[] = [
           '카메라 앞에서는 세상 다정한 스윗함을 보여주지만 실제로는 시청자 수와 반응에 예민하고 강박이 있다. 여자친구와의 일상을 기록하려 유튜브 <소문커플>을 시작했지만 지금은 인플루언서 병에 걸렸다.',
         traits:
           '※특징: 조금 긴장하거나 당황하면 과민성대장증후군으로 화장실이 급해진다.',
-        image: '/image/introPage/char_jo_intro.png',
-        thumbnail: '/image/introPage/char_jo_intro.svg',
+        image: '/image/introPage/char_jw_intro.png',
+        thumbnail: '/image/introPage/char_jw_intro.svg',
         colors: {
           backgroundColor: '#593B8F',
           borderColor: '#CC92FB',
