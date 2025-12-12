@@ -8,6 +8,7 @@ import PreloadAssets from './PreloadAssets';
 import { CHARACTER_SELECT_ASSETS } from '@entities/character-data';
 
 const MIN_LOADING_MS = 3000;
+const MAX_LOADING_MS = 10000;
 
 const ASSETS_TO_PRELOAD = [
   'image/character/char_hb/thumb.png',
@@ -76,6 +77,17 @@ export default function LoadingPage() {
       }
     };
   }, [allLoaded, completeOnce]);
+
+  // 최대 대기 시간: 10초가 지나면 강제로 다음 단계로 진행
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      completeOnce();
+    }, MAX_LOADING_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [completeOnce]);
 
   return (
     <>
