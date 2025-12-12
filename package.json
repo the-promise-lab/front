@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "preview": "vite preview",
+    "preview": "vite preview --port 3000",
     "type-check": "tsc --noEmit",
     "prepare": "husky",
     "generate-api": "npx openapi --input https://api.bttf.kr/api/docs-json --output src/api --client axios --exportSchemas true && prettier --write src/api",
