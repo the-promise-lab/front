@@ -16,9 +16,9 @@ export function adaptPointType(type: string): PointType {
 }
 
 export function adaptEndingGrade(grade: string): EndingGrade {
-  const lowerCaseGrade = grade.toLowerCase();
-  if (Object.keys(ENDING_GRADE).includes(lowerCaseGrade)) {
-    return ENDING_GRADE[lowerCaseGrade as EndingGrade];
+  const upperCaseGrade = grade.toUpperCase();
+  if (Object.keys(ENDING_GRADE).includes(upperCaseGrade)) {
+    return ENDING_GRADE[upperCaseGrade as EndingGrade];
   }
   return ENDING_GRADE.NORMAL;
 }
@@ -65,12 +65,12 @@ export function adaptResultReport(
       bagName: data.data.result.survivalBag.bagName,
       usability: `${data.data.result.survivalBag.efficiency}%`,
       itemUsageRate: `${data.data.result.survivalBag.usageRate}%`,
-      bagImage: `/bag_${data.data.result.survivalBag.bagName}.png`, // FIXME: 서버 응답값에 프로퍼티 추가 후 수정
+      bagImage: data.data.result.survivalBag.bagImageUrl ?? 'black.png',
       items:
         data.data.result.inventory?.map(item => ({
           id: item.itemId.toString(),
           name: item.itemName,
-          image: item.imageUrl ?? '',
+          image: item.imageUrl ?? 'black.png',
           state: 'default',
         })) ?? [],
     },

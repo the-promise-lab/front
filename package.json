@@ -11,7 +11,8 @@
     "preview": "vite preview --port 3000",
     "type-check": "tsc --noEmit",
     "prepare": "husky",
-    "generate-api": "npx openapi --input https://api.bttf.kr/api/docs-json --output src/api --client axios --exportSchemas true && prettier --write src/api",
+    "generate-api": "npx openapi --input https://gbslab:bttfkr012%2A@api.bttf.kr/api/docs-json --output src/api --client axios --exportSchemas true && prettier --write src/api",
+    "generate-api-local": "npx openapi --input ./swagger.json --output src/api --client axios --exportSchemas true && prettier --write src/api",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

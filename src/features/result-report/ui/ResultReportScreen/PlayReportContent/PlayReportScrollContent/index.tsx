@@ -40,7 +40,7 @@ export default function PlayReportScrollContent({
       {/* 캐릭터 영역 */}
       <CharacterStatsSection
         characters={characters}
-        endingImage={ending.image}
+        endingGrade={ending.grade}
       />
 
       {/* 구분선 */}

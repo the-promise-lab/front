@@ -39,7 +39,7 @@ export default function SurvivalBagSection({
   return (
     <div className='flex justify-center gap-8'>
       {/* 가방 이미지 placeholder */}
-      <div className='h-95 w-85 shrink-0 bg-gray-500/30' />
+      <img src={bagImage} alt={bagType} className='h-95 w-85 shrink-0' />
 
       {/* 우측 정보 영역 */}
       <div className='flex flex-col justify-center gap-8'>
