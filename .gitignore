@@ -42,3 +42,5 @@ coverage/
 .vscode/tasks.json
 
 repomix*
+
+.swagger.json

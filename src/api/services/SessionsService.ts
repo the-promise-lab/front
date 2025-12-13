@@ -2,10 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { EndingCollectionResponseDto } from '../models/EndingCollectionResponseDto';
 import type { IntroRequestDto } from '../models/IntroRequestDto';
 import type { IntroResponseDto } from '../models/IntroResponseDto';
 import type { NextActRequestDto } from '../models/NextActRequestDto';
 import type { NextActResponseDto } from '../models/NextActResponseDto';
+import type { RankingResponseDto } from '../models/RankingResponseDto';
 import type { SessionReportResponseDto } from '../models/SessionReportResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -60,6 +62,51 @@ export class SessionsService {
       url: '/api/sessions/{sessionId}/report',
       path: {
         sessionId: sessionId,
+      },
+    });
+  }
+  /**
+   * 랭킹 및 결과 요약 조회
+   * 사용자의 누적 랭킹 정보와 캐릭터 그룹별 최고 기록을 반환합니다.
+   * @returns RankingResponseDto 랭킹 및 결과 요약
+   * @throws ApiError
+   */
+  public static sessionsControllerGetRankingSummary(): CancelablePromise<RankingResponseDto> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/sessions/ranking/summary',
+    });
+  }
+  /**
+   * 엔딩 수집 현황 조회
+   * 캐릭터 그룹별 엔딩 수집 리스트를 반환합니다.
+   * @returns EndingCollectionResponseDto 엔딩 수집 리스트
+   * @throws ApiError
+   */
+  public static sessionsControllerGetEndingCollection(): CancelablePromise<EndingCollectionResponseDto> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/sessions/collections',
+    });
+  }
+  /**
+   * 게임 히스토리 조회
+   * 사용자의 게임 플레이 히스토리 목록을 반환합니다.
+   * @param page 페이지 번호
+   * @param limit 페이지 당 개수 (기본값: 10 - 전체 조회에 가깝게 설정됨)
+   * @returns any
+   * @throws ApiError
+   */
+  public static sessionsControllerGetHistory(
+    page: number = 1,
+    limit: number = 10
+  ): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/api/sessions/history',
+      query: {
+        page: page,
+        limit: limit,
       },
     });
   }

@@ -1,0 +1,2182 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api": {
+      "get": {
+        "description": "기본 환영 메시지를 반환합니다.",
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "성공적으로 메시지를 반환",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "example": "Hello World!" }
+              }
+            }
+          }
+        },
+        "summary": "Hello World 메시지 반환",
+        "tags": ["app"]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "description": "서버의 현재 상태와 타임스탬프를 반환합니다.",
+        "operationId": "AppController_getHealth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "서버 상태 정보",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthCheckDto" }
+              }
+            }
+          }
+        },
+        "summary": "서버 상태 확인",
+        "tags": ["app"]
+      }
+    },
+    "/api/debug-sentry": {
+      "get": {
+        "description": "Sentry 에러 캡처 테스트를 위한 의도적인 에러를 발생시킵니다.",
+        "operationId": "AppController_getError",
+        "parameters": [],
+        "responses": { "500": { "description": "테스트용 에러" } },
+        "summary": "Sentry 테스트",
+        "tags": ["app"]
+      }
+    },
+    "/api/auth/kakao/token": {
+      "post": {
+        "operationId": "AuthController_exchangeCodeForToken",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/KakaoTokenDto" }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthTokenDto" }
+              }
+            }
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/auth/profile": {
+      "get": {
+        "operationId": "AuthController_getProfile",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/auth/kakao": {
+      "get": {
+        "operationId": "AuthController_kakaoLogin",
+        "parameters": [
+          {
+            "name": "redirect_uri",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/auth/kakao/callback": {
+      "get": {
+        "operationId": "AuthController_kakaoLoginCallback",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "responses": { "201": { "description": "" } },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/game/session": {
+      "get": {
+        "operationId": "GameController_findGameSession",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "게임 세션 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GameSessionDto" }
+              }
+            }
+          },
+          "404": { "description": "게임 세션을 찾을 수 없습니다." }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "게임 세션 조회",
+        "tags": ["game"]
+      },
+      "post": {
+        "operationId": "GameController_createGameSession",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "게임 세션 생성 성공",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GameSessionDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "게임 세션 생성",
+        "tags": ["game"]
+      }
+    },
+    "/api/game/character-groups": {
+      "get": {
+        "operationId": "GameController_getCharacterGroups",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "캐릭터 그룹 목록 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CharacterGroupDto" }
+                }
+              }
+            }
+          }
+        },
+        "summary": "캐릭터 그룹 목록 조회",
+        "tags": ["game"]
+      }
+    },
+    "/api/game/session/character-set": {
+      "post": {
+        "operationId": "GameController_selectCharacterSet",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelectCharacterSetDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "헬스 광인들 선택",
+                  "value": { "characterGroupId": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "캐릭터 셋 선택 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelectCharacterSetResultDto"
+                }
+              }
+            }
+          },
+          "404": { "description": "리소스를 찾을 수 없습니다." }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "캐릭터 셋 선택",
+        "tags": ["game"]
+      }
+    },
+    "/api/game/setup-info": {
+      "get": {
+        "operationId": "GameController_getSetupInfo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "게임 설정 정보 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SetupInfoDto" }
+              }
+            }
+          }
+        },
+        "summary": "게임 설정 정보 조회",
+        "tags": ["game"]
+      }
+    },
+    "/api/game/resources": {
+      "get": {
+        "operationId": "GameController_getResources",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "디렉터리별 게임 리소스 목록 반환",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": { "type": "string", "format": "uri" }
+                  },
+                  "example": {
+                    "bg": [
+                      "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/bg/bg_shelter_day.png",
+                      "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/bg/bg_shelter_night.png"
+                    ],
+                    "character": [
+                      "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/bc/default.png",
+                      "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/default.png"
+                    ],
+                    "cut_scene": [
+                      "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/cut_scene/event_11.png"
+                    ],
+                    "item": [
+                      "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/item/item_mineral_water.png",
+                      "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/item/item_energy_bar.png"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "게임 리소스 CDN 경로 조회",
+        "tags": ["game"]
+      }
+    },
+    "/api/game/session/inventory": {
+      "post": {
+        "operationId": "GameController_submitGameSessionInventory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitGameSessionInventoryDto"
+              },
+              "examples": {
+                "example1": {
+                  "summary": "기본 인벤토리 제출",
+                  "value": {
+                    "bagId": 1,
+                    "items": [
+                      { "itemId": 1, "quantity": 3 },
+                      { "itemId": 10, "quantity": 5 }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "인벤토리 제출 성공",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GameSessionDto" }
+              }
+            }
+          },
+          "404": { "description": "게임 세션을 찾을 수 없습니다." }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "인벤토리 제출",
+        "tags": ["game"]
+      }
+    },
+    "/api/sessions/intro": {
+      "post": {
+        "description": "캐릭터 그룹과 introMode에 맞는 Simple/System 이벤트 시퀀스를 반환합니다.",
+        "operationId": "SessionsController_playIntro",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/IntroRequestDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Intro 이벤트 번들",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/IntroResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "Intro 이벤트 조회",
+        "tags": ["sessions"]
+      }
+    },
+    "/api/sessions/active/next": {
+      "post": {
+        "description": "현재 세션 기준으로 다음 Act를 진행합니다. 직전 Act 결과를 보고한 뒤, 다음 Act 이벤트 번들을 반환합니다. 빈 객체를 보내면 현재 Act 번들을 불러옵니다.",
+        "operationId": "SessionsController_executeNextAct",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NextActRequestDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "다음 Act 이벤트 번들",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NextActResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "Act 진행",
+        "tags": ["sessions"]
+      }
+    },
+    "/api/sessions/{sessionId}/report": {
+      "get": {
+        "description": "C001 결과 리포트 탭 데이터를 반환합니다.",
+        "operationId": "SessionsController_getSessionReport",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "결과 보고서",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionReportResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "결과 보고서 조회",
+        "tags": ["sessions"]
+      }
+    },
+    "/api/sessions/ranking/summary": {
+      "get": {
+        "description": "사용자의 누적 랭킹 정보와 캐릭터 그룹별 최고 기록을 반환합니다.",
+        "operationId": "SessionsController_getRankingSummary",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "랭킹 및 결과 요약",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RankingResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "랭킹 및 결과 요약 조회",
+        "tags": ["sessions"]
+      }
+    },
+    "/api/sessions/collections": {
+      "get": {
+        "description": "캐릭터 그룹별 엔딩 수집 리스트를 반환합니다.",
+        "operationId": "SessionsController_getEndingCollection",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "엔딩 수집 리스트",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndingCollectionResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "엔딩 수집 현황 조회",
+        "tags": ["sessions"]
+      }
+    },
+    "/api/sessions/history": {
+      "get": {
+        "description": "사용자의 게임 플레이 히스토리 목록을 반환합니다.",
+        "operationId": "SessionsController_getHistory",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "페이지 번호",
+            "schema": { "default": 1, "example": 1, "type": "number" }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "페이지 당 개수 (기본값: 10 - 전체 조회에 가깝게 설정됨)",
+            "schema": { "default": 10, "example": 10, "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "security": [{ "JWT-auth": [] }],
+        "summary": "게임 히스토리 조회",
+        "tags": ["sessions"]
+      }
+    }
+  },
+  "info": {
+    "title": "Backend API",
+    "description": "NestJS 기반 백엔드 API 문서",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [{ "name": "app", "description": "기본 애플리케이션 엔드포인트" }],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "name": "JWT",
+        "description": "JWT 토큰을 입력하세요",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "HealthCheckDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "서버 상태",
+            "example": "OK",
+            "enum": ["OK", "ERROR"]
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "현재 시간 (ISO 8601 형식)",
+            "example": "2025-07-22T12:32:05.019Z",
+            "format": "date-time"
+          }
+        },
+        "required": ["status", "timestamp"]
+      },
+      "KakaoTokenDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "카카오 인증 서버로부터 받은 인가 코드 (Authorization Code)",
+            "example": "your_authorization_code_here"
+          },
+          "redirectUri": {
+            "type": "string",
+            "description": "인가 코드를 받을 때 사용했던 리다이렉트 URI",
+            "example": "http://localhost:8000"
+          }
+        },
+        "required": ["code", "redirectUri"]
+      },
+      "AuthTokenDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "인증에 성공하여 발급된 JWT (Access Token)",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        },
+        "required": ["accessToken"]
+      },
+      "BagDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number", "example": 1, "description": "가방 ID" },
+          "name": {
+            "type": "string",
+            "example": "기본 배낭",
+            "description": "가방 이름"
+          },
+          "code": {
+            "type": "string",
+            "example": "bag_1",
+            "description": "가방 코드"
+          },
+          "image": {
+            "type": "string",
+            "example": "bag.png",
+            "description": "가방 이미지"
+          },
+          "capacity": {
+            "type": "number",
+            "example": 10,
+            "description": "가방 용량"
+          },
+          "description": {
+            "type": "string",
+            "example": "기본 배낭 설명",
+            "description": "가방 설명"
+          }
+        },
+        "required": ["id", "name", "code", "image", "capacity", "description"]
+      },
+      "CharacterDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number", "example": 1, "description": "캐릭터 ID" },
+          "code": {
+            "type": "string",
+            "example": "char_hem",
+            "description": "캐릭터 코드"
+          },
+          "name": {
+            "type": "string",
+            "example": "헴",
+            "description": "캐릭터 이름",
+            "nullable": true
+          },
+          "age": {
+            "type": "number",
+            "example": 32,
+            "description": "캐릭터 나이",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "example": "득근에 살고 근손실에 죽는 헬스 미친자.",
+            "description": "캐릭터 설명",
+            "nullable": true
+          },
+          "selectImage": {
+            "type": "string",
+            "example": "char_hem_select.png",
+            "description": "캐릭터 선택 이미지",
+            "nullable": true
+          },
+          "portraitImage": {
+            "type": "string",
+            "example": "char_hem_portrait.png",
+            "description": "캐릭터 포트레잇 이미지",
+            "nullable": true
+          },
+          "defaultHp": {
+            "type": "number",
+            "example": 10,
+            "description": "기본 체력",
+            "nullable": true
+          },
+          "defaultMental": {
+            "type": "number",
+            "example": 10,
+            "description": "기본 정신력",
+            "nullable": true
+          },
+          "bgColor": {
+            "type": "string",
+            "example": "#593B8F",
+            "description": "배경 색상",
+            "nullable": true
+          },
+          "borderColor": {
+            "type": "string",
+            "example": "#CC92FB",
+            "description": "테두리 색상",
+            "nullable": true
+          }
+        },
+        "required": ["id", "code"]
+      },
+      "PlayingCharacterDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "플레이 중인 캐릭터 ID"
+          },
+          "playingCharacterSetId": {
+            "type": "number",
+            "example": 1,
+            "description": "플레이 중인 캐릭터 셋 ID"
+          },
+          "characterId": {
+            "type": "number",
+            "example": 1,
+            "description": "캐릭터 ID"
+          },
+          "character": { "$ref": "#/components/schemas/CharacterDto" },
+          "currentHp": {
+            "type": "number",
+            "example": 100,
+            "description": "현재 체력"
+          },
+          "currentMental": {
+            "type": "number",
+            "example": 50,
+            "description": "현재 정신력"
+          }
+        },
+        "required": [
+          "id",
+          "playingCharacterSetId",
+          "characterId",
+          "character",
+          "currentHp",
+          "currentMental"
+        ]
+      },
+      "PlayingCharacterSetDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "플레이 중인 캐릭터 셋 ID"
+          },
+          "gameSessionId": {
+            "type": "number",
+            "example": 1,
+            "description": "게임 세션 ID"
+          },
+          "characterGroupId": {
+            "type": "number",
+            "example": 1,
+            "description": "캐릭터 그룹 ID",
+            "nullable": true
+          },
+          "playingCharacter": {
+            "description": "플레이 중인 캐릭터 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PlayingCharacterDto" }
+          }
+        },
+        "required": [
+          "id",
+          "gameSessionId",
+          "characterGroupId",
+          "playingCharacter"
+        ]
+      },
+      "ItemDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number", "example": 1, "description": "아이템 ID" },
+          "name": {
+            "type": "string",
+            "example": "생수",
+            "description": "아이템 이름"
+          },
+          "image": {
+            "type": "string",
+            "example": "item_water.png",
+            "description": "아이템 이미지",
+            "nullable": true
+          },
+          "capacityCost": {
+            "type": "number",
+            "example": 1,
+            "description": "가방 차지 용량"
+          },
+          "isConsumable": {
+            "type": "boolean",
+            "example": true,
+            "description": "소모성 아이템 여부",
+            "nullable": true
+          },
+          "storeSectionId": {
+            "type": "number",
+            "example": 1,
+            "description": "상점 섹션 ID",
+            "nullable": true
+          },
+          "isVisable": {
+            "type": "boolean",
+            "example": true,
+            "description": "가방에서 보이는지 여부",
+            "nullable": true
+          },
+          "positionX": {
+            "type": "number",
+            "example": 0.5,
+            "description": "X 좌표",
+            "nullable": true
+          },
+          "positionY": {
+            "type": "number",
+            "example": 0.5,
+            "description": "Y 좌표",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "image",
+          "capacityCost",
+          "isConsumable",
+          "storeSectionId",
+          "isVisable",
+          "positionX",
+          "positionY"
+        ]
+      },
+      "GameSessionInventoryDto": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "number",
+            "example": 1,
+            "description": "게임 세션 ID"
+          },
+          "item": {
+            "description": "아이템 정보",
+            "allOf": [{ "$ref": "#/components/schemas/ItemDto" }]
+          },
+          "quantity": { "type": "number", "example": 1, "description": "수량" }
+        },
+        "required": ["sessionId", "item", "quantity"]
+      },
+      "GameSessionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "게임 세션 ID"
+          },
+          "userId": {
+            "type": "number",
+            "example": 1,
+            "description": "유저 ID"
+          },
+          "bag": {
+            "description": "가방 정보",
+            "allOf": [{ "$ref": "#/components/schemas/BagDto" }]
+          },
+          "bagCapacityUsed": {
+            "type": "number",
+            "example": 10,
+            "description": "가방 사용량",
+            "nullable": true
+          },
+          "bagConfirmedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "가방 확정 시각",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "example": "IN_PROGRESS",
+            "description": "게임 세션 상태",
+            "nullable": true
+          },
+          "lifePoint": {
+            "type": "number",
+            "example": 100,
+            "description": "생존 점수"
+          },
+          "currentDayId": {
+            "type": "number",
+            "example": 1,
+            "description": "현재 날짜 ID",
+            "nullable": true
+          },
+          "currentActId": {
+            "type": "number",
+            "example": 1,
+            "description": "현재 액트 ID",
+            "nullable": true
+          },
+          "endingId": {
+            "type": "number",
+            "example": 1,
+            "description": "엔딩 ID",
+            "nullable": true
+          },
+          "endedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "게임 종료 시각",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "생성 시각"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "수정 시각"
+          },
+          "playingCharacterSet": {
+            "nullable": true,
+            "description": "플레이 중인 캐릭터 셋",
+            "allOf": [{ "$ref": "#/components/schemas/PlayingCharacterSetDto" }]
+          },
+          "gameSessionInventory": {
+            "description": "게임 세션 인벤토리",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GameSessionInventoryDto" }
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "bag",
+          "bagCapacityUsed",
+          "bagConfirmedAt",
+          "status",
+          "lifePoint",
+          "currentDayId",
+          "currentActId",
+          "endingId",
+          "endedAt",
+          "createdAt",
+          "updatedAt",
+          "playingCharacterSet",
+          "gameSessionInventory"
+        ]
+      },
+      "CharacterGroupDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "캐릭터 그룹 ID"
+          },
+          "code": {
+            "type": "string",
+            "example": "duo_hem_bang",
+            "description": "캐릭터 그룹 코드"
+          },
+          "name": {
+            "type": "string",
+            "example": "재난 속에서 서로를 의지하며 살아남아야 하는 헬스 광인들",
+            "description": "캐릭터 그룹 이름"
+          },
+          "groupSelectImage": {
+            "type": "string",
+            "example": "duo_hem_bang.png",
+            "description": "캐릭터 그룹 선택 이미지"
+          },
+          "deathEndingIndex": {
+            "type": "number",
+            "example": 8,
+            "description": "서든데스 엔딩 인덱스",
+            "nullable": true
+          },
+          "prologActId": {
+            "type": "number",
+            "example": 1,
+            "description": "프롤로그 ID",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "example": "평범한 가족",
+            "description": "캐릭터 그룹 설명",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "groupSelectImage",
+          "deathEndingIndex",
+          "prologActId",
+          "description"
+        ]
+      },
+      "SelectCharacterSetDto": {
+        "type": "object",
+        "properties": {
+          "characterGroupId": {
+            "type": "number",
+            "example": 1,
+            "description": "캐릭터 그룹 ID"
+          }
+        },
+        "required": ["characterGroupId"]
+      },
+      "SelectCharacterSetResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "플레이 중인 캐릭터 셋 ID"
+          },
+          "gameSessionId": {
+            "type": "number",
+            "example": 1,
+            "description": "게임 세션 ID"
+          },
+          "characterGroupId": {
+            "type": "number",
+            "example": 1,
+            "description": "캐릭터 그룹 ID",
+            "nullable": true
+          },
+          "playingCharacter": {
+            "description": "플레이 중인 캐릭터 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PlayingCharacterDto" }
+          }
+        },
+        "required": [
+          "id",
+          "gameSessionId",
+          "characterGroupId",
+          "playingCharacter"
+        ]
+      },
+      "StoreSectionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "상점 섹션 ID"
+          },
+          "code": {
+            "type": "string",
+            "example": "GroupGrocery",
+            "description": "상점 섹션 코드"
+          },
+          "displayName": {
+            "type": "string",
+            "example": "식료품",
+            "description": "상점 섹션 이름"
+          },
+          "backgroundImage": {
+            "type": "string",
+            "example": "bg.png",
+            "description": "배경 이미지",
+            "nullable": true
+          },
+          "items": {
+            "description": "아이템 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ItemDto" }
+          }
+        },
+        "required": ["id", "code", "displayName", "backgroundImage", "items"]
+      },
+      "SetupInfoDto": {
+        "type": "object",
+        "properties": {
+          "bags": {
+            "description": "가방 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BagDto" }
+          },
+          "storeSections": {
+            "description": "상점 섹션 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/StoreSectionDto" }
+          }
+        },
+        "required": ["bags", "storeSections"]
+      },
+      "GameSessionInventoryItemDto": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "number",
+            "example": 1,
+            "description": "아이템 ID"
+          },
+          "quantity": { "type": "number", "example": 1, "description": "수량" }
+        },
+        "required": ["itemId", "quantity"]
+      },
+      "SubmitGameSessionInventoryDto": {
+        "type": "object",
+        "properties": {
+          "bagId": { "type": "number", "example": 1, "description": "가방 ID" },
+          "items": {
+            "description": "아이템 목록",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameSessionInventoryItemDto"
+            }
+          }
+        },
+        "required": ["bagId", "items"]
+      },
+      "SessionChoiceOutcomeDto": {
+        "type": "object",
+        "properties": {
+          "resultType": {
+            "type": "string",
+            "enum": [
+              "ACT_END",
+              "DAY_END",
+              "GAME_END",
+              "GAME_OVER",
+              "SUDDEN_DEATH"
+            ],
+            "example": "ACT_END"
+          },
+          "events": {
+            "type": "array",
+            "description": "후속 이벤트 목록",
+            "items": { "$ref": "#/components/schemas/SessionEventDto" }
+          }
+        },
+        "required": ["resultType", "events"]
+      },
+      "IntroRequestDto": {
+        "type": "object",
+        "properties": {
+          "introMode": {
+            "type": "number",
+            "example": 1,
+            "description": "Intro mode to play (1: pre-bag, 2: bag waiting, 3: prologue)"
+          }
+        },
+        "required": ["introMode"]
+      },
+      "SessionEventCharacterDto": {
+        "type": "object",
+        "properties": {
+          "characterCode": {
+            "type": "string",
+            "example": "char_hem",
+            "description": "Character code"
+          },
+          "position": {
+            "type": "string",
+            "example": "left",
+            "description": "Placement on the stage",
+            "nullable": true
+          },
+          "emotion": {
+            "type": "string",
+            "example": "angry",
+            "description": "Emotion preset",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://21009ea64690489baefd3170429f0a50.kakaoiedge.com/img/character/hb/angry.png",
+            "description": "Emotion image URL",
+            "nullable": true
+          },
+          "isSpeaker": {
+            "type": "boolean",
+            "example": true,
+            "description": "Speaks in this line",
+            "nullable": true
+          }
+        },
+        "required": [
+          "characterCode",
+          "position",
+          "emotion",
+          "imageUrl",
+          "isSpeaker"
+        ]
+      },
+      "SessionChoiceOptionDto": {
+        "type": "object",
+        "properties": {
+          "choiceOptionId": {
+            "type": "number",
+            "example": 1,
+            "description": "선택지 ID"
+          },
+          "text": {
+            "type": "string",
+            "example": "...일단 들어보자.",
+            "description": "선택지 문구"
+          },
+          "itemCategoryId": {
+            "type": "number",
+            "example": 2,
+            "description": "요구 아이템 카테고리",
+            "nullable": true
+          },
+          "itemId": {
+            "type": "number",
+            "example": 10,
+            "description": "사용될 아이템 ID",
+            "nullable": true
+          },
+          "itemName": {
+            "type": "string",
+            "example": "생수",
+            "description": "아이템 이름",
+            "nullable": true
+          },
+          "itemImage": {
+            "type": "string",
+            "example": "item_mineral_water.PNG",
+            "description": "아이템 이미지 파일명",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "number",
+            "example": 1,
+            "description": "소모 수량",
+            "nullable": true
+          },
+          "isSelectable": {
+            "type": "boolean",
+            "example": true,
+            "description": "선택 가능 여부"
+          }
+        },
+        "required": [
+          "choiceOptionId",
+          "text",
+          "itemCategoryId",
+          "itemId",
+          "itemName",
+          "itemImage",
+          "quantity",
+          "isSelectable"
+        ]
+      },
+      "SessionChoiceFallbackDto": {
+        "type": "object",
+        "properties": {
+          "choiceOptionId": {
+            "type": "number",
+            "example": 99,
+            "description": "선택지 ID"
+          },
+          "text": {
+            "type": "string",
+            "example": "아무것도 먹지 않는다",
+            "description": "후보 문구"
+          }
+        },
+        "required": ["choiceOptionId", "text"]
+      },
+      "SessionChoiceDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "공동 관리라고?",
+            "description": "선택지 제목"
+          },
+          "description": {
+            "type": "string",
+            "example": "대피소에서 물자를 공동 관리할지 결정한다.",
+            "description": "설명"
+          },
+          "thumbnail": {
+            "type": "string",
+            "example": "thumbnail.png",
+            "description": "선택지 썸네일"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["StoryChoice", "ItemChoice"],
+            "example": "StoryChoice"
+          },
+          "options": {
+            "description": "선택지 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SessionChoiceOptionDto" }
+          },
+          "fallback": {
+            "description": "아이템 미보유 시 기본 선택",
+            "allOf": [
+              { "$ref": "#/components/schemas/SessionChoiceFallbackDto" }
+            ]
+          },
+          "outcomes": {
+            "type": "object",
+            "description": "선택지별 결과 이벤트",
+            "example": {
+              "25": {
+                "resultType": "ACT_END",
+                "events": [
+                  {
+                    "eventId": 10201008,
+                    "type": "Simple",
+                    "script": "헴! 여기 있심더!",
+                    "characters": [],
+                    "bgImage": null,
+                    "sceneEffect": null,
+                    "bgm": null,
+                    "bgmVolume": null,
+                    "se": null,
+                    "seVolume": null,
+                    "seLoop": null,
+                    "choice": null,
+                    "effects": null,
+                    "itemChanges": null,
+                    "sessionEffects": null
+                  }
+                ]
+              }
+            },
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SessionChoiceOutcomeDto"
+            }
+          }
+        },
+        "required": ["title", "type", "options"]
+      },
+      "SessionEventEffectDto": {
+        "type": "object",
+        "properties": {
+          "characterCode": {
+            "type": "string",
+            "example": "char_hem",
+            "description": "Target character code",
+            "nullable": true
+          },
+          "effectType": {
+            "type": "string",
+            "example": "health",
+            "description": "Affected stat type"
+          },
+          "change": {
+            "type": "number",
+            "example": 1,
+            "description": "Delta applied to the stat",
+            "nullable": true
+          },
+          "newValue": {
+            "type": "number",
+            "example": 101,
+            "description": "Post-change value",
+            "nullable": true
+          }
+        },
+        "required": ["characterCode", "effectType", "change", "newValue"]
+      },
+      "SessionEventItemChangeDto": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "number",
+            "example": 97,
+            "description": "아이템 ID"
+          },
+          "itemName": {
+            "type": "string",
+            "example": "[형빈의 리더십]",
+            "description": "아이템 이름",
+            "nullable": true
+          },
+          "quantityChange": {
+            "type": "number",
+            "example": 1,
+            "description": "변동 수량"
+          },
+          "newQuantity": {
+            "type": "number",
+            "example": 1,
+            "description": "변경 후 총량",
+            "nullable": true
+          }
+        },
+        "required": ["itemId", "itemName", "quantityChange", "newQuantity"]
+      },
+      "SessionEventSessionEffectDto": {
+        "type": "object",
+        "properties": {
+          "effectType": {
+            "type": "string",
+            "example": "LifePoint",
+            "description": "세션 통계 종류"
+          },
+          "change": {
+            "type": "number",
+            "example": 1,
+            "description": "변동 값"
+          },
+          "newValue": {
+            "type": "number",
+            "example": 5,
+            "description": "변경 후 값",
+            "nullable": true
+          }
+        },
+        "required": ["effectType", "change", "newValue"]
+      },
+      "SessionEventDto": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "number",
+            "example": 10101001,
+            "description": "이벤트 ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Simple", "StoryChoice", "ItemChoice", "Status", "System"],
+            "example": "Simple"
+          },
+          "script": {
+            "type": "string",
+            "example": "헴! 일단 끝까지 좀 들어보입시다.",
+            "description": "대사/내레이션"
+          },
+          "characters": {
+            "description": "대사 캐릭터 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SessionEventCharacterDto" }
+          },
+          "bgImage": {
+            "type": "string",
+            "example": null,
+            "description": "배경 이미지"
+          },
+          "sceneEffect": {
+            "type": "string",
+            "example": null,
+            "description": "장면 효과"
+          },
+          "bgm": { "type": "string", "example": null, "description": "배경음" },
+          "bgmVolume": {
+            "type": "number",
+            "example": null,
+            "description": "배경음 볼륨"
+          },
+          "se": { "type": "string", "example": null, "description": "효과음" },
+          "seVolume": {
+            "type": "number",
+            "example": null,
+            "description": "효과음 볼륨"
+          },
+          "seLoop": {
+            "type": "boolean",
+            "example": false,
+            "description": "효과음 반복 여부"
+          },
+          "choice": {
+            "description": "선택지 정보",
+            "allOf": [{ "$ref": "#/components/schemas/SessionChoiceDto" }]
+          },
+          "effects": {
+            "description": "캐릭터 스탯 변화",
+            "example": [
+              {
+                "characterCode": "char_hem",
+                "effectType": "health",
+                "change": 1,
+                "newValue": 101
+              }
+            ],
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SessionEventEffectDto" }
+          },
+          "itemChanges": {
+            "description": "아이템 변화",
+            "example": [
+              {
+                "itemId": 97,
+                "itemName": "생수",
+                "quantityChange": 1,
+                "newQuantity": 2
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionEventItemChangeDto"
+            }
+          },
+          "sessionEffects": {
+            "description": "세션 스탯 변화",
+            "example": [
+              { "effectType": "LIFE_POINT", "change": -1, "newValue": 2 }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionEventSessionEffectDto"
+            }
+          }
+        },
+        "required": ["eventId", "type", "characters"]
+      },
+      "IntroResponseDto": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "example": "session-abc-123",
+            "description": "Session ID"
+          },
+          "introMode": {
+            "type": "number",
+            "example": 1,
+            "description": "Intro mode that was played"
+          },
+          "events": {
+            "description": "Intro events to render",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SessionEventDto" }
+          }
+        },
+        "required": ["sessionId", "introMode", "events"]
+      },
+      "NextActChoicePayloadDto": {
+        "type": "object",
+        "properties": {
+          "choiceOptionId": {
+            "type": "number",
+            "example": 1,
+            "description": "선택한 옵션 ID"
+          },
+          "chosenItemId": {
+            "type": "number",
+            "example": 10,
+            "description": "아이템 선택지에서 소비한 아이템 ID"
+          }
+        },
+        "required": ["choiceOptionId"]
+      },
+      "NextActItemChangeDto": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "number",
+            "example": 1,
+            "description": "아이템 ID"
+          },
+          "quantityChange": {
+            "type": "number",
+            "example": 1,
+            "description": "변화량"
+          }
+        },
+        "required": ["itemId", "quantityChange"]
+      },
+      "NextActCharacterStatusChangeDto": {
+        "type": "object",
+        "properties": {
+          "characterCode": {
+            "type": "string",
+            "example": "char_hem",
+            "description": "캐릭터 코드"
+          },
+          "hpChange": {
+            "type": "number",
+            "example": 0,
+            "description": "HP 변화량"
+          },
+          "mentalChange": {
+            "type": "number",
+            "example": 1,
+            "description": "Mental 변화량"
+          }
+        },
+        "required": ["characterCode", "hpChange", "mentalChange"]
+      },
+      "NextActSessionStatChangeDto": {
+        "type": "object",
+        "properties": {
+          "statType": {
+            "type": "string",
+            "enum": ["LifePoint"],
+            "example": "LifePoint",
+            "description": "세션 스탯 타입"
+          },
+          "change": { "type": "number", "example": 1, "description": "변화량" }
+        },
+        "required": ["statType", "change"]
+      },
+      "NextActUpdatesDto": {
+        "type": "object",
+        "properties": {
+          "itemChanges": {
+            "description": "아이템 변화",
+            "example": [{ "itemId": 1, "quantityChange": 1 }],
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/NextActItemChangeDto" }
+          },
+          "characterStatusChanges": {
+            "description": "캐릭터 상태 변화",
+            "example": [
+              { "characterCode": "char_hem", "hpChange": 0, "mentalChange": 1 }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NextActCharacterStatusChangeDto"
+            }
+          },
+          "sessionStatChanges": {
+            "description": "세션 통계 변화",
+            "example": [{ "statType": "LifePoint", "change": -1 }],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NextActSessionStatChangeDto"
+            }
+          }
+        }
+      },
+      "NextActRequestDto": {
+        "type": "object",
+        "properties": {
+          "lastActId": {
+            "type": "number",
+            "example": 10101,
+            "description": "직전 Act ID"
+          },
+          "choice": {
+            "description": "선택지 보고 (선택지를 보여준 경우에만 전송)",
+            "allOf": [
+              { "$ref": "#/components/schemas/NextActChoicePayloadDto" }
+            ]
+          },
+          "updates": {
+            "description": "프론트 처리 업데이트(인벤토리/스탯 변화 보고)",
+            "allOf": [{ "$ref": "#/components/schemas/NextActUpdatesDto" }]
+          }
+        }
+      },
+      "SessionDayMetaDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number", "example": 1, "description": "Day ID" },
+          "number": {
+            "type": "number",
+            "example": 1,
+            "description": "Day Number"
+          }
+        },
+        "required": ["id", "number"]
+      },
+      "SessionActMetaDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number", "example": 10101, "description": "Act ID" },
+          "sequenceNumber": {
+            "type": "number",
+            "example": 1,
+            "description": "Act sequence number"
+          },
+          "title": {
+            "type": "string",
+            "example": "대피소 첫 만남",
+            "description": "Act 제목",
+            "nullable": true
+          }
+        },
+        "required": ["id", "sequenceNumber", "title"]
+      },
+      "PlayingCharacterStatusDto": {
+        "type": "object",
+        "properties": {
+          "characterCode": {
+            "type": "string",
+            "example": "char_hem",
+            "description": "캐릭터 코드"
+          },
+          "characterId": {
+            "type": "number",
+            "example": 9,
+            "description": "캐릭터 ID"
+          },
+          "currentHp": {
+            "type": "number",
+            "example": 95,
+            "description": "현재 HP"
+          },
+          "currentMental": {
+            "type": "number",
+            "example": 88,
+            "description": "현재 멘탈"
+          }
+        },
+        "required": [
+          "characterCode",
+          "characterId",
+          "currentHp",
+          "currentMental"
+        ]
+      },
+      "SessionEndingMetaDto": {
+        "type": "object",
+        "properties": {
+          "endingId": {
+            "type": "number",
+            "example": 1,
+            "description": "엔딩 ID"
+          },
+          "endingIndex": {
+            "type": "number",
+            "example": 1,
+            "description": "엔딩 인덱스"
+          },
+          "title": {
+            "type": "string",
+            "example": "해피엔딩a",
+            "description": "엔딩 제목"
+          },
+          "endingImage": {
+            "type": "string",
+            "example": "ending_1.PNG",
+            "description": "엔딩 이미지",
+            "nullable": true
+          }
+        },
+        "required": ["endingId", "endingIndex", "title", "endingImage"]
+      },
+      "NextActResponseDto": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "example": "session-abc-123",
+            "description": "세션 ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "IN_PROGRESS",
+              "DAY_END",
+              "GAME_END",
+              "GAME_OVER",
+              "SUDDEN_DEATH"
+            ],
+            "example": "IN_PROGRESS"
+          },
+          "day": {
+            "description": "현재 Day 정보",
+            "nullable": true,
+            "allOf": [{ "$ref": "#/components/schemas/SessionDayMetaDto" }]
+          },
+          "act": {
+            "description": "현재 Act 정보",
+            "nullable": true,
+            "allOf": [{ "$ref": "#/components/schemas/SessionActMetaDto" }]
+          },
+          "playingCharacters": {
+            "description": "현재 플레이 중인 캐릭터 스탯",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayingCharacterStatusDto"
+            }
+          },
+          "events": {
+            "description": "Act 이벤트 리스트",
+            "example": [
+              {
+                "eventId": 10201007,
+                "type": "ItemChoice",
+                "script": "무엇을 마실까?",
+                "characters": [],
+                "bgImage": null,
+                "sceneEffect": null,
+                "bgm": null,
+                "bgmVolume": null,
+                "se": null,
+                "seVolume": null,
+                "seLoop": null,
+                "choice": {
+                  "title": "목이 마르다",
+                  "description": "무엇을 마실까?",
+                  "thumbnail": "썸네일.png",
+                  "type": "ItemChoice",
+                  "options": [
+                    {
+                      "choiceOptionId": 25,
+                      "text": "25",
+                      "itemCategoryId": null,
+                      "itemId": null,
+                      "itemName": null,
+                      "itemImage": null,
+                      "quantity": null,
+                      "isSelectable": false
+                    },
+                    {
+                      "choiceOptionId": 28,
+                      "text": "마실 게 없어서 그냥 참는다",
+                      "itemCategoryId": null,
+                      "itemId": null,
+                      "itemName": null,
+                      "itemImage": null,
+                      "quantity": null,
+                      "isSelectable": true
+                    }
+                  ],
+                  "fallback": null,
+                  "outcomes": {
+                    "25": {
+                      "resultType": "ACT_END",
+                      "events": [
+                        {
+                          "eventId": 10201008,
+                          "type": "Simple",
+                          "script": "헴! 여기 있심더!",
+                          "characters": [],
+                          "bgImage": null,
+                          "sceneEffect": null,
+                          "bgm": null,
+                          "bgmVolume": null,
+                          "se": null,
+                          "seVolume": null,
+                          "seLoop": null,
+                          "choice": null,
+                          "effects": null,
+                          "itemChanges": null,
+                          "sessionEffects": null
+                        }
+                      ]
+                    }
+                  }
+                },
+                "effects": null,
+                "itemChanges": null,
+                "sessionEffects": null
+              }
+            ],
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SessionEventDto" }
+          },
+          "ending": {
+            "description": "엔딩 정보",
+            "nullable": true,
+            "example": null,
+            "allOf": [{ "$ref": "#/components/schemas/SessionEndingMetaDto" }]
+          }
+        },
+        "required": [
+          "sessionId",
+          "status",
+          "day",
+          "act",
+          "playingCharacters",
+          "events",
+          "ending"
+        ]
+      },
+      "SessionReportSessionMetaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "게임 세션 ID"
+          },
+          "userName": {
+            "type": "string",
+            "description": "사용자 이름(카카오 로그인명)"
+          },
+          "characterGroupCode": {
+            "type": "string",
+            "description": "캐릭터 그룹 코드"
+          },
+          "characterGroupName": {
+            "type": "string",
+            "description": "캐릭터 그룹 이름"
+          },
+          "status": {
+            "type": "string",
+            "example": "GAME_END",
+            "description": "세션 상태"
+          },
+          "endedAt": {
+            "type": "string",
+            "description": "종료 시각",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "생성 시각",
+            "format": "date-time"
+          },
+          "totalPlayTimeSeconds": {
+            "type": "number",
+            "description": "총 플레이 시간(초)",
+            "example": 5400
+          },
+          "lifePoint": {
+            "type": "number",
+            "example": 0,
+            "description": "LifePoint 최종값"
+          }
+        },
+        "required": ["id", "userName", "status", "createdAt", "lifePoint"]
+      },
+      "SessionReportEndingDto": {
+        "type": "object",
+        "properties": {
+          "endingId": { "type": "number", "description": "엔딩 ID" },
+          "endingIndex": { "type": "number", "description": "엔딩 인덱스" },
+          "title": { "type": "string", "description": "엔딩 제목" },
+          "grade": { "type": "string", "description": "엔딩 등급" },
+          "image": { "type": "string", "description": "엔딩 이미지" }
+        }
+      },
+      "SessionReportFinalStatsDto": {
+        "type": "object",
+        "properties": {
+          "lifePoint": { "type": "number", "description": "LifePoint 최종값" },
+          "survivalDays": { "type": "number", "description": "생존 일수" },
+          "totalChoices": { "type": "number", "description": "총 선택 횟수" },
+          "goodChoices": { "type": "number", "description": "GOOD 선택 수" },
+          "badChoices": { "type": "number", "description": "BAD 선택 수" },
+          "neutralChoices": {
+            "type": "number",
+            "description": "Neutral 선택 수"
+          }
+        },
+        "required": ["lifePoint"]
+      },
+      "SessionReportCharacterDto": {
+        "type": "object",
+        "properties": {
+          "characterCode": { "type": "string", "description": "캐릭터 코드" },
+          "name": { "type": "string", "description": "캐릭터 이름" },
+          "finalHp": { "type": "number", "description": "최종 HP" },
+          "finalMental": { "type": "number", "description": "최종 Mental" },
+          "maxHp": { "type": "number", "description": "최대 HP" },
+          "maxMental": { "type": "number", "description": "최대 Mental" },
+          "survivalStatus": {
+            "type": "string",
+            "description": "생존 상태 예: ALIVE/DEAD"
+          }
+        },
+        "required": [
+          "characterCode",
+          "name",
+          "finalHp",
+          "finalMental",
+          "survivalStatus"
+        ]
+      },
+      "SessionReportHiddenStatDto": {
+        "type": "object",
+        "properties": {
+          "statCode": { "type": "string", "description": "히든 스탯 코드" },
+          "name": { "type": "string", "description": "히든 스탯 이름" },
+          "value": { "type": "number", "description": "값" },
+          "maxValue": { "type": "number", "description": "최대값" },
+          "description": { "type": "string", "description": "설명" },
+          "grade": { "type": "string", "description": "등급" }
+        },
+        "required": ["statCode", "name", "value", "maxValue"]
+      },
+      "SessionReportBagDto": {
+        "type": "object",
+        "properties": {
+          "bagId": { "type": "number", "description": "가방 ID" },
+          "bagName": { "type": "string", "description": "가방 이름" },
+          "capacity": { "type": "number", "description": "가방 용량" },
+          "usedCapacity": { "type": "number", "description": "사용 용량" },
+          "usageRate": { "type": "number", "description": "사용률(%)" },
+          "grade": { "type": "string", "description": "가방 등급" },
+          "efficiency": { "type": "number", "description": "가방 효율(%)" },
+          "bagImageUrl": { "type": "string", "description": "가방 이미지 URL" },
+          "ownedItemCount": {
+            "type": "number",
+            "description": "담은 아이템 개수"
+          },
+          "usedItemCount": {
+            "type": "number",
+            "description": "실제 사용한 아이템 개수"
+          }
+        },
+        "required": ["bagId", "bagName", "capacity"]
+      },
+      "SessionReportInventoryItemDto": {
+        "type": "object",
+        "properties": {
+          "itemId": { "type": "number", "description": "아이템 ID" },
+          "itemName": { "type": "string", "description": "아이템 이름" },
+          "quantity": { "type": "number", "description": "남은 수량" },
+          "imageUrl": { "type": "string", "description": "아이템 이미지 URL" }
+        },
+        "required": ["itemId", "itemName", "quantity"]
+      },
+      "SessionReportPointDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "GOOD/BAD 등 포인트 유형"
+          },
+          "category": { "type": "string", "description": "카테고리" },
+          "title": { "type": "string", "description": "제목" },
+          "description": { "type": "string", "description": "설명" },
+          "dayNumber": { "type": "number", "description": "Day 번호" },
+          "actId": { "type": "number", "description": "Act ID" },
+          "points": { "type": "number", "description": "점수" }
+        },
+        "required": ["type", "category", "title", "description", "points"]
+      },
+      "SessionReportExperienceBreakdownDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "엔딩 등 보상으로 획득한 경험치 총합"
+          }
+        }
+      },
+      "SessionReportResultDto": {
+        "type": "object",
+        "properties": {
+          "ending": { "$ref": "#/components/schemas/SessionReportEndingDto" },
+          "finalStats": {
+            "$ref": "#/components/schemas/SessionReportFinalStatsDto"
+          },
+          "characters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionReportCharacterDto"
+            }
+          },
+          "hiddenStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionReportHiddenStatDto"
+            }
+          },
+          "survivalBag": { "$ref": "#/components/schemas/SessionReportBagDto" },
+          "inventory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionReportInventoryItemDto"
+            }
+          },
+          "points": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SessionReportPointDto" }
+          },
+          "experiencePoints": {
+            "$ref": "#/components/schemas/SessionReportExperienceBreakdownDto"
+          }
+        },
+        "required": [
+          "ending",
+          "finalStats",
+          "characters",
+          "hiddenStats",
+          "survivalBag",
+          "points",
+          "experiencePoints"
+        ]
+      },
+      "SessionReportDataDto": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/SessionReportSessionMetaDto"
+          },
+          "tab": {
+            "type": "string",
+            "enum": ["result", "ranking", "collection", "history"]
+          },
+          "result": { "$ref": "#/components/schemas/SessionReportResultDto" }
+        },
+        "required": ["session", "tab", "result"]
+      },
+      "SessionReportResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "data": { "$ref": "#/components/schemas/SessionReportDataDto" }
+        },
+        "required": ["success", "data"]
+      },
+      "RankingMyScoreDto": {
+        "type": "object",
+        "properties": {
+          "rank": { "type": "number", "description": "내 순위", "example": 5 },
+          "totalUsers": {
+            "type": "number",
+            "description": "전체 사용자(세션) 수",
+            "example": 100
+          },
+          "xp": {
+            "type": "number",
+            "description": "획득 XP (HP + SP + LifePoint)",
+            "example": 350
+          }
+        },
+        "required": ["rank", "totalUsers", "xp"]
+      },
+      "RankingCharacterResultDto": {
+        "type": "object",
+        "properties": {
+          "characterGroupName": {
+            "type": "string",
+            "description": "캐릭터 그룹 이름",
+            "example": "생존자들"
+          },
+          "characterNames": {
+            "type": "string",
+            "description": "캐릭터 이름(들)",
+            "example": "철수, 영희"
+          },
+          "result": {
+            "type": "string",
+            "description": "결과 텍스트 (엔딩 제목 등)",
+            "example": "생존"
+          },
+          "grade": {
+            "type": "string",
+            "description": "엔딩 등급",
+            "example": "Good"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "결과 이미지 URL",
+            "example": "https://example.com/image.png"
+          }
+        },
+        "required": ["characterNames", "result"]
+      },
+      "RankingUserDto": {
+        "type": "object",
+        "properties": {
+          "rank": { "type": "number", "description": "순위", "example": 1 },
+          "nickname": {
+            "type": "string",
+            "description": "닉네임",
+            "example": "User123"
+          },
+          "xp": { "type": "number", "description": "XP", "example": 500 },
+          "isCurrentUser": {
+            "type": "boolean",
+            "description": "현재 조회중인 세션(나)인지 여부",
+            "example": true
+          }
+        },
+        "required": ["rank", "nickname", "xp"]
+      },
+      "RankingDataDto": {
+        "type": "object",
+        "properties": {
+          "myScore": { "$ref": "#/components/schemas/RankingMyScoreDto" },
+          "characters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RankingCharacterResultDto"
+            }
+          },
+          "rankings": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/RankingUserDto" }
+          }
+        },
+        "required": ["myScore", "characters", "rankings"]
+      },
+      "RankingResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "성공 여부",
+            "example": true
+          },
+          "data": { "$ref": "#/components/schemas/RankingDataDto" }
+        },
+        "required": ["success", "data"]
+      },
+      "EndingCollectionItemDto": {
+        "type": "object",
+        "properties": {
+          "endingId": {
+            "type": "number",
+            "description": "엔딩 ID",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "엔딩 제목",
+            "example": "Happy: 사랑과 득근"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "엔딩 이미지 URL (수집되지 않은 경우 null)",
+            "example": "https://example.com/image.png",
+            "nullable": true
+          },
+          "isCollected": {
+            "type": "boolean",
+            "description": "수집 여부",
+            "example": true
+          }
+        },
+        "required": ["endingId", "title", "imageUrl", "isCollected"]
+      },
+      "EndingCollectionGroupDto": {
+        "type": "object",
+        "properties": {
+          "characterGroupCode": {
+            "type": "string",
+            "description": "캐릭터 그룹 코드",
+            "example": "group_survivors"
+          },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/EndingCollectionItemDto" }
+          }
+        },
+        "required": ["characterGroupCode", "items"]
+      },
+      "EndingCollectionResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "성공 여부",
+            "example": true
+          },
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/EndingCollectionGroupDto" }
+          }
+        },
+        "required": ["success", "data"]
+      }
+    }
+  }
+}
