@@ -1,12 +1,16 @@
 import { cn } from '@shared/lib/utils';
 import { IconHeart, IconLightning, IconPotential } from '@shared/ui/icons';
 import Typography from '@shared/ui/Typography';
-import type { PlayReportCharacterStats } from '../../../../model/types';
+import type {
+  EndingGrade,
+  PlayReportCharacterStats,
+} from '../../../../model/types';
 import { getObjectUrlSelector, useAssetStore } from '@shared/preload-assets';
+import { ENDING_CHARACTER_IMAGES } from '../../../../__mocks__/mockResults';
 
 interface CharacterStatsSectionProps {
   characters: PlayReportCharacterStats[];
-  endingImage?: string;
+  endingGrade: EndingGrade;
 }
 
 function StateCardBackground() {
@@ -221,18 +225,31 @@ function CharacterStatCard({
 
 export default function CharacterStatsSection({
   characters,
-  endingImage,
+  endingGrade,
 }: CharacterStatsSectionProps) {
+  const characterImages = characters.map(
+    character => ENDING_CHARACTER_IMAGES[endingGrade][character.characterCode]
+  );
+  console.log(endingGrade);
   return (
-    <div className='relative h-125 w-full'>
+    <div className='relative h-125 w-full overflow-hidden'>
       {/* 캐릭터 이미지 placeholder */}
-      <div className='absolute inset-0 bg-gray-500/30' />
+      <img
+        src={characterImages[0]}
+        alt='character'
+        className='absolute bottom-[-30%] left-[7%] h-[135%] w-auto'
+      />
+      <img
+        src={characterImages[1]}
+        alt='character'
+        className='absolute right-[7%] bottom-[-27%] h-[130%] w-auto'
+      />
 
       {/* 좌측 상단 스탯카드 (첫번째 캐릭터) */}
       {characters[0] && (
         <CharacterStatCard
           character={characters[0]}
-          imageUrl={endingImage}
+          imageUrl={characterImages[0]}
           className='absolute top-25 left-4'
         />
       )}
@@ -241,7 +258,7 @@ export default function CharacterStatsSection({
       {characters[1] && (
         <CharacterStatCard
           character={characters[1]}
-          imageUrl={endingImage}
+          imageUrl={characterImages[1]}
           className='absolute top-1/2 right-4 -translate-y-1/2'
         />
       )}

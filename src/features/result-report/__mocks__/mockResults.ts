@@ -1,5 +1,6 @@
 import type {
   CollectionCharacterSet,
+  EndingGrade,
   HistoryItem,
   PlayReportData,
   RankingData,
@@ -776,3 +777,25 @@ export const RESULT_HISTORY_ITEMS: HistoryItem[] = [
     },
   },
 ];
+
+export const ENDING_CHARACTER_IMAGES: Record<
+  EndingGrade,
+  Record<string, string>
+> = {
+  HAPPY: {
+    char_hem: '/image/character/char_hb/happy.png',
+    char_bang: '/image/character/char_bc/happy.png',
+  },
+  NORMAL: {
+    char_hem: '/image/character/char_hb/default.png',
+    char_bang: '/image/character/char_bc/default.png',
+  },
+  BAD: {
+    char_hem: '/image/character/char_hb/tired.png',
+    char_bang: '/image/character/char_bc/tired.png',
+  },
+  HIDDEN: {
+    char_hem: '/image/character/char_hb/happy.png',
+    char_bang: '/image/character/char_bc/happy.png',
+  },
+};
