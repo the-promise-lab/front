@@ -7,10 +7,11 @@ import type { SlotItem } from '@entities/inventory';
 export interface CollectionCard {
   endingTitle: string;
   endingThumbnailUrl: string | null;
+  isCollected: boolean;
 }
 
 export interface CollectionCharacterSet {
-  id: number;
+  characterGroupCode: string;
   name: string;
   images: {
     active: string;

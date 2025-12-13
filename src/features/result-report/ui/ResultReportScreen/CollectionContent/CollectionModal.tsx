@@ -29,6 +29,7 @@ export default function CollectionModal({
   }, []);
 
   const cards = collectionCharacterSet.collectionCards;
+  console.log(cards);
   const totalPages = Math.ceil(cards.length / CARDS_PER_PAGE);
   const currentCards = cards.slice(
     currentPage * CARDS_PER_PAGE,
@@ -65,7 +66,7 @@ export default function CollectionModal({
   return (
     <>
       <ImageButton
-        key={collectionCharacterSet.id}
+        key={collectionCharacterSet.characterGroupCode}
         className='relative h-80 w-140'
         imageUrl={imageUrl}
         onClick={open}
@@ -148,7 +149,7 @@ function CollectionCardItem({
             className='size-full rounded border-[0.8px] border-white object-cover lg:border-2'
           />
         ) : (
-          <div className='size-full rounded border-[0.8px] border-white bg-white/30 lg:border-2' />
+          <div className='size-full rounded border-[0.8px] border-white bg-white/20 lg:border-2' />
         )}
       </div>
     </div>

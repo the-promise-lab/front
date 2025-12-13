@@ -44,7 +44,7 @@ export function ResultReportScreen({
       case 'ranking':
         return <RankingContent />;
       case 'collection':
-        return <CollectionContent activeCharacterSetId={1} />;
+        return <CollectionContent />;
       case 'history':
         return <HistoryContent />;
       default:

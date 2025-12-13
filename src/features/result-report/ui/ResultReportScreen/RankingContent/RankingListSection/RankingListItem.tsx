@@ -63,7 +63,7 @@ export default function RankingListItem({
       />
 
       <div
-        className='flex h-full w-full items-center justify-between'
+        className='flex h-full w-full items-center justify-between pr-2'
         style={{
           background: getGradientColor(isCurrentUser),
         }}

@@ -458,7 +458,16 @@
             "schema": { "default": 10, "example": 10, "type": "number" }
           }
         ],
-        "responses": { "200": { "description": "" } },
+        "responses": {
+          "200": {
+            "description": "게임 히스토리 목록",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HistoryResponseDto" }
+              }
+            }
+          }
+        },
         "security": [{ "JWT-auth": [] }],
         "summary": "게임 히스토리 조회",
         "tags": ["sessions"]
@@ -2176,6 +2185,76 @@
           }
         },
         "required": ["success", "data"]
+      },
+      "HistoryItemDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "세션 ID", "example": "1" },
+          "characterName": {
+            "type": "string",
+            "description": "캐릭터 이름(들)",
+            "example": "미리&류부장"
+          },
+          "resultType": {
+            "type": "string",
+            "description": "최종 결과 (등급)",
+            "example": "Good"
+          },
+          "xp": { "type": "number", "description": "XP 총합", "example": 120 },
+          "date": {
+            "type": "string",
+            "description": "종료 날짜",
+            "example": "25.01.21"
+          },
+          "time": {
+            "type": "string",
+            "description": "종료 시간",
+            "example": "14:30"
+          },
+          "characterImageUrl": {
+            "type": "string",
+            "description": "캐릭터 구성 이미지 (또는 엔딩 이미지)",
+            "example": "https://example.com/image.png"
+          },
+          "playReport": {
+            "description": "히스토리 상세 (리포트 데이터). 목록 조회 시에는 제외될 수 있음.",
+            "allOf": [
+              { "$ref": "#/components/schemas/SessionReportResponseDto" }
+            ]
+          }
+        },
+        "required": ["id", "characterName", "resultType", "xp", "date", "time"]
+      },
+      "HistoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "성공 여부",
+            "example": true
+          },
+          "data": {
+            "description": "히스토리 목록",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/HistoryItemDto" }
+          },
+          "total": {
+            "type": "number",
+            "description": "총 데이터 수",
+            "example": 10
+          },
+          "page": {
+            "type": "number",
+            "description": "현재 페이지",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "페이지 당 개수",
+            "example": 10
+          }
+        },
+        "required": ["success", "data", "total", "page", "limit"]
       }
     }
   }
