@@ -3,12 +3,10 @@ import { GlassPanel } from '../kit/GlassPanel';
 import TotalScoreSection from './TotalScoreSection';
 import FinalResultSection from './FinalResultSection';
 import RankingListSection from './RankingListSection';
-import { RESULT_RANKING_DATA } from '../../../__mocks__/mockResults';
-
-// TODO: 실제 API에서 데이터 가져오기
-const mockData = RESULT_RANKING_DATA;
+import useRankingSummary from '../../../model/useRankingSummary';
 
 export default function RankingContent() {
+  const { data: rankingSummary } = useRankingSummary();
   return (
     <div className='relative flex h-full w-full flex-col'>
       {/* 타이틀 영역 */}
@@ -25,16 +23,16 @@ export default function RankingContent() {
           {/* 좌측: Total Score + Final Result */}
           <div className='flex min-w-160 flex-1 flex-col gap-8'>
             <TotalScoreSection
-              rank={mockData.myScore.rank}
-              totalUsers={mockData.myScore.totalUsers}
-              xp={mockData.myScore.xp}
+              rank={rankingSummary?.myScore.rank ?? 0}
+              totalUsers={rankingSummary?.myScore.totalUsers ?? 0}
+              xp={rankingSummary?.myScore.xp ?? 0}
             />
-            <FinalResultSection characters={mockData.characters} />
+            <FinalResultSection characters={rankingSummary?.characters ?? []} />
           </div>
 
           {/* 우측: Ranking 리스트 */}
           <div className='min-w-160 flex-1'>
-            <RankingListSection rankings={mockData.rankings} />
+            <RankingListSection rankings={rankingSummary?.rankings ?? []} />
           </div>
         </div>
       </div>

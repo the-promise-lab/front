@@ -12,7 +12,7 @@ import type {
 
 export const RESULT_COLLECTION_CHARACTER_SETS: CollectionCharacterSet[] = [
   {
-    id: 1,
+    characterGroupCode: 'duo_hem_bang',
     name: '형빈과 병철',
     images: {
       active: '/image/reportPage/collection_hbbc_active.png',
@@ -23,42 +23,42 @@ export const RESULT_COLLECTION_CHARACTER_SETS: CollectionCharacterSet[] = [
       {
         endingTitle: 'HAPPY: 사랑과 득근',
         endingThumbnailUrl: null,
+        isCollected: true,
       },
       {
         endingTitle: 'HAPPY: 땀은 물보다 진하다',
         endingThumbnailUrl: null,
+        isCollected: true,
       },
       {
         endingTitle: 'Hidden: 신기의 계승자',
         endingThumbnailUrl: null,
+        isCollected: false,
       },
       {
         endingTitle: 'Normal: 새로운 득근',
         endingThumbnailUrl: null,
+        isCollected: false,
       },
       {
         endingTitle: 'Normal: 끝나지 않는 운동',
         endingThumbnailUrl: null,
+        isCollected: false,
       },
     ],
   },
   {
-    id: 2,
+    characterGroupCode: 'duo_jung_dog',
     name: '복순과 진실',
     images: {
       active: '/image/reportPage/collection_bsjs_active.png',
       disabled: '/image/reportPage/collection_bsjs_disabled.png',
       default: '/image/reportPage/collection_bsjs_default.png',
     },
-    collectionCards: [
-      {
-        endingTitle: 'Hidden: 신기의 계승자',
-        endingThumbnailUrl: null,
-      },
-    ],
+    collectionCards: [],
   },
   {
-    id: 3,
+    characterGroupCode: 'duo_so_moon',
     name: '재욱과 예원',
     images: {
       active: '/image/reportPage/collection_jwyw_active.png',
@@ -68,7 +68,7 @@ export const RESULT_COLLECTION_CHARACTER_SETS: CollectionCharacterSet[] = [
     collectionCards: [],
   },
   {
-    id: 4,
+    characterGroupCode: 'duo_bang_ryu',
     name: '미리와 재호',
     images: {
       active: '/image/reportPage/collection_mrjh_active.png',

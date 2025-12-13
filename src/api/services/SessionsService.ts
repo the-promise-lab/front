@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { EndingCollectionResponseDto } from '../models/EndingCollectionResponseDto';
+import type { HistoryResponseDto } from '../models/HistoryResponseDto';
 import type { IntroRequestDto } from '../models/IntroRequestDto';
 import type { IntroResponseDto } from '../models/IntroResponseDto';
 import type { NextActRequestDto } from '../models/NextActRequestDto';
@@ -94,13 +95,13 @@ export class SessionsService {
    * 사용자의 게임 플레이 히스토리 목록을 반환합니다.
    * @param page 페이지 번호
    * @param limit 페이지 당 개수 (기본값: 10 - 전체 조회에 가깝게 설정됨)
-   * @returns any
+   * @returns HistoryResponseDto 게임 히스토리 목록
    * @throws ApiError
    */
   public static sessionsControllerGetHistory(
     page: number = 1,
     limit: number = 10
-  ): CancelablePromise<any> {
+  ): CancelablePromise<HistoryResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/api/sessions/history',
