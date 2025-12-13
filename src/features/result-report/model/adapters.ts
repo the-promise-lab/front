@@ -2,12 +2,15 @@ import type { SessionReportResponseDto } from '@api/models/SessionReportResponse
 import {
   ENDING_GRADE,
   POINT_TYPE,
+  type CollectionCharacterSet,
   type EndingGrade,
   type PlayReportData,
   type PointType,
   type RankingData,
 } from './types';
 import type { RankingResponseDto } from '@api/models/RankingResponseDto';
+import type { EndingCollectionResponseDto } from '@api';
+import { RESULT_COLLECTION_CHARACTER_SETS } from '../__mocks__/mockResults';
 
 export function adaptPointType(type: string): PointType {
   const lowerCaseType = type.toLowerCase();
@@ -86,4 +89,23 @@ export function adaptRankingSummary(data: RankingResponseDto): RankingData {
     characters: data.data.characters,
     rankings: data.data.rankings,
   };
+}
+
+export function adaptResultCollections(
+  data: EndingCollectionResponseDto
+): CollectionCharacterSet[] {
+  return data.data.map(group => {
+    const mockGroupSet =
+      RESULT_COLLECTION_CHARACTER_SETS.find(
+        set => set.characterGroupCode === group.characterGroupCode
+      ) ?? RESULT_COLLECTION_CHARACTER_SETS[0];
+    return {
+      ...mockGroupSet,
+      collectionCards: group.items.map(item => ({
+        endingTitle: item.title,
+        endingThumbnailUrl: item.imageUrl,
+        isCollected: item.isCollected,
+      })),
+    };
+  });
 }

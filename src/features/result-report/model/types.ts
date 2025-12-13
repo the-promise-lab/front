@@ -10,7 +10,7 @@ export interface CollectionCard {
 }
 
 export interface CollectionCharacterSet {
-  id: number;
+  characterGroupCode: string;
   name: string;
   images: {
     active: string;

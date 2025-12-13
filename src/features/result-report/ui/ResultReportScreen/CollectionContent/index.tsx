@@ -1,12 +1,10 @@
 import { ContentTitle } from '../kit/ContentTitle';
-import { RESULT_COLLECTION_CHARACTER_SETS } from '../../../__mocks__/mockResults';
 import CollectionModal from './CollectionModal';
+import useResultCollections from '../../../model/useResultCollections';
 
-export default function CollectionContent({
-  activeCharacterSetId,
-}: {
-  activeCharacterSetId: number;
-}) {
+export default function CollectionContent() {
+  const { data: resultCollections } = useResultCollections();
+
   return (
     <div className='relative flex h-full w-full flex-col px-16'>
       {/* 타이틀 영역 - 기존 h-45 유지 */}
@@ -17,11 +15,11 @@ export default function CollectionContent({
       {/* 컨텐츠 영역 */}
       <div className='scrollbar-hide relative flex flex-1 justify-center overflow-y-auto'>
         <div className='flex h-fit w-fit flex-wrap gap-x-25 gap-y-18.75'>
-          {RESULT_COLLECTION_CHARACTER_SETS.map(characterSet => (
+          {resultCollections?.map(characterSet => (
             <CollectionModal
-              key={characterSet.id}
+              key={characterSet.characterGroupCode}
               collectionCharacterSet={characterSet}
-              isActive={activeCharacterSetId === characterSet.id}
+              isActive={characterSet.collectionCards.length > 0}
             />
           ))}
         </div>
