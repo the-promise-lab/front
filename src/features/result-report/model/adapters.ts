@@ -4,13 +4,17 @@ import {
   POINT_TYPE,
   type CollectionCharacterSet,
   type EndingGrade,
+  type HistoryItem,
   type PlayReportData,
   type PointType,
   type RankingData,
 } from './types';
 import type { RankingResponseDto } from '@api/models/RankingResponseDto';
-import type { EndingCollectionResponseDto } from '@api';
-import { RESULT_COLLECTION_CHARACTER_SETS } from '../__mocks__/mockResults';
+import type { EndingCollectionResponseDto, HistoryResponseDto } from '@api';
+import {
+  RESULT_COLLECTION_CHARACTER_SETS,
+  RESULT_PLAY_REPORT_DATA,
+} from '../__mocks__/mockResults';
 
 export function adaptPointType(type: string): PointType {
   const lowerCaseType = type.toLowerCase();
@@ -106,6 +110,24 @@ export function adaptResultCollections(
         endingThumbnailUrl: item.imageUrl,
         isCollected: item.isCollected,
       })),
+    };
+  });
+}
+
+export function adaptPlayHistory(data: HistoryResponseDto): HistoryItem[] {
+  return data.data.map(item => {
+    return {
+      id: item.id,
+      characterName: item.characterName,
+      resultType: item.resultType,
+      xp: item.xp,
+      date: item.date,
+      time: item.time,
+      characterImageUrl:
+        item.characterImageUrl ?? `image/reportPage/${item.characterName}.png`,
+      playReport: item.playReport
+        ? adaptResultReport(item.playReport)
+        : RESULT_PLAY_REPORT_DATA,
     };
   });
 }
