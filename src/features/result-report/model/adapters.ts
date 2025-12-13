@@ -5,7 +5,9 @@ import {
   type EndingGrade,
   type PlayReportData,
   type PointType,
+  type RankingData,
 } from './types';
+import type { RankingResponseDto } from '@api/models/RankingResponseDto';
 
 export function adaptPointType(type: string): PointType {
   const lowerCaseType = type.toLowerCase();
@@ -75,5 +77,13 @@ export function adaptResultReport(
         })) ?? [],
     },
     experiencePointsTotal: data.data.result.experiencePoints.total ?? 0,
+  };
+}
+
+export function adaptRankingSummary(data: RankingResponseDto): RankingData {
+  return {
+    myScore: data.data.myScore,
+    characters: data.data.characters,
+    rankings: data.data.rankings,
   };
 }
