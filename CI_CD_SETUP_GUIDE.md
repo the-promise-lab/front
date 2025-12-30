@@ -3,14 +3,15 @@
 ## 📋 프로젝트 개요
 
 - **프로젝트**: React 19 + TypeScript + Vite + Tailwind CSS
-- **목표**: 카카오 클라우드 | AWS 에 Docker를 이용한 자동 배포
-- **CI/CD**: GitHub Actions를 통한 자동화
+- **목표**: 카카오 클라우드에 Docker 이미지를 통한 자동 배포
+- **CI/CD**: GitHub Actions(`.github/workflows/kakao_ci.yml`, `.github/workflows/kakao_cd.yml`)
 
 ## 🏗️ 생성된 파일들
 
 ### **CI/CD 설정 파일**
 
-- `.github/workflows/deploy.yml` - GitHub Actions 워크플로우
+- `.github/workflows/kakao_ci.yml` - CI(빌드/태깅/도커 푸시)
+- `.github/workflows/kakao_cd.yml` - CD(카카오 클라우드 배포)
 - `Dockerfile` - Docker 이미지 빌드 설정
 - `nginx.conf` - Nginx 웹 서버 설정
 - `.dockerignore` - Docker 빌드 시 제외할 파일들
@@ -30,7 +31,8 @@
 프로젝트/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # CI/CD 워크플로우
+│       ├── kakao_ci.yml        # CI: lint/build, Docker build/push, tag/release
+│       └── kakao_cd.yml        # CD: SSH 배포, Blue/Green 전환
 ├── src/                        # React 소스 코드
 ├── Dockerfile                  # Docker 이미지 설정
 ├── nginx.conf                  # Nginx 서버 설정
@@ -42,24 +44,34 @@
 
 ### **트리거 조건**
 
-- `push` to `main` 브랜치 → 전체 워크플로우 실행 (테스트 + 빌드 + 배포)
-- `push` to `develop` 브랜치 → 테스트 + 빌드만 실행 (배포 안됨)
-- `pull_request` to `main` 브랜치 → 테스트 + 빌드만 실행 (배포 안됨)
-- `pull_request` to `develop` 브랜치 → 테스트 + 빌드만 실행 (배포 안됨)
+- **Kakao CI (`kakao_ci.yml`)**
+  - `pull_request` → main: lint/build + Docker 빌드 테스트(푸시 없음)
+  - `push` → main: lint/build → 버전 자동 증가(tag/release) → Docker Hub 푸시(`thepromise2025/thefrontmise:latest` + `vX.Y.Z`)
+  - `workflow_dispatch`: 수동 실행 시 `version_bump`(major/minor/patch) 선택 후 동일 파이프라인
+- **Kakao CD (`kakao_cd.yml`)**
+  - Kakao CI(main) 성공 시 `workflow_run`으로 자동 실행
+  - `workflow_dispatch`로 수동 실행 가능(`image_tag` 입력, 기본 latest)
 
-### **작업 단계**
+### **작업 단계 (요약)**
 
-1. **test-and-build**: 코드 테스트, 빌드, 결과물 저장
-2. **deploy**: Docker 이미지 생성, 레지스트리 업로드, 서버 배포 (main 브랜치에서만 실행)
+- Kakao CI
+  1. Checkout → Node 22 → `npm ci`(리트라이)
+  2. `npm run lint` → `.env` 생성(`KAKAO_ENV_FILE`) → `npm run build`
+  3. main push 시 Docker build/push → Git tag & Release(`vX.Y.Z`)
+  4. PR 은 Docker build 테스트만 수행
+- Kakao CD
+  1. 최신 Release tag 또는 입력 tag 선택 → Docker pull
+  2. Blue/Green 배포(호스트 포트 3010/3011) → `/opt/thepromise/scripts/switch-frontend.sh`로 Nginx 업스트림 전환
+  3. `/` 헬스체크 실패 시 새 컨테이너 제거 후 실패 처리, 성공 시 이전 컨테이너 정리
 
 ## 🔑 필요한 GitHub Secrets
 
 ```
-REGISTRY_URL: 카카오 클라우드 컨테이너 레지스트리 주소
-REGISTRY_USERNAME: 레지스트리 사용자명
-REGISTRY_PASSWORD: 레지스트리 비밀번호
-SERVER_USER: 서버 접속 사용자명 (보통 ubuntu)
-SERVER_HOST: 서버 IP 주소 또는 도메인
+DOCKER_USERNAME, DOCKER_PASSWORD   # Docker Hub push (CI)
+KAKAO_ENV_FILE                     # 배포용 .env 내용 (CI 빌드 & CD 컨테이너 env-file)
+KAKAO_CLOUD_HOST                   # 배포 대상 호스트
+KAKAO_CLOUD_USER                   # SSH 사용자
+KAKAO_CLOUD_SSH_KEY                # SSH private key
 ```
 
 ## 📝 다음 단계 체크리스트
@@ -73,10 +85,10 @@ SERVER_HOST: 서버 IP 주소 또는 도메인
 
 ### **카카오 클라우드 설정**
 
-- [ ] Container Registry 생성
-- [ ] EC2 인스턴스 생성
-- [ ] 보안 그룹 설정 (HTTP 80, SSH 22 포트)
-- [ ] EC2에 Docker 설치
+- [ ] 배포 대상 호스트에 Docker 설치
+- [ ] SSH 접속 확인(포트 22) 및 `KAKAO_CLOUD_SSH_KEY` 등록
+- [ ] Nginx 리버스 프록시 구성 및 `/opt/thepromise/scripts/switch-frontend.sh` 배치/실행권한
+- [ ] 호스트 포트 3010/3011 열림(Blue/Green), 외부 접근은 Nginx 80 포트로 노출
 
 ### **배포 테스트**
 

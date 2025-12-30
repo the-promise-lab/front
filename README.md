@@ -76,8 +76,10 @@ src/
 
 ## 배포
 
-- GitHub Actions + Docker + Nginx 파이프라인: `CI_CD_SETUP_GUIDE.md`
-- 환경 분리: develop(staging) → main(prod), 헬스체크/롤백 전략 문서 참조
+- Kakao CI: PR→main 및 main push 시 lint → build → Docker 이미지 빌드/푸시(`thepromise2025/thefrontmise:latest` + 태그) → main push 시 자동 태깅/Release 생성
+- Kakao CD: Kakao CI 성공 시 또는 수동 dispatch 시 Docker 이미지 풀 → Blue/Green 배포(포트 3010/3011) → `/opt/thepromise/scripts/switch-frontend.sh`로 Nginx 전환
+- 서버 배포 시 `.env`는 `KAKAO_ENV_FILE` 시크릿으로 전달, 헬스체크는 `/` 기반
+- 자세한 흐름/필수 시크릿: `CI_CD_SETUP_GUIDE.md`
 
 ## 문서 모음
 
