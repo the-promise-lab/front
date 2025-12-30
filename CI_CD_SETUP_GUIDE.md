@@ -1,163 +1,136 @@
-# CI/CD 설정 가이드 - 대화 내용 정리
+# CI/CD 설정 및 배포 가이드
 
-## 📋 프로젝트 개요
+이 문서는 프로젝트의 자동화된 배포 파이프라인(CI/CD) 설정 방법과, 초보자를 위한 인프라 구성 방법을 상세히 설명합니다.
 
-- **프로젝트**: React 19 + TypeScript + Vite + Tailwind CSS
-- **목표**: 카카오 클라우드에 Docker 이미지를 통한 자동 배포
-- **CI/CD**: GitHub Actions(`.github/workflows/kakao_ci.yml`, `.github/workflows/kakao_cd.yml`)
+## 📋 개요
 
-## 🏗️ 생성된 파일들
-
-### **CI/CD 설정 파일**
-
-- `.github/workflows/kakao_ci.yml` - CI(빌드/태깅/도커 푸시)
-- `.github/workflows/kakao_cd.yml` - CD(카카오 클라우드 배포)
-- `Dockerfile` - Docker 이미지 빌드 설정
-- `nginx.conf` - Nginx 웹 서버 설정
-- `.dockerignore` - Docker 빌드 시 제외할 파일들
-
-### **PR/Issue 템플릿**
-
-- `.github/pull_request_template.md` - Pull Request 템플릿
-- `.github/ISSUE_TEMPLATE/bug_report.md` - 버그 리포트 템플릿
-
-### **브랜치 관리 가이드**
-
-- `.github/BRANCH_PROTECTION.md` - 브랜치 보호 규칙 설정 가이드
-
-### **프로젝트 구조**
-
-```
-프로젝트/
-├── .github/
-│   └── workflows/
-│       ├── kakao_ci.yml        # CI: lint/build, Docker build/push, tag/release
-│       └── kakao_cd.yml        # CD: SSH 배포, Blue/Green 전환
-├── src/                        # React 소스 코드
-├── Dockerfile                  # Docker 이미지 설정
-├── nginx.conf                  # Nginx 서버 설정
-├── .dockerignore               # Docker 제외 파일
-└── CI_CD_SETUP_GUIDE.md       # 이 가이드 (현재 파일)
-```
-
-## 🚀 CI/CD 워크플로우 설명
-
-### **트리거 조건**
-
-- **Kakao CI (`kakao_ci.yml`)**
-  - `pull_request` → main: lint/build + Docker 빌드 테스트(푸시 없음)
-  - `push` → main: lint/build → 버전 자동 증가(tag/release) → Docker Hub 푸시(`thepromise2025/thefrontmise:latest` + `vX.Y.Z`)
-  - `workflow_dispatch`: 수동 실행 시 `version_bump`(major/minor/patch) 선택 후 동일 파이프라인
-- **Kakao CD (`kakao_cd.yml`)**
-  - Kakao CI(main) 성공 시 `workflow_run`으로 자동 실행
-  - `workflow_dispatch`로 수동 실행 가능(`image_tag` 입력, 기본 latest)
-
-### **작업 단계 (요약)**
-
-- Kakao CI
-  1. Checkout → Node 22 → `npm ci`(리트라이)
-  2. `npm run lint` → `.env` 생성(`KAKAO_ENV_FILE`) → `npm run build`
-  3. main push 시 Docker build/push → Git tag & Release(`vX.Y.Z`)
-  4. PR 은 Docker build 테스트만 수행
-- Kakao CD
-  1. 최신 Release tag 또는 입력 tag 선택 → Docker pull
-  2. Blue/Green 배포(호스트 포트 3010/3011) → `/opt/thepromise/scripts/switch-frontend.sh`로 Nginx 업스트림 전환
-  3. `/` 헬스체크 실패 시 새 컨테이너 제거 후 실패 처리, 성공 시 이전 컨테이너 정리
-
-## 🔑 필요한 GitHub Secrets
-
-```
-DOCKER_USERNAME, DOCKER_PASSWORD   # Docker Hub push (CI)
-KAKAO_ENV_FILE                     # 배포용 .env 내용 (CI 빌드 & CD 컨테이너 env-file)
-KAKAO_CLOUD_HOST                   # 배포 대상 호스트
-KAKAO_CLOUD_USER                   # SSH 사용자
-KAKAO_CLOUD_SSH_KEY                # SSH private key
-```
-
-## 📝 다음 단계 체크리스트
-
-### **GitHub 설정**
-
-- [ ] GitHub 저장소 생성
-- [ ] 로컬 Git 초기화 및 원격 저장소 연결
-- [ ] 코드 푸시
-- [ ] GitHub Secrets 설정
-
-### **카카오 클라우드 설정**
-
-- [ ] 배포 대상 호스트에 Docker 설치
-- [ ] SSH 접속 확인(포트 22) 및 `KAKAO_CLOUD_SSH_KEY` 등록
-- [ ] Nginx 리버스 프록시 구성 및 `/opt/thepromise/scripts/switch-frontend.sh` 배치/실행권한
-- [ ] 호스트 포트 3010/3011 열림(Blue/Green), 외부 접근은 Nginx 80 포트로 노출
-
-### **배포 테스트**
-
-- [ ] 코드 수정 및 푸시
-- [ ] GitHub Actions 모니터링
-- [ ] 배포 결과 확인
-
-## 🎯 주요 명령어들
-
-### **Git 명령어**
-
-```bash
-git init
-git add .
-git commit -m "Initial commit: React app with CI/CD setup"
-git remote add origin https://github.com/사용자명/저장소명.git
-git push -u origin main
-```
-
-### **Docker 명령어**
-
-```bash
-# 이미지 빌드
-docker build -t my-react-app .
-
-# 컨테이너 실행
-docker run -d --name my-react-app -p 80:80 my-react-app
-
-# 컨테이너 관리
-docker stop my-react-app
-docker rm my-react-app
-docker ps
-```
-
-### **EC2 접속**
-
-```bash
-ssh -i key.pem ubuntu@[EC2_PUBLIC_IP]
-```
-
-## ❓ 자주 묻는 질문
-
-### **Q: PR만 올라와도 자동 배포되나요?**
-
-A: 아니요! PR에서는 테스트와 빌드만 실행되고, main에 머지된 후에만 배포됩니다.
-
-### **Q: CI/CD의 장점은?**
-
-A: 자동화, 빠른 배포, 일관성, 실수 방지, 협업 효율성 향상
-
-### **Q: 배포 실패 시 어떻게 하나요?**
-
-A: GitHub Actions에서 실패한 단계를 확인하고 수정 후 다시 푸시하면 자동으로 재시도됩니다.
-
-## 📚 참고 자료
-
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Nginx 공식 문서](https://nginx.org/en/docs/)
-- [카카오 클라우드 공식 문서](https://docs.kakaoi.com/)
-
-## 🔄 업데이트 기록
-
-- **2024-XX-XX**: 초기 CI/CD 설정 가이드 작성
-- **2024-XX-XX**: GitHub Actions 워크플로우 설정
-- **2024-XX-XX**: Docker 및 Nginx 설정
-- **2024-XX-XX**: 배포 테스트 완료
+- **CI (지속적 통합)**: 코드가 `main` 브랜치에 푸시되면 자동으로 빌드하고 Docker 이미지를 생성합니다.
+- **CD (지속적 배포)**: 생성된 이미지를 카카오 클라우드 서버에 배포하고, 무중단 배포(Blue/Green)를 수행합니다.
 
 ---
 
-**참고**: 이 문서는 AI 어시스턴트와의 대화를 바탕으로 작성되었습니다.
-Cursor를 끄더라도 이 파일을 통해 설정 과정을 확인할 수 있습니다.
+## 🏗️ 인프라 사전 준비 (필수)
+
+배포 자동화를 위해 서버와 GitHub에 몇 가지 설정이 필요합니다.
+
+### 1. SSH 키 생성 (로컬 컴퓨터에서 수행)
+
+서버에 안전하게 접속하기 위해 SSH 키 쌍을 생성합니다.
+
+```bash
+# 터미널(Terminal) 또는 Git Bash 실행
+# -t: 암호화 방식(rsa), -b: 비트 수(4096), -C: 주석(이메일 등)
+ssh-keygen -t rsa -b 4096 -C "deploy-key" -f ./kakao_deploy_key
+
+# 비밀번호(Passphrase)는 엔터를 쳐서 없이 생성하는 것을 권장합니다 (CI 자동화용).
+```
+
+- 생성된 `kakao_deploy_key` (Private Key): **절대 공개 금지**. GitHub Secrets에 등록합니다.
+- 생성된 `kakao_deploy_key.pub` (Public Key): 서버의 `~/.ssh/authorized_keys`에 등록합니다.
+
+### 2. 카카오 클라우드 서버 설정
+
+1. **인스턴스 생성**: Ubuntu 22.04 LTS 권장.
+2. **공인 IP 확인**: 생성된 인스턴스의 Public IP를 기록해둡니다. (예: `123.45.67.89`)
+3. **포트 개방 (Security Group)**:
+   - `22` (SSH): 관리자 접속용
+   - `80` (HTTP): 웹 서비스용
+   - `3010`, `3011`: Blue/Green 배포 컨테이너용 (내부에서만 접근하면 되지만, 테스트를 위해 열어둘 수 있음)
+
+4. **Docker 설치 (서버 접속 후 수행)**
+
+   ```bash
+   # 서버 접속
+   ssh -i [기존키.pem] ubuntu@[서버IP]
+
+   # Docker 설치 스크립트 실행
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sudo sh get-docker.sh
+
+   # 현재 사용자를 docker 그룹에 추가 (sudo 없이 docker 실행)
+   sudo usermod -aG docker $USER
+   # (로그아웃 후 다시 로그인해야 적용됨)
+   ```
+
+5. **배포용 SSH 키 등록**
+   서버의 `~/.ssh/authorized_keys` 파일에 아까 생성한 `kakao_deploy_key.pub` 내용을 붙여넣습니다.
+   ```bash
+   nano ~/.ssh/authorized_keys
+   # 맨 아래줄에 붙여넣고 Ctrl+O(저장), Enter, Ctrl+X(종료)
+   ```
+
+### 3. Nginx 및 배포 스크립트 설정
+
+서버에 Nginx를 설치하고 Blue/Green 전환 스크립트를 배치합니다.
+
+1. **Nginx 설치**: `sudo apt update && sudo apt install -y nginx`
+2. **배포 스크립트 위치**: `/opt/thepromise/scripts/switch-frontend.sh`
+   - 이 스크립트는 Nginx 설정을 변경하여 3010번 포트와 3011번 포트 사이를 전환합니다.
+   - 상세 스크립트 내용은 프로젝트 관리자에게 요청하거나 저장소 내 `scripts/` 폴더(있다면)를 확인하세요.
+
+---
+
+## 🔑 GitHub Secrets 설정
+
+GitHub Repository > **Settings** > **Secrets and variables** > **Actions** > **New repository secret** 클릭하여 아래 값들을 등록합니다.
+
+| Secret 이름           | 설명                             | 예시 값                                    |
+| --------------------- | -------------------------------- | ------------------------------------------ |
+| `DOCKER_USERNAME`     | Docker Hub 아이디                | `myname`                                   |
+| `DOCKER_PASSWORD`     | Docker Hub 비밀번호/토큰         | `dckr_pat_...`                             |
+| `KAKAO_CLOUD_HOST`    | 서버 공인 IP                     | `123.45.67.89`                             |
+| `KAKAO_CLOUD_USER`    | 서버 접속 계정명                 | `ubuntu`                                   |
+| `KAKAO_CLOUD_SSH_KEY` | **Private Key** 내용 전체        | `-----BEGIN RSA PRIVATE KEY----- ...`      |
+| `KAKAO_ENV_FILE`      | 프로덕션용 `.env` 파일 내용 전체 | `VITE_API_BASE_URL=...` (줄바꿈 포함 가능) |
+
+> **주의**: `KAKAO_CLOUD_SSH_KEY` 등록 시 `-----BEGIN...` 부터 `...END...` 까지 전체를 복사해서 넣어야 합니다.
+
+---
+
+## 🚀 배포 워크플로우
+
+### 1. Kakao CI (`.github/workflows/kakao_ci.yml`)
+
+- **언제 실행되나요?**
+  - `main` 브랜치로 코드가 Push 될 때
+  - PR이 열리거나 업데이트 될 때 (테스트만 수행)
+- **무엇을 하나요?**
+  - 의존성 설치 및 린트 검사 (`npm run lint`)
+  - 프로덕션 빌드 (`npm run build`)
+  - Docker 이미지 빌드 및 Docker Hub 푸시 (태그: `latest` 및 `vX.Y.Z`)
+  - GitHub Release 자동 생성
+
+### 2. Kakao CD (`.github/workflows/kakao_cd.yml`)
+
+- **언제 실행되나요?**
+  - CI 워크플로우가 성공적으로 끝나면 자동으로 시작됩니다.
+  - 또는 Actions 탭에서 수동으로 실행할 수 있습니다.
+- **무엇을 하나요?**
+  - 서버에 SSH로 접속합니다.
+  - 최신 Docker 이미지를 다운로드(Pull)합니다.
+  - 현재 실행 중이지 않은 포트(Blue/Green)에 새 컨테이너를 띄웁니다.
+  - 헬스체크(Health Check)를 통해 정상 구동을 확인합니다.
+  - Nginx 설정을 변경하여 트래픽을 새 컨테이너로 돌립니다.
+  - 이전 컨테이너를 중지하고 삭제합니다.
+
+---
+
+## ❓ 트러블슈팅 (자주 묻는 질문)
+
+### Q. 배포가 실패했는데 로그는 어디서 보나요?
+
+GitHub Repository 상단의 **Actions** 탭에서 실패한 워크플로우를 클릭하면 단계별 상세 로그를 볼 수 있습니다.
+
+### Q. "Permission denied (publickey)" 에러가 나요.
+
+`KAKAO_CLOUD_SSH_KEY` 시크릿이 올바른지, 그리고 해당 키의 **Public Key**가 서버의 `authorized_keys`에 제대로 등록되었는지 확인하세요.
+
+### Q. 배포 후 사이트가 안 열려요.
+
+1. 서버의 방화벽(Security Group)에서 80번 포트가 열려있는지 확인하세요.
+2. Nginx가 실행 중인지 확인하세요 (`sudo systemctl status nginx`).
+3. 컨테이너가 떠있는지 확인하세요 (`docker ps`).
+
+### Q. Docker Hub 로그인 실패
+
+`DOCKER_USERNAME`과 `DOCKER_PASSWORD` 시크릿을 확인하세요. 비밀번호 변경 시 시크릿도 갱신해야 합니다.

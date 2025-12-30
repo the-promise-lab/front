@@ -4,7 +4,7 @@
 
 ## 기술 스택
 
-- React 19, TypeScript, Vite
+- React 19, TypeScript, Vite, Node.js v22
 - Tailwind CSS v4 (정규화 스케일), cn(twmerge+clsx)
 - 상태: Zustand(전역), TanStack Query(서버 상태)
 - 폼/검증: React Hook Form, Zod
@@ -47,7 +47,7 @@ app → processes → features → entities → shared
 ```
 
 - 단방향 의존, 같은 레벨 직접 의존 금지
-- features는 services를 통해서만 네트워크/스토리지 접근
+- features는 `api/` 계층(codegen)를 통해서만 네트워크/스토리지 접근
 - shared는 도메인 무취(UI·lib·auth infra·config)
 - app은 조립만, processes는 전역 플로우 오케스트레이션, entities는 핵심 도메인 모델
 - 경로 별칭: `@app/* @processes/* @features/* @entities/* @shared/* @api/* @config/*`
@@ -85,7 +85,8 @@ src/
 
 - 아키텍처: `CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `.cursorrules`
 - CI/CD: `CI_CD_SETUP_GUIDE.md`
-- 환경: `ENV_SETUP.md`
+- 환경설정: `ENV_SETUP.md`
+- 보안 정책: `SECURITY.md`
 - 배경 관리: `docs/BACKGROUND_USAGE.md`
 - 사운드 가이드: `docs/USE_GAME_SOUND_MANUAL_KO.md`, `docs/USE_GAME_SOUND_IMPLEMENTATION_KO.md` (영문판 포함)
 
