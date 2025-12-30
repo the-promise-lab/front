@@ -7,13 +7,15 @@
 ```bash
 # .env.local
 VITE_API_BASE_URL=https://43.200.235.94.nip.io
-VITE_KAKAO_JAVASCRIPT_KEY=d20aa5816a9e8070a2248d245f69bac3
+VITE_KAKAO_JAVASCRIPT_KEY=abcd1234cde567fg89
+VITE_KAKAO_REST_API_KEY=rest_abcd1234cde567fg89
 ```
 
 ## 환경변수 설명
 
 - `VITE_API_BASE_URL`: 백엔드 서버의 기본 URL
 - `VITE_KAKAO_JAVASCRIPT_KEY`: 카카오 개발자 콘솔에서 발급받은 JavaScript 키
+- `VITE_KAKAO_REST_API_KEY`: 카카오 REST API 호출용 키
 
 ## 사용법
 

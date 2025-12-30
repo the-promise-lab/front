@@ -1,4 +1,4 @@
-# Slice-3L Lite 헌법 (필수 조항)
+# FSD based 5 Layered 헌법 (필수 조항)
 
 ## 1) 의존 방향(단방향)
 

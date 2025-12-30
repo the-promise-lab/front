@@ -1,102 +1,94 @@
-# React + TypeScript + Vite 프로젝트
+# React + TypeScript + Vite (FSD based 5 Layered)
 
-모던 웹 개발을 위한 React + TypeScript + Vite 기반 프로젝트입니다.
+테크포임팩트 LAB 테크니컬 가이드라인을 따르는 React 19 + Vite 기반 프로젝트입니다. 협업·배포 원칙은 [테크포임팩트 LAB의 일하는 방식](https://tech-for-mpact.gitbook.io/lab-guidebook/lab-operations/way-of-working)과 [테크니컬 가이드라인](https://tech-for-mpact.gitbook.io/lab-guidebook/lab-operations/way-of-working/technical-guide#id-4.-github)에 맞춰 정리했습니다.
 
-## 🚀 기술 스택
+## 기술 스택
 
-- **React 19** - 최신 React 버전
-- **TypeScript** - 타입 안전성
-- **Vite** - 빠른 개발 서버 및 빌드 도구
-- **Tailwind CSS v4** - 유틸리티 퍼스트 CSS 프레임워크
-- **Jotai** - 경량 상태 관리
-- **TanStack Query** - 서버 상태 관리
-- **React Hook Form + Zod** - 폼 관리 및 검증
+- React 19, TypeScript, Vite
+- Tailwind CSS v4 (정규화 스케일), cn(twmerge+clsx)
+- 상태: Zustand(전역), TanStack Query(서버 상태)
+- 폼/검증: React Hook Form, Zod
+- 애니메이션: Framer Motion, Motion
 
-## 📦 설치 및 실행
+## 빠른 시작
 
 ```bash
-# 의존성 설치
 npm install
-
-# 개발 서버 실행
-npm run dev
-
-# 빌드
-npm run build
-
-# 린팅
-npm run lint
-
-
+npm run dev # http://localhost:3000
 ```
 
-## 🏗️ 프로젝트 구조
+### 스크립트
+
+- `npm run dev` 개발 서버
+- `npm run build` 타입체크+빌드
+- `npm run preview` 로컬 빌드 프리뷰
+- `npm run lint` / `npm run lint:fix`
+- `npm run type-check`
+- `npm run generate-api` (원격 OpenAPI)
+- `npm run generate-api-local` (로컬 swagger.json)
+- `npm run format` / `npm run format:check`
+
+## 환경 변수
+
+- 예시: `.env.local`
+  ```bash
+  VITE_API_BASE_URL=https://43.200.235.94.nip.io
+  VITE_KAKAO_JAVASCRIPT_KEY=abcd1234cde567fg89
+  VITE_KAKAO_REST_API_KEY=rest_abcd1234cde567fg89
+  ```
+- 상세: `ENV_SETUP.md`
+- 접근: `src/config/env.ts` (`config.API_BASE_URL`, `config.KAKAO_JAVASCRIPT_KEY`)
+
+## 아키텍처 (FSD based 5 Layered)
+
+```
+app → processes → features → entities → shared
+                 ↘ api (codegen)
+```
+
+- 단방향 의존, 같은 레벨 직접 의존 금지
+- features는 services를 통해서만 네트워크/스토리지 접근
+- shared는 도메인 무취(UI·lib·auth infra·config)
+- app은 조립만, processes는 전역 플로우 오케스트레이션, entities는 핵심 도메인 모델
+- 경로 별칭: `@app/* @processes/* @features/* @entities/* @shared/* @api/* @config/*`
+- 자세한 규칙: `CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `.cursorrules`
+
+## 디렉터리 구조 (요약)
 
 ```
 src/
-├── api/          # API 관련
-├── components/   # 재사용 컴포넌트
-├── hooks/        # 커스텀 훅
-├── services/     # 비즈니스 로직
-├── types/        # TypeScript 타입 정의
-├── utils/        # 유틸리티 함수
-
+  app/            # 레이아웃, providers, 페이지 조립
+  processes/      # 전역 플로우/스토어
+  features/       # 사용자 시나리오 단위 UI·model·lib
+  entities/       # 도메인 모델/타입
+  shared/         # UI, lib, auth infra, styles
+  api/            # openapi-typescript-codegen 생성물 (편집 금지)
+  config/         # env 래퍼/상수
 ```
 
-## 🔧 개발 도구
+## 품질 & 협업 가이드
 
-- **ESLint** - 코드 품질 관리
-- **Prettier** - 코드 포맷팅
-- **Husky** - Git hooks
-- **lint-staged** - 스테이징된 파일만 린팅
+- 코딩 컨벤션/레이어 규칙: `CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `.cursorrules`
+- 브랜치 예시: `main`(prod) ← `develop` ← `feature/<ticket>` / `fix/<ticket>` / `docs/<topic>`
+- 커밋 규칙 예시: `feat: ...`, `fix: ...`, `refactor: ...`, `docs: ...`, `chore: ...`
+- PR 템플릿/브랜치 보호/CI: `CI_CD_SETUP_GUIDE.md` 참조
+- Lint/포맷: Husky + lint-staged 적용 (`npm run lint`, `npm run format`)
 
-## 📝 환경 변수
+## 배포
 
-`.env.example` 파일을 참고하여 필요한 환경 변수를 설정하세요.
+- GitHub Actions + Docker + Nginx 파이프라인: `CI_CD_SETUP_GUIDE.md`
+- 환경 분리: develop(staging) → main(prod), 헬스체크/롤백 전략 문서 참조
 
-## OpenAPI TypeGen
+## 문서 모음
 
-```bash
-npx openapi \
---input {backend-url}/api/docs-json \
---output src/api \
---client axios \
---exportSchemas true
-```
+- 아키텍처: `CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `.cursorrules`
+- CI/CD: `CI_CD_SETUP_GUIDE.md`
+- 환경: `ENV_SETUP.md`
+- 배경 관리: `docs/BACKGROUND_USAGE.md`
+- 사운드 가이드: `docs/USE_GAME_SOUND_MANUAL_KO.md`, `docs/USE_GAME_SOUND_IMPLEMENTATION_KO.md` (영문판 포함)
 
-`src/api/`에서 `AppService`를 import하고, `AppService`의 메서드를 사용하여 API를 호출합니다.
+## 링크 추가/업데이트 제안
 
-```ts
-import { AppService } from '@/api';
-
-const message = await AppService.appControllerGetHello();
-const health = await AppService.appControllerGetHealth(); // 타입: HealthCheckDto
-```
-
-TanStack Query 예시
-
-```ts
-import { useQuery } from '@tanstack/react-query';
-import { AppService } from '@/api';
-
-function useHealth() {
-  return useQuery({
-    queryKey: ['health'],
-    queryFn: () => AppService.appControllerGetHealth(),
-  });
-}
-```
-
-에러 처리 예시
-
-```tsx
-import { ApiError, AppService } from '@/api';
-
-try {
-  await AppService.appControllerGetHealth();
-} catch (e) {
-  if (e instanceof ApiError) {
-    // e.status, e.body 등 참조 가능
-  }
-}
-```
+- 상단 소개에 현재 배포 URL/스토리북/디자인 문서 링크 추가 필요 시 업데이트
+- 협업 섹션에 팀 합의된 브랜치 네이밍/리뷰 규칙이 확정되면 README에 구체 값 반영
+- `.cursorrules`, `CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `CI_CD_SETUP_GUIDE.md`, `ENV_SETUP.md`, `docs/*`가 최신인지 검토 후 필요 시 개정 날짜 명시 부탁드립니다.
