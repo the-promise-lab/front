@@ -83,10 +83,12 @@ src/
 
 ## 문서 모음
 
-- 아키텍처: `CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `.cursorrules`
-- CI/CD: `CI_CD_SETUP_GUIDE.md`
-- 환경설정: `ENV_SETUP.md`
-- 보안 정책: `SECURITY.md`
+- 아키텍처: `docs/CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `.cursorrules`
+- CI/CD: `docs/CI_CD_SETUP_GUIDE.md`
+- 환경설정: `docs/ENV_SETUP.md`
+- 보안 정책: `docs/SECURITY.md`
+- 기여 가이드: `docs/CONTRIBUTING.md`
+- 스타일링 가이드: `docs/STYLING_GUIDE.md`
 - 배경 관리: `docs/BACKGROUND_USAGE.md`
 - 사운드 가이드: `docs/USE_GAME_SOUND_MANUAL_KO.md`, `docs/USE_GAME_SOUND_IMPLEMENTATION_KO.md` (영문판 포함)
 
@@ -94,4 +96,4 @@ src/
 
 - 상단 소개에 현재 배포 URL/스토리북/디자인 문서 링크 추가 필요 시 업데이트
 - 협업 섹션에 팀 합의된 브랜치 네이밍/리뷰 규칙이 확정되면 README에 구체 값 반영
-- `.cursorrules`, `CODEBASE_ARCHITECTURE_PRINCIPLE.md`, `CI_CD_SETUP_GUIDE.md`, `ENV_SETUP.md`, `docs/*`가 최신인지 검토 후 필요 시 개정 날짜 명시 부탁드립니다.
+- `.cursorrules`, `docs/*`가 최신인지 검토 후 필요 시 개정 날짜 명시 부탁드립니다.

@@ -44,6 +44,6 @@ window.Kakao.init(config.KAKAO_JAVASCRIPT_KEY);
 
 1. **커밋 금지**: `.env.local` 파일은 `.gitignore`에 추가되어 Git에 커밋되지 않습니다. 실수로 커밋하지 않도록 주의하세요.
 2. **접두사**: Vite에서는 `VITE_` 접두사가 붙은 환경변수만 클라이언트(브라우저)에서 접근 가능합니다.
-3. **프로덕션**: 배포 환경의 환경변수 설정은 `CI_CD_SETUP_GUIDE.md`를 참고하세요.
+3. **프로덕션**: 배포 환경의 환경변수 설정은 `docs/CI_CD_SETUP_GUIDE.md`를 참고하세요.
 
-자세한 보안 정책은 [SECURITY.md](SECURITY.md)를 참고하시기 바랍니다.
+자세한 보안 정책은 [docs/SECURITY.md](SECURITY.md)를 참고하시기 바랍니다.
