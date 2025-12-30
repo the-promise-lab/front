@@ -1,3 +1,15 @@
+# Bag to the Future
+
+이 레포지토리는 **테크포임팩트 2기 [가방싸LAB](https://techforimpact.io/lab/project/16)** 에서 진행한 **시뮬레이션 게임으로 디지털 재난안전교육 만들기 프로젝트**의 Front-end 저장소입니다.
+
+## 배포(플레이) 링크
+
+https://bttf.kr/
+
+- 주의: 모바일 기기에서 가로모드로 실행해주세요.
+  - iPhone 절전모드에서는 게임이 진행되지 않는 이슈가 있습니다. (2025.12.30 기준)
+- iPhone 유저는 Safari에서 플레이하면 가장 넓은 화면으로 즐기실 수 있습니다.
+
 # React + TypeScript + Vite (FSD based 5 Layered)
 
 테크포임팩트 LAB 테크니컬 가이드라인을 따르는 React 19 + Vite 기반 프로젝트입니다. 협업·배포 원칙은 [테크포임팩트 LAB의 일하는 방식](https://tech-for-mpact.gitbook.io/lab-guidebook/lab-operations/way-of-working)과 [테크니컬 가이드라인](https://tech-for-mpact.gitbook.io/lab-guidebook/lab-operations/way-of-working/technical-guide#id-4.-github)에 맞춰 정리했습니다.
