@@ -4,8 +4,10 @@ import { useCanvasSideScroll } from '../../model/useCanvasSideScroll';
 import { useCanvasItemClick } from '../../model/useCanvasItemClick';
 import type { ShelfItem } from '../../model/types';
 import { drawMarker, preloadMarkerImage } from '../../lib/drawMarker';
+import { mapShelfItemToViewportPosition } from '../../lib/mapShelfItemToViewportPosition';
 import GlowNavigationButton from './kit/GlowNavigationButton';
 import Typography from '@shared/ui/Typography';
+import { ItemNameLabelOverlay } from './ItemNameLabelOverlay';
 
 const ITEM_SIZE_PIXEL = 30;
 
@@ -89,19 +91,19 @@ export default function ShelfSelectionCanvas({
       if (imageScale.width === 0) return;
 
       renderItems.forEach(item => {
-        // 이미지 내 상대 좌표를 스케일된 캔버스 좌표로 변환
-        const isWide = imageScale.width > canvasSize.width;
-        const baseX = item.x * imageScale.width;
-        const scaledX = isWide
-          ? baseX - viewOffsetX // 크롭된 경우, 현재 뷰의 시작점을 빼서 캔버스 좌표로 변환
-          : baseX + imageScale.offsetX; // 전체 이미지가 보이는 경우 중앙 오프셋 적용
-        const scaledY = item.y * imageScale.height;
+        const pos = mapShelfItemToViewportPosition({
+          item,
+          imageScale,
+          canvasSize,
+          viewOffsetX,
+        });
+        if (!pos) return;
 
         // 이제 동기적으로 즉시 그려짐
-        drawMarker(ctx, scaledX, scaledY, ITEM_SIZE_PIXEL, ITEM_SIZE_PIXEL);
+        drawMarker(ctx, pos.xPx, pos.yPx, ITEM_SIZE_PIXEL, ITEM_SIZE_PIXEL);
       });
     },
-    [renderItems, imageScale, canvasSize.width, viewOffsetX]
+    [renderItems, imageScale, canvasSize, viewOffsetX]
   );
 
   // 마커 이미지 미리 로드
@@ -328,6 +330,12 @@ export default function ShelfSelectionCanvas({
           className='block'
           onClick={handleClick}
           {...dragHandlers}
+        />
+        <ItemNameLabelOverlay
+          items={renderItems}
+          imageScale={imageScale}
+          canvasSize={canvasSize}
+          viewOffsetX={viewOffsetX}
         />
       </div>
       <div className='pointer-events-none absolute top-1/2 left-1/2 z-10 aspect-video h-dvh w-auto -translate-x-1/2 -translate-y-1/2'>
