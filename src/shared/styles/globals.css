@@ -555,12 +555,12 @@ body {
 /* 아이템 담기 Toast 전용 애니메이션 */
 @keyframes itemAddedSlideIn {
   0% {
-    transform: translateX(120%);
+    transform: translateY(120%);
     opacity: 0;
   }
 
   100% {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -579,7 +579,8 @@ body {
   pointer-events: none;
   position: fixed;
   bottom: 35px;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .item-added-toast {
