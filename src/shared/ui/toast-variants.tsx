@@ -5,10 +5,14 @@ export function toastItemAdded(name: string) {
   toast.custom(
     () => (
       <div
-        className='flex h-19 w-fit items-center justify-end bg-gradient-to-r from-transparent from-5% to-black/80 pr-19 pl-59'
+        className='flex h-19 w-fit -translate-x-1/2 items-center justify-center px-24'
+        style={{
+          background:
+            'linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0) 50%, rgba(0,0,0,0) 100%)',
+        }}
         data-toast-type='item-added'
       >
-        <Typography variant='dialogue-m' className='text-white'>
+        <Typography variant='dialogue-m' className='text-nowrap text-white'>
           {name} 담기 완료!
         </Typography>
       </div>
@@ -23,8 +27,8 @@ export function toastItemAdded(name: string) {
         padding: 0,
         margin: 0,
       },
-      className:
-        'item-added-toast-container item-added-toast !bottom-35 !-right-20',
+      position: 'bottom-center',
+      className: 'item-added-toast-container item-added-toast !bottom-35',
     }
   );
 }
