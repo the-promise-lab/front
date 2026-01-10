@@ -58,14 +58,14 @@ export default function ShelfSelectionCanvas({
       initialOffset: 0,
     });
 
-  // 뷰포트 크기 계산 (svw, svh 기준)
+  // 뷰포트 크기 계산 (dvw, dvh 기준)
   const calculateCanvasSize = useCallback(() => {
-    const svw = window.innerWidth;
-    const svh = window.innerHeight;
-    return { width: svw, height: svh };
+    const dvw = window.innerWidth;
+    const dvh = window.innerHeight;
+    return { width: dvw, height: dvh };
   }, []);
 
-  // 이미지 스케일 계산 (높이 100svh 기준, 원본 비율 유지)
+  // 이미지 스케일 계산 (높이 100dvh 기준, 원본 비율 유지)
   const calculateImageScale = useCallback(
     (imgWidth: number, imgHeight: number) => {
       const { height: containerHeight, width: containerWidth } =
