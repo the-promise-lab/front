@@ -56,7 +56,7 @@ export default function BgmLayout({ children }: BgmLayoutProps) {
       case 'PLAYING':
         return SOUND_URLS.mainBgm2;
       default:
-        return SOUND_URLS.mainBgm1;
+        return null;
     }
   }, []);
 
@@ -96,6 +96,11 @@ export default function BgmLayout({ children }: BgmLayoutProps) {
       const nextUrl = getBgmUrlForStep(step);
       if (prevUrl === nextUrl && playingBgm.current.handle) return;
 
+      if (!nextUrl) {
+        playingBgm.current.url = null;
+        playingBgm.current.handle?.stop(0);
+        return;
+      }
       playingBgm.current.url = nextUrl;
       playingBgm.current.handle = await crossfadeBgm(prevUrl, nextUrl, 800);
     };
