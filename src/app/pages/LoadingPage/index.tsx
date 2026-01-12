@@ -9,7 +9,7 @@ import { useGameFlowStore } from '@processes/game-flow';
 import LoadingFootnoteLogos from '@shared/ui/LoadingFootnoteLogos';
 
 const MIN_LOADING_MS = 3000;
-const MAX_LOADING_MS = 10000;
+const MAX_LOADING_MS = 15000;
 
 const ASSETS_TO_PRELOAD = [
   'image/character/char_hb/thumb.png',
