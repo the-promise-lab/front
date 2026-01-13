@@ -1,4 +1,4 @@
-# Slice-3L Lite 헌법 (필수 조항)
+# FSD based 5 Layered 헌법 (필수 조항)
 
 ## 1) 의존 방향(단방향)
 
@@ -44,11 +44,11 @@ app  →  processes  →  features  →  entities  →  shared
 - feature 내부 유틸/훅은 **공용처럼 보여도** 우선 여기에 둔다(진짜 범용이면 entities 또는 shared로 승격).
 - entities의 도메인 모델을 가져다가 특정 사용자 시나리오에 맞게 활용.
 
-## 7) services와 api의 분리
+## 7) API 통신 계층
 
 - `src/api/` = **openapi-typescript-codegen 생성물(편집 금지)**
-- `src/services/` = **우리가 만든 어댑터/래퍼**(토큰주입, 에러표준화, 리트라이/캐싱, 로깅).
-- features는 services만 의존(엄격 모드).
+- 현재 프로젝트는 별도의 커스텀 어댑터(`src/services`) 없이, **Codegen으로 생성된 서비스(`src/api/services`)를 직접 사용**합니다.
+- TanStack Query로 `@api/services` 서비스 함수를 래핑한 커스텀 훅을 작성하여 이를 사용합니다.
 
 ## 8) 네이밍/코로케이션 규약
 

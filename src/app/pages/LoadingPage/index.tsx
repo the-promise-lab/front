@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useGameFlowStore } from '@processes/game-flow';
 import { useAssetStore } from '@shared/preload-assets';
 import { useShallow } from 'zustand/react/shallow';
 import { useSetBackground } from '@shared/background';
 import { useCdnResources } from '@shared/preload-assets/model/useCdnResources';
 import PreloadAssets from './PreloadAssets';
 import { CHARACTER_SELECT_ASSETS } from '@entities/character-data';
+import { useGameFlowStore } from '@processes/game-flow';
+import LoadingFootnoteLogos from '@shared/ui/LoadingFootnoteLogos';
 
 const MIN_LOADING_MS = 3000;
-const MAX_LOADING_MS = 10000;
+const MAX_LOADING_MS = 15000;
 
 const ASSETS_TO_PRELOAD = [
   'image/character/char_hb/thumb.png',
@@ -106,7 +107,7 @@ export default function LoadingPage() {
         </div>
 
         {/* 하단 고정 영역 */}
-        <div className='flex flex-col items-center justify-center gap-5 pb-20'>
+        <div className='flex flex-col items-center justify-center gap-5 pb-40'>
           <p className='text-sm text-gray-200'>{'Preparing to load data'}</p>
           {/* Progress Bar */}
           <div className='mx-auto w-105'>
@@ -136,6 +137,7 @@ export default function LoadingPage() {
         }
       `}</style>
       </div>
+      <LoadingFootnoteLogos />
       {!isPending && <PreloadAssets assets={assets} />}
     </>
   );

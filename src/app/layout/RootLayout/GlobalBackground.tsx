@@ -1,7 +1,7 @@
 import { BACKGROUND_PORTAL_ID } from '@shared/background-portal';
 import { useBackgroundStore } from '@shared/background';
 import { cn } from '@shared/lib/utils';
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 const DEFAULT_BACKGROUND =
   'linear-gradient(180deg, rgba(2,6,23,1) 0%, rgba(15,23,42,1) 50%, rgba(2,6,23,1) 100%)';
@@ -23,9 +23,21 @@ export default function GlobalBackground({
     backgroundGradient,
     backgroundClassName,
   } = useBackgroundStore();
+  const [readyToChangeBackground, setReadyToChangeBackground] = useState(false);
+  const [prevBackgroundImage, setPrevBackgroundImage] = useState<string | null>(
+    null
+  );
+  const [newBackgroundImage, setNewBackgroundImage] = useState<string | null>(
+    null
+  );
+  useEffect(() => {
+    if (backgroundImage) {
+      setReadyToChangeBackground(true);
+      setNewBackgroundImage(backgroundImage);
+    }
+  }, [backgroundImage]);
 
   const backgroundStyle = (() => {
-    if (backgroundImage) return { backgroundImage: `url(${backgroundImage})` };
     if (backgroundGradient) return { background: backgroundGradient };
     if (backgroundColor) return { backgroundColor };
     return { background: DEFAULT_BACKGROUND };
@@ -33,13 +45,28 @@ export default function GlobalBackground({
 
   return (
     <div
-      className={cn(
-        'fixed inset-0 z-0',
-        backgroundImage && 'bg-cover bg-center bg-no-repeat',
-        backgroundClassName
-      )}
+      className={cn('fixed inset-0 z-0', backgroundClassName)}
       style={backgroundStyle}
     >
+      {newBackgroundImage && (
+        <img
+          src={newBackgroundImage}
+          alt='background'
+          className='absolute inset-0 object-cover object-center transition-opacity duration-200'
+          style={{ opacity: readyToChangeBackground ? 1 : 0 }}
+          onLoad={() => {
+            setReadyToChangeBackground(true);
+            setPrevBackgroundImage(newBackgroundImage);
+          }}
+        />
+      )}
+      {prevBackgroundImage && !readyToChangeBackground && (
+        <img
+          src={prevBackgroundImage}
+          alt='background'
+          className='absolute inset-0 object-cover object-center'
+        />
+      )}
       {children}
       <div id={BACKGROUND_PORTAL_ID} className='h-0 w-0' aria-hidden />
     </div>

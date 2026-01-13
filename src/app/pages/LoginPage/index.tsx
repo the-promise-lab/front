@@ -9,6 +9,7 @@ import { usePreloadAssets, useAssetStore } from '@shared/preload-assets';
 import { isAxiosError } from 'axios';
 import { useShallow } from 'zustand/react/shallow';
 import Typography from '@shared/ui/Typography';
+import LoadingFootnoteLogos from '@shared/ui/LoadingFootnoteLogos';
 
 const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize';
 type VideoPhase = 'intro' | 'splash';
@@ -149,7 +150,7 @@ export default function LoginPage() {
       <div
         className={cn(
           'absolute inset-0 overflow-hidden transition-all duration-700',
-          showLogin && 'scale-105 blur-[8px]'
+          showLogin && 'scale-105 blur-sm'
         )}
       >
         {phase === 'intro' && (
@@ -196,7 +197,7 @@ export default function LoginPage() {
       <div className='relative z-10 flex h-full w-full items-center justify-center'>
         {(showLogin || isProcessing) && (
           <div
-            className='flex flex-col items-center justify-center rounded-[12px] border-[2px] border-white/40 px-25 py-10 text-center backdrop-blur-md'
+            className='flex flex-col items-center justify-center rounded-[12px] border-2 border-white/40 px-25 py-10 text-center backdrop-blur-md'
             style={{
               background:
                 'var(--bt-glass, linear-gradient(78deg, rgba(255, 255, 255, 0.24) -1.42%, rgba(255, 255, 255, 0.12) 91.38%))',
@@ -251,6 +252,7 @@ export default function LoginPage() {
           </div>
         )}
       </div>
+      {phase === 'splash' && <LoadingFootnoteLogos />}
     </div>
   );
 }
