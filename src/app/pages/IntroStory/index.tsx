@@ -40,9 +40,13 @@ export default function IntroStory({ onNext, introMode }: IntroStoryProps) {
     const asset = getObjectUrl(currentEvent.BGImage);
     return asset || currentEvent.BGImage || null;
   }, [currentEvent?.BGImage, getObjectUrl]);
-  useSetBackground({
-    image: backgroundImage || '/backGround/bg_shelter.png',
-  });
+
+  const { setBackgroundImage } = useSetBackground();
+  useEffect(() => {
+    if (backgroundImage) {
+      setBackgroundImage(backgroundImage);
+    }
+  }, [backgroundImage, setBackgroundImage]);
 
   const handleNext = () => {
     if (isSkipped) return;

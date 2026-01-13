@@ -11,7 +11,10 @@ export default function PreloadAssets({ assets }: Props) {
 
   const { preload } = useGameSound();
   useEffect(() => {
-    void preload(Object.values(SOUND_URLS));
+    const sfxUrls = Object.values(SOUND_URLS).filter(url =>
+      url.includes('sfx')
+    );
+    void preload(Object.values(sfxUrls));
   }, [preload]);
 
   return null;
